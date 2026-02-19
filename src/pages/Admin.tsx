@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive } from 'lucide-react';
+import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X } from 'lucide-react';
 
 export default function Admin() {
   const { t } = useLanguage();
@@ -26,6 +26,11 @@ export default function Admin() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [selectedListing, setSelectedListing] = useState<any>(null);
+  const [editingListing, setEditingListing] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [editCategory, setEditCategory] = useState('');
+  const [editPrice, setEditPrice] = useState('');
 
   // Reports query
   const { data: reports } = useQuery({
@@ -301,14 +306,51 @@ export default function Admin() {
     );
   };
 
-  // Listing detail dialog
+
+  const startEditListing = () => {
+    if (!selectedListing) return;
+    setEditTitle(selectedListing.title_original);
+    setEditDescription(selectedListing.description_original);
+    setEditCategory(selectedListing.category);
+    setEditPrice(String(selectedListing.price));
+    setEditingListing(true);
+  };
+
+  const saveListingEdits = async () => {
+    if (!selectedListing) return;
+    const trimmedTitle = editTitle.trim();
+    const trimmedDesc = editDescription.trim();
+    if (!trimmedTitle || !trimmedDesc) return;
+    const priceNum = Math.max(0, Number(editPrice) || 0);
+
+    await supabase.from('listings').update({
+      title_original: trimmedTitle,
+      description_original: trimmedDesc,
+      category: editCategory as any,
+      price: priceNum,
+    }).eq('id', selectedListing.id);
+
+    setSelectedListing((prev: any) => prev ? {
+      ...prev,
+      title_original: trimmedTitle,
+      description_original: trimmedDesc,
+      category: editCategory,
+      price: priceNum,
+    } : null);
+    qc.invalidateQueries({ queryKey: ['admin-listings'] });
+    setEditingListing(false);
+    toast({ title: t('admin.listingSaved') });
+  };
+
+  const categories: string[] = ['real_estate', 'furniture_home', 'vehicles', 'horeca_equipment', 'business_assets', 'relocation_services', 'misc'];
+
   const ListingDetailDialog = () => {
     if (!selectedListing) return null;
     const seller = profiles?.find((p: any) => p.id === selectedListing.seller_id);
     const listingReports = reports?.filter((r: any) => r.listing_id === selectedListing.id) || [];
 
     return (
-      <Dialog open={!!selectedListing} onOpenChange={(open) => !open && setSelectedListing(null)}>
+      <Dialog open={!!selectedListing} onOpenChange={(open) => { if (!open) { setSelectedListing(null); setEditingListing(false); } }}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
@@ -319,6 +361,11 @@ export default function Admin() {
                 <p className="truncate">{selectedListing.title_original}</p>
                 <p className="text-sm font-normal text-muted-foreground">ID: {selectedListing.id.slice(0, 8)}...</p>
               </div>
+              {!editingListing && (
+                <Button variant="ghost" size="icon" onClick={startEditListing} className="shrink-0">
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              )}
             </DialogTitle>
           </DialogHeader>
 
@@ -333,165 +380,213 @@ export default function Admin() {
 
           <Separator />
 
-          {/* Listing details */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.listingDetails')}</h4>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 text-sm">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.colPrice')}</p>
-                  <p className="font-medium">{selectedListing.price > 0 ? `${selectedListing.currency} ${selectedListing.price.toLocaleString()}` : t('common.free')}</p>
-                </div>
+          {editingListing ? (
+            /* Edit mode */
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t('admin.colTitle')}</label>
+                <Input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} maxLength={200} />
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('createListing.locationArea')}</p>
-                  <p className="font-medium">{selectedListing.location_area}</p>
-                </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t('admin.colCategory')}</label>
+                <Select value={editCategory} onValueChange={setEditCategory}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {categories.map((c) => (
+                      <SelectItem key={c} value={c}>{t(`categories.${c}`)}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <BarChart2 className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.views')}</p>
-                  <p className="font-medium">{selectedListing.views_count}</p>
-                </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t('admin.colPrice')} ({selectedListing.currency})</label>
+                <Input type="number" min="0" value={editPrice} onChange={(e) => setEditPrice(e.target.value)} />
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.colDate')}</p>
-                  <p className="font-medium">{new Date(selectedListing.created_at).toLocaleDateString()}</p>
-                </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t('admin.description')}</label>
+                <textarea
+                  className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[120px] resize-y"
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  maxLength={5000}
+                />
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Globe className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.language')}</p>
-                  <p className="font-medium">{selectedListing.lang_original?.toUpperCase()}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.lastUpdated')}</p>
-                  <p className="font-medium">{new Date(selectedListing.updated_at).toLocaleDateString()}</p>
-                </div>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={saveListingEdits} disabled={!editTitle.trim() || !editDescription.trim()}>
+                  <Save className="h-4 w-4 mr-1" /> {t('common.save')}
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => setEditingListing(false)}>
+                  <X className="h-4 w-4 mr-1" /> {t('common.cancel')}
+                </Button>
               </div>
             </div>
-          </div>
-
-          <Separator />
-
-          {/* Description */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.description')}</h4>
-            <p className="text-sm whitespace-pre-wrap max-h-[150px] overflow-y-auto border rounded-md p-3 bg-muted/30">
-              {selectedListing.description_original}
-            </p>
-          </div>
-
-          <Separator />
-
-          {/* Seller info */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.colSeller')}</h4>
-            {seller ? (
-              <div
-                className="flex items-center gap-3 p-3 rounded-md border cursor-pointer hover:bg-muted/50 transition-colors"
-                onClick={() => { setSelectedListing(null); setSelectedUser(seller); }}
-              >
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{seller.display_name || t('adminLabels.unknown')}</p>
-                  <p className="text-xs text-muted-foreground">{t(`profile.${seller.user_type}`)}</p>
-                </div>
-                {seller.is_banned && <Badge variant="destructive" className="text-[10px]">{t('admin.banned')}</Badge>}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">{t('adminLabels.unknown')}</p>
-            )}
-          </div>
-
-          {/* Reports on this listing */}
-          {listingReports.length > 0 && (
+          ) : (
+            /* View mode */
             <>
-              <Separator />
-              <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-                  {t('admin.reports')} ({listingReports.length})
-                </h4>
-                <div className="space-y-1">
-                  {listingReports.map((r: any) => (
-                    <div key={r.id} className="flex items-center gap-2 text-sm p-2 rounded-md border">
-                      <Badge variant="destructive" className="text-[10px]">{t(`report.${r.reason}`)}</Badge>
-                      <span className="truncate flex-1 text-muted-foreground">{r.details || '—'}</span>
-                      {r.resolved ? (
-                        <Badge variant="secondary" className="text-[10px]">{t('admin.resolved')}</Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-[10px]">{t('admin.pending')}</Badge>
-                      )}
+              {/* Listing details */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.listingDetails')}</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.colPrice')}</p>
+                      <p className="font-medium">{selectedListing.price > 0 ? `${selectedListing.currency} ${selectedListing.price.toLocaleString()}` : t('common.free')}</p>
                     </div>
-                  ))}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('createListing.locationArea')}</p>
+                      <p className="font-medium">{selectedListing.location_area}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <BarChart2 className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.views')}</p>
+                      <p className="font-medium">{selectedListing.views_count}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.colDate')}</p>
+                      <p className="font-medium">{new Date(selectedListing.created_at).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Globe className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.language')}</p>
+                      <p className="font-medium">{selectedListing.lang_original?.toUpperCase()}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.lastUpdated')}</p>
+                      <p className="font-medium">{new Date(selectedListing.updated_at).toLocaleDateString()}</p>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              <Separator />
+
+              {/* Description */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.description')}</h4>
+                <p className="text-sm whitespace-pre-wrap max-h-[150px] overflow-y-auto border rounded-md p-3 bg-muted/30">
+                  {selectedListing.description_original}
+                </p>
+              </div>
+
+              <Separator />
+
+              {/* Seller info */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.colSeller')}</h4>
+                {seller ? (
+                  <div
+                    className="flex items-center gap-3 p-3 rounded-md border cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => { setSelectedListing(null); setSelectedUser(seller); }}
+                  >
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{seller.display_name || t('adminLabels.unknown')}</p>
+                      <p className="text-xs text-muted-foreground">{t(`profile.${seller.user_type}`)}</p>
+                    </div>
+                    {seller.is_banned && <Badge variant="destructive" className="text-[10px]">{t('admin.banned')}</Badge>}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{t('adminLabels.unknown')}</p>
+                )}
+              </div>
+
+              {/* Reports on this listing */}
+              {listingReports.length > 0 && (
+                <>
+                  <Separator />
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      {t('admin.reports')} ({listingReports.length})
+                    </h4>
+                    <div className="space-y-1">
+                      {listingReports.map((r: any) => (
+                        <div key={r.id} className="flex items-center gap-2 text-sm p-2 rounded-md border">
+                          <Badge variant="destructive" className="text-[10px]">{t(`report.${r.reason}`)}</Badge>
+                          <span className="truncate flex-1 text-muted-foreground">{r.details || '—'}</span>
+                          {r.resolved ? (
+                            <Badge variant="secondary" className="text-[10px]">{t('admin.resolved')}</Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-[10px]">{t('admin.pending')}</Badge>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <Separator />
+
+              {/* Admin actions */}
+              <div className="flex gap-2 flex-wrap">
+                <Button variant="outline" size="sm" onClick={startEditListing}>
+                  <Pencil className="h-4 w-4 mr-1" /> {t('common.edit')}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => { setSelectedListing(null); navigate(`/listing/${selectedListing.id}`); }}
+                >
+                  <Eye className="h-4 w-4 mr-1" /> {t('admin.viewListing')}
+                </Button>
+                {selectedListing.status !== 'archived' && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => { archiveListing(selectedListing.id); setSelectedListing((prev: any) => prev ? { ...prev, status: 'archived' } : null); }}
+                  >
+                    <Archive className="h-4 w-4 mr-1" /> {t('admin.archiveListing')}
+                  </Button>
+                )}
+                {selectedListing.status !== 'active' && selectedListing.status !== 'sold' && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      await supabase.from('listings').update({ status: 'active' as any }).eq('id', selectedListing.id);
+                      qc.invalidateQueries({ queryKey: ['admin-listings'] });
+                      setSelectedListing((prev: any) => prev ? { ...prev, status: 'active' } : null);
+                      toast({ title: t('admin.listingReactivated') });
+                    }}
+                  >
+                    <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.reactivate')}
+                  </Button>
+                )}
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => { deleteListing(selectedListing.id); setSelectedListing(null); }}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" /> {t('common.delete')}
+                </Button>
+                {seller && !seller.is_banned && (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => banUser(selectedListing.seller_id, true)}
+                  >
+                    <Ban className="h-4 w-4 mr-1" /> {t('admin.banUser')}
+                  </Button>
+                )}
               </div>
             </>
           )}
-
-          <Separator />
-
-          {/* Admin actions */}
-          <div className="flex gap-2 flex-wrap">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => { setSelectedListing(null); navigate(`/listing/${selectedListing.id}`); }}
-            >
-              <Eye className="h-4 w-4 mr-1" /> {t('admin.viewListing')}
-            </Button>
-            {selectedListing.status !== 'archived' && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => { archiveListing(selectedListing.id); setSelectedListing((prev: any) => prev ? { ...prev, status: 'archived' } : null); }}
-              >
-                <Archive className="h-4 w-4 mr-1" /> {t('admin.archiveListing')}
-              </Button>
-            )}
-            {selectedListing.status !== 'active' && selectedListing.status !== 'sold' && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={async () => {
-                  await supabase.from('listings').update({ status: 'active' as any }).eq('id', selectedListing.id);
-                  qc.invalidateQueries({ queryKey: ['admin-listings'] });
-                  setSelectedListing((prev: any) => prev ? { ...prev, status: 'active' } : null);
-                  toast({ title: t('admin.listingReactivated') });
-                }}
-              >
-                <CheckCircle className="h-4 w-4 mr-1" /> {t('admin.reactivate')}
-              </Button>
-            )}
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => { deleteListing(selectedListing.id); setSelectedListing(null); }}
-            >
-              <Trash2 className="h-4 w-4 mr-1" /> {t('common.delete')}
-            </Button>
-            {seller && !seller.is_banned && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => banUser(selectedListing.seller_id, true)}
-              >
-                <Ban className="h-4 w-4 mr-1" /> {t('admin.banUser')}
-              </Button>
-            )}
-          </div>
         </DialogContent>
       </Dialog>
     );
