@@ -92,7 +92,8 @@
     "sellerInfo": "Informasi Penjual",
     "similarListings": "Iklan Serupa",
     "noPhone": "Tidak ada telepon",
-    "noWhatsapp": "Tidak ada WhatsApp"
+    "noWhatsapp": "Tidak ada WhatsApp",
+    "linkCopied": "Tautan disalin!"
   },
   "createListing": {
     "title": "Buat Iklan",

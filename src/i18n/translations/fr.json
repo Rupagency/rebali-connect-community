@@ -92,7 +92,8 @@
     "sellerInfo": "Informations vendeur",
     "similarListings": "Annonces similaires",
     "noPhone": "Pas de téléphone",
-    "noWhatsapp": "Pas de WhatsApp"
+    "noWhatsapp": "Pas de WhatsApp",
+    "linkCopied": "Lien copié !"
   },
   "createListing": {
     "title": "Créer une annonce",

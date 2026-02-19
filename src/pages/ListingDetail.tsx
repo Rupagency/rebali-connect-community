@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { formatPrice, CATEGORY_ICONS } from '@/lib/constants';
-import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar } from 'lucide-react';
+import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Share2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 
@@ -152,6 +152,20 @@ export default function ListingDetail() {
               )}
             </CardContent>
           </Card>
+
+          {/* Share */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full gap-2"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              toast({ title: t('listing.linkCopied') });
+            }}
+          >
+            <Share2 className="h-4 w-4" />
+            {t('common.share')}
+          </Button>
 
           {/* Report */}
           {user && user.id !== listing.seller_id && (

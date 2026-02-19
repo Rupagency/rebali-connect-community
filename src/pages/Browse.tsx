@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CATEGORIES, LOCATIONS, CONDITIONS } from '@/lib/constants';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Browse() {
   const { t } = useLanguage();
@@ -18,10 +18,12 @@ export default function Browse() {
   const [location, setLocation] = useState(searchParams.get('location') || 'all');
   const [condition, setCondition] = useState('all');
   const [sort, setSort] = useState('newest');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
   const { data: listings, isLoading } = useQuery({
-    queryKey: ['listings', search, category, location, condition, sort],
+    queryKey: ['listings', search, category, location, condition, sort, minPrice, maxPrice],
     queryFn: async () => {
       let query = supabase
         .from('listings')
@@ -32,6 +34,8 @@ export default function Browse() {
       if (category !== 'all') query = query.eq('category', category as any);
       if (location !== 'all') query = query.eq('location_area', location);
       if (condition !== 'all') query = query.eq('condition', condition as any);
+      if (minPrice) query = query.gte('price', Number(minPrice));
+      if (maxPrice) query = query.lte('price', Number(maxPrice));
 
       if (sort === 'newest') query = query.order('created_at', { ascending: false });
       else if (sort === 'price_low') query = query.order('price', { ascending: true });
@@ -48,10 +52,12 @@ export default function Browse() {
     setLocation('all');
     setCondition('all');
     setSort('newest');
+    setMinPrice('');
+    setMaxPrice('');
     setSearchParams({});
   };
 
-  const hasFilters = search || category !== 'all' || location !== 'all' || condition !== 'all';
+  const hasFilters = search || category !== 'all' || location !== 'all' || condition !== 'all' || minPrice || maxPrice;
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -74,7 +80,7 @@ export default function Browse() {
       </div>
 
       {/* Filters */}
-      <div className={`grid grid-cols-1 md:grid-cols-4 gap-3 mb-6 ${showFilters ? '' : 'hidden md:grid'}`}>
+      <div className={`grid grid-cols-1 md:grid-cols-4 gap-3 mb-4 ${showFilters ? '' : 'hidden md:grid'}`}>
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger><SelectValue placeholder={t('filters.allCategories')} /></SelectTrigger>
           <SelectContent>
@@ -89,7 +95,7 @@ export default function Browse() {
           <SelectContent>
             <SelectItem value="all">{t('filters.allLocations')}</SelectItem>
             {LOCATIONS.map(l => (
-              <SelectItem key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</SelectItem>
+              <SelectItem key={l} value={l}>{t(`locations.${l}`)}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -110,6 +116,24 @@ export default function Browse() {
             <SelectItem value="price_high">{t('filters.sortPriceHigh')}</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Price range */}
+      <div className={`flex gap-3 mb-6 ${showFilters ? '' : 'hidden md:flex'}`}>
+        <Input
+          type="number"
+          placeholder={t('filters.minPrice')}
+          value={minPrice}
+          onChange={e => setMinPrice(e.target.value)}
+          className="w-32"
+        />
+        <Input
+          type="number"
+          placeholder={t('filters.maxPrice')}
+          value={maxPrice}
+          onChange={e => setMaxPrice(e.target.value)}
+          className="w-32"
+        />
       </div>
 
       {hasFilters && (

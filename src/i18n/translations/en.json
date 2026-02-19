@@ -92,7 +92,8 @@
     "sellerInfo": "Seller Information",
     "similarListings": "Similar Listings",
     "noPhone": "No phone provided",
-    "noWhatsapp": "No WhatsApp provided"
+    "noWhatsapp": "No WhatsApp provided",
+    "linkCopied": "Link copied to clipboard!"
   },
   "createListing": {
     "title": "Create a Listing",
