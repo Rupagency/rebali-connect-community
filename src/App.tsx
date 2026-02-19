@@ -46,14 +46,14 @@ const App = () => (
                 <Route path="/safety" element={<Safety />} />
                 <Route path="/rules" element={<Rules />} />
                 <Route path="/vip" element={<VIP />} />
-              </Route>
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </LanguageProvider>
-  </QueryClientProvider>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </LanguageProvider>
+</QueryClientProvider>
 );
 
 export default App;

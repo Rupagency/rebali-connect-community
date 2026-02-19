@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye } from 'lucide-react';
+import { MapPin, Eye, Clock } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
+import { formatDistanceToNow } from 'date-fns';
+import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
+
+const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
 interface ListingCardProps {
   listing: {
@@ -37,6 +41,11 @@ export default function ListingCard({ listing }: ListingCardProps) {
     ? supabase.storage.from('listings').getPublicUrl(listing.listing_images[0].storage_path).data.publicUrl
     : '/placeholder.svg';
 
+  const timeAgo = formatDistanceToNow(new Date(listing.created_at), {
+    addSuffix: true,
+    locale: DATE_LOCALES[language],
+  });
+
   return (
     <Link to={`/listing/${listing.id}`}>
       <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group h-full">
@@ -61,12 +70,16 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <MapPin className="h-3 w-3" />
-              {listing.location_area}
+              {t(`locations.${listing.location_area}`)}
             </span>
             <span className="flex items-center gap-1">
               <Eye className="h-3 w-3" />
               {listing.views_count}
             </span>
+          </div>
+          <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
+            <Clock className="h-3 w-3" />
+            {timeAgo}
           </div>
         </CardContent>
       </Card>

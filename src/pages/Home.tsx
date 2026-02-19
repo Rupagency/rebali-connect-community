@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import ListingCard from '@/components/ListingCard';
+import AnimatedHeroText from '@/components/AnimatedHeroText';
 import { Search, Camera, MessageCircle, Handshake, Sparkles } from 'lucide-react';
 import { CATEGORIES, CATEGORY_ICONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,7 +45,12 @@ export default function Home() {
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-primary/10 via-background to-accent/5 py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">{t('home.hero')}</h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-2 tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Re-Bali
+          </h1>
+          <div className="text-2xl md:text-4xl font-bold mb-4 h-12 md:h-14 flex items-center justify-center">
+            <AnimatedHeroText />
+          </div>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             {t('home.heroSub')}
           </p>
@@ -63,16 +69,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Categories - horizontal scroll on mobile */}
       <section className="container mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('home.categories')}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <div className="flex gap-3 overflow-x-auto pb-3 md:grid md:grid-cols-7 md:overflow-visible scrollbar-hide">
           {CATEGORIES.map(cat => (
-            <Link key={cat} to={`/browse?category=${cat}`}>
+            <Link key={cat} to={`/browse?category=${cat}`} className="flex-shrink-0 w-28 md:w-auto">
               <Card className="hover:shadow-md hover:border-primary/30 transition-all cursor-pointer h-full">
                 <CardContent className="p-4 text-center">
                   <span className="text-3xl mb-2 block">{CATEGORY_ICONS[cat]}</span>
-                  <span className="text-sm font-medium">{t(`categories.${cat}`)}</span>
+                  <span className="text-xs md:text-sm font-medium">{t(`categories.${cat}`)}</span>
                 </CardContent>
               </Card>
             </Link>
@@ -115,12 +121,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Free banner */}
+      {/* CTA */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-8 md:p-12">
           <Sparkles className="h-10 w-10 text-primary mx-auto mb-4" />
           <h2 className="text-2xl md:text-3xl font-bold mb-3">{t('home.freePlatform')}</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">{t('home.freeDesc')}</p>
+          <p className="text-muted-foreground max-w-lg mx-auto mb-6">{t('home.freeDesc')}</p>
+          <Button size="lg" asChild>
+            <Link to="/create">{t('nav.sell')} →</Link>
+          </Button>
         </div>
       </section>
     </div>
