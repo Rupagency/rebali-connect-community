@@ -230,7 +230,8 @@
     "views": "Views",
     "language": "Language",
     "lastUpdated": "Last Updated",
-    "description": "Description"
+    "description": "Description",
+    "listingSaved": "Listing updated"
   },
   "about": {
     "title": "About Re-Bali",
