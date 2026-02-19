@@ -216,7 +216,13 @@
     "colCategory": "Kategori",
     "colPrice": "Harga",
     "banned": "Diblokir",
-    "activeStat": "Aktif"
+    "activeStat": "Aktif",
+    "userInfo": "Informasi Pengguna",
+    "userListings": "Iklan",
+    "userReports": "Laporan terhadap pengguna",
+    "noUserReports": "Tidak ada laporan",
+    "moreListings": "iklan lainnya",
+    "viewListings": "Lihat Iklan"
   },
   "about": {
     "title": "Tentang Re-Bali",

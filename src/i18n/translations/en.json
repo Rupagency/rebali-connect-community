@@ -216,7 +216,13 @@
     "colCategory": "Category",
     "colPrice": "Price",
     "banned": "Banned",
-    "activeStat": "Active"
+    "activeStat": "Active",
+    "userInfo": "User Information",
+    "userListings": "Listings",
+    "userReports": "Reports against user",
+    "noUserReports": "No reports",
+    "moreListings": "more listings",
+    "viewListings": "View Listings"
   },
   "about": {
     "title": "About Re-Bali",

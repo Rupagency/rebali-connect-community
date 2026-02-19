@@ -10,9 +10,11 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye } from 'lucide-react';
+import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User } from 'lucide-react';
 
 export default function Admin() {
   const { t } = useLanguage();
@@ -22,6 +24,7 @@ export default function Admin() {
   const [userSearch, setUserSearch] = useState('');
   const [listingSearch, setListingSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   // Reports query
   const { data: reports } = useQuery({
@@ -76,7 +79,6 @@ export default function Admin() {
   const activeListings = allListings?.filter((l: any) => l.status === 'active') || [];
   const archivedListings = allListings?.filter((l: any) => l.status === 'archived') || [];
 
-  // Filtered data
   const filteredProfiles = profiles?.filter((p: any) =>
     !userSearch || p.display_name?.toLowerCase().includes(userSearch.toLowerCase())
   ) || [];
@@ -86,6 +88,10 @@ export default function Admin() {
     const matchesStatus = statusFilter === 'all' || l.status === statusFilter;
     return matchesSearch && matchesStatus;
   }) || [];
+
+  // Get user listings count
+  const getUserListings = (userId: string) => allListings?.filter((l: any) => l.seller_id === userId) || [];
+  const getUserReports = (userId: string) => reports?.filter((r: any) => r.listings?.seller_id === userId) || [];
 
   // Actions
   const resolveReport = async (id: string) => {
@@ -110,7 +116,188 @@ export default function Admin() {
   const banUser = async (userId: string, ban: boolean) => {
     await supabase.from('profiles').update({ is_banned: ban }).eq('id', userId);
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+    if (selectedUser?.id === userId) {
+      setSelectedUser((prev: any) => prev ? { ...prev, is_banned: ban } : null);
+    }
     toast({ title: ban ? t('admin.banUser') : t('admin.unbanUser') });
+  };
+
+  // User detail dialog content
+  const UserDetailDialog = () => {
+    if (!selectedUser) return null;
+    const userListings = getUserListings(selectedUser.id);
+    const userReports = getUserReports(selectedUser.id);
+    const userActiveListings = userListings.filter((l: any) => l.status === 'active');
+    const userSoldListings = userListings.filter((l: any) => l.status === 'sold');
+    const userArchivedListings = userListings.filter((l: any) => l.status === 'archived');
+
+    return (
+      <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p>{selectedUser.display_name || t('adminLabels.unknown')}</p>
+                <p className="text-sm font-normal text-muted-foreground">ID: {selectedUser.id.slice(0, 8)}...</p>
+              </div>
+            </DialogTitle>
+          </DialogHeader>
+
+          {/* Status badge */}
+          <div className="flex gap-2">
+            {selectedUser.is_banned ? (
+              <Badge variant="destructive">{t('admin.banned')}</Badge>
+            ) : (
+              <Badge variant="secondary">{t('admin.activeStat')}</Badge>
+            )}
+            <Badge variant="outline">{t(`profile.${selectedUser.user_type}`)}</Badge>
+          </div>
+
+          <Separator />
+
+          {/* User info */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userInfo')}</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2 text-sm">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">{t('admin.colDate')}</p>
+                  <p className="font-medium">{new Date(selectedUser.created_at).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Globe className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">{t('profile.preferredLang')}</p>
+                  <p className="font-medium">{selectedUser.preferred_lang?.toUpperCase()}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Phone className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">{t('profile.phone')}</p>
+                  <p className="font-medium">{selectedUser.phone || '—'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">{t('profile.whatsapp')}</p>
+                  <p className="font-medium">{selectedUser.whatsapp || '—'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Listings stats */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userListings')}</h4>
+            <div className="grid grid-cols-4 gap-2">
+              <Card>
+                <CardContent className="p-3 text-center">
+                  <p className="text-lg font-bold">{userListings.length}</p>
+                  <p className="text-[10px] text-muted-foreground">{t('admin.totalListings')}</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-3 text-center">
+                  <p className="text-lg font-bold">{userActiveListings.length}</p>
+                  <p className="text-[10px] text-muted-foreground">{t('myListings.active')}</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-3 text-center">
+                  <p className="text-lg font-bold">{userSoldListings.length}</p>
+                  <p className="text-[10px] text-muted-foreground">{t('myListings.sold')}</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-3 text-center">
+                  <p className="text-lg font-bold">{userArchivedListings.length}</p>
+                  <p className="text-[10px] text-muted-foreground">{t('myListings.archived')}</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Recent listings */}
+            {userListings.length > 0 && (
+              <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                {userListings.slice(0, 5).map((l: any) => (
+                  <div key={l.id} className="flex items-center justify-between p-2 rounded-md border text-sm">
+                    <div className="flex-1 truncate mr-2">
+                      <p className="font-medium truncate">{l.title_original}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {l.price > 0 ? `${l.currency} ${l.price.toLocaleString()}` : t('common.free')}
+                      </p>
+                    </div>
+                    <Badge variant={l.status === 'active' ? 'default' : 'secondary'} className="text-[10px]">
+                      {t(`myListings.${l.status}`)}
+                    </Badge>
+                  </div>
+                ))}
+                {userListings.length > 5 && (
+                  <p className="text-xs text-center text-muted-foreground">
+                    +{userListings.length - 5} {t('admin.moreListings')}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <Separator />
+
+          {/* Reports against this user */}
+          <div className="space-y-2">
+            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              {t('admin.userReports')} ({userReports.length})
+            </h4>
+            {userReports.length === 0 ? (
+              <p className="text-sm text-muted-foreground">{t('admin.noUserReports')}</p>
+            ) : (
+              <div className="space-y-1">
+                {userReports.map((r: any) => (
+                  <div key={r.id} className="flex items-center gap-2 text-sm p-2 rounded-md border">
+                    <Badge variant="destructive" className="text-[10px]">{t(`report.${r.reason}`)}</Badge>
+                    <span className="truncate flex-1 text-muted-foreground">{r.listings?.title_original}</span>
+                    {r.resolved ? (
+                      <Badge variant="secondary" className="text-[10px]">{t('admin.resolved')}</Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-[10px]">{t('admin.pending')}</Badge>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Separator />
+
+          {/* Admin actions */}
+          <div className="flex gap-2">
+            <Button
+              className="flex-1"
+              variant={selectedUser.is_banned ? 'default' : 'destructive'}
+              onClick={() => banUser(selectedUser.id, !selectedUser.is_banned)}
+            >
+              <Ban className="h-4 w-4 mr-1" />
+              {selectedUser.is_banned ? t('admin.unbanUser') : t('admin.banUser')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => { setSelectedUser(null); navigate(`/browse?seller=${selectedUser.id}`); }}
+            >
+              <Eye className="h-4 w-4 mr-1" /> {t('admin.viewListings')}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   return (
@@ -118,6 +305,8 @@ export default function Admin() {
       <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
         <Shield className="h-7 w-7" /> {t('admin.title')}
       </h1>
+
+      <UserDetailDialog />
 
       <Tabs defaultValue="stats">
         <TabsList className="grid w-full grid-cols-4">
@@ -138,55 +327,15 @@ export default function Admin() {
         {/* Stats Tab */}
         <TabsContent value="stats" className="mt-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Users className="h-6 w-6 text-primary mx-auto mb-1" />
-                <p className="text-2xl font-bold">{profiles?.length || 0}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.totalUsers')}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <FileText className="h-6 w-6 text-primary mx-auto mb-1" />
-                <p className="text-2xl font-bold">{activeListings.length}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.activeListings')}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <AlertTriangle className="h-6 w-6 text-accent mx-auto mb-1" />
-                <p className="text-2xl font-bold">{pendingReports.length}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.openReports')}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Ban className="h-6 w-6 text-destructive mx-auto mb-1" />
-                <p className="text-2xl font-bold">{bannedUsers.length}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.bannedUsers')}</p>
-              </CardContent>
-            </Card>
+            <Card><CardContent className="p-4 text-center"><Users className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.length || 0}</p><p className="text-xs text-muted-foreground">{t('admin.totalUsers')}</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><FileText className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{activeListings.length}</p><p className="text-xs text-muted-foreground">{t('admin.activeListings')}</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-6 w-6 text-accent mx-auto mb-1" /><p className="text-2xl font-bold">{pendingReports.length}</p><p className="text-xs text-muted-foreground">{t('admin.openReports')}</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><Ban className="h-6 w-6 text-destructive mx-auto mb-1" /><p className="text-2xl font-bold">{bannedUsers.length}</p><p className="text-xs text-muted-foreground">{t('admin.bannedUsers')}</p></CardContent></Card>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-2xl font-bold">{allListings?.length || 0}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.totalListings')}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-2xl font-bold">{archivedListings.length}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.archivedListings')}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <CheckCircle className="h-6 w-6 text-primary mx-auto mb-1" />
-                <p className="text-2xl font-bold">{resolvedReports.length}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.resolvedReports')}</p>
-              </CardContent>
-            </Card>
+            <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{allListings?.length || 0}</p><p className="text-xs text-muted-foreground">{t('admin.totalListings')}</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{archivedListings.length}</p><p className="text-xs text-muted-foreground">{t('admin.archivedListings')}</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><CheckCircle className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{resolvedReports.length}</p><p className="text-xs text-muted-foreground">{t('admin.resolvedReports')}</p></CardContent></Card>
           </div>
         </TabsContent>
 
@@ -247,12 +396,7 @@ export default function Admin() {
         <TabsContent value="users" className="mt-4">
           <div className="flex items-center gap-2 mb-4">
             <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t('admin.searchUsers')}
-              value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
-              className="max-w-sm"
-            />
+            <Input placeholder={t('admin.searchUsers')} value={userSearch} onChange={(e) => setUserSearch(e.target.value)} className="max-w-sm" />
           </div>
           <div className="rounded-md border">
             <Table>
@@ -262,49 +406,26 @@ export default function Admin() {
                   <TableHead>{t('admin.colType')}</TableHead>
                   <TableHead>{t('admin.colDate')}</TableHead>
                   <TableHead>{t('admin.colStatus')}</TableHead>
+                  <TableHead>{t('admin.listings')}</TableHead>
                   <TableHead>{t('admin.colActions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProfiles.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      {t('common.noResults')}
-                    </TableCell>
-                  </TableRow>
+                  <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">{t('common.noResults')}</TableCell></TableRow>
                 ) : filteredProfiles.map((p: any) => (
-                  <TableRow key={p.id}>
+                  <TableRow key={p.id} className="cursor-pointer hover:bg-muted/50" onClick={() => setSelectedUser(p)}>
                     <TableCell className="font-medium">{p.display_name || t('adminLabels.unknown')}</TableCell>
+                    <TableCell><Badge variant="outline">{t(`profile.${p.user_type}`)}</Badge></TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{new Date(p.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Badge variant="outline">{t(`profile.${p.user_type}`)}</Badge>
+                      {p.is_banned ? <Badge variant="destructive">{t('admin.banned')}</Badge> : <Badge variant="secondary">{t('admin.activeStat')}</Badge>}
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {new Date(p.created_at).toLocaleDateString()}
-                    </TableCell>
+                    <TableCell className="text-sm">{getUserListings(p.id).length}</TableCell>
                     <TableCell>
-                      {p.is_banned ? (
-                        <Badge variant="destructive">{t('admin.banned')}</Badge>
-                      ) : (
-                        <Badge variant="secondary">{t('admin.activeStat')}</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-1">
-                        <Button
-                          size="sm"
-                          variant={p.is_banned ? 'default' : 'destructive'}
-                          onClick={() => banUser(p.id, !p.is_banned)}
-                        >
-                          {p.is_banned ? t('admin.unbanUser') : t('admin.banUser')}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => navigate(`/browse?seller=${p.id}`)}
-                        >
-                          <Eye className="h-3 w-3" />
-                        </Button>
-                      </div>
+                      <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); setSelectedUser(p); }}>
+                        <Eye className="h-3 w-3" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -317,16 +438,9 @@ export default function Admin() {
         <TabsContent value="listings" className="mt-4">
           <div className="flex items-center gap-2 mb-4 flex-wrap">
             <Search className="h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t('admin.searchListings')}
-              value={listingSearch}
-              onChange={(e) => setListingSearch(e.target.value)}
-              className="max-w-sm"
-            />
+            <Input placeholder={t('admin.searchListings')} value={listingSearch} onChange={(e) => setListingSearch(e.target.value)} className="max-w-sm" />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue />
-              </SelectTrigger>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('admin.allStatuses')}</SelectItem>
                 <SelectItem value="active">{t('myListings.active')}</SelectItem>
@@ -350,40 +464,20 @@ export default function Admin() {
               </TableHeader>
               <TableBody>
                 {filteredListings.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                      {t('common.noResults')}
-                    </TableCell>
-                  </TableRow>
+                  <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">{t('common.noResults')}</TableCell></TableRow>
                 ) : filteredListings.map((l: any) => (
                   <TableRow key={l.id}>
-                    <TableCell className="font-medium max-w-[200px] truncate">
-                      {l.title_original}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {(l.profiles as any)?.display_name || t('adminLabels.unknown')}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{t(`categories.${l.category}`)}</Badge>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {l.price > 0 ? `${l.currency} ${l.price.toLocaleString()}` : t('common.free')}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={l.status === 'active' ? 'default' : 'secondary'}>
-                        {t(`myListings.${l.status}`)}
-                      </Badge>
-                    </TableCell>
+                    <TableCell className="font-medium max-w-[200px] truncate">{l.title_original}</TableCell>
+                    <TableCell className="text-sm">{(l.profiles as any)?.display_name || t('adminLabels.unknown')}</TableCell>
+                    <TableCell><Badge variant="outline">{t(`categories.${l.category}`)}</Badge></TableCell>
+                    <TableCell className="text-sm">{l.price > 0 ? `${l.currency} ${l.price.toLocaleString()}` : t('common.free')}</TableCell>
+                    <TableCell><Badge variant={l.status === 'active' ? 'default' : 'secondary'}>{t(`myListings.${l.status}`)}</Badge></TableCell>
                     <TableCell>
                       <div className="flex gap-1">
                         {l.status !== 'archived' && (
-                          <Button size="sm" variant="outline" onClick={() => archiveListing(l.id)}>
-                            {t('admin.archiveListing')}
-                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => archiveListing(l.id)}>{t('admin.archiveListing')}</Button>
                         )}
-                        <Button size="sm" variant="destructive" onClick={() => deleteListing(l.id)}>
-                          {t('common.delete')}
-                        </Button>
+                        <Button size="sm" variant="destructive" onClick={() => deleteListing(l.id)}>{t('common.delete')}</Button>
                       </div>
                     </TableCell>
                   </TableRow>

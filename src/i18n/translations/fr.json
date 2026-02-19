@@ -216,7 +216,13 @@
     "colCategory": "Catégorie",
     "colPrice": "Prix",
     "banned": "Banni",
-    "activeStat": "Actif"
+    "activeStat": "Actif",
+    "userInfo": "Informations utilisateur",
+    "userListings": "Annonces",
+    "userReports": "Signalements contre l'utilisateur",
+    "noUserReports": "Aucun signalement",
+    "moreListings": "annonces supplémentaires",
+    "viewListings": "Voir les annonces"
   },
   "about": {
     "title": "À propos de Re-Bali",
