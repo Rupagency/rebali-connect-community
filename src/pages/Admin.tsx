@@ -230,7 +230,7 @@ export default function Admin() {
             {userListings.length > 0 && (
               <div className="space-y-2 max-h-[200px] overflow-y-auto">
                 {userListings.slice(0, 5).map((l: any) => (
-                  <div key={l.id} className="flex items-center justify-between p-2 rounded-md border text-sm">
+                  <div key={l.id} className="flex items-center justify-between p-2 rounded-md border text-sm cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => { setSelectedUser(null); setSelectedListing(l); }}>
                     <div className="flex-1 truncate mr-2">
                       <p className="font-medium truncate">{l.title_original}</p>
                       <p className="text-xs text-muted-foreground">
