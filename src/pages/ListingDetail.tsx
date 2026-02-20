@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
@@ -118,17 +118,17 @@ export default function ListingDetail() {
           <Card>
             <CardContent className="p-4">
               <h3 className="font-semibold mb-3" style={{ fontFamily: 'DM Sans' }}>{t('listing.sellerInfo')}</h3>
-              <div className="flex items-center gap-3 mb-4">
+              <Link to={`/seller/${seller?.id}`} className="flex items-center gap-3 mb-4 hover:opacity-80 transition-opacity">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                   <User className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="font-medium">{seller?.display_name || 'User'}</p>
+                  <p className="font-medium text-primary hover:underline">{seller?.display_name || 'User'}</p>
                   <p className="text-xs text-muted-foreground">
                     {t('profile.memberSince')} {seller?.created_at ? new Date(seller.created_at).toLocaleDateString() : ''}
                   </p>
                 </div>
-              </div>
+              </Link>
               {seller?.whatsapp && (
                 <Button className="w-full mb-2 gap-2" asChild>
                   <a href={`https://wa.me/${seller.whatsapp.replace(/[^0-9]/g, '')}?text=Hi, I'm interested in your listing: ${title}`} target="_blank" rel="noopener noreferrer">

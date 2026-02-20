@@ -20,6 +20,7 @@ import Safety from "./pages/Safety";
 import Rules from "./pages/Rules";
 import VIP from "./pages/VIP";
 import NotFound from "./pages/NotFound";
+import SellerProfile from "./pages/SellerProfile";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
                 <Route path="/safety" element={<Safety />} />
                 <Route path="/rules" element={<Rules />} />
                 <Route path="/vip" element={<VIP />} />
+                <Route path="/seller/:id" element={<SellerProfile />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
           </Routes>
