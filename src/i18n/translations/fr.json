@@ -69,5 +69,6 @@
   "footer": { "tagline": "La marketplace de confiance à Bali", "marketplace": "Marketplace", "company": "Entreprise", "legal": "Légal", "terms": "Conditions d'utilisation", "privacy": "Politique de confidentialité", "copyright": "© 2025 Re-Bali. Tous droits réservés." },
   "notFound": { "title": "Page non trouvée", "description": "La page que vous recherchez n'existe pas.", "backHome": "Retour à l'accueil" },
   "notifications": { "listingActive": "Annonce réactivée", "listingSold": "Annonce marquée vendue", "listingArchived": "Annonce archivée", "vipNotify": "Vous serez notifié du lancement VIP !" },
-  "adminLabels": { "accessDenied": "Accès refusé", "listing": "Annonce", "reporter": "Signaleur", "deleted": "Supprimé", "unknown": "Inconnu" }
+  "adminLabels": { "accessDenied": "Accès refusé", "listing": "Annonce", "reporter": "Signaleur", "deleted": "Supprimé", "unknown": "Inconnu" },
+  "seller": { "activeListings": "annonces actives", "reviews": "avis", "reviewsTitle": "Avis clients", "leaveReview": "Laisser un avis", "reviewPlaceholder": "Partagez votre expérience avec ce vendeur...", "reviewSubmitted": "Avis envoyé !", "noReviews": "Aucun avis pour le moment", "allListings": "Annonces" }
 }
