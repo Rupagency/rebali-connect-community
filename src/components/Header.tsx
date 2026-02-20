@@ -20,6 +20,10 @@ export default function Header() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const authGuard = (path: string) => () => {
+    navigate(user ? path : '/auth');
+  };
+
   const navLinks = [
     { href: '/browse', label: t('nav.browse') },
     { href: '/about', label: t('nav.about') },
@@ -44,15 +48,15 @@ export default function Header() {
         <div className="hidden sm:flex items-center gap-0">
           <LanguageSwitcher />
 
-          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={() => navigate('/browse')}>
+          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/browse')}>
             <Bell className="h-5 w-5" strokeWidth={1.5} />
             <span className="text-[10px]">{t('nav.searches')}</span>
           </Button>
-          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={() => navigate('/browse')}>
+          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/favorites')}>
             <Heart className="h-5 w-5" strokeWidth={1.5} />
             <span className="text-[10px]">{t('nav.favorites')}</span>
           </Button>
-          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={() => navigate('/browse')}>
+          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/messages')}>
             <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
             <span className="text-[10px]">{t('nav.messages')}</span>
           </Button>
