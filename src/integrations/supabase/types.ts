@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      banned_devices: {
+        Row: {
+          banned_by: string | null
+          created_at: string
+          device_hash: string | null
+          id: string
+          phone_number: string | null
+          reason: string
+        }
+        Insert: {
+          banned_by?: string | null
+          created_at?: string
+          device_hash?: string | null
+          id?: string
+          phone_number?: string | null
+          reason: string
+        }
+        Update: {
+          banned_by?: string | null
+          created_at?: string
+          device_hash?: string | null
+          id?: string
+          phone_number?: string | null
+          reason?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string
@@ -49,6 +76,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      id_verifications: {
+        Row: {
+          created_at: string
+          document_path: string
+          document_type: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          selfie_path: string
+          status: Database["public"]["Enums"]["verification_status"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_path: string
+          document_type: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          selfie_path: string
+          status?: Database["public"]["Enums"]["verification_status"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_path?: string
+          document_type?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          selfie_path?: string
+          status?: Database["public"]["Enums"]["verification_status"]
+          user_id?: string
+        }
+        Relationships: []
       }
       listing_images: {
         Row: {
@@ -182,6 +245,39 @@ export type Database = {
           },
         ]
       }
+      phone_verifications: {
+        Row: {
+          attempts: number
+          created_at: string
+          expires_at: string
+          id: string
+          otp_hash: string
+          phone_number: string
+          user_id: string
+          verified: boolean
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          expires_at: string
+          id?: string
+          otp_hash: string
+          phone_number: string
+          user_id: string
+          verified?: boolean
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          expires_at?: string
+          id?: string
+          otp_hash?: string
+          phone_number?: string
+          user_id?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -189,8 +285,12 @@ export type Database = {
           display_name: string | null
           id: string
           is_banned: boolean
+          is_verified_seller: boolean
           phone: string | null
+          phone_verified: boolean
           preferred_lang: string
+          risk_level: Database["public"]["Enums"]["risk_level"]
+          trust_score: number
           updated_at: string
           user_type: Database["public"]["Enums"]["user_type"]
           whatsapp: string | null
@@ -201,8 +301,12 @@ export type Database = {
           display_name?: string | null
           id: string
           is_banned?: boolean
+          is_verified_seller?: boolean
           phone?: string | null
+          phone_verified?: boolean
           preferred_lang?: string
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          trust_score?: number
           updated_at?: string
           user_type?: Database["public"]["Enums"]["user_type"]
           whatsapp?: string | null
@@ -213,8 +317,12 @@ export type Database = {
           display_name?: string | null
           id?: string
           is_banned?: boolean
+          is_verified_seller?: boolean
           phone?: string | null
+          phone_verified?: boolean
           preferred_lang?: string
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          trust_score?: number
           updated_at?: string
           user_type?: Database["public"]["Enums"]["user_type"]
           whatsapp?: string | null
@@ -311,6 +419,69 @@ export type Database = {
           },
         ]
       }
+      trust_scores: {
+        Row: {
+          factors: Json | null
+          id: string
+          last_calculated: string
+          risk_level: Database["public"]["Enums"]["risk_level"]
+          score: number
+          user_id: string
+        }
+        Insert: {
+          factors?: Json | null
+          id?: string
+          last_calculated?: string
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          score?: number
+          user_id: string
+        }
+        Update: {
+          factors?: Json | null
+          id?: string
+          last_calculated?: string
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_devices: {
+        Row: {
+          browser: string | null
+          created_at: string
+          device_hash: string
+          id: string
+          ip_address: string | null
+          is_vpn: boolean | null
+          os: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string
+          device_hash: string
+          id?: string
+          ip_address?: string | null
+          is_vpn?: boolean | null
+          os?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string
+          device_hash?: string
+          id?: string
+          ip_address?: string | null
+          is_vpn?: boolean | null
+          os?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -331,6 +502,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      whatsapp_click_logs: {
+        Row: {
+          clicked_at: string
+          id: string
+          listing_id: string
+          user_id: string | null
+        }
+        Insert: {
+          clicked_at?: string
+          id?: string
+          listing_id: string
+          user_id?: string | null
+        }
+        Update: {
+          clicked_at?: string
+          id?: string
+          listing_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_click_logs_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -358,7 +558,9 @@ export type Database = {
         | "spam"
         | "wrong_category"
         | "other"
+      risk_level: "low" | "medium" | "high"
       user_type: "private" | "business"
+      verification_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -497,7 +699,9 @@ export const Constants = {
         "wrong_category",
         "other",
       ],
+      risk_level: ["low", "medium", "high"],
       user_type: ["private", "business"],
+      verification_status: ["pending", "approved", "rejected"],
     },
   },
 } as const
