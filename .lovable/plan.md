@@ -1,95 +1,108 @@
 
-# Chiffrement des documents d'identite + Suppression apres retention
+# Plan d'amelioration globale de Re-Bali
 
-## Contexte
+Ce plan couvre 4 axes d'amelioration, a implementer etape par etape.
 
-Les documents d'identite (KTP/passeport + selfie) sont actuellement stockes en clair dans le bucket prive `id-verifications`. Bien que les RLS limitent l'acces aux admins, les fichiers restent vulnerables en cas de compromission du storage. L'objectif est de chiffrer les fichiers avant upload et de ne les dechiffrer que quand l'admin a besoin de les consulter.
+---
 
-## Architecture
+## Etape 1 — Performance & Optimisation
 
-Le chiffrement se fait cote serveur via une edge function pour que la cle secrete ne transite jamais cote client :
+### Probleme actuel
+Chaque `ListingCard` effectue 2 requetes individuelles (profil vendeur + compteur favoris), ce qui cree un probleme N+1 : pour 8 annonces sur la page d'accueil, cela genere 16 requetes supplementaires.
 
-1. Le client envoie le fichier brut a une edge function `encrypt-document`
-2. L'edge function chiffre le fichier avec AES-256-GCM en utilisant un secret `VAULT_ENCRYPTION_KEY`
-3. Le fichier chiffre est uploade dans le bucket `id-verifications`
-4. Pour la consultation admin, une edge function `decrypt-document` dechiffre et renvoie le fichier
+### Solution
+- **Home.tsx / Browse.tsx** : enrichir la requete principale pour inclure `profiles:seller_id(user_type, is_verified_seller)` et le compteur de favoris directement, puis transmettre ces donnees aux `ListingCard` via props
+- **ListingCard.tsx** : accepter les donnees vendeur et favoris en props optionnels, ne faire la requete que si les props ne sont pas fournis (retro-compatible)
+- **Browse.tsx** : ajouter un debounce sur le champ de recherche (300ms) pour eviter les requetes a chaque frappe
 
-## 1. Secret de chiffrement
+---
 
-Ajouter un secret `VAULT_ENCRYPTION_KEY` dans les secrets Supabase Edge Functions. Ce sera une cle AES-256 (32 bytes en base64).
+## Etape 2 — Messages en temps reel (Supabase Realtime)
 
-## 2. Edge Function `encrypt-upload`
+### Probleme actuel
+Les messages utilisent un polling toutes les 5 secondes (`refetchInterval: 5000`), ce qui est inefficace et ajoute de la latence.
 
-Recoit le fichier + metadata (user_id, type document/selfie, document_type), chiffre avec AES-256-GCM, uploade dans le bucket, et insere dans `id_verifications`.
+### Solution
+- **Messages.tsx** : remplacer le polling par un abonnement Supabase Realtime sur la table `messages` filtre par `conversation_id`
+- Quand un nouveau message arrive via le canal, l'ajouter directement au cache React Query
+- Ajouter egalement un canal Realtime pour la liste des conversations (nouveaux messages non lus)
+- Nettoyage du canal dans le `useEffect` cleanup
 
-- Authentification requise (verifie le JWT)
-- Verifie que le user_id du JWT correspond
-- Genere un IV aleatoire, stocke IV+ciphertext ensemble
-- Limite la taille a 5MB
+---
 
-## 3. Edge Function `decrypt-document`
+## Etape 3 — Politique de retention des documents
 
-Reservee aux admins : recoit le storage_path, telecharge le fichier chiffre, dechiffre, et renvoie le contenu en reponse.
+### Probleme actuel
+Les documents d'identite chiffres restent stockes indefiniment apres approbation ou rejet.
 
-- Verifie que l'appelant a le role `admin`
-- Telecharge depuis le bucket prive avec le service role
-- Dechiffre et retourne le fichier avec le bon Content-Type
+### Solution
+1. **Migration SQL** : ajouter une colonne `documents_purged_at` (timestamptz, nullable) a la table `id_verifications`
+2. **Edge Function `purge-expired-docs`** : 
+   - Parcourt les verifications approuvees/rejetees datant de plus de 30 jours
+   - Supprime les fichiers du bucket `id-verifications` via le service role
+   - Met a jour `documents_purged_at` avec la date courante
+3. **Cron job** : planifier l'execution quotidienne via `pg_cron` + `pg_net`
+4. **Admin.tsx** : afficher le statut de purge dans les cartes de verification (documents purges ou toujours disponibles)
 
-## 4. Modification de Profile.tsx
+---
 
-Remplacer l'upload direct au bucket par un appel a `supabase.functions.invoke('encrypt-upload')` avec les fichiers en FormData.
+## Etape 4 — UX & Design
 
-## 5. Modification de Admin.tsx
+### 4a. Menu mobile complet
+- **Header.tsx** : ajouter les liens de navigation manquants dans le menu mobile (Browse, Favoris, Messages, Mes annonces, Profil)
+- Ajouter une barre de navigation mobile fixe en bas de l'ecran (bottom nav) avec les 5 icones principales : Accueil, Parcourir, Vendre, Messages, Profil
 
-La section verification qui affiche les documents doit appeler `decrypt-document` pour obtenir les images dechiffrees au lieu de lire directement depuis le storage.
+### 4b. Etats de chargement (skeletons)
+- **Home.tsx** : ajouter des skeletons pour les cartes d'annonces pendant le chargement
+- **ListingDetail.tsx** : ameliorer le skeleton existant avec une vraie structure (image, titre, prix)
+- **Profile.tsx** : ajouter un skeleton pendant le chargement du profil
 
-## 6. Politique de retention (optionnel futur)
+### 4c. Animations avec Framer Motion
+- Ajouter des animations d'entree sur les cartes d'annonces (fade-in + slide-up echelonne)
+- Animer les transitions entre les etapes du formulaire de creation
+- Ajouter une animation subtile sur le changement de favoris (coeur qui pulse)
 
-Ajouter une colonne `documents_purged_at` dans `id_verifications`. Apres approbation/rejet, un cron ou une action manuelle pourra supprimer les fichiers du storage et marquer la date de purge. Cela n'est pas implemente dans cette iteration mais la structure le permet.
+### 4d. Mode sombre
+- L'application utilise deja le systeme de design Tailwind/shadcn avec des variables CSS. Verifier que toutes les pages respectent le theme (pas de couleurs codees en dur)
+- Ajouter un bouton de basculement clair/sombre dans le header via `next-themes` (deja installe)
+
+---
+
+## Ordre d'implementation
+
+| Ordre | Etape | Fichiers principaux |
+|-------|-------|-------------------|
+| 1 | Performance (N+1) | ListingCard.tsx, Home.tsx, Browse.tsx |
+| 2 | Messages Realtime | Messages.tsx |
+| 3 | Retention documents | Migration SQL, nouvelle edge function, Admin.tsx |
+| 4a | Mobile nav | Header.tsx, nouveau composant BottomNav |
+| 4b | Skeletons | Home.tsx, ListingDetail.tsx, Profile.tsx |
+| 4c | Animations | ListingCard.tsx, CreateListing.tsx |
+| 4d | Mode sombre | Header.tsx, index.css |
 
 ---
 
 ## Details techniques
 
-| Fichier | Modification |
-|---|---|
-| `supabase/functions/encrypt-upload/index.ts` | Nouvelle edge function : chiffre + upload + insert |
-| `supabase/functions/decrypt-document/index.ts` | Nouvelle edge function : dechiffre + retourne le fichier |
-| `supabase/config.toml` | Ajouter les 2 fonctions avec `verify_jwt = false` |
-| `src/pages/Profile.tsx` | Remplacer l'upload direct par appel a `encrypt-upload` |
-| `src/pages/Admin.tsx` | Charger les images via `decrypt-document` au lieu du storage direct |
-
-### Format du fichier chiffre
-
-Le fichier stocke dans le bucket contiendra :
-- 12 premiers bytes : IV (Initialization Vector)
-- Reste : ciphertext AES-256-GCM (inclut le tag d'authentification)
-
-### Secret requis
-
-`VAULT_ENCRYPTION_KEY` : cle AES-256 encodee en base64 (32 bytes = 44 caracteres en base64). Generee une fois et ajoutee dans les secrets Supabase.
-
-### Flux upload (Profile)
-
+### Realtime (Etape 2)
 ```text
-Client                    encrypt-upload              Supabase Storage
-  |                            |                            |
-  |-- POST fichier + meta ---->|                            |
-  |                            |-- chiffre AES-256-GCM ---->|
-  |                            |-- upload blob chiffre ---->|
-  |                            |-- insert id_verifications  |
-  |<--- 200 OK ---------------|                            |
+useEffect
+  |-- subscribe to channel "messages:{convId}"
+  |-- on INSERT -> append to React Query cache
+  |-- return () => unsubscribe
 ```
 
-### Flux consultation (Admin)
-
+### Purge cron (Etape 3)
 ```text
-Admin                    decrypt-document             Supabase Storage
-  |                            |                            |
-  |-- POST storage_path ------>|                            |
-  |                            |-- verifie role admin       |
-  |                            |-- telecharge blob -------->|
-  |                            |<-- blob chiffre -----------|
-  |                            |-- dechiffre AES-256-GCM    |
-  |<--- image dechiffree -----|                            |
+pg_cron (daily 3am)
+  |-- POST /functions/v1/purge-expired-docs
+  |-- Edge function:
+  |     |-- SELECT verifications WHERE status IN ('approved','rejected')
+  |     |     AND created_at < now() - 30 days
+  |     |     AND documents_purged_at IS NULL
+  |     |-- DELETE files from storage
+  |     |-- UPDATE documents_purged_at = now()
 ```
+
+### Bottom Nav (Etape 4a)
+Un composant `BottomNav.tsx` affiche uniquement sur mobile (hidden md:), avec 5 boutons : Accueil, Parcourir, Vendre (+), Messages, Profil. Integre dans `Layout.tsx`.
