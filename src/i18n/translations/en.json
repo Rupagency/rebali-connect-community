@@ -4,7 +4,7 @@
     "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "back": "Back", "next": "Next",
     "publish": "Publish", "loading": "Loading...", "noResults": "No results found", "viewAll": "View all",
     "price": "Price", "free": "Free", "contact": "Contact", "report": "Report", "share": "Share",
-    "close": "Close", "confirm": "Confirm", "or": "or", "submit": "Submit", "required": "Required", "optional": "Optional"
+    "close": "Close", "confirm": "Confirm", "or": "or", "submit": "Submit", "required": "Required", "optional": "Optional", "private": "Private", "pro": "Pro"
   },
   "nav": { "home": "Home", "browse": "Browse", "sell": "Sell", "myListings": "My Listings", "profile": "Profile", "admin": "Admin", "about": "About", "safety": "Safety Tips", "rules": "Rules", "vip": "VIP", "searches": "Searches", "favorites": "Favorites", "messages": "Messages", "loginSignup": "Log in" },
   "home": {

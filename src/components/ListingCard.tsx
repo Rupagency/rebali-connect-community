@@ -88,10 +88,14 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <Badge className="absolute top-2 left-2 bg-card/90 text-foreground text-xs">
             {CATEGORY_ICONS[listing.category]} {t(`categories.${listing.category}`)}
           </Badge>
-          {isPro && (
-            <Badge className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs gap-1">
+          {isPro ? (
+            <Badge className="absolute top-2 right-2 bg-primary text-primary-foreground text-[10px] gap-1 font-bold shadow">
               <Briefcase className="h-3 w-3" />
               Pro
+            </Badge>
+          ) : (
+            <Badge variant="secondary" className="absolute top-2 right-2 text-[10px] font-semibold shadow">
+              {t('common.private')}
             </Badge>
           )}
         </div>
