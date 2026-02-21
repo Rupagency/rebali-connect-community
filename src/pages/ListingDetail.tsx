@@ -112,6 +112,23 @@ export default function ListingDetail() {
     enabled: !!seller?.id,
   });
 
+  // Similar listings: same category, exclude current listing
+  const { data: similarListings } = useQuery({
+    queryKey: ['similar-listings', listing?.category, id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('listings')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title)')
+        .eq('category', listing!.category)
+        .eq('status', 'active')
+        .neq('id', id!)
+        .order('created_at', { ascending: false })
+        .limit(4);
+      return data || [];
+    },
+    enabled: !!listing?.category,
+  });
+
   useEffect(() => {
     if (id) {
       supabase.rpc('increment_views', { _listing_id: id });
@@ -369,9 +386,30 @@ export default function ListingDetail() {
                 </Dialog>
               </div>
             )}
-          </div>
 
-          {/* Right sidebar – sticky seller card */}
+            {/* Similar listings */}
+            {similarListings && similarListings.length > 0 && (
+              <>
+                <Separator className="my-6" />
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-extrabold">{t('listing.similarListings')}</h2>
+                    <Button variant="ghost" size="sm" asChild className="gap-1 text-primary font-bold">
+                      <Link to={`/browse?category=${listing.category}`}>
+                        {t('common.viewAll')}
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {similarListings.map((l: any) => (
+                      <ListingCard key={l.id} listing={l} />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
           <div className="hidden lg:block">
             <div className="sticky top-20 space-y-4">
               {/* Seller card */}
