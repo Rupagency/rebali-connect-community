@@ -26,6 +26,33 @@ export const LOCATIONS = [
 
 export const CURRENCIES = ['IDR', 'USD', 'EUR'] as const;
 
+// Approximate GPS coordinates for each Bali location area
+export const LOCATION_COORDS: Record<string, { lat: number; lng: number }> = {
+  canggu: { lat: -8.6478, lng: 115.1385 },
+  ubud: { lat: -8.5069, lng: 115.2625 },
+  seminyak: { lat: -8.6913, lng: 115.1683 },
+  lovina: { lat: -8.1527, lng: 115.0251 },
+  uluwatu: { lat: -8.8291, lng: 115.0849 },
+  denpasar: { lat: -8.6500, lng: 115.2167 },
+  sanur: { lat: -8.6936, lng: 115.2622 },
+  nusa_dua: { lat: -8.8003, lng: 115.2331 },
+  nusa_penida: { lat: -8.7275, lng: 115.5444 },
+  kuta: { lat: -8.7180, lng: 115.1690 },
+  jimbaran: { lat: -8.7900, lng: 115.1600 },
+  tabanan: { lat: -8.5410, lng: 115.1250 },
+  karangasem: { lat: -8.4483, lng: 115.6127 },
+  singaraja: { lat: -8.1120, lng: 115.0882 },
+  other: { lat: -8.4095, lng: 115.1889 },
+};
+
+export function getDistanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 export const CATEGORY_ICONS: Record<string, string> = {
   emploi: '💼',
   vehicules: '🚗',
