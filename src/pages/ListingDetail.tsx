@@ -20,6 +20,24 @@ import ListingCard from '@/components/ListingCard';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
+const BALI_COORDS: Record<string, { lat: string; lng: string; bbox: string }> = {
+  canggu: { lat: '-8.6478', lng: '115.1385', bbox: '115.08,-8.70,115.19,-8.59' },
+  ubud: { lat: '-8.5069', lng: '115.2625', bbox: '115.21,-8.56,115.32,-8.45' },
+  seminyak: { lat: '-8.6913', lng: '115.1686', bbox: '115.12,-8.74,115.22,-8.64' },
+  lovina: { lat: '-8.1520', lng: '115.0255', bbox: '114.97,-8.20,115.08,-8.10' },
+  uluwatu: { lat: '-8.8291', lng: '115.0849', bbox: '115.03,-8.88,115.14,-8.78' },
+  denpasar: { lat: '-8.6500', lng: '115.2167', bbox: '115.17,-8.70,115.27,-8.60' },
+  sanur: { lat: '-8.6928', lng: '115.2620', bbox: '115.21,-8.74,115.31,-8.64' },
+  nusa_dua: { lat: '-8.8003', lng: '115.2333', bbox: '115.18,-8.85,115.29,-8.75' },
+  nusa_penida: { lat: '-8.7275', lng: '115.5444', bbox: '115.44,-8.80,115.62,-8.66' },
+  kuta: { lat: '-8.7180', lng: '115.1690', bbox: '115.12,-8.77,115.22,-8.67' },
+  jimbaran: { lat: '-8.7900', lng: '115.1650', bbox: '115.12,-8.84,115.22,-8.74' },
+  tabanan: { lat: '-8.5410', lng: '115.1250', bbox: '115.07,-8.59,115.18,-8.49' },
+  karangasem: { lat: '-8.4484', lng: '115.6127', bbox: '115.56,-8.50,115.67,-8.40' },
+  singaraja: { lat: '-8.1120', lng: '115.0880', bbox: '115.04,-8.16,115.14,-8.06' },
+  other: { lat: '-8.4095', lng: '115.1889', bbox: '114.43,-8.85,115.71,-8.06' },
+};
+
 export default function ListingDetail() {
   const { id } = useParams<{ id: string }>();
   const { t, language } = useLanguage();
@@ -304,19 +322,17 @@ export default function ListingDetail() {
                 href={`https://www.google.com/maps/search/${encodeURIComponent(t(`locations.${listing.location_area}`) + ', Bali, Indonesia')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow"
+                className="block rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow relative"
               >
-                <img
-                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(t(`locations.${listing.location_area}`) + ',Bali,Indonesia')}&zoom=13&size=700x300&scale=2&maptype=roadmap&key=&style=feature:all|element:labels.text.fill|color:0x333333&style=feature:water|color:0xc9d6e5`}
-                  alt={t(`locations.${listing.location_area}`)}
-                  className="w-full h-48 object-cover bg-muted"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                <iframe
+                  title="Map"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${BALI_COORDS[listing.location_area]?.bbox || '115.1,-8.8,115.3,-8.6'}&layer=mapnik&marker=${BALI_COORDS[listing.location_area]?.lat || '-8.65'},${BALI_COORDS[listing.location_area]?.lng || '115.2'}`}
+                  className="w-full h-52 pointer-events-none"
+                  style={{ border: 0 }}
                 />
-                <div className="bg-muted/50 w-full h-48 flex items-center justify-center" style={{ marginTop: '-12rem' }}>
-                  <div className="bg-card rounded-xl shadow-md px-5 py-3 flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    <span className="font-bold">{t(`locations.${listing.location_area}`)}, Bali</span>
-                  </div>
+                <div className="absolute bottom-3 left-3 bg-card rounded-lg shadow-md px-4 py-2 flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span className="font-semibold text-sm">{t(`locations.${listing.location_area}`)}, Bali</span>
                 </div>
               </a>
             </div>
