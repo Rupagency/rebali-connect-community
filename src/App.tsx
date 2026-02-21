@@ -23,7 +23,7 @@ import VIP from "./pages/VIP";
 import NotFound from "./pages/NotFound";
 import SellerProfile from "./pages/SellerProfile";
 import Favorites from "./pages/Favorites";
-import Messages from "./pages/Messages";
+
 
 const queryClient = new QueryClient();
 
@@ -52,7 +52,7 @@ const App = () => (
                   <Route path="/rules" element={<Rules />} />
                   <Route path="/vip" element={<VIP />} />
                   <Route path="/favorites" element={<Favorites />} />
-                  <Route path="/messages" element={<Messages />} />
+                  
                   <Route path="/seller/:id" element={<SellerProfile />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>

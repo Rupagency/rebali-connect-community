@@ -1,14 +1,14 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Home, Search, Plus, MessageCircle, User } from 'lucide-react';
+import { Home, Search, Plus, Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
   { icon: Home, labelKey: 'nav.home', path: '/' },
   { icon: Search, labelKey: 'nav.browse', path: '/browse' },
   { icon: Plus, labelKey: 'nav.sell', path: '/create', accent: true },
-  { icon: MessageCircle, labelKey: 'nav.messages', path: '/messages' },
+  { icon: Heart, labelKey: 'nav.favorites', path: '/favorites' },
   { icon: User, labelKey: 'nav.profile', path: '/profile' },
 ];
 
@@ -19,7 +19,7 @@ export default function BottomNav() {
   const { user } = useAuth();
 
   const handleNav = (path: string) => {
-    if (!user && ['/messages', '/profile', '/create'].includes(path)) {
+    if (!user && ['/favorites', '/profile', '/create'].includes(path)) {
       navigate('/auth');
     } else {
       navigate(path);
