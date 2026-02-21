@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Plus, User, LogOut, Shield, Search, Heart, MessageCircle, Bell, Sun, Moon } from 'lucide-react';
+import { Menu, Plus, User, LogOut, Shield, Search, Heart, Bell, Sun, Moon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
@@ -79,10 +79,6 @@ export default function Header() {
             <Heart className="h-5 w-5" strokeWidth={1.5} />
             <span className="text-[10px]">{t('nav.favorites')}</span>
           </Button>
-          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/messages')}>
-            <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
-            <span className="text-[10px]">{t('nav.messages')}</span>
-          </Button>
 
           {user ? (
             <DropdownMenu>
@@ -144,9 +140,6 @@ export default function Header() {
                   <>
                     <Button variant="ghost" className="justify-start gap-1.5" onClick={() => { navigate('/favorites'); setMobileOpen(false); }}>
                       <Heart className="h-4 w-4" /> {t('nav.favorites')}
-                    </Button>
-                    <Button variant="ghost" className="justify-start gap-1.5" onClick={() => { navigate('/messages'); setMobileOpen(false); }}>
-                      <MessageCircle className="h-4 w-4" /> {t('nav.messages')}
                     </Button>
                     <Button variant="ghost" className="justify-start gap-1.5" onClick={() => { navigate('/my-listings'); setMobileOpen(false); }}>
                       <Search className="h-4 w-4" /> {t('nav.myListings')}
