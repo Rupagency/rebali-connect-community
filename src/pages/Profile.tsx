@@ -222,27 +222,18 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
     }
     setSubmitting(true);
     try {
-      const docExt = docFile.name.split('.').pop();
-      const selfieExt = selfieFile.name.split('.').pop();
-      const docPath = `${user.id}/document.${docExt}`;
-      const selfiePath = `${user.id}/selfie.${selfieExt}`;
+      const formData = new FormData();
+      formData.append('document', docFile);
+      formData.append('selfie', selfieFile);
+      formData.append('document_type', docType);
 
-      const [docUpload, selfieUpload] = await Promise.all([
-        supabase.storage.from('id-verifications').upload(docPath, docFile, { upsert: true }),
-        supabase.storage.from('id-verifications').upload(selfiePath, selfieFile, { upsert: true }),
-      ]);
-
-      if (docUpload.error) throw docUpload.error;
-      if (selfieUpload.error) throw selfieUpload.error;
-
-      const { error } = await supabase.from('id_verifications').insert({
-        user_id: user.id,
-        document_type: docType,
-        document_path: docPath,
-        selfie_path: selfiePath,
+      const { data, error } = await supabase.functions.invoke('encrypt-upload', {
+        body: formData,
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
       setVerificationStatus('pending');
       toast({ title: t('security.verificationSubmitted') });
     } catch (err: any) {

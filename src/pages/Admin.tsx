@@ -17,6 +17,75 @@ import { useNavigate } from 'react-router-dom';
 import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X, Fingerprint, Wifi, WifiOff, ShieldCheck, ShieldAlert, FileCheck } from 'lucide-react';
 import { CATEGORY_TREE } from '@/lib/constants';
 
+function VerificationCard({ verification, profileName, onApprove, onReject }: {
+  verification: any;
+  profileName: string;
+  onApprove: () => Promise<void>;
+  onReject: () => Promise<void>;
+}) {
+  const { t } = useLanguage();
+  const [docUrl, setDocUrl] = useState<string | null>(null);
+  const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [showImages, setShowImages] = useState(false);
+
+  const loadDecryptedImages = async () => {
+    setLoadingImages(true);
+    try {
+      const [docRes, selfieRes] = await Promise.all([
+        supabase.functions.invoke('decrypt-document', {
+          body: { storage_path: verification.document_path },
+        }),
+        supabase.functions.invoke('decrypt-document', {
+          body: { storage_path: verification.selfie_path },
+        }),
+      ]);
+
+      if (docRes.data instanceof Blob) {
+        setDocUrl(URL.createObjectURL(docRes.data));
+      }
+      if (selfieRes.data instanceof Blob) {
+        setSelfieUrl(URL.createObjectURL(selfieRes.data));
+      }
+    } catch (err) {
+      console.error('Failed to decrypt images:', err);
+    }
+    setLoadingImages(false);
+    setShowImages(true);
+  };
+
+  return (
+    <div className="p-3 rounded-md border space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="font-medium">{profileName}</p>
+          <p className="text-xs text-muted-foreground">{verification.document_type} — {new Date(verification.created_at).toLocaleDateString()}</p>
+        </div>
+        <div className="flex gap-2">
+          {!showImages && (
+            <Button size="sm" variant="outline" onClick={loadDecryptedImages} disabled={loadingImages}>
+              <Eye className="h-3 w-3 mr-1" /> {loadingImages ? '...' : t('admin.viewDocuments') || 'View'}
+            </Button>
+          )}
+          <Button size="sm" onClick={onApprove}>
+            <CheckCircle className="h-3 w-3 mr-1" /> {t('security.approve')}
+          </Button>
+          <Button size="sm" variant="destructive" onClick={onReject}>
+            <X className="h-3 w-3 mr-1" /> {t('security.reject')}
+          </Button>
+        </div>
+      </div>
+      {showImages && (
+        <div className="grid grid-cols-2 gap-3">
+          {docUrl && <img src={docUrl} alt="Document" className="rounded-md border max-h-48 object-contain w-full" />}
+          {selfieUrl && <img src={selfieUrl} alt="Selfie" className="rounded-md border max-h-48 object-contain w-full" />}
+          {!docUrl && !selfieUrl && <p className="text-sm text-muted-foreground col-span-2 text-center">{t('common.noResults')}</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Admin() {
   const { t } = useLanguage();
   const { user, isAdmin } = useAuth();
@@ -925,30 +994,23 @@ export default function Admin() {
                   {idVerifications.filter((v: any) => v.status === 'pending').map((v: any) => {
                     const vProfile = profiles?.find((p: any) => p.id === v.user_id);
                     return (
-                      <div key={v.id} className="flex items-center justify-between p-3 rounded-md border">
-                        <div>
-                          <p className="font-medium">{vProfile?.display_name || v.user_id.slice(0, 8)}</p>
-                          <p className="text-xs text-muted-foreground">{v.document_type} — {new Date(v.created_at).toLocaleDateString()}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" onClick={async () => {
-                            await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
-                            await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', v.user_id);
-                            refetchVerifications();
-                            qc.invalidateQueries({ queryKey: ['admin-profiles'] });
-                            toast({ title: t('security.approve') });
-                          }}>
-                            <CheckCircle className="h-3 w-3 mr-1" /> {t('security.approve')}
-                          </Button>
-                          <Button size="sm" variant="destructive" onClick={async () => {
-                            await supabase.from('id_verifications').update({ status: 'rejected' as any, reviewed_by: user.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
-                            refetchVerifications();
-                            toast({ title: t('security.reject') });
-                          }}>
-                            <X className="h-3 w-3 mr-1" /> {t('security.reject')}
-                          </Button>
-                        </div>
-                      </div>
+                      <VerificationCard
+                        key={v.id}
+                        verification={v}
+                        profileName={vProfile?.display_name || v.user_id.slice(0, 8)}
+                        onApprove={async () => {
+                          await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
+                          await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', v.user_id);
+                          refetchVerifications();
+                          qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+                          toast({ title: t('security.approve') });
+                        }}
+                        onReject={async () => {
+                          await supabase.from('id_verifications').update({ status: 'rejected' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
+                          refetchVerifications();
+                          toast({ title: t('security.reject') });
+                        }}
+                      />
                     );
                   })}
                 </div>
