@@ -6,9 +6,10 @@ import ListingCard from '@/components/ListingCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CATEGORIES, LOCATIONS, CONDITIONS, CATEGORY_TREE } from '@/lib/constants';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Slider } from '@/components/ui/slider';
+import { CATEGORIES, LOCATIONS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
+import { Search, SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
@@ -31,8 +32,38 @@ export default function Browse() {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [radiusKm, setRadiusKm] = useState(25);
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [geoError, setGeoError] = useState('');
 
   const debouncedSearch = useDebounce(search, 300);
+
+  const locateMe = () => {
+    if (!navigator.geolocation) {
+      setGeoError(t('filters.geoNotSupported'));
+      return;
+    }
+    setGeoLoading(true);
+    setGeoError('');
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocation('all'); // disable manual location filter when using GPS
+        setGeoLoading(false);
+      },
+      () => {
+        setGeoError(t('filters.geoError'));
+        setGeoLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  const clearGeo = () => {
+    setUserCoords(null);
+    setRadiusKm(25);
+  };
 
   const { data: listings, isLoading } = useQuery({
     queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice],
@@ -59,6 +90,16 @@ export default function Browse() {
     },
   });
 
+  // Filter by distance client-side
+  const filteredListings = useMemo(() => {
+    if (!listings || !userCoords) return listings;
+    return listings.filter((l: any) => {
+      const coords = LOCATION_COORDS[l.location_area];
+      if (!coords) return true;
+      return getDistanceKm(userCoords.lat, userCoords.lng, coords.lat, coords.lng) <= radiusKm;
+    });
+  }, [listings, userCoords, radiusKm]);
+
   const clearFilters = () => {
     setSearch('');
     setCategory('all');
@@ -68,10 +109,11 @@ export default function Browse() {
     setSort('newest');
     setMinPrice('');
     setMaxPrice('');
+    clearGeo();
     setSearchParams({});
   };
 
-  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || minPrice || maxPrice;
+  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || minPrice || maxPrice || userCoords;
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -143,8 +185,8 @@ export default function Browse() {
         </Select>
       </div>
 
-      {/* Price range */}
-      <div className={`flex gap-3 mb-6 ${showFilters ? '' : 'hidden md:flex'}`}>
+      {/* Price range + Geolocation */}
+      <div className={`flex flex-wrap items-end gap-3 mb-6 ${showFilters ? '' : 'hidden md:flex'}`}>
         <Input
           type="number"
           placeholder={t('filters.minPrice')}
@@ -159,6 +201,34 @@ export default function Browse() {
           onChange={e => setMaxPrice(e.target.value)}
           className="w-32"
         />
+        <div className="flex-1" />
+        {userCoords ? (
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2 text-sm text-primary">
+              <MapPin className="h-4 w-4" />
+              <span>{t('filters.localized')}</span>
+            </div>
+            <div className="flex items-center gap-2 w-48">
+              <Slider
+                value={[radiusKm]}
+                onValueChange={([v]) => setRadiusKm(v)}
+                min={1}
+                max={100}
+                step={1}
+              />
+              <span className="text-sm font-medium whitespace-nowrap">{radiusKm} km</span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={clearGeo} className="gap-1 text-muted-foreground">
+              <X className="h-3 w-3" />
+            </Button>
+          </div>
+        ) : (
+          <Button variant="outline" size="sm" onClick={locateMe} disabled={geoLoading} className="gap-1.5">
+            {geoLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+            {t('filters.locateMe')}
+          </Button>
+        )}
+        {geoError && <p className="text-xs text-destructive">{geoError}</p>}
       </div>
 
       {hasFilters && (
@@ -169,7 +239,7 @@ export default function Browse() {
 
       {/* Results */}
       <p className="text-sm text-muted-foreground mb-4">
-        {listings?.length || 0} {t('filters.results')}
+        {filteredListings?.length || 0} {t('filters.results')}
       </p>
 
       {isLoading ? (
@@ -178,9 +248,9 @@ export default function Browse() {
             <div key={i} className="aspect-[4/3] bg-muted rounded-lg animate-pulse" />
           ))}
         </div>
-      ) : listings && listings.length > 0 ? (
+      ) : filteredListings && filteredListings.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {listings.map((listing: any) => (
+          {filteredListings.map((listing: any) => (
             <ListingCard key={listing.id} listing={listing} />
           ))}
         </div>

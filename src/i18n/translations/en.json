@@ -192,7 +192,8 @@
     "allCategories": "All Categories", "allSubcategories": "All Subcategories", "allLocations": "All Locations",
     "allConditions": "All Conditions", "priceRange": "Price Range", "minPrice": "Min price", "maxPrice": "Max price",
     "sortNewest": "Newest first", "sortPriceLow": "Price: Low to High", "sortPriceHigh": "Price: High to Low",
-    "clearFilters": "Clear filters", "results": "results"
+    "clearFilters": "Clear filters", "results": "results",
+    "locateMe": "Locate me", "localized": "Located", "geoError": "Unable to access your location", "geoNotSupported": "Geolocation is not supported"
   },
   "footer": {
     "tagline": "Bali's trusted marketplace", "marketplace": "Marketplace", "company": "Company", "legal": "Legal",
