@@ -1,63 +1,51 @@
 
-
-# Page Favoris + Messagerie In-App
+# Chiffrement des documents d'identite + Suppression apres retention
 
 ## Contexte
 
-Le Header contient des liens vers `/favorites` et `/messages` mais ces pages n'existent pas. Le systeme de favoris est deja fonctionnel en base (table `favorites` avec RLS) mais il manque une page dediee. Pour la messagerie, une table de conversations sera necessaire.
+Les documents d'identite (KTP/passeport + selfie) sont actuellement stockes en clair dans le bucket prive `id-verifications`. Bien que les RLS limitent l'acces aux admins, les fichiers restent vulnerables en cas de compromission du storage. L'objectif est de chiffrer les fichiers avant upload et de ne les dechiffrer que quand l'admin a besoin de les consulter.
 
-## 1. Page Favoris (`/favorites`)
+## Architecture
 
-Creer une page simple qui affiche toutes les annonces que l'utilisateur a mises en favori.
+Le chiffrement se fait cote serveur via une edge function pour que la cle secrete ne transite jamais cote client :
 
-- Query `favorites` filtree par `user_id = auth.uid()`, join sur `listings` avec `listing_images` et `listing_translations`
-- Reutiliser le composant `ListingCard` existant pour l'affichage
-- Message si aucun favori : "Vous n'avez pas encore de favoris"
-- Redirection vers `/auth` si non connecte
+1. Le client envoie le fichier brut a une edge function `encrypt-document`
+2. L'edge function chiffre le fichier avec AES-256-GCM en utilisant un secret `VAULT_ENCRYPTION_KEY`
+3. Le fichier chiffre est uploade dans le bucket `id-verifications`
+4. Pour la consultation admin, une edge function `decrypt-document` dechiffre et renvoie le fichier
 
-## 2. Systeme de messagerie in-app
+## 1. Secret de chiffrement
 
-### Nouvelle table `conversations`
+Ajouter un secret `VAULT_ENCRYPTION_KEY` dans les secrets Supabase Edge Functions. Ce sera une cle AES-256 (32 bytes en base64).
 
-| Colonne | Type | Description |
-|---|---|---|
-| id | uuid PK | |
-| listing_id | uuid FK | Annonce concernee |
-| buyer_id | uuid | Acheteur |
-| seller_id | uuid | Vendeur |
-| created_at | timestamptz | |
-| updated_at | timestamptz | |
+## 2. Edge Function `encrypt-upload`
 
-### Nouvelle table `messages`
+Recoit le fichier + metadata (user_id, type document/selfie, document_type), chiffre avec AES-256-GCM, uploade dans le bucket, et insere dans `id_verifications`.
 
-| Colonne | Type | Description |
-|---|---|---|
-| id | uuid PK | |
-| conversation_id | uuid FK | |
-| sender_id | uuid | Auteur du message |
-| content | text | Contenu |
-| read | boolean | Lu par le destinataire |
-| created_at | timestamptz | |
+- Authentification requise (verifie le JWT)
+- Verifie que le user_id du JWT correspond
+- Genere un IV aleatoire, stocke IV+ciphertext ensemble
+- Limite la taille a 5MB
 
-### RLS Policies
+## 3. Edge Function `decrypt-document`
 
-- `conversations` : SELECT/INSERT pour les participants (`buyer_id` ou `seller_id = auth.uid()`)
-- `messages` : SELECT pour les participants de la conversation, INSERT pour les participants
+Reservee aux admins : recoit le storage_path, telecharge le fichier chiffre, dechiffre, et renvoie le contenu en reponse.
 
-### Page Messages (`/messages`)
+- Verifie que l'appelant a le role `admin`
+- Telecharge depuis le bucket prive avec le service role
+- Dechiffre et retourne le fichier avec le bon Content-Type
 
-- Liste des conversations avec apercu du dernier message
-- Vue conversation avec historique des messages et champ de saisie
-- Indicateur de messages non lus
-- Bouton "Contacter le vendeur" sur `ListingDetail` ouvre/cree une conversation
+## 4. Modification de Profile.tsx
 
-## 3. Routes et Navigation
+Remplacer l'upload direct au bucket par un appel a `supabase.functions.invoke('encrypt-upload')` avec les fichiers en FormData.
 
-Ajouter les routes `/favorites` et `/messages` dans `App.tsx`.
+## 5. Modification de Admin.tsx
 
-## 4. Traductions
+La section verification qui affiche les documents doit appeler `decrypt-document` pour obtenir les images dechiffrees au lieu de lire directement depuis le storage.
 
-Ajouter les cles `favorites.*` et `messages.*` dans les 8 fichiers de traduction.
+## 6. Politique de retention (optionnel futur)
+
+Ajouter une colonne `documents_purged_at` dans `id_verifications`. Apres approbation/rejet, un cron ou une action manuelle pourra supprimer les fichiers du storage et marquer la date de purge. Cela n'est pas implemente dans cette iteration mais la structure le permet.
 
 ---
 
@@ -65,18 +53,43 @@ Ajouter les cles `favorites.*` et `messages.*` dans les 8 fichiers de traduction
 
 | Fichier | Modification |
 |---|---|
-| Migration SQL | Creer tables `conversations` et `messages` avec RLS |
-| `src/pages/Favorites.tsx` | Nouvelle page favoris |
-| `src/pages/Messages.tsx` | Nouvelle page messagerie |
-| `src/App.tsx` | Ajouter routes `/favorites` et `/messages` |
-| `src/pages/ListingDetail.tsx` | Bouton "Envoyer un message" qui cree/ouvre une conversation |
-| `src/i18n/translations/*.json` | Cles favorites + messages dans 8 langues |
+| `supabase/functions/encrypt-upload/index.ts` | Nouvelle edge function : chiffre + upload + insert |
+| `supabase/functions/decrypt-document/index.ts` | Nouvelle edge function : dechiffre + retourne le fichier |
+| `supabase/config.toml` | Ajouter les 2 fonctions avec `verify_jwt = false` |
+| `src/pages/Profile.tsx` | Remplacer l'upload direct par appel a `encrypt-upload` |
+| `src/pages/Admin.tsx` | Charger les images via `decrypt-document` au lieu du storage direct |
 
-### Logique de conversation
+### Format du fichier chiffre
 
-1. Sur ListingDetail, bouton "Envoyer un message" verifie si une conversation existe deja entre l'acheteur et le vendeur pour cette annonce
-2. Si oui, redirige vers `/messages?conv={conversation_id}`
-3. Si non, cree la conversation puis redirige
-4. Page Messages : liste des conversations a gauche, messages a droite (ou vue mobile empilee)
-5. Realtime optionnel via `supabase.channel` pour les nouveaux messages
+Le fichier stocke dans le bucket contiendra :
+- 12 premiers bytes : IV (Initialization Vector)
+- Reste : ciphertext AES-256-GCM (inclut le tag d'authentification)
 
+### Secret requis
+
+`VAULT_ENCRYPTION_KEY` : cle AES-256 encodee en base64 (32 bytes = 44 caracteres en base64). Generee une fois et ajoutee dans les secrets Supabase.
+
+### Flux upload (Profile)
+
+```text
+Client                    encrypt-upload              Supabase Storage
+  |                            |                            |
+  |-- POST fichier + meta ---->|                            |
+  |                            |-- chiffre AES-256-GCM ---->|
+  |                            |-- upload blob chiffre ---->|
+  |                            |-- insert id_verifications  |
+  |<--- 200 OK ---------------|                            |
+```
+
+### Flux consultation (Admin)
+
+```text
+Admin                    decrypt-document             Supabase Storage
+  |                            |                            |
+  |-- POST storage_path ------>|                            |
+  |                            |-- verifie role admin       |
+  |                            |-- telecharge blob -------->|
+  |                            |<-- blob chiffre -----------|
+  |                            |-- dechiffre AES-256-GCM    |
+  |<--- image dechiffree -----|                            |
+```
