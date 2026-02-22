@@ -144,13 +144,17 @@ Deno.serve(async (req) => {
         .maybeSingle();
 
       if (!existingConv) {
-        const senderWithPlus = `+${sender}`;
-        const { data: sellerProfile } = await supabase
+        // Look up seller profile by normalized phone - query all profiles with whatsapp and compare digits
+        const { data: allWaProfiles } = await supabase
           .from("profiles")
           .select("id, phone, whatsapp")
-          .or(`phone.eq.${sender},whatsapp.eq.${sender},phone.eq.${senderWithPlus},whatsapp.eq.${senderWithPlus}`)
-          .limit(1)
-          .maybeSingle();
+          .not("whatsapp", "is", null);
+
+        const sellerProfile = allWaProfiles?.find((p: any) => {
+          const normPhone = (p.phone || "").replace(/[^0-9]/g, "");
+          const normWa = (p.whatsapp || "").replace(/[^0-9]/g, "");
+          return normPhone === sender || normWa === sender;
+        }) || null;
 
         if (sellerProfile) {
           const { data: sellerConv } = await supabase

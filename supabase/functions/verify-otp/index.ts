@@ -71,10 +71,11 @@ Deno.serve(async (req) => {
       .update({ verified: true })
       .eq("id", verification.id);
 
-    // Update profile
+    // Update profile — normalize whatsapp number (keep + prefix, strip spaces/dashes)
+    const normalizedPhone = phone_number.replace(/[^\d+]/g, "");
     await supabase
       .from("profiles")
-      .update({ phone_verified: true, whatsapp: phone_number })
+      .update({ phone_verified: true, whatsapp: normalizedPhone })
       .eq("id", user_id);
 
     return new Response(JSON.stringify({ success: true }), {
