@@ -1,80 +1,146 @@
 
-# Traduction automatique des annonces et recherche multilingue
+# WhatsApp Proxy + Progressive Phone Reveal
 
-## Objectif
-Permettre que chaque annonce soit automatiquement traduite dans les 8 langues supportees, et que la recherche trouve les annonces quelle que soit la langue de publication ou de recherche.
+## Overview
+Replace the current direct WhatsApp contact flow with a proxy system where all initial communications go through Re-Bali's official WhatsApp number via Fonnte. After 3 verified exchanges between buyer and seller, the seller's real phone number is automatically revealed.
 
-## Ce qui existe aujourd'hui
-- A la creation d'une annonce, des "placeholders" sont inseres dans `listing_translations` avec le texte "Pending translation" pour toutes les langues sauf l'anglais
-- La recherche ne filtre que sur `title_original` et `description_original` (langue de publication uniquement)
-- Aucune edge function de traduction n'existe
+## Architecture
 
-## Plan d'implementation
+### 1. Database Migrations
 
-### 1. Edge Function `translate-listing`
-Creer une nouvelle edge function qui :
-- Recoit un `listing_id` en parametre
-- Lit le `title_original` et `description_original` depuis la table `listings`
-- Utilise l'API Google Translate (gratuite via endpoint public) pour traduire le titre et la description dans les 7 autres langues
-- Met a jour les lignes existantes dans `listing_translations` avec les vraies traductions
+**Add columns to `conversations` table:**
+- `buyer_msg_count` (int, default 0)
+- `seller_msg_count` (int, default 0)
+- `total_msg_count` (int, default 0)
+- `unlocked` (bool, default false)
+- `unlocked_at` (timestamptz, nullable)
+- `status` (text, default 'active') -- active / blocked
+- `buyer_phone` (text, nullable) -- buyer's WhatsApp number for relay
 
-L'appel se fera via l'endpoint Google Translate public (pas besoin de cle API).
+**Add column to `messages` table:**
+- `from_role` (text, nullable) -- 'buyer' / 'seller' / 'system'
 
-### 2. Appel automatique apres publication
-Modifier `CreateListing.tsx` pour :
-- Apres l'insertion de l'annonce et des placeholders, appeler l'edge function `translate-listing` en arriere-plan (sans bloquer l'utilisateur)
-- Meme chose lors de l'edition d'une annonce
+**New table: `wa_relay_tokens`** -- maps Fonnte incoming messages to conversations
+- `id` (uuid, PK)
+- `token` (text, unique) -- short unique token for deep link
+- `listing_id` (uuid)
+- `buyer_id` (uuid)
+- `conversation_id` (uuid, nullable) -- set once conversation created
+- `created_at` (timestamptz)
 
-### 3. Recherche multilingue dans Browse
-Modifier la requete de recherche dans `Browse.tsx` pour :
-- D'abord chercher les `listing_id` correspondants dans `listing_translations` (titre et description dans toutes les langues)
-- Combiner avec la recherche sur `title_original` / `description_original`
-- Cela se fera via une fonction SQL `search_listings` qui effectue un `UNION` entre les deux sources
+**New table: `risk_events`** -- logs blocked messages
+- `id` (uuid, PK)
+- `user_id` (uuid, nullable)
+- `phone` (text, nullable)
+- `event_type` (text) -- 'blocked_number', 'blocked_link'
+- `details` (jsonb)
+- `created_at` (timestamptz)
 
-### 4. Fonction SQL `search_listings`
-Creer une fonction de base de donnees qui :
-- Prend un terme de recherche en parametre
-- Cherche dans `listings.title_original`, `listings.description_original` ET `listing_translations.title`, `listing_translations.description`
-- Retourne les IDs distincts des annonces correspondantes
+**RLS Policies:**
+- `wa_relay_tokens`: service role insert/update, users can read their own tokens
+- `risk_events`: service role insert, admins can read
+- Update `conversations` policies for new columns
+- Restrict `profiles.phone` and `profiles.whatsapp` fields from public queries (create a view or handle in code)
 
-## Details techniques
+### 2. Edge Functions
 
-### Edge Function `translate-listing`
+**`wa-webhook` (new)** -- receives incoming WhatsApp messages from Fonnte
+- `verify_jwt = false` in config.toml (webhook from external)
+- Parse incoming Fonnte payload (sender phone, message body)
+- Parse `RB|L=<listingId>|B=<buyerId>|` token from message body
+- Identify sender role (match phone against seller phone in DB, or buyer phone from token)
+- Create or reuse conversation
+- Anti-scam filter: scan for phone numbers, links, messaging app references
+  - If blocked: reply via Fonnte with warning message, log risk_event
+  - If clean: save message, update counts, relay to other party
+- Check unlock condition after each message:
+  - `total_msg_count >= 3` AND `buyer_msg_count >= 1` AND `seller_msg_count >= 1`
+  - Seller `phone_verified = true` AND not banned
+  - Buyer not banned
+  - If met: set `unlocked = true`, send system messages with phone number to both parties via Fonnte
+- Relay messages with prefix: `"Re-Bali (Annonce: <title>): <message>"`
+
+**`wa-send-relay` (new)** -- helper to send messages via Fonnte
+- Accepts: target phone, message text
+- Sends via Fonnte API
+- Used by wa-webhook for relaying and system messages
+
+### 3. Frontend Changes
+
+**`ListingDetail.tsx`:**
+- Remove direct WhatsApp link (`wa.me/seller_phone`)
+- Remove direct phone call button
+- Replace with "Contact on WhatsApp" button that:
+  - Requires login
+  - Generates/reuses a relay token via Supabase
+  - Opens `https://wa.me/<REBALI_WA_NUMBER>?text=RB|L=<listingId>|B=<userId>| Hi, I'm interested in your item "<title>"`
+- The Re-Bali WhatsApp number is stored as a constant (e.g. `REBALI_WA_NUMBER`)
+- Remove seller phone/whatsapp display everywhere on listing page
+- Keep the in-app message button as secondary option
+
+**`SellerProfile.tsx`:**
+- Remove phone number display (only show "Phone verified" badge)
+
+**`ListingCard.tsx`:**
+- No changes needed (doesn't show phone)
+
+**Admin panel (`Admin.tsx`):**
+- Add a "WhatsApp Relay" tab showing:
+  - Conversations with counts, unlock status
+  - Risk events log (blocked messages)
+  - Ability to block a conversation (`status = 'blocked'`)
+
+### 4. Anti-Scam Filters (in wa-webhook)
+
+Patterns to block before relaying:
+- Phone numbers: `+62`, `08xx`, 6+ consecutive digits
+- Links: `wa.me`, `t.me`, `telegram`, `bit.ly`, `tinyurl`, `linktr.ee`, `instagram.com`, any URL pattern
+- Messaging apps: `whatsapp`, `signal`, `telegram`
+
+When blocked:
+- Do NOT relay the message
+- Reply to sender: "For safety, sharing phone numbers or links is not allowed until 3 exchanges are completed."
+- Insert into `risk_events` table
+
+### 5. Edge Cases Handled
+
+- **No valid token in message**: Reply "Please use the Contact button on the Re-Bali listing."
+- **Listing inactive**: Reply "This listing is no longer available."
+- **Phone blacklisted**: Reply "Your account has been restricted."
+- **Multiple conversations per buyer/listing**: Reuse existing conversation
+- **After unlock**: Proxy continues working but phone is revealed
+
+## Technical Details
+
+### Fonnte Webhook Setup
+The user will need to configure the Fonnte webhook URL in their Fonnte dashboard to point to:
+`https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/wa-webhook`
+
+### Re-Bali WhatsApp Number
+A constant `REBALI_WA_NUMBER` needs to be defined -- this is the number connected to Fonnte that acts as the relay.
+
+### Message Flow
 ```text
-POST /translate-listing
-Body: { listing_id: "uuid" }
-
-1. Lire listing (title_original, description_original, lang_original)
-2. Pour chaque langue cible (sauf lang_original):
-   - Traduire titre et description via Google Translate
-   - UPDATE listing_translations SET title=..., description=... WHERE listing_id=... AND lang=...
-3. Retourner succes
+Buyer -> WhatsApp (Re-Bali number) -> Fonnte webhook -> wa-webhook Edge Function
+  -> Anti-scam check
+  -> Save message + update counts
+  -> Relay to seller via Fonnte
+  -> Check unlock condition -> if met, send system messages
 ```
 
-### Fonction SQL pour la recherche
-```text
-CREATE FUNCTION search_listings(search_term text)
-RETURNS SETOF uuid AS $$
-  SELECT DISTINCT l.id FROM listings l
-  WHERE l.status = 'active'
-    AND (l.title_original ILIKE '%' || search_term || '%'
-         OR l.description_original ILIKE '%' || search_term || '%')
-  UNION
-  SELECT DISTINCT lt.listing_id FROM listing_translations lt
-  JOIN listings l ON l.id = lt.listing_id
-  WHERE l.status = 'active'
-    AND (lt.title ILIKE '%' || search_term || '%'
-         OR lt.description ILIKE '%' || search_term || '%')
-$$
-```
+### Files to Create
+- `supabase/functions/wa-webhook/index.ts`
 
-### Modification de Browse.tsx
-- Si un terme de recherche est present, appeler `supabase.rpc('search_listings', { search_term })` pour obtenir les IDs, puis filtrer avec `.in('id', matchingIds)`
-- Si pas de recherche, comportement inchange
+### Files to Modify
+- `src/pages/ListingDetail.tsx` (replace WhatsApp/phone buttons with proxy CTA)
+- `src/pages/Admin.tsx` (add relay monitoring tab)
+- `src/lib/constants.ts` (add REBALI_WA_NUMBER)
+- `supabase/config.toml` (add wa-webhook with verify_jwt = false)
+- `src/i18n/translations/en.json` and `fr.json` (new translation keys)
 
-### Fichiers concernes
-- **Nouveau** : `supabase/functions/translate-listing/index.ts`
-- **Migration SQL** : nouvelle fonction `search_listings`
-- **Modifie** : `src/pages/CreateListing.tsx` (appel traduction apres publication/edition)
-- **Modifie** : `src/pages/Browse.tsx` (recherche multilingue via RPC)
-- **Modifie** : `supabase/config.toml` (enregistrer la nouvelle edge function)
+### Database Migration (1 migration)
+- ALTER conversations ADD columns (counts, unlocked, status, buyer_phone)
+- ALTER messages ADD from_role column
+- CREATE TABLE wa_relay_tokens
+- CREATE TABLE risk_events
+- RLS policies for new tables
