@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
     }
 
     // Try to parse token: RB|L=<listingId>|B=<buyerId>|
-    const tokenMatch = messageBody.match(/RB\|L=([a-f0-9-]+)\|B=([a-f0-9-]+)\|/i);
+    const tokenMatch = messageBody.match(/(?:ref:)?RB\|L=([a-f0-9-]+)\|B=([a-f0-9-]+)\|/i);
 
     let listingId: string | null = null;
     let buyerId: string | null = null;

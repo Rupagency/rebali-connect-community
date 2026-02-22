@@ -526,7 +526,7 @@ export default function ListingDetail() {
                     {user && user.id !== listing.seller_id ? (
                       <Button className="w-full gap-2 rounded-full font-bold text-base h-12" asChild>
                         <a
-                          href={`https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`RB|L=${listing.id}|B=${user.id}| Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?`)}`}
+                          href={`https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?\n—\nref:RB|L=${listing.id}|B=${user.id}|`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => { supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id }); }}
@@ -654,7 +654,7 @@ export default function ListingDetail() {
               <Button 
                 className="w-full gap-2 rounded-full font-bold text-base h-12" 
                 onClick={() => {
-                  const waUrl = `https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`RB|L=${listing.id}|B=${user?.id || ''}| ${customMessage}`)}`;
+                  const waUrl = `https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`${customMessage}\n—\nref:RB|L=${listing.id}|B=${user?.id || ''}|`)}`;
                   window.open(waUrl, '_blank', 'noopener,noreferrer');
                   if (user) supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id });
                   setMobileContactOpen(false);
