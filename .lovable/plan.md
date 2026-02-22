@@ -1,146 +1,142 @@
 
-# WhatsApp Proxy + Progressive Phone Reveal
+# WhatsApp Proxy + Progressive Phone Reveal -- Implementation Plan
 
-## Overview
-Replace the current direct WhatsApp contact flow with a proxy system where all initial communications go through Re-Bali's official WhatsApp number via Fonnte. After 3 verified exchanges between buyer and seller, the seller's real phone number is automatically revealed.
+## Summary
+Replace all direct WhatsApp/phone contact with a proxy relay through Re-Bali's official WhatsApp number (via Fonnte). Seller phone numbers are hidden until 3 verified exchanges occur, then automatically revealed via a system message in the WhatsApp thread.
 
-## Architecture
+---
 
-### 1. Database Migrations
+## Step 1: Database Migration
 
-**Add columns to `conversations` table:**
-- `buyer_msg_count` (int, default 0)
-- `seller_msg_count` (int, default 0)
-- `total_msg_count` (int, default 0)
-- `unlocked` (bool, default false)
-- `unlocked_at` (timestamptz, nullable)
-- `status` (text, default 'active') -- active / blocked
-- `buyer_phone` (text, nullable) -- buyer's WhatsApp number for relay
+A single migration will:
 
-**Add column to `messages` table:**
-- `from_role` (text, nullable) -- 'buyer' / 'seller' / 'system'
+### ALTER existing tables
+- **conversations**: add `buyer_msg_count` (int default 0), `seller_msg_count` (int default 0), `total_msg_count` (int default 0), `unlocked` (bool default false), `unlocked_at` (timestamptz nullable), `relay_status` (text default 'active'), `buyer_phone` (text nullable)
+- **messages**: add `from_role` (text nullable) -- values: 'buyer', 'seller', 'system'
 
-**New table: `wa_relay_tokens`** -- maps Fonnte incoming messages to conversations
-- `id` (uuid, PK)
-- `token` (text, unique) -- short unique token for deep link
-- `listing_id` (uuid)
-- `buyer_id` (uuid)
-- `conversation_id` (uuid, nullable) -- set once conversation created
-- `created_at` (timestamptz)
+### CREATE new tables
+- **wa_relay_tokens**: `id` (uuid PK), `token` (text unique), `listing_id` (uuid), `buyer_id` (uuid), `conversation_id` (uuid nullable), `created_at` (timestamptz default now())
+- **risk_events**: `id` (uuid PK), `user_id` (uuid nullable), `phone` (text nullable), `event_type` (text), `details` (jsonb), `created_at` (timestamptz default now())
 
-**New table: `risk_events`** -- logs blocked messages
-- `id` (uuid, PK)
-- `user_id` (uuid, nullable)
-- `phone` (text, nullable)
-- `event_type` (text) -- 'blocked_number', 'blocked_link'
-- `details` (jsonb)
-- `created_at` (timestamptz)
+### RLS Policies
+- **wa_relay_tokens**: service role can insert/update (true), users can read their own tokens (`buyer_id = auth.uid()`)
+- **risk_events**: service role can insert (true), admins can read (`has_role(auth.uid(), 'admin')`)
+- **conversations**: admins can view all, admins can update all (for blocking)
 
-**RLS Policies:**
-- `wa_relay_tokens`: service role insert/update, users can read their own tokens
-- `risk_events`: service role insert, admins can read
-- Update `conversations` policies for new columns
-- Restrict `profiles.phone` and `profiles.whatsapp` fields from public queries (create a view or handle in code)
+---
 
-### 2. Edge Functions
+## Step 2: Edge Function -- `wa-webhook`
 
-**`wa-webhook` (new)** -- receives incoming WhatsApp messages from Fonnte
-- `verify_jwt = false` in config.toml (webhook from external)
-- Parse incoming Fonnte payload (sender phone, message body)
-- Parse `RB|L=<listingId>|B=<buyerId>|` token from message body
-- Identify sender role (match phone against seller phone in DB, or buyer phone from token)
-- Create or reuse conversation
-- Anti-scam filter: scan for phone numbers, links, messaging app references
-  - If blocked: reply via Fonnte with warning message, log risk_event
-  - If clean: save message, update counts, relay to other party
-- Check unlock condition after each message:
-  - `total_msg_count >= 3` AND `buyer_msg_count >= 1` AND `seller_msg_count >= 1`
-  - Seller `phone_verified = true` AND not banned
-  - Buyer not banned
-  - If met: set `unlocked = true`, send system messages with phone number to both parties via Fonnte
-- Relay messages with prefix: `"Re-Bali (Annonce: <title>): <message>"`
+Create `supabase/functions/wa-webhook/index.ts` with `verify_jwt = false` in config.toml.
 
-**`wa-send-relay` (new)** -- helper to send messages via Fonnte
-- Accepts: target phone, message text
-- Sends via Fonnte API
-- Used by wa-webhook for relaying and system messages
+This single edge function handles:
 
-### 3. Frontend Changes
+1. **Incoming Fonnte webhook**: Parse `sender` (phone) and `message` from Fonnte POST payload
+2. **Token parsing**: Extract `RB|L=<listingId>|B=<buyerId>|` from message body
+3. **Role detection**: Match sender phone against seller's phone in profiles table; if no match, treat as buyer
+4. **Conversation management**: Find or create conversation for this buyer+listing pair; store buyer_phone on first message
+5. **Anti-scam filter**: Before relaying, scan for phone numbers (regex: `+62`, `08xx`, 6+ consecutive digits), URLs, messaging app references. If blocked: reply with warning via Fonnte, log risk_event, do NOT relay
+6. **Save message**: Insert into messages table with `from_role`, update conversation counts
+7. **Relay**: Send message to the other party via Fonnte API (`POST https://api.fonnte.com/send` with `Authorization: FONNTE_TOKEN` header, `target` and `message` fields), prefixed with "Re-Bali (Listing: title): ..."
+8. **Unlock check**: After each message, if `total_msg_count >= 3` AND `buyer_msg_count >= 1` AND `seller_msg_count >= 1` AND seller `phone_verified = true` AND neither party banned: set `unlocked = true`, send system messages to both parties via Fonnte with the seller's real phone number
 
-**`ListingDetail.tsx`:**
-- Remove direct WhatsApp link (`wa.me/seller_phone`)
-- Remove direct phone call button
-- Replace with "Contact on WhatsApp" button that:
-  - Requires login
-  - Generates/reuses a relay token via Supabase
-  - Opens `https://wa.me/<REBALI_WA_NUMBER>?text=RB|L=<listingId>|B=<userId>| Hi, I'm interested in your item "<title>"`
-- The Re-Bali WhatsApp number is stored as a constant (e.g. `REBALI_WA_NUMBER`)
-- Remove seller phone/whatsapp display everywhere on listing page
-- Keep the in-app message button as secondary option
+Edge cases handled:
+- No valid token: reply "Please use the Contact button on the Re-Bali listing."
+- Listing inactive: reply "This listing is no longer available."
+- Phone in banned_devices: reply "Your account has been restricted."
+- Conversation already exists: reuse it
 
-**`SellerProfile.tsx`:**
-- Remove phone number display (only show "Phone verified" badge)
+Uses existing `FONNTE_TOKEN` secret (already configured).
 
-**`ListingCard.tsx`:**
-- No changes needed (doesn't show phone)
+---
 
-**Admin panel (`Admin.tsx`):**
-- Add a "WhatsApp Relay" tab showing:
-  - Conversations with counts, unlock status
-  - Risk events log (blocked messages)
-  - Ability to block a conversation (`status = 'blocked'`)
+## Step 3: Frontend -- ListingDetail.tsx
 
-### 4. Anti-Scam Filters (in wa-webhook)
+### Remove
+- Direct WhatsApp link (`wa.me/seller.whatsapp`)
+- Direct phone call button (`tel:seller.phone`)
+- Display of seller phone/whatsapp numbers
 
-Patterns to block before relaying:
-- Phone numbers: `+62`, `08xx`, 6+ consecutive digits
-- Links: `wa.me`, `t.me`, `telegram`, `bit.ly`, `tinyurl`, `linktr.ee`, `instagram.com`, any URL pattern
-- Messaging apps: `whatsapp`, `signal`, `telegram`
+### Add
+- `REBALI_WA_NUMBER` constant in `src/lib/constants.ts`
+- "Contact on WhatsApp" button that:
+  - Requires login (show toast if not logged in)
+  - Cannot contact own listing
+  - Opens `https://wa.me/REBALI_WA_NUMBER?text=RB|L=<listingId>|B=<userId>| Hi, I'm interested in your item "<title>"`
+- Keep existing in-app message button as secondary option
+- Show "Phone verified" badge instead of actual phone number
 
-When blocked:
-- Do NOT relay the message
-- Reply to sender: "For safety, sharing phone numbers or links is not allowed until 3 exchanges are completed."
-- Insert into `risk_events` table
+This applies to both the desktop sidebar card and the mobile bottom bar.
 
-### 5. Edge Cases Handled
+---
 
-- **No valid token in message**: Reply "Please use the Contact button on the Re-Bali listing."
-- **Listing inactive**: Reply "This listing is no longer available."
-- **Phone blacklisted**: Reply "Your account has been restricted."
-- **Multiple conversations per buyer/listing**: Reuse existing conversation
-- **After unlock**: Proxy continues working but phone is revealed
+## Step 4: Frontend -- SellerProfile.tsx
 
-## Technical Details
+### Remove
+- Direct WhatsApp button (line 146-153)
+- Direct phone call button (line 154-161)
 
-### Fonnte Webhook Setup
-The user will need to configure the Fonnte webhook URL in their Fonnte dashboard to point to:
-`https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/wa-webhook`
+### Replace with
+- "Phone verified" badge only (already shown if `phone_verified`)
+- No direct contact info exposed
 
-### Re-Bali WhatsApp Number
-A constant `REBALI_WA_NUMBER` needs to be defined -- this is the number connected to Fonnte that acts as the relay.
+---
 
-### Message Flow
-```text
-Buyer -> WhatsApp (Re-Bali number) -> Fonnte webhook -> wa-webhook Edge Function
-  -> Anti-scam check
-  -> Save message + update counts
-  -> Relay to seller via Fonnte
-  -> Check unlock condition -> if met, send system messages
+## Step 5: Frontend -- Admin.tsx
+
+### Add new tab "WhatsApp Relay" (6th tab)
+- Conversations table showing: listing title, buyer name, seller name, message counts, unlocked status, relay_status
+- Risk events log: phone, event type, details, timestamp
+- Action: block/unblock conversation (`relay_status = 'blocked'`)
+
+---
+
+## Step 6: Config & Constants
+
+### supabase/config.toml
+Add:
+```toml
+[functions.wa-webhook]
+verify_jwt = false
 ```
 
-### Files to Create
-- `supabase/functions/wa-webhook/index.ts`
+### src/lib/constants.ts
+Add `REBALI_WA_NUMBER` constant (placeholder value, user will need to set their actual number).
 
-### Files to Modify
-- `src/pages/ListingDetail.tsx` (replace WhatsApp/phone buttons with proxy CTA)
-- `src/pages/Admin.tsx` (add relay monitoring tab)
-- `src/lib/constants.ts` (add REBALI_WA_NUMBER)
-- `supabase/config.toml` (add wa-webhook with verify_jwt = false)
-- `src/i18n/translations/en.json` and `fr.json` (new translation keys)
+---
 
-### Database Migration (1 migration)
-- ALTER conversations ADD columns (counts, unlocked, status, buyer_phone)
-- ALTER messages ADD from_role column
-- CREATE TABLE wa_relay_tokens
-- CREATE TABLE risk_events
-- RLS policies for new tables
+## Step 7: i18n Translations
+
+Add keys to en.json and fr.json:
+- `listing.contactWhatsApp`: "Contact on WhatsApp" / "Contacter sur WhatsApp"
+- `listing.phoneVerified`: "Phone verified" / "Telephone verifie"
+- `listing.loginToContact`: "Log in to contact the seller" / "Connectez-vous pour contacter le vendeur"
+- `admin.waRelay`: "WhatsApp Relay" / "Relais WhatsApp"
+- `admin.relayConversations`: "Relay Conversations" / "Conversations relais"
+- `admin.riskEvents`: "Risk Events" / "Evenements a risque"
+- `admin.blockConversation` / `admin.unblockConversation`
+- `admin.unlocked` / `admin.locked`
+
+---
+
+## Files Summary
+
+| Action | File |
+|--------|------|
+| Create | `supabase/functions/wa-webhook/index.ts` |
+| Modify | `supabase/config.toml` (add wa-webhook) |
+| Modify | `src/lib/constants.ts` (add REBALI_WA_NUMBER) |
+| Modify | `src/pages/ListingDetail.tsx` (replace contact buttons) |
+| Modify | `src/pages/SellerProfile.tsx` (remove phone display) |
+| Modify | `src/pages/Admin.tsx` (add WhatsApp Relay tab) |
+| Modify | `src/i18n/translations/en.json` (new keys) |
+| Modify | `src/i18n/translations/fr.json` (new keys) |
+| Migration | 1 SQL migration for all schema changes |
+
+---
+
+## Post-Implementation: User Action Required
+
+After deployment, you will need to:
+1. Set the `REBALI_WA_NUMBER` constant to your actual Re-Bali WhatsApp number
+2. Configure the Fonnte webhook URL in your Fonnte dashboard to: `https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/wa-webhook`
