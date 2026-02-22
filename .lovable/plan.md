@@ -1,33 +1,31 @@
 
-# Fix Mobile WhatsApp Contact Drawer
+# Ajout d'un rappel anti-arnaque dans les messages WhatsApp
 
-## Problem
-1. The mobile drawer shows two buttons: "Send via WhatsApp" and "Send a message" (in-app) -- the in-app message button should be removed.
-2. The WhatsApp button uses `asChild` with an `<a>` tag which may not work properly on mobile -- needs to be a direct button with `window.open`.
+## Objectif
+Ajouter un petit texte de prevention a la fin de chaque message relaye par WhatsApp, rappelant aux acheteurs et vendeurs que :
+- Les transactions se font sous leur seule responsabilite
+- Re-Bali est une plateforme de mise en relation uniquement
+- Conseils basiques anti-scam (verifier avant de payer, se rencontrer en lieu sur, etc.)
 
-## Changes
+## Modification
 
-### File: `src/pages/ListingDetail.tsx`
+**Fichier** : `supabase/functions/wa-webhook/index.ts`
 
-**1. Remove the in-app message button (lines 669-675)**
-Delete the entire "In-app message" button block from the drawer.
+Dans la fonction `handleRelay`, au moment de l'envoi du message relaye (ligne 375-376), ajouter un footer de prevention apres le contenu du message :
 
-**2. Fix the WhatsApp button (lines 653-667)**
-Replace the `asChild` + `<a>` approach with a regular `<Button>` that uses `window.open()` on click. This ensures the click handler fires reliably on mobile:
+```
+📦 Re-Bali (Titre de l'annonce):
+[message]
 
-```tsx
-<Button 
-  className="w-full gap-2 rounded-full font-bold text-base h-12" 
-  onClick={() => {
-    const waUrl = `https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`RB|L=${listing.id}|B=${user?.id || ''}| ${customMessage}`)}`;
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
-    if (user) supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id });
-    setMobileContactOpen(false);
-  }}
->
-  <MessageCircle className="h-5 w-5" />
-  {t('listing.sendViaWhatsApp')}
-</Button>
+---
+⚠️ Re-Bali ne gere aucune transaction. Acheteur et vendeur sont seuls responsables. Ne payez jamais avant d'avoir vu l'article. Rencontrez-vous dans un lieu public.
 ```
 
-This keeps only the WhatsApp button and makes the click action work reliably on mobile devices, opening WhatsApp with the proxy message token (`RB|L=...|B=...|`) as previously implemented.
+Le texte sera court, professionnel et bilingue (anglais/francais) ou en anglais uniquement pour rester concis. Il sera ajoute uniquement aux messages relayes entre acheteur et vendeur, pas aux messages systeme (unlock, blocked, etc.).
+
+## Details techniques
+
+- Modifier la constante `prefix` et ajouter un `suffix` de prevention a la ligne 376
+- Le suffix sera une constante definie en haut du fichier pour faciliter la maintenance
+- Les messages systeme (unlock, ban, blocked content) ne seront pas affectes
+- Le message d'unlock conservera son format actuel sans le disclaimer (c'est deja un message systeme)
