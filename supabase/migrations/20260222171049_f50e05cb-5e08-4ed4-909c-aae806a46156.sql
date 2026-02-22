@@ -1,0 +1,2 @@
+-- Normalize existing whatsapp numbers (strip spaces, dashes, keep + and digits)
+UPDATE profiles SET whatsapp = REGEXP_REPLACE(whatsapp, '[^\d+]', '', 'g') WHERE whatsapp IS NOT NULL AND whatsapp ~ '[^\d+]';
