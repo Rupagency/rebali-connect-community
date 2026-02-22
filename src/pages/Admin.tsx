@@ -221,6 +221,11 @@ export default function Admin() {
   const [editDescription, setEditDescription] = useState('');
   const [editCategory, setEditCategory] = useState('');
   const [editPrice, setEditPrice] = useState('');
+  const [editingUser, setEditingUser] = useState(false);
+  const [editUserLang, setEditUserLang] = useState('');
+  const [editUserPhone, setEditUserPhone] = useState('');
+  const [editUserWhatsapp, setEditUserWhatsapp] = useState('');
+  const [editUserDisplayName, setEditUserDisplayName] = useState('');
 
   // Reports query
   const { data: reports } = useQuery({
@@ -370,6 +375,35 @@ export default function Admin() {
     toast({ title: ban ? t('admin.banUser') : t('admin.unbanUser') });
   };
 
+  const startEditUser = () => {
+    if (!selectedUser) return;
+    setEditUserDisplayName(selectedUser.display_name || '');
+    setEditUserLang(selectedUser.preferred_lang || 'en');
+    setEditUserPhone(selectedUser.phone || '');
+    setEditUserWhatsapp(selectedUser.whatsapp || '');
+    setEditingUser(true);
+  };
+
+  const saveUserEdits = async () => {
+    if (!selectedUser) return;
+    await supabase.from('profiles').update({
+      display_name: editUserDisplayName.trim() || null,
+      preferred_lang: editUserLang,
+      phone: editUserPhone.trim() || null,
+      whatsapp: editUserWhatsapp.trim() || null,
+    }).eq('id', selectedUser.id);
+    setSelectedUser((prev: any) => prev ? {
+      ...prev,
+      display_name: editUserDisplayName.trim() || null,
+      preferred_lang: editUserLang,
+      phone: editUserPhone.trim() || null,
+      whatsapp: editUserWhatsapp.trim() || null,
+    } : null);
+    qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+    setEditingUser(false);
+    toast({ title: t('admin.profileSaved') || 'Profile saved' });
+  };
+
   // User detail dialog content
   const UserDetailDialog = () => {
     if (!selectedUser) return null;
@@ -408,37 +442,81 @@ export default function Admin() {
 
           {/* User info */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userInfo')}</h4>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('admin.colDate')}</p>
-                  <p className="font-medium">{new Date(selectedUser.created_at).toLocaleDateString()}</p>
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userInfo')}</h4>
+              {!editingUser ? (
+                <Button size="sm" variant="ghost" onClick={startEditUser}>
+                  <Pencil className="h-3 w-3 mr-1" /> {t('admin.editListing') || 'Edit'}
+                </Button>
+              ) : (
+                <div className="flex gap-1">
+                  <Button size="sm" onClick={saveUserEdits}>
+                    <Save className="h-3 w-3 mr-1" /> {t('admin.saveListing') || 'Save'}
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setEditingUser(false)}>
+                    <X className="h-3 w-3" />
+                  </Button>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Globe className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('profile.preferredLang')}</p>
-                  <p className="font-medium">{selectedUser.preferred_lang?.toUpperCase()}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('profile.phone')}</p>
-                  <p className="font-medium">{selectedUser.phone || '—'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="text-muted-foreground">{t('profile.whatsapp')}</p>
-                  <p className="font-medium">{selectedUser.whatsapp || '—'}</p>
-                </div>
-              </div>
+              )}
             </div>
+            {editingUser ? (
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('profile.displayName') || 'Display Name'}</label>
+                  <Input value={editUserDisplayName} onChange={e => setEditUserDisplayName(e.target.value)} />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('profile.preferredLang')}</label>
+                  <Select value={editUserLang} onValueChange={setEditUserLang}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {['en','id','fr','es','zh','de','nl','ru','tr','ar','hi','ja'].map(l => (
+                        <SelectItem key={l} value={l}>{l.toUpperCase()}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('profile.phone')}</label>
+                  <Input value={editUserPhone} onChange={e => setEditUserPhone(e.target.value)} placeholder="+62..." />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('profile.whatsapp')}</label>
+                  <Input value={editUserWhatsapp} onChange={e => setEditUserWhatsapp(e.target.value)} placeholder="+62..." />
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">{t('admin.colDate')}</p>
+                    <p className="font-medium">{new Date(selectedUser.created_at).toLocaleDateString()}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">{t('profile.preferredLang')}</p>
+                    <p className="font-medium">{selectedUser.preferred_lang?.toUpperCase()}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Phone className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">{t('profile.phone')}</p>
+                    <p className="font-medium">{selectedUser.phone || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">{t('profile.whatsapp')}</p>
+                    <p className="font-medium">{selectedUser.whatsapp || '—'}</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <Separator />
