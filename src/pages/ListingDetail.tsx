@@ -612,22 +612,19 @@ export default function ListingDetail() {
           <Heart className={`h-5 w-5 ${isFavorited ? 'text-red-500 fill-red-500' : 'text-foreground'}`} />
         </button>
 
-        <Drawer open={mobileContactOpen} onOpenChange={(open) => {
-          setMobileContactOpen(open);
-          if (open && !customMessage) {
-            setCustomMessage(`Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?`);
-          }
-        }}>
-          <DrawerTrigger asChild>
-            <Button className="flex-1 gap-2 rounded-full font-bold text-base h-12" onClick={() => {
+        <Button className="flex-1 gap-2 rounded-full font-bold text-base h-12" onClick={() => {
               if (!user) { setLoginDialogOpen(true); return; }
               if (user.id === listing.seller_id) return;
+              if (!customMessage) {
+                setCustomMessage(`Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?`);
+              }
               setMobileContactOpen(true);
             }}>
               <MessageCircle className="h-5 w-5" />
               {t('listing.contactWhatsApp')}
             </Button>
-          </DrawerTrigger>
+
+        <Drawer open={mobileContactOpen} onOpenChange={setMobileContactOpen}>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>{t('listing.contactWhatsApp')}</DrawerTitle>
