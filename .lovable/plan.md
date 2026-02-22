@@ -1,39 +1,45 @@
 
-# Ajout de 4 nouvelles langues : Turc, Arabe, Hindi, Japonais
+# Traduction automatique des messages WhatsApp relaye
 
-## Objectif
-Ajouter le support complet des langues Turc (tr), Arabe (ar), Hindi (hi) et Japonais (ja) dans toute l'application, incluant l'interface utilisateur, la traduction automatique des annonces et la recherche multilingue.
+## Probleme
+Quand un acheteur envoie un message en francais a un vendeur indonesien, le vendeur recoit le message en francais. Le message devrait etre traduit dans la langue preferee du destinataire.
 
-## Fichiers a modifier
+## Solution
+Modifier la fonction `wa-webhook` (edge function) pour :
+1. Recuperer la langue preferee (`preferred_lang`) du destinataire depuis son profil
+2. Detecter la langue du message envoye (via la langue preferee de l'expediteur)
+3. Si les langues different, traduire le message avant de le relayer via Fonnte
 
-### 1. Creer les fichiers de traduction
-- `src/i18n/translations/tr.json` -- Traduction turque de toutes les cles (345 lignes, meme structure que en.json)
-- `src/i18n/translations/ar.json` -- Traduction arabe
-- `src/i18n/translations/hi.json` -- Traduction hindi
-- `src/i18n/translations/ja.json` -- Traduction japonaise
+## Modifications
 
-### 2. Registre des langues -- `src/i18n/index.ts`
-- Importer les 4 nouveaux fichiers JSON
-- Ajouter les 4 langues dans `SUPPORTED_LANGUAGES` :
-  - `{ code: 'tr', name: 'Turkce', flag: '🇹🇷' }`
-  - `{ code: 'ar', name: 'العربية', flag: '🇸🇦' }`
-  - `{ code: 'hi', name: 'हिन्दी', flag: '🇮🇳' }`
-  - `{ code: 'ja', name: '日本語', flag: '🇯🇵' }`
-- Ajouter les 4 codes dans l'objet `translations`
+### `supabase/functions/wa-webhook/index.ts`
 
-### 3. Texte anime du hero -- `src/components/AnimatedHeroText.tsx`
-- Ajouter les entrees pour `tr`, `ar`, `hi`, `ja` dans `HERO_WORDS`
+**Ajouter une fonction `translateText`** -- La meme que celle deja utilisee dans `translate-listing/index.ts`, qui utilise l'API gratuite Google Translate :
+```
+async function translateText(text, targetLang, sourceLang): Promise<string>
+```
 
-### 4. Traduction automatique des annonces -- `supabase/functions/translate-listing/index.ts`
-- Ajouter `"tr"`, `"ar"`, `"hi"`, `"ja"` dans le tableau `TARGET_LANGS`
+**Modifier `handleRelay`** pour :
+- Recuperer le profil du destinataire (deja fait partiellement) et en extraire `preferred_lang`
+- Recuperer le `preferred_lang` de l'expediteur aussi
+- Si les deux langues sont differentes, appeler `translateText(message, recipientLang, senderLang)` avant d'envoyer
+- Le message original est toujours sauvegarde tel quel dans la table `messages`
+- Seul le message envoye via Fonnte est traduit
 
-### 5. Aucun changement necessaire pour :
-- Le selecteur de langue (`LanguageSwitcher.tsx`) : il lit dynamiquement `SUPPORTED_LANGUAGES`
-- La recherche multilingue (`search_listings` SQL) : elle cherche deja dans toutes les lignes de `listing_translations`, les nouvelles langues seront incluses automatiquement
-- Le contexte de langue (`LanguageContext.tsx`) : le type `LanguageCode` est derive automatiquement de `SUPPORTED_LANGUAGES`
+**Traduire aussi le suffixe anti-arnaque** -- Le `SAFETY_SUFFIX` sera traduit dans la langue du destinataire. On ajoutera un objet avec les traductions pre-definies du disclaimer dans les 12 langues.
+
+### Pas de changement cote frontend
+Tout se passe dans l'edge function. Le selecteur de langue de l'app influence deja `preferred_lang` dans le profil utilisateur.
 
 ## Details techniques
 
-Les 4 fichiers JSON de traduction contiendront exactement la meme structure que `en.json` avec toutes les cles traduites dans la langue cible. Chaque fichier fait environ 345 lignes.
+Dans la fonction `handleRelay`, les profils de l'acheteur et du vendeur sont deja recuperes pour obtenir le numero de telephone. On va simplement ajouter `preferred_lang` aux champs selectionnes.
 
-Apres deploiement, les annonces existantes ne seront pas automatiquement traduites dans les nouvelles langues. Pour les traduire, il faudrait re-appeler la fonction `translate-listing` pour chaque annonce existante (optionnel, peut etre fait plus tard via un script admin).
+Le flux sera :
+1. L'acheteur envoie "Bonjour, cet article est-il disponible ?" (preferred_lang = fr)
+2. Le webhook recupere le profil du vendeur (preferred_lang = id)
+3. Le message est traduit en indonesien via Google Translate
+4. Le vendeur recoit : "Halo, apakah barang ini tersedia?" + disclaimer en indonesien
+5. Le message original en francais est sauvegarde dans la base de donnees
+
+Le `SAFETY_SUFFIX` sera remplace par un objet `SAFETY_SUFFIXES` contenant les 12 traductions pre-ecrites pour eviter un appel API supplementaire a chaque message.
