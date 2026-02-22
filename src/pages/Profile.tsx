@@ -16,7 +16,7 @@ import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload } from 'lucide-react';
+import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload, LogOut } from 'lucide-react';
 
 const profileSchema = z.object({
   display_name: z.string().trim().min(2, 'Min 2 characters').max(50, 'Max 50 characters'),
@@ -301,7 +301,7 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
 
 export default function Profile() {
   const { t, setLanguage } = useLanguage();
-  const { user, profile, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile, signOut } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -645,6 +645,19 @@ export default function Profile() {
           )}
         </CardContent>
       </Card>
+
+      {/* Logout Button */}
+      <Button
+        variant="outline"
+        className="w-full gap-2 text-destructive border-destructive/30 hover:bg-destructive/10"
+        onClick={async () => {
+          await signOut();
+          navigate('/');
+        }}
+      >
+        <LogOut className="h-4 w-4" />
+        {t('common.logout')}
+      </Button>
     </div>
   );
 }
