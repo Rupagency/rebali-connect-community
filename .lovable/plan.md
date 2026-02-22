@@ -1,23 +1,34 @@
 
 
-# Update REBALI_WA_NUMBER
+# Floating PWA Install Button (Mobile)
 
-Replace the placeholder WhatsApp number with your actual number.
+Add a small floating action button (FAB) in the bottom-right corner on mobile devices that prompts users to install the app as a PWA. The button adapts its behavior based on the device (Android vs iOS).
 
-## Change
+## How it works
 
-**File:** `src/lib/constants.ts` (line 92)
+- **Android**: Uses the native `beforeinstallprompt` event to trigger the browser's install dialog directly. The button disappears once the app is installed.
+- **iOS (Safari)**: Since iOS doesn't support `beforeinstallprompt`, tapping the button shows a small tooltip/modal explaining: "Tap the Share button, then 'Add to Home Screen'".
+- The button only appears on mobile devices and only when the app is NOT already in standalone/installed mode.
+- A dismiss/close option stores the preference in `localStorage` so it doesn't reappear for users who don't want it.
 
-- Current: `export const REBALI_WA_NUMBER = '6281234567890';`
-- New: `export const REBALI_WA_NUMBER = '33745661257';`
+## Visual
 
-Your number `+33745661257` is stored without the `+` prefix, as required by the WhatsApp API deep link format (`wa.me/33745661257`).
+- Small circular FAB (40x40px), bottom-right, above the BottomNav bar (~80px from bottom)
+- Uses a `Download` icon from lucide-react
+- Subtle pulse animation on first appearance to draw attention
+- Teal/primary color to match the theme
 
-## Remaining manual step (outside Lovable)
+## Technical Details
 
-After this change, you still need to configure the **Fonnte webhook**:
-1. Go to [my.fonnte.com](https://my.fonnte.com)
-2. Select your device
-3. In the **Webhook** section, paste: `https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/wa-webhook`
-4. Save
+**New file:** `src/components/PwaInstallButton.tsx`
+- Listens for `beforeinstallprompt` event (Android)
+- Detects iOS via user agent
+- Checks `display-mode: standalone` to hide when already installed
+- Stores dismissal in `localStorage` key `rebali-pwa-dismiss`
+- On Android: calls `prompt()` on the deferred event
+- On iOS: shows a small popover with install instructions
+- Only renders on mobile (uses `useIsMobile` hook)
+
+**Modified file:** `src/components/Layout.tsx`
+- Import and render `<PwaInstallButton />` alongside `<BottomNav />`
 
