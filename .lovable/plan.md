@@ -1,47 +1,74 @@
 
-# Correction du code pays OTP WhatsApp
+# Routage des reponses vendeur avec plusieurs conversations
 
-## Probleme identifie
+## Probleme
 
-Dans `supabase/functions/send-otp/index.ts` (ligne 112), le code pays est fixe a `"62"` (Indonesie). Fonnte utilise ce parametre pour reformater le numero, ce qui ecrase le prefixe international saisi par l'utilisateur.
+Quand un vendeur a plusieurs acheteurs en meme temps, tous les messages arrivent dans la meme conversation WhatsApp (celle avec le numero Re-Bali). Quand le vendeur repond, le systeme prend simplement la conversation **la plus recente** (`ORDER BY updated_at DESC LIMIT 1`), ce qui peut envoyer la reponse au mauvais acheteur.
 
-Resultat : un numero `+33775855440` devient `+6233775855440`.
+## Solution : identifiant de conversation dans chaque message
 
-## Solution
+Chaque message envoye au vendeur inclura un **code court de conversation** (ex: `#A`, `#B`, `#C`). Le vendeur devra prefixer sa reponse avec ce code pour indiquer a qui il repond.
 
-Deux changements necessaires :
+### Comment ca marche pour le vendeur
 
-### 1. Edge Function `send-otp/index.ts`
-
-- Extraire dynamiquement le code pays depuis le numero de telephone fourni (qui commence par `+`)
-- Si le numero commence par `+`, extraire le code pays automatiquement et envoyer le numero sans le `+` a Fonnte
-- Ne plus coder en dur `"62"`
-
-Logique :
-```text
-+33775855440  -> countryCode = "33", target = "775855440"
-+6281234567   -> countryCode = "62", target = "81234567"
-+1234567890   -> countryCode = "1",  target = "234567890"
+**Message recu :**
+```
+[#A] Re-Bali (Surfboard 6'2):
+Bonjour, est-elle encore disponible ?
 ```
 
-Concretement, on utilisera une liste des prefixes pays connus (1, 7, 20-69, etc.) pour determiner la bonne coupure, ou plus simplement, on enverra le numero complet avec le `+` a Fonnte et on supprimera le parametre `countryCode` (Fonnte accepte les numeros au format international complet).
+**Le vendeur repond :**
+```
+#A Oui elle est dispo, on peut se voir demain
+```
 
-**Approche retenue** : envoyer le numero tel quel au format international (avec `+`) dans `target` et retirer le parametre `countryCode`. C'est la methode la plus fiable et recommandee par Fonnte pour les numeros internationaux.
+Si le vendeur repond **sans code** et a **plusieurs conversations actives**, il recoit un message d'aide :
+```
+Vous avez plusieurs conversations actives. Prefixez votre reponse avec le code :
+#A - Surfboard 6'2 (Marie)
+#B - Scooter Yamaha (John)
+```
 
-### 2. Verification du format cote client
+### Details techniques
 
-- Verifier dans la page Profil que le champ WhatsApp exige bien un format commencant par `+` suivi du code pays (ex: `+33`, `+62`, `+1`)
-- Ajouter une validation basique si elle n'existe pas deja
+#### 1. Nouvelle colonne `short_code` sur la table `conversations`
+
+Ajouter une colonne `short_code TEXT` qui stocke un code court unique par vendeur (ex: `A`, `B`, `C`...). Ce code est attribue automatiquement a la creation de la conversation.
+
+#### 2. Modification de `wa-webhook/index.ts`
+
+**A. Attribution du short_code** : a la creation d'une conversation, assigner la prochaine lettre disponible pour ce vendeur (A, B, C... jusqu'a Z, puis AA, AB...).
+
+**B. Prefixe dans les messages envoyes au vendeur** : le format passe de :
+```
+Re-Bali (Titre):
+message
+```
+a :
+```
+[#A] Re-Bali (Titre):
+message
+```
+
+**C. Parsing de la reponse vendeur** : quand un vendeur repond, chercher un `#X` au debut du message pour identifier la conversation cible.
+
+**D. Gestion du cas sans code** :
+- Si le vendeur a **une seule** conversation active : router automatiquement (pas de changement)
+- Si le vendeur a **plusieurs** conversations actives et pas de code : envoyer la liste des conversations avec leurs codes
+
+#### 3. Cote acheteur
+
+Aucun changement. L'acheteur continue d'envoyer ses messages normalement avec le token `RB|L=...|B=...|`.
 
 ## Fichiers modifies
 
 | Fichier | Modification |
 |---|---|
-| `supabase/functions/send-otp/index.ts` | Supprimer `countryCode: "62"`, envoyer le numero au format international complet |
-| `src/pages/Profile.tsx` | Verifier que la validation du champ WhatsApp impose le format `+XX...` |
+| `supabase/functions/wa-webhook/index.ts` | Ajout du parsing `#X`, attribution de short_code, prefixe `[#X]` dans les messages, gestion multi-conversations |
+| Migration SQL | Ajout colonne `short_code` sur `conversations` |
 
-## Impact
+## Risques et limites
 
-- Zero risque de regression : les numeros indonesiens `+62...` continueront de fonctionner
-- Tous les numeros internationaux seront desormais supportes
-- Aucun cout supplementaire
+- Si le vendeur oublie le code, il recoit un rappel (pas de message perdu)
+- Les conversations deja existantes recevront un code a la prochaine interaction
+- Pas d'impact sur le flux acheteur
