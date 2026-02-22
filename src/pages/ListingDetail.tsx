@@ -651,28 +651,18 @@ export default function ListingDetail() {
               </div>
 
               {/* Send via WhatsApp */}
-              <Button className="w-full gap-2 rounded-full font-bold text-base h-12" asChild>
-                <a
-                  href={`https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`RB|L=${listing.id}|B=${user?.id || ''}| ${customMessage}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => {
-                    if (user) supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id });
-                    setMobileContactOpen(false);
-                  }}
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  {t('listing.sendViaWhatsApp')}
-                </a>
+              <Button 
+                className="w-full gap-2 rounded-full font-bold text-base h-12" 
+                onClick={() => {
+                  const waUrl = `https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`RB|L=${listing.id}|B=${user?.id || ''}| ${customMessage}`)}`;
+                  window.open(waUrl, '_blank', 'noopener,noreferrer');
+                  if (user) supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id });
+                  setMobileContactOpen(false);
+                }}
+              >
+                <MessageCircle className="h-5 w-5" />
+                {t('listing.sendViaWhatsApp')}
               </Button>
-
-              {/* In-app message */}
-              {user && user.id !== listing.seller_id && (
-                <Button variant="secondary" className="w-full gap-2 rounded-full font-bold text-base h-12" onClick={() => { setMobileContactOpen(false); handleSendMessage(); }}>
-                  <MessageCircle className="h-5 w-5" />
-                  {t('messages.sendMessage')}
-                </Button>
-              )}
             </div>
           </DrawerContent>
         </Drawer>
