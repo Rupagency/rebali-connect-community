@@ -331,6 +331,9 @@ export default function ListingDetail() {
             {/* Title & Price */}
             <div className="mt-6">
               <h1 className="text-2xl md:text-3xl font-extrabold mb-2">{title}</h1>
+              {listing.category === 'emploi' && (
+                <p className="text-sm font-semibold text-muted-foreground mb-0.5">{t('createListing.salaryLabel')}</p>
+              )}
               <p className="text-3xl font-extrabold text-primary mb-1">
                 {listing.category === 'emploi' && (listing.extra_fields as any)?.salary_negotiable === 'true'
                   ? t('createListing.salaryNegotiable')

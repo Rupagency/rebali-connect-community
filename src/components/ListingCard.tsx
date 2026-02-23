@@ -123,6 +123,9 @@ export default function ListingCard({ listing, sellerProfile: sellerProfileProp,
           <h3 className="font-semibold text-sm line-clamp-2 mb-1 group-hover:text-primary transition-colors">
             {title}
           </h3>
+          {listing.category === 'emploi' && (
+            <p className="text-[10px] font-semibold text-muted-foreground">{t('createListing.salaryLabel')}</p>
+          )}
           <p className="text-lg font-bold text-primary">
             {listing.category === 'emploi' && listing.extra_fields?.salary_negotiable === 'true'
               ? t('createListing.salaryNegotiable')
