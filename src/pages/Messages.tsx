@@ -178,22 +178,49 @@ export default function Messages() {
     }
   }, [activeConvId, user, convMessages]);
 
-  // Lock body scroll on mobile to prevent iOS rubber-band scrolling
+  // Lock body scroll on mobile to prevent iOS rubber-band scrolling (Safari + Chrome)
   useEffect(() => {
     if (isMobile) {
-      const original = document.body.style.overflow;
-      const originalPosition = document.body.style.position;
-      const originalWidth = document.body.style.width;
-      const originalHeight = document.body.style.height;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.height = '100%';
+      const html = document.documentElement;
+      const body = document.body;
+      const origStyles = {
+        bodyOverflow: body.style.overflow,
+        bodyPosition: body.style.position,
+        bodyWidth: body.style.width,
+        bodyHeight: body.style.height,
+        bodyTouchAction: body.style.touchAction,
+        bodyOverscroll: body.style.overscrollBehavior,
+        htmlOverflow: html.style.overflow,
+        htmlOverscroll: html.style.overscrollBehavior,
+      };
+      body.style.overflow = 'hidden';
+      body.style.position = 'fixed';
+      body.style.width = '100%';
+      body.style.height = '100%';
+      body.style.touchAction = 'none';
+      body.style.overscrollBehavior = 'none';
+      html.style.overflow = 'hidden';
+      html.style.overscrollBehavior = 'none';
+
+      // Block touchmove on body for Chrome iOS
+      const preventScroll = (e: TouchEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('.messages-scroll-area')) {
+          e.preventDefault();
+        }
+      };
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+
       return () => {
-        document.body.style.overflow = original;
-        document.body.style.position = originalPosition;
-        document.body.style.width = originalWidth;
-        document.body.style.height = originalHeight;
+        body.style.overflow = origStyles.bodyOverflow;
+        body.style.position = origStyles.bodyPosition;
+        body.style.width = origStyles.bodyWidth;
+        body.style.height = origStyles.bodyHeight;
+        body.style.touchAction = origStyles.bodyTouchAction;
+        body.style.overscrollBehavior = origStyles.bodyOverscroll;
+        html.style.overflow = origStyles.htmlOverflow;
+        html.style.overscrollBehavior = origStyles.htmlOverscroll;
+        document.removeEventListener('touchmove', preventScroll);
       };
     }
   }, [isMobile]);
@@ -252,7 +279,7 @@ export default function Messages() {
         {/* Conversation List */}
         {showConvList && (
           <div className={`${isMobile ? 'w-full' : 'w-80 flex-shrink-0'} flex flex-col border border-border rounded-lg overflow-hidden`}>
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto messages-scroll-area">
               {convsLoading ? (
                 <div className="p-4 space-y-3">
                   {[...Array(3)].map((_, i) => (
@@ -382,7 +409,7 @@ export default function Messages() {
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 messages-scroll-area">
                   {convMessages?.map((msg: any) => {
                     const isMine = msg.sender_id === user.id;
                     const translated = !isMine && translations?.[msg.id];
