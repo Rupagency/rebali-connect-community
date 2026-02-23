@@ -178,6 +178,26 @@ export default function Messages() {
     }
   }, [activeConvId, user, convMessages]);
 
+  // Lock body scroll on mobile to prevent iOS rubber-band scrolling
+  useEffect(() => {
+    if (isMobile) {
+      const original = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalWidth = document.body.style.width;
+      const originalHeight = document.body.style.height;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+      return () => {
+        document.body.style.overflow = original;
+        document.body.style.position = originalPosition;
+        document.body.style.width = originalWidth;
+        document.body.style.height = originalHeight;
+      };
+    }
+  }, [isMobile]);
+
   // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
