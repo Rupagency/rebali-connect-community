@@ -547,14 +547,15 @@ export default function Profile() {
             </div>
             <div>
               <Label>{t('profile.preferredLang')}</Label>
-              <Select value={form.preferred_lang} onValueChange={v => setForm(f => ({ ...f, preferred_lang: v }))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {SUPPORTED_LANGUAGES.map(l => (
-                    <SelectItem key={l.code} value={l.code}>{l.flag} {l.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <select
+                value={form.preferred_lang}
+                onChange={e => setForm(f => ({ ...f, preferred_lang: e.target.value }))}
+                className="flex h-10 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                {SUPPORTED_LANGUAGES.map(l => (
+                  <option key={l.code} value={l.code}>{l.flag} {l.name}</option>
+                ))}
+              </select>
             </div>
           </div>
           <Button onClick={handleSave} disabled={loading} className="w-full">{t('common.save')}</Button>
