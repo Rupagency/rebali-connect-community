@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
 import { User, Briefcase } from 'lucide-react';
+import { PasswordInput } from '@/components/PasswordInput';
+import { PasswordStrength } from '@/components/PasswordStrength';
 
 export default function Auth() {
   const { t } = useLanguage();
@@ -127,7 +129,7 @@ export default function Auth() {
                 </div>
                 <div>
                   <Label>{t('auth.password')}</Label>
-                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                  <PasswordInput value={password} onChange={e => setPassword(e.target.value)} required />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>{t('common.login')}</Button>
                 <div className="flex justify-between text-sm">
@@ -189,11 +191,12 @@ export default function Auth() {
                 </div>
                 <div>
                   <Label>{t('auth.password')}</Label>
-                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} minLength={6} required />
+                  <PasswordInput value={password} onChange={e => setPassword(e.target.value)} minLength={6} required />
+                  <PasswordStrength password={password} />
                 </div>
                 <div>
                   <Label>{t('auth.confirmPassword')}</Label>
-                  <Input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+                  <PasswordInput value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>{t('common.signup')}</Button>
               </form>
