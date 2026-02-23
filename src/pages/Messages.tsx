@@ -167,6 +167,15 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['last-messages'] });
     queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+    // Send WhatsApp notification to recipient (fire and forget)
+    supabase.functions.invoke('notify-whatsapp', {
+      body: {
+        conversation_id: activeConvId,
+        sender_id: user.id,
+        message_preview: content,
+      },
+    }).catch(() => {}); // silent fail
   };
 
   if (loading) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.loading')}</div>;
