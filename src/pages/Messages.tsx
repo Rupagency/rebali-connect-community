@@ -293,7 +293,7 @@ export default function Messages() {
 
         {/* Chat */}
         {showChat && (
-          <div className="flex-1 flex flex-col border border-border rounded-lg overflow-hidden">
+          <div className="flex-1 flex flex-col border border-border rounded-lg overflow-hidden min-h-0">
             {activeConv ? (
               <>
                 {/* Header */}
