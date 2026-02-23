@@ -551,24 +551,17 @@ export default function ListingDetail() {
                     <ChevronRight className="h-5 w-5 text-muted-foreground" />
                   </Link>
 
-                  {/* CTA Buttons - WhatsApp Proxy */}
+                  {/* CTA Buttons - In-app chat primary */}
                   <div className="space-y-2.5">
                     {user && user.id !== listing.seller_id ? (
-                      <Button className="w-full gap-2 rounded-full font-bold text-base h-12" asChild>
-                        <a
-                          href={`https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?\n—\nref:RB|L=${listing.id}|B=${user.id}|`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => { supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id }); }}
-                        >
-                          <MessageCircle className="h-5 w-5" />
-                          {t('listing.contactWhatsApp')}
-                        </a>
+                      <Button className="w-full gap-2 rounded-full font-bold text-base h-12" onClick={handleSendMessage}>
+                        <MessageCircle className="h-5 w-5" />
+                        {t('messages.sendMessage')}
                       </Button>
                     ) : !user ? (
                       <Button className="w-full gap-2 rounded-full font-bold text-base h-12" onClick={() => setLoginDialogOpen(true)}>
                         <MessageCircle className="h-5 w-5" />
-                        {t('listing.contactWhatsApp')}
+                        {t('messages.sendMessage')}
                       </Button>
                     ) : null}
                     {seller?.phone_verified && (
@@ -576,12 +569,6 @@ export default function ListingDetail() {
                         <ShieldCheck className="h-4 w-4" />
                         {t('listing.phoneVerified')}
                       </div>
-                    )}
-                    {user && user.id !== listing.seller_id && (
-                      <Button variant="secondary" className="w-full gap-2 rounded-full font-bold text-base h-12" onClick={handleSendMessage}>
-                        <MessageCircle className="h-5 w-5" />
-                        {t('messages.sendMessage')}
-                      </Button>
                     )}
                   </div>
                 </CardContent>
@@ -613,84 +600,11 @@ export default function ListingDetail() {
         <Button className="flex-1 gap-2 rounded-full font-bold text-base h-12" onClick={() => {
               if (!user) { setLoginDialogOpen(true); return; }
               if (user.id === listing.seller_id) return;
-              if (!customMessage) {
-                setCustomMessage(`Hi, I'm interested in your item "${title}" at ${formatPrice(listing.price, listing.currency)}. Is it still available?`);
-              }
-              setMobileContactOpen(true);
+              handleSendMessage();
             }}>
               <MessageCircle className="h-5 w-5" />
-              {t('listing.contactWhatsApp')}
+              {t('messages.sendMessage')}
             </Button>
-
-        <Drawer open={mobileContactOpen} onOpenChange={setMobileContactOpen}>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>{t('listing.contactWhatsApp')}</DrawerTitle>
-            </DrawerHeader>
-            <div className="px-4 pb-6 space-y-4">
-              {/* Seller info */}
-              <Link to={`/seller/${seller?.id}`} className="flex items-center gap-3 group" onClick={() => setMobileContactOpen(false)}>
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  {seller?.avatar_url ? (
-                    <img src={seller.avatar_url} className="w-full h-full rounded-full object-cover" alt="" />
-                  ) : (
-                    <User className="h-6 w-6 text-primary" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <p className="font-bold group-hover:text-primary transition-colors">{seller?.display_name || 'User'}</p>
-                    {seller?.is_verified_seller && <ShieldCheck className="h-4 w-4 text-green-600" />}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    {avgRating && (
-                      <span className="flex items-center gap-0.5">
-                        <Star className="h-3.5 w-3.5 text-accent fill-accent" />
-                        {avgRating} ({sellerReviews?.length})
-                      </span>
-                    )}
-                    <span>{sellerListingCount} {t('seller.activeListings')}</span>
-                  </div>
-                </div>
-                <ChevronRight className="h-5 w-5 text-muted-foreground" />
-              </Link>
-
-              {isPro && (
-                <Badge className="bg-primary text-primary-foreground gap-1 rounded-full">
-                  <Briefcase className="h-3.5 w-3.5" />
-                  Pro
-                </Badge>
-              )}
-
-              <Separator />
-
-              {/* Message form */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">{t('listing.yourMessage')}</label>
-                <Textarea
-                  value={customMessage}
-                  onChange={(e) => setCustomMessage(e.target.value)}
-                  rows={3}
-                  className="resize-none"
-                />
-              </div>
-
-              {/* Send via WhatsApp */}
-              <Button 
-                className="w-full gap-2 rounded-full font-bold text-base h-12" 
-                onClick={() => {
-                  const waUrl = `https://wa.me/${REBALI_WA_NUMBER}?text=${encodeURIComponent(`${customMessage}\n—\nref:RB|L=${listing.id}|B=${user?.id || ''}|`)}`;
-                  window.open(waUrl, '_blank', 'noopener,noreferrer');
-                  if (user) supabase.from('whatsapp_click_logs').insert({ listing_id: listing.id, user_id: user.id });
-                  setMobileContactOpen(false);
-                }}
-              >
-                <MessageCircle className="h-5 w-5" />
-                {t('listing.sendViaWhatsApp')}
-              </Button>
-            </div>
-          </DrawerContent>
-        </Drawer>
       </div>
 
       {/* Login Dialog */}
