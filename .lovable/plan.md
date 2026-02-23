@@ -1,67 +1,115 @@
 
-# Systeme de Badges et Indice de Confiance
 
-## Objectif
-Creer un systeme de badges visuels attribues automatiquement aux utilisateurs en fonction de leur activite (anciennete, annonces, messages, avis) et afficher un indice de confiance clair sur les profils et les annonces.
+# Systeme "Deal Conclu" + Avis Verifies
 
-## Badges proposes
+## Resume
 
-| Badge | Condition | Icone |
-|-------|-----------|-------|
-| Nouveau membre | Inscription < 7 jours | Sprout |
-| Membre actif | Inscription > 30 jours | Clock |
-| Veteran | Inscription > 6 mois | Award |
-| Ancien | Inscription > 1 an | Crown |
-| Premier vendeur | 1+ annonce publiee | Package |
-| Vendeur actif | 5+ annonces publiees (cumul) | TrendingUp |
-| Communicant | 10+ messages envoyes | MessageCircle |
-| Super communicant | 50+ messages envoyes | MessagesSquare |
-| Bien note | Note moyenne >= 4/5 avec 3+ avis | Star |
-| Top vendeur | Note >= 4.5/5 avec 10+ avis | Trophy |
-| WhatsApp verifie | Telephone verifie | CheckCircle |
-| Identite verifiee | Vendeur verifie | ShieldCheck |
+Quand un vendeur clique sur "Deal conclu" dans une conversation, l'annonce passe en statut "sold" (vendu), toutes les autres conversations pour cette annonce sont fermees, et seul l'acheteur concerne peut laisser un avis -- sous conditions strictes.
+
+## Flux utilisateur
+
+```text
+Conversation active entre vendeur et acheteur
+  -> Vendeur clique "Deal conclu" (toujours visible)
+  -> Confirmation dialog
+  -> L'annonce passe en statut "sold"
+  -> L'annonce disparait des resultats de recherche
+  -> Toutes les autres conversations pour cette annonce sont marquees "closed"
+  -> Un message systeme apparait dans chaque conversation fermee
+  -> L'acheteur peut laisser un avis SI :
+     1. Les deux comptes (vendeur + acheteur) ont plus de 7 jours
+     2. La conversation contient des vrais messages texte des deux cotes (pas juste le premier message auto)
+     3. La conversation a un deal_closed = true avec cet acheteur
+```
+
+## Conditions pour le rating
+
+| Condition | Raison |
+|-----------|--------|
+| `deal_closed = true` sur la conversation | Preuve que le vendeur confirme la transaction |
+| Compte acheteur > 7 jours | Empeche les comptes jetables crees pour fake rating |
+| Compte vendeur > 7 jours | Empeche un nouveau vendeur de se fake-noter via un complice |
+| Messages texte des deux cotes | Un vrai echange a eu lieu (pas juste un contact initial sans reponse) |
 
 ## Plan technique
 
-### 1. Pas de nouvelle table DB
-Les badges seront calcules dynamiquement cote client a partir des donnees existantes (profil, compteurs). Cela evite la complexite d'une table supplementaire et de la synchronisation. Les donnees necessaires existent deja :
-- `profiles.created_at` pour l'anciennete
-- `profiles.phone_verified` et `profiles.is_verified_seller` pour les verifications
-- Comptage des `listings` pour les badges vendeur
-- Comptage des `messages` pour les badges communicant
-- `reviews` pour la note moyenne
+### 1. Migration base de donnees
 
-### 2. Nouveau composant `src/components/UserBadges.tsx`
-- Recoit un `userId` en prop
-- Utilise `react-query` pour fetcher les compteurs necessaires (listings total, messages envoyes, reviews)
-- Calcule les badges applicables
-- Affiche une rangee de badges colores avec tooltips
+**Nouveau statut listing** : Ajouter `'sold'` au type enum `listing_status` pour distinguer "vendu" de "archive".
 
-### 3. Nouveau composant `src/components/TrustIndicator.tsx`
-- Recoit le `trust_score` et `risk_level` du profil
-- Affiche une jauge visuelle (barre de progression coloree) avec le score sur 100
-- Couleur : vert (>= 60), orange (30-59), rouge (< 30)
+**Table `conversations`** -- 3 nouvelles colonnes :
+- `deal_closed` (boolean, default false)
+- `deal_closed_at` (timestamptz, nullable)
+- `deal_closed_by` (uuid, nullable)
 
-### 4. Integration dans les pages existantes
-- **Profile.tsx** : Ajouter `UserBadges` et `TrustIndicator` dans la carte header, sous les stats existantes
-- **SellerProfile.tsx** : Ajouter `UserBadges` et `TrustIndicator` dans la carte vendeur
-- **ListingCard.tsx** : Optionnel - on pourrait afficher 1-2 badges cles (Verifie, Veteran) mais pour garder la card legere, on se concentre sur les profils
+**Table `reviews`** -- 2 nouvelles colonnes :
+- `conversation_id` (uuid, nullable, UNIQUE) -- lie l'avis a une conversation, empeche les doublons
+- `is_verified_purchase` (boolean, default false)
 
-### 5. Edge function `calculate-trust-score` mise a jour
-- Ajouter le facteur "messages envoyes" (+1 par tranche de 10 messages, max 10 points)
-- Ajouter le facteur "avis positifs" (+2 par avis >= 4 etoiles, max 15 points)
-- Recalcul des poids pour equilibrer le score total sur 100
+**RLS `reviews` INSERT** -- remplacer la politique actuelle par une qui verifie :
+- `auth.uid() = reviewer_id AND reviewer_id != seller_id`
+- Il existe une conversation qualifiante :
+  - `deal_closed = true`
+  - `buyer_id = auth.uid()`
+  - Les deux profils (acheteur et vendeur) ont `created_at < now() - 7 days`
+  - Il existe au moins 1 message du buyer ET 1 message du seller dans cette conversation
 
-### 6. Traductions
-- Ajouter les cles `badges.*` dans `en.json` et `fr.json` (les autres langues en fallback anglais)
+### 2. Bouton "Deal conclu" dans Messages.tsx
 
-## Fichiers a creer
-- `src/components/UserBadges.tsx`
-- `src/components/TrustIndicator.tsx`
+- Visible uniquement par le **vendeur** (`activeConv.seller_id === user.id`)
+- Toujours visible tant que `deal_closed` est false
+- Au clic, dialog de confirmation avec nom de l'acheteur et annonce
+- Actions a la confirmation :
+  1. Update conversation : `deal_closed = true, deal_closed_at = now(), deal_closed_by = user.id`
+  2. Update listing : `status = 'sold'`
+  3. Fermer toutes les AUTRES conversations pour ce listing (update `relay_status = 'closed'`)
+  4. Inserer un message systeme dans la conversation active ("Deal conclu")
+  5. Inserer un message systeme dans les conversations fermees ("Ce produit a ete vendu")
+  6. Invalider les queries
 
-## Fichiers a modifier
-- `src/pages/Profile.tsx` - integration des badges et jauge
-- `src/pages/SellerProfile.tsx` - integration des badges et jauge
-- `src/i18n/translations/en.json` - nouvelles cles badges
-- `src/i18n/translations/fr.json` - traductions francaises
-- `supabase/functions/calculate-trust-score/index.ts` - ajout facteurs messages et avis
+### 3. Affichage dans la conversation
+
+- Si `deal_closed = true` : bandeau vert "Deal conclu le [date]"
+- Si `relay_status = 'closed'` et pas deal_closed : bandeau gris "Ce produit a ete vendu par le vendeur"
+- Conversation fermee : input desactive, message explicatif
+
+### 4. SellerProfile.tsx -- Avis conditionnes
+
+- Le bouton "Laisser un avis" apparait uniquement si :
+  - L'utilisateur est connecte et n'est pas le vendeur
+  - Une conversation avec `deal_closed = true` existe ou il est buyer
+  - Son compte a plus de 7 jours
+  - Le compte vendeur a plus de 7 jours
+  - Des messages des deux cotes existent
+  - Pas encore d'avis pour cette conversation
+- Messages explicatifs selon la condition non remplie
+- Badge "Acheteur verifie" (CheckCircle vert) sur les avis avec `is_verified_purchase = true`
+
+### 5. Traductions
+
+Nouvelles cles en.json / fr.json :
+- `messages.dealClosed`, `messages.dealClosedConfirm`, `messages.dealClosedSuccess`
+- `messages.dealClosedBanner`, `messages.productSold`
+- `messages.conversationClosed`
+- `seller.verifiedPurchase`, `seller.reviewRequiresDeal`
+- `seller.accountTooNew`, `seller.noExchangeYet`, `seller.alreadyReviewed`
+
+## Fichiers concernes
+
+| Fichier | Action |
+|---------|--------|
+| Migration SQL | Enum `listing_status` + colonnes conversations/reviews + RLS |
+| `src/pages/Messages.tsx` | Bouton "Deal conclu", bandeau statut, blocage input conversations fermees |
+| `src/pages/SellerProfile.tsx` | Logique avis conditionnes + badge "Acheteur verifie" |
+| `src/i18n/translations/en.json` | Nouvelles cles |
+| `src/i18n/translations/fr.json` | Traductions |
+
+## Securite
+
+- Le vendeur seul peut marquer un deal (verifie client + RLS serveur)
+- Seul l'acheteur du deal peut noter (RLS enforce via `buyer_id = auth.uid()`)
+- Comptes < 7 jours bloques au niveau RLS (impossible de contourner cote client)
+- Echange reel requis (messages des deux cotes verifie en RLS)
+- Un seul avis par conversation (contrainte UNIQUE)
+- Les politiques UPDATE/DELETE sur reviews restent inchangees
+
