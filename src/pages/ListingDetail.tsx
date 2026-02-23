@@ -319,18 +319,25 @@ export default function ListingDetail() {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(window.location.href); toast({ title: t('listing.linkCopied') }); }}>
-                      <Link2 className="h-4 w-4 mr-2" />
-                      {t('share.copyLink')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank', 'width=600,height=400')}>
-                      <Facebook className="h-4 w-4 mr-2" />
-                      {t('share.facebook')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => window.open(`https://www.instagram.com/stories/create/?url=${encodeURIComponent(window.location.href)}`, '_blank')}>
-                      <Instagram className="h-4 w-4 mr-2" />
-                      {t('share.instagramStory')}
-                    </DropdownMenuItem>
+                    {(() => {
+                      const shareUrl = `https://re-bali.com/listing/${id}`;
+                      return (
+                        <>
+                          <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(shareUrl); toast({ title: t('listing.linkCopied') }); }}>
+                            <Link2 className="h-4 w-4 mr-2" />
+                            {t('share.copyLink')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400')}>
+                            <Facebook className="h-4 w-4 mr-2" />
+                            {t('share.facebook')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => window.open(`https://www.instagram.com/stories/create/?url=${encodeURIComponent(shareUrl)}`, '_blank')}>
+                            <Instagram className="h-4 w-4 mr-2" />
+                            {t('share.instagramStory')}
+                          </DropdownMenuItem>
+                        </>
+                      );
+                    })()}
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <button
