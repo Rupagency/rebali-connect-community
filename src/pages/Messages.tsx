@@ -227,8 +227,8 @@ export default function Messages() {
 
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
-      <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>
-      <div className="flex gap-4 h-[calc(100vh-12rem)]">
+      {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
+      <div className="flex gap-4 h-[calc(100vh-10rem)] md:h-[calc(100vh-12rem)]">
         {/* Conversation List */}
         {showConvList && (
           <div className={`${isMobile ? 'w-full' : 'w-80 flex-shrink-0'} flex flex-col border border-border rounded-lg overflow-hidden`}>
@@ -315,11 +315,11 @@ export default function Messages() {
                    </div>
                    <AlertDialog>
                      <AlertDialogTrigger asChild>
-                       <Button variant="outline" size="sm" className="gap-1.5 text-xs">
-                         <Share2 className="h-3.5 w-3.5" />
-                         {t('messages.shareInfo')}
-                       </Button>
-                     </AlertDialogTrigger>
+                        <Button variant="outline" size="sm" className="gap-1.5 text-xs flex-shrink-0">
+                          <Share2 className="h-3.5 w-3.5" />
+                          <span className="hidden sm:inline">{t('messages.shareInfo')}</span>
+                        </Button>
+                      </AlertDialogTrigger>
                      <AlertDialogContent>
                        <AlertDialogHeader>
                          <AlertDialogTitle className="flex items-center gap-2">
