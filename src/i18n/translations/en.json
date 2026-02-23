@@ -282,7 +282,15 @@
     "you": "You",
     "sendMessage": "Send a message",
     "conversationStarted": "Conversation started!",
-    "whatsappRequired": "Please verify your WhatsApp number before sending messages."
+    "whatsappRequired": "Please verify your WhatsApp number before sending messages.",
+    "shareInfo": "Share my info",
+    "shareInfoTitle": "Share your contact information?",
+    "shareInfoWarning": "You are about to share your personal contact details (WhatsApp number) with this user. By proceeding:",
+    "shareInfoBullet1": "Your WhatsApp number will be visible to this person.",
+    "shareInfoBullet2": "Re-Bali cannot be held responsible for any interactions that occur outside the platform.",
+    "shareInfoBullet3": "Be cautious of potential scams. Never send money before meeting in person.",
+    "shareInfoConfirm": "I understand, share my info",
+    "shareInfoSent": "Your contact info has been shared."
   },
   "extraFields": {
     "contractType": "Contract Type", "jobSector": "Industry Sector", "workTime": "Work Schedule",

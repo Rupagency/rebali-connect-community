@@ -132,7 +132,15 @@
     "you": "Vous",
     "sendMessage": "Envoyer un message",
     "conversationStarted": "Conversation démarrée !",
-    "whatsappRequired": "Veuillez valider votre numéro WhatsApp avant d'envoyer des messages."
+    "whatsappRequired": "Veuillez valider votre numéro WhatsApp avant d'envoyer des messages.",
+    "shareInfo": "Partager mes infos",
+    "shareInfoTitle": "Partager vos coordonnées ?",
+    "shareInfoWarning": "Vous êtes sur le point de partager vos coordonnées personnelles (numéro WhatsApp) avec cet utilisateur. En continuant :",
+    "shareInfoBullet1": "Votre numéro WhatsApp sera visible par cette personne.",
+    "shareInfoBullet2": "Re-Bali ne peut être tenu responsable des échanges ayant lieu en dehors de la plateforme.",
+    "shareInfoBullet3": "Méfiez-vous des arnaques. N'envoyez jamais d'argent avant de vous rencontrer en personne.",
+    "shareInfoConfirm": "Je comprends, partager mes infos",
+    "shareInfoSent": "Vos coordonnées ont été partagées."
   },
   "extraFields": {
     "contractType": "Type de contrat", "jobSector": "Secteur d'activité", "workTime": "Temps de travail",

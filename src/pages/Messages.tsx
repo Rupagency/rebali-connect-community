@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Send, ArrowLeft, MessageCircle, User, Languages } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Send, ArrowLeft, MessageCircle, User, Languages, Share2, AlertTriangle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -306,12 +307,58 @@ export default function Messages() {
                     <AvatarImage src={otherUser?.avatar_url || ''} />
                     <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm">{otherUser?.display_name || 'User'}</p>
-                    <Link to={`/listing/${activeConv.listing_id}`} className="text-xs text-primary hover:underline truncate block">
-                      {activeConv.listings?.title_original}
-                    </Link>
-                  </div>
+                   <div className="flex-1 min-w-0">
+                     <p className="font-semibold text-sm">{otherUser?.display_name || 'User'}</p>
+                     <Link to={`/listing/${activeConv.listing_id}`} className="text-xs text-primary hover:underline truncate block">
+                       {activeConv.listings?.title_original}
+                     </Link>
+                   </div>
+                   <AlertDialog>
+                     <AlertDialogTrigger asChild>
+                       <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+                         <Share2 className="h-3.5 w-3.5" />
+                         {t('messages.shareInfo')}
+                       </Button>
+                     </AlertDialogTrigger>
+                     <AlertDialogContent>
+                       <AlertDialogHeader>
+                         <AlertDialogTitle className="flex items-center gap-2">
+                           <AlertTriangle className="h-5 w-5 text-destructive" />
+                           {t('messages.shareInfoTitle')}
+                         </AlertDialogTitle>
+                         <AlertDialogDescription asChild>
+                           <div className="space-y-3">
+                             <p>{t('messages.shareInfoWarning')}</p>
+                             <ul className="list-disc pl-5 space-y-1.5 text-sm">
+                               <li>{t('messages.shareInfoBullet1')}</li>
+                               <li className="font-semibold text-destructive">{t('messages.shareInfoBullet2')}</li>
+                               <li>{t('messages.shareInfoBullet3')}</li>
+                             </ul>
+                           </div>
+                         </AlertDialogDescription>
+                       </AlertDialogHeader>
+                       <AlertDialogFooter>
+                         <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                         <AlertDialogAction
+                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                           onClick={async () => {
+                             if (!user || !activeConvId || !profile?.whatsapp) return;
+                             const shareMsg = `📞 ${profile.display_name || 'User'}\nWhatsApp: ${profile.whatsapp}`;
+                             await supabase.from('messages').insert({
+                               conversation_id: activeConvId,
+                               sender_id: user.id,
+                               content: shareMsg,
+                             });
+                             await supabase.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', activeConvId);
+                             queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+                             toast({ title: t('messages.shareInfoSent') });
+                           }}
+                         >
+                           {t('messages.shareInfoConfirm')}
+                         </AlertDialogAction>
+                       </AlertDialogFooter>
+                     </AlertDialogContent>
+                   </AlertDialog>
                 </div>
 
                 {/* Messages */}
