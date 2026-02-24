@@ -367,6 +367,12 @@
     "addon": { "boost": "تعزيز الإعلان", "boostDesc": "ارفع إعلانك لأعلى النتائج لمدة 48 ساعة", "boost_premium": "إعلان مميز", "boost_premiumDesc": "مميز على الصفحة الرئيسية ببطاقة أكبر لمدة 48 ساعة", "vip": "حساب VIP", "vipDesc": "شارة VIP، +10% أولوية بحث، تعزيز مجاني لمدة 30 يوماً", "extra_listings": "5 إعلانات إضافية", "extra_listingsDesc": "5 أماكن إعلانية إضافية لمدة 30 يوماً", "protection": "بائع أولوية", "protectionDesc": "شارة بائع أولوية و+20% ظهور طبيعي لمدة 30 يوماً" },
     "dynamic": { "completed_deal": "صفقة مكتملة", "five_star_review": "تقييم 5★ مستلم", "validated_report": "بلاغ احتيال مؤكد" },
     "boostSelectTitle": "تعزيز إعلان", "boostSelectDesc": "اختر الإعلان الذي تريد رفعه لمدة 48 ساعة",
-    "noActiveListings": "لا توجد إعلانات نشطة للتعزيز"
+    "noActiveListings": "لا توجد إعلانات نشطة للتعزيز",
+    "buyPoints": "شراء نقاط",
+    "buyPointsDesc": "اشحن رصيدك فوراً بحزمة نقاط",
+    "buyPointsComingSoon": "الدفع الإلكتروني قريباً!",
+    "buyPointsComingSoonDesc": "الدفع عبر Xendit / DOKU سيكون متاحاً قريباً. حالياً، اكسب النقاط من خلال الشارات والنشاط.",
+    "pack": { "starter": "حزمة المبتدئين", "starterDesc": "مثالية لتجربة أول تعزيز", "popular": "حزمة شائعة", "popularDesc": "أفضل قيمة — الأكثر مبيعاً", "premium": "حزمة متميزة", "premiumDesc": "للبائعين المحترفين", "mega": "حزمة ميغا", "megaDesc": "أقصى نقاط، أقصى توفير" },
+    "packPoints": "{pts} نقطة", "packPrice": "Rp {price}", "bestValue": "أفضل قيمة", "comingSoon": "قريباً", "paymentMethods": "الدفع عبر Xendit / DOKU"
   }
 }

@@ -367,6 +367,12 @@
     "addon": { "boost": "विज्ञापन बूस्ट", "boostDesc": "48 घंटे के लिए शीर्ष पर लाएं", "boost_premium": "फीचर्ड विज्ञापन", "boost_premiumDesc": "48 घंटे के लिए होमपेज पर बड़े कार्ड के साथ", "vip": "VIP खाता", "vipDesc": "VIP बैज, +10% खोज प्राथमिकता, 30 दिनों के लिए 1 मुफ़्त बूस्ट", "extra_listings": "अतिरिक्त 5 विज्ञापन", "extra_listingsDesc": "30 दिनों के लिए 5 अतिरिक्त स्लॉट", "protection": "प्राथमिकता विक्रेता", "protectionDesc": "प्राथमिकता विक्रेता बैज और +20% दृश्यता 30 दिन" },
     "dynamic": { "completed_deal": "पूर्ण सौदा", "five_star_review": "5★ समीक्षा प्राप्त", "validated_report": "सत्यापित धोखाधड़ी रिपोर्ट" },
     "boostSelectTitle": "विज्ञापन बूस्ट करें", "boostSelectDesc": "48 घंटे के लिए शीर्ष पर लाने के लिए विज्ञापन चुनें",
-    "noActiveListings": "बूस्ट करने के लिए कोई सक्रिय विज्ञापन नहीं"
+    "noActiveListings": "बूस्ट करने के लिए कोई सक्रिय विज्ञापन नहीं",
+    "buyPoints": "पॉइंट्स खरीदें",
+    "buyPointsDesc": "पॉइंट पैक से अपना बैलेंस तुरंत रिचार्ज करें",
+    "buyPointsComingSoon": "ऑनलाइन भुगतान जल्द आ रहा है!",
+    "buyPointsComingSoonDesc": "Xendit / DOKU से भुगतान जल्द ही उपलब्ध होगा। अभी बैज और गतिविधि से पॉइंट कमाएं।",
+    "pack": { "starter": "स्टार्टर पैक", "starterDesc": "पहला बूस्ट आज़माने के लिए उपयुक्त", "popular": "लोकप्रिय पैक", "popularDesc": "सबसे अच्छा मूल्य — सबसे ज़्यादा खरीदा गया", "premium": "प्रीमियम पैक", "premiumDesc": "पावर सेलर्स के लिए", "mega": "मेगा पैक", "megaDesc": "अधिकतम पॉइंट, अधिकतम बचत" },
+    "packPoints": "{pts} पॉइंट", "packPrice": "Rp {price}", "bestValue": "सर्वोत्तम मूल्य", "comingSoon": "जल्द आ रहा है", "paymentMethods": "Xendit / DOKU से भुगतान"
   }
 }

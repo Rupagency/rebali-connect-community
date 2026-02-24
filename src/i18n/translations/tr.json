@@ -367,6 +367,12 @@
     "addon": { "boost": "İlan Öne Çıkarma", "boostDesc": "Bir ilanı 48 saat sonuçların başına çıkarın", "boost_premium": "Öne Çıkan İlan", "boost_premiumDesc": "48 saat ana sayfada büyük kartla gösterilir", "vip": "VIP Hesap", "vipDesc": "VIP rozeti, +%10 arama önceliği, 30 gün 1 ücretsiz boost", "extra_listings": "Ekstra 5 İlan", "extra_listingsDesc": "30 gün boyunca 5 ek ilan yeri", "protection": "Öncelikli Satıcı", "protectionDesc": "Öncelikli Satıcı rozeti ve +%20 organik görünürlük 30 gün" },
     "dynamic": { "completed_deal": "Tamamlanan anlaşma", "five_star_review": "5★ değerlendirme alındı", "validated_report": "Doğrulanmış dolandırıcılık raporu" },
     "boostSelectTitle": "Bir ilanı öne çıkar", "boostSelectDesc": "48 saat sonuçların başına çıkarmak istediğiniz ilanı seçin",
-    "noActiveListings": "Öne çıkarılacak aktif ilan yok"
+    "noActiveListings": "Öne çıkarılacak aktif ilan yok",
+    "buyPoints": "Puan Satın Al",
+    "buyPointsDesc": "Bir puan paketiyle bakiyenizi anında doldurun",
+    "buyPointsComingSoon": "Online ödeme yakında!",
+    "buyPointsComingSoonDesc": "Xendit / DOKU ile ödeme yakında kullanılabilir olacak. Şimdilik rozetler ve aktivitelerle puan kazanın.",
+    "pack": { "starter": "Başlangıç Paketi", "starterDesc": "İlk boost'unuzu denemek için ideal", "popular": "Popüler Paket", "popularDesc": "En iyi değer — en çok satılan", "premium": "Premium Paket", "premiumDesc": "Her şeyi isteyen satıcılar için", "mega": "Mega Paket", "megaDesc": "Maksimum puan, maksimum tasarruf" },
+    "packPoints": "{pts} puan", "packPrice": "Rp {price}", "bestValue": "En İyi Değer", "comingSoon": "Yakında", "paymentMethods": "Xendit / DOKU ile ödeme"
   }
 }
