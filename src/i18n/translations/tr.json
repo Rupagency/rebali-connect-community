@@ -193,7 +193,7 @@
   },
   "footer": {
     "tagline": "Bali'nin güvenilir pazar yeri", "marketplace": "Pazar Yeri", "company": "Şirket", "legal": "Yasal",
-    "terms": "Kullanım Şartları", "privacy": "Gizlilik Politikası", "copyright": "Tüm hakları saklıdır."
+    "terms": "Kullanım Şartları", "privacy": "Gizlilik Politikası", "copyright": "Tüm hakları saklıdır.", "trustBadgesPoints": "Güven, Rozetler ve Puanlar"
   },
   "notFound": { "title": "Sayfa bulunamadı", "description": "Aradığınız sayfa mevcut değil.", "backHome": "Ana Sayfaya Dön" },
   "notifications": { "newListing": "Yeni ilan!", "listingActive": "İlan yeniden etkinleştirildi", "listingSold": "İlan satıldı olarak işaretlendi", "listingArchived": "İlan arşivlendi", "vipNotify": "VIP başladığında bildirileceksiniz!" },
