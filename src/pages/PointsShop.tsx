@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles } from 'lucide-react';
@@ -50,6 +51,9 @@ export default function PointsShop() {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [purchasing, setPurchasing] = useState<string | null>(null);
+  const [boostDialogOpen, setBoostDialogOpen] = useState(false);
+  const [userListings, setUserListings] = useState<{ id: string; title_original: string }[]>([]);
+  const [loadingListings, setLoadingListings] = useState(false);
 
   const fetchData = async () => {
     if (!user) return;
@@ -82,10 +86,24 @@ export default function PointsShop() {
     setSyncing(false);
   };
 
-  const purchaseAddon = async (addonType: string) => {
+  const openBoostDialog = async () => {
+    setBoostDialogOpen(true);
+    setLoadingListings(true);
+    const { data } = await supabase
+      .from('listings')
+      .select('id, title_original')
+      .eq('seller_id', user!.id)
+      .eq('status', 'active')
+      .order('created_at', { ascending: false });
+    setUserListings(data || []);
+    setLoadingListings(false);
+  };
+
+  const purchaseAddon = async (addonType: string, listingId?: string) => {
     setPurchasing(addonType);
+    setBoostDialogOpen(false);
     const { data, error } = await supabase.functions.invoke('manage-points', {
-      body: { action: 'purchase', addon_type: addonType },
+      body: { action: 'purchase', addon_type: addonType, listing_id: listingId },
     });
     if (error || data?.error) {
       const msg = data?.error === 'insufficient_points' 
@@ -175,7 +193,7 @@ export default function PointsShop() {
                   <Button 
                     size="sm" 
                     disabled={!canAfford || purchasing === addon.type}
-                    onClick={() => purchaseAddon(addon.type)}
+                    onClick={() => addon.type === 'boost' ? openBoostDialog() : purchaseAddon(addon.type)}
                     className="mt-1"
                   >
                     {purchasing === addon.type ? '...' : t('points.buy')}
@@ -231,6 +249,40 @@ export default function PointsShop() {
           )}
         </CardContent>
       </Card>
+
+      {/* Boost Listing Selector Dialog */}
+      <Dialog open={boostDialogOpen} onOpenChange={setBoostDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Rocket className="h-5 w-5 text-blue-500" />
+              {t('points.boostSelectTitle')}
+            </DialogTitle>
+            <DialogDescription>{t('points.boostSelectDesc')}</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {loadingListings ? (
+              <div className="flex justify-center py-6">
+                <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : userListings.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">{t('points.noActiveListings')}</p>
+            ) : (
+              userListings.map(listing => (
+                <button
+                  key={listing.id}
+                  onClick={() => purchaseAddon('boost', listing.id)}
+                  disabled={purchasing === 'boost'}
+                  className="w-full text-left p-3 rounded-lg border hover:bg-accent/50 transition-colors flex items-center justify-between gap-2"
+                >
+                  <span className="text-sm font-medium truncate">{listing.title_original}</span>
+                  <Rocket className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                </button>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -295,6 +295,9 @@
       "vipDesc": "Obtenez le badge VIP et le support prioritaire pendant 30 jours",
       "extra_listings": "Annonces supplémentaires",
       "extra_listingsDesc": "Obtenez 3 emplacements d'annonces supplémentaires pendant 30 jours"
-    }
+    },
+    "boostSelectTitle": "Booster une annonce",
+    "boostSelectDesc": "Choisissez l'annonce à propulser en tête des résultats pendant 48h",
+    "noActiveListings": "Aucune annonce active à booster"
   }
 }

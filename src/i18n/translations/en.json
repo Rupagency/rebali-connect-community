@@ -446,6 +446,9 @@
       "vipDesc": "Get the VIP badge and priority support for 30 days",
       "extra_listings": "Extra Listings",
       "extra_listingsDesc": "Get 3 additional listing slots for 30 days"
-    }
+    },
+    "boostSelectTitle": "Boost a listing",
+    "boostSelectDesc": "Choose which listing to boost to the top of results for 48 hours",
+    "noActiveListings": "No active listings to boost"
   }
 }
