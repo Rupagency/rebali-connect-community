@@ -25,11 +25,10 @@ const FREE_FEATURES = [
 ];
 
 const PRO_FEATURES = [
-  { key: 'listings5', included: true },
+  { key: 'listings50', included: true },
   { key: 'basicSearch', included: true },
   { key: 'whatsappContact', included: true },
   { key: 'trustBadges', included: true },
-  { key: 'listings50', included: true },
   { key: 'freeBoosts', included: true },
   { key: 'analytics', included: true },
   { key: 'proBadge', included: true },
