@@ -3,13 +3,14 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ListingCard from '@/components/ListingCard';
+import ListingCardSmall from '@/components/ListingCardSmall';
 import AnimatedHeroText from '@/components/AnimatedHeroText';
 import { Search, Plus, ArrowRight, Star } from 'lucide-react';
 import CategoryMarquee from '@/components/CategoryMarquee';
 import { CATEGORIES, CATEGORY_ICONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
@@ -45,7 +46,7 @@ export default function Home() {
         .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller), favorites(count)')
         .eq('status', 'active')
         .order('created_at', { ascending: false })
-        .limit(8);
+        .limit(20);
       return data || [];
     },
   });
@@ -103,9 +104,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest Listings */}
+      {/* Latest Listings - Horizontal Scroll */}
       <section className="container mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-extrabold">{t('home.latest')}</h2>
           <Button variant="ghost" size="sm" asChild className="gap-1 text-primary hover:text-primary font-bold">
             <Link to="/browse">
@@ -114,34 +115,33 @@ export default function Home() {
             </Link>
           </Button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide -mx-4 px-4">
           {isLoading ? (
-            Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="space-y-2">
-                <Skeleton className="aspect-[4/3] w-full rounded-lg" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-5 w-1/2" />
-                <Skeleton className="h-3 w-full" />
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-[160px] sm:w-[180px] space-y-2">
+                <Skeleton className="aspect-square w-full rounded-lg" />
+                <Skeleton className="h-3 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
               </div>
             ))
           ) : listings && listings.length > 0 ? (
             listings.map((listing: any, i: number) => (
               <motion.div
                 key={listing.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.03 }}
               >
-                <ListingCard listing={listing} />
+                <ListingCardSmall listing={listing} />
               </motion.div>
             ))
           ) : (
-            <p className="col-span-full text-center text-muted-foreground py-8">{t('common.noResults')}</p>
+            <p className="text-center text-muted-foreground py-8 w-full">{t('common.noResults')}</p>
           )}
         </div>
       </section>
 
-      {/* Featured Listings (Boost Premium) */}
+      {/* Featured Listings (Boost Premium) - Horizontal Scroll */}
       <FeaturedListings />
 
       {/* How it works */}
@@ -252,31 +252,31 @@ function FeaturedListings() {
   if (!isLoading && (!featuredListings || featuredListings.length === 0)) return null;
 
   return (
-    <section className="container mx-auto px-4 py-10">
-      <div className="flex items-center justify-between mb-6">
+    <section className="container mx-auto px-4 pb-10">
+      <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
           <Star className="h-6 w-6 text-amber-500" />
           {t('home.featured')}
         </h2>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide -mx-4 px-4">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="space-y-2">
-              <Skeleton className="aspect-[4/3] w-full rounded-lg" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-5 w-1/2" />
+            <div key={i} className="flex-shrink-0 w-[160px] sm:w-[180px] space-y-2">
+              <Skeleton className="aspect-square w-full rounded-lg" />
+              <Skeleton className="h-3 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
             </div>
           ))
         ) : (
           featuredListings!.map((listing: any, i: number) => (
             <motion.div
               key={listing.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.03 }}
             >
-              <ListingCard listing={listing} />
+              <ListingCardSmall listing={listing} />
             </motion.div>
           ))
         )}
