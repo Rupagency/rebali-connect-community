@@ -230,6 +230,12 @@
     "dynamic": { "completed_deal": "Venta completada", "five_star_review": "Reseña 5★ recibida", "validated_report": "Reporte de estafa validado" },
     "boostSelectTitle": "Impulsar un anuncio",
     "boostSelectDesc": "Elige qué anuncio impulsar al tope de resultados por 48 horas",
-    "noActiveListings": "No tienes anuncios activos para impulsar"
+    "noActiveListings": "No tienes anuncios activos para impulsar",
+    "buyPoints": "Comprar Puntos",
+    "buyPointsDesc": "Recarga tu saldo al instante con un paquete de puntos",
+    "buyPointsComingSoon": "¡Pago en línea próximamente!",
+    "buyPointsComingSoonDesc": "El pago vía Xendit / DOKU estará disponible pronto. Mientras tanto, gana puntos con insignias y actividad.",
+    "pack": { "starter": "Pack Inicial", "starterDesc": "Perfecto para probar tu primer boost", "popular": "Pack Popular", "popularDesc": "Mejor valor — el más comprado", "premium": "Pack Premium", "premiumDesc": "Para vendedores que lo quieren todo", "mega": "Pack Mega", "megaDesc": "Máximos puntos, máximo ahorro" },
+    "packPoints": "{pts} puntos", "packPrice": "Rp {price}", "bestValue": "Mejor valor", "comingSoon": "Próximamente", "paymentMethods": "Pago vía Xendit / DOKU"
   }
 }

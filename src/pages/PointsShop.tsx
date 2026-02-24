@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp } from 'lucide-react';
+import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp, CreditCard, Zap, Lock } from 'lucide-react';
 
 interface PointsData {
   balance: number;
@@ -40,6 +40,13 @@ const ADDON_CONFIG = [
   { type: 'vip', icon: Crown, color: 'text-amber-500', bgColor: 'bg-amber-500/10 border-amber-500/20' },
   { type: 'extra_listings', icon: Package, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10 border-emerald-500/20' },
   { type: 'protection', icon: ShieldPlus, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10 border-cyan-500/20' },
+];
+
+const POINT_PACKS = [
+  { id: 'starter', points: 50, price: 15000, icon: Zap },
+  { id: 'popular', points: 150, price: 35000, icon: Star, bestValue: true },
+  { id: 'premium', points: 350, price: 70000, icon: Crown },
+  { id: 'mega', points: 800, price: 140000, icon: Sparkles },
 ];
 
 export default function PointsShop() {
@@ -232,6 +239,56 @@ export default function PointsShop() {
               </div>
             );
           })}
+        </CardContent>
+      </Card>
+
+      {/* Buy Points */}
+      <Card className="border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CreditCard className="h-5 w-5 text-primary" />
+            {t('points.buyPoints')}
+          </CardTitle>
+          <CardDescription>{t('points.buyPointsDesc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {POINT_PACKS.map(pack => {
+              const PackIcon = pack.icon;
+              return (
+                <div
+                  key={pack.id}
+                  className={`relative p-4 rounded-xl border-2 transition-all ${
+                    pack.bestValue
+                      ? 'border-primary bg-primary/5 shadow-md'
+                      : 'border-border hover:border-primary/40'
+                  }`}
+                >
+                  {pack.bestValue && (
+                    <Badge className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px]">
+                      {t('points.bestValue')}
+                    </Badge>
+                  )}
+                  <div className="flex flex-col items-center text-center gap-2 pt-1">
+                    <PackIcon className={`h-7 w-7 ${pack.bestValue ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <p className="font-bold text-sm">{t(`points.pack.${pack.id}`)}</p>
+                    <p className="text-xs text-muted-foreground">{t(`points.pack.${pack.id}Desc`)}</p>
+                    <p className="text-2xl font-bold text-primary">{pack.points}</p>
+                    <p className="text-[10px] text-muted-foreground">{t('points.packPrice').replace('{price}', pack.price.toLocaleString())}</p>
+                    <Button size="sm" disabled className="w-full gap-1.5 mt-1">
+                      <Lock className="h-3.5 w-3.5" />
+                      {t('points.comingSoon')}
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="p-3 rounded-lg bg-muted/50 border border-border text-center space-y-1">
+            <p className="text-sm font-medium">{t('points.buyPointsComingSoon')}</p>
+            <p className="text-xs text-muted-foreground">{t('points.buyPointsComingSoonDesc')}</p>
+            <p className="text-[10px] text-muted-foreground mt-2">{t('points.paymentMethods')}</p>
+          </div>
         </CardContent>
       </Card>
 

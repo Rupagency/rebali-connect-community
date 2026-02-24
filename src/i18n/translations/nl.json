@@ -211,6 +211,12 @@
     "addon": { "boost": "Advertentie boosten", "boostDesc": "Boost een advertentie naar de top voor 48 uur", "boost_premium": "Uitgelichte Advertentie", "boost_premiumDesc": "Uitgelicht op de homepagina met grotere kaart voor 48 uur", "vip": "VIP-account", "vipDesc": "VIP-badge, +10% zoekprioriteit, 1 gratis boost voor 30 dagen", "extra_listings": "Extra 5 Advertenties", "extra_listingsDesc": "5 extra advertentieplaatsen voor 30 dagen", "protection": "Prioriteitsverkoper", "protectionDesc": "Prioriteitsverkoper-badge en +20% organische zichtbaarheid voor 30 dagen" },
     "dynamic": { "completed_deal": "Afgeronde deal", "five_star_review": "5★-beoordeling ontvangen", "validated_report": "Gevalideerde fraudemelding" },
     "boostSelectTitle": "Een advertentie boosten", "boostSelectDesc": "Kies welke advertentie je wilt boosten voor 48 uur",
-    "noActiveListings": "Geen actieve advertenties om te boosten"
+    "noActiveListings": "Geen actieve advertenties om te boosten",
+    "buyPoints": "Punten kopen",
+    "buyPointsDesc": "Laad je saldo direct op met een puntenpakket",
+    "buyPointsComingSoon": "Online betaling komt binnenkort!",
+    "buyPointsComingSoonDesc": "Betaling via Xendit / DOKU wordt binnenkort beschikbaar. Verdien ondertussen punten via badges en activiteit.",
+    "pack": { "starter": "Startpakket", "starterDesc": "Perfect voor je eerste boost", "popular": "Populair pakket", "popularDesc": "Beste waarde — meest gekocht", "premium": "Premiumpakket", "premiumDesc": "Voor powerverkopers", "mega": "Megapakket", "megaDesc": "Maximaal punten, maximaal besparen" },
+    "packPoints": "{pts} punten", "packPrice": "Rp {price}", "bestValue": "Beste waarde", "comingSoon": "Binnenkort", "paymentMethods": "Betaling via Xendit / DOKU"
   }
 }

@@ -340,6 +340,25 @@
     },
     "boostSelectTitle": "Booster une annonce",
     "boostSelectDesc": "Choisissez l'annonce à propulser en tête des résultats pendant 48h",
-    "noActiveListings": "Aucune annonce active à booster"
+    "noActiveListings": "Aucune annonce active à booster",
+    "buyPoints": "Acheter des Points",
+    "buyPointsDesc": "Rechargez votre solde instantanément avec un pack de points",
+    "buyPointsComingSoon": "Paiement en ligne bientôt disponible !",
+    "buyPointsComingSoonDesc": "Le paiement via Xendit / DOKU sera disponible sous peu. En attendant, gagnez des points via vos badges et votre activité.",
+    "pack": {
+      "starter": "Pack Démarrage",
+      "starterDesc": "Idéal pour tester un premier boost",
+      "popular": "Pack Populaire",
+      "popularDesc": "Meilleur rapport qualité-prix — le plus acheté",
+      "premium": "Pack Premium",
+      "premiumDesc": "Pour les vendeurs qui veulent tout",
+      "mega": "Pack Méga",
+      "megaDesc": "Maximum de points, maximum d'économies"
+    },
+    "packPoints": "{pts} points",
+    "packPrice": "Rp {price}",
+    "bestValue": "Meilleur rapport",
+    "comingSoon": "Bientôt",
+    "paymentMethods": "Paiement via Xendit / DOKU"
   }
 }

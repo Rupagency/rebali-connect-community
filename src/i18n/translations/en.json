@@ -491,6 +491,25 @@
     },
     "boostSelectTitle": "Boost a listing",
     "boostSelectDesc": "Choose which listing to boost to the top of results for 48 hours",
-    "noActiveListings": "No active listings to boost"
+    "noActiveListings": "No active listings to boost",
+    "buyPoints": "Buy Points",
+    "buyPointsDesc": "Top up your balance instantly with a point pack",
+    "buyPointsComingSoon": "Online payment coming soon!",
+    "buyPointsComingSoonDesc": "Payment via Xendit / DOKU will be available shortly. For now, earn points through badges and activity.",
+    "pack": {
+      "starter": "Starter Pack",
+      "starterDesc": "Perfect to try a first boost",
+      "popular": "Popular Pack",
+      "popularDesc": "Best value — most purchased",
+      "premium": "Premium Pack",
+      "premiumDesc": "For power sellers who want it all",
+      "mega": "Mega Pack",
+      "megaDesc": "Maximum points, maximum savings"
+    },
+    "packPoints": "{pts} points",
+    "packPrice": "Rp {price}",
+    "bestValue": "Best Value",
+    "comingSoon": "Coming Soon",
+    "paymentMethods": "Payment via Xendit / DOKU"
   }
 }

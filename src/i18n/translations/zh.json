@@ -211,6 +211,12 @@
     "addon": { "boost": "列表置顶", "boostDesc": "将列表推至搜索结果顶部48小时", "boost_premium": "精选列表", "boost_premiumDesc": "在首页以大卡片展示48小时", "vip": "VIP账户", "vipDesc": "VIP徽章，+10%搜索优先级，30天内1次免费置顶", "extra_listings": "额外5个列表位", "extra_listingsDesc": "30天内获得5个额外列表位", "protection": "优先卖家", "protectionDesc": "优先卖家徽章和+20%自然可见度30天" },
     "dynamic": { "completed_deal": "已完成交易", "five_star_review": "收到5★评价", "validated_report": "已验证的欺诈举报" },
     "boostSelectTitle": "置顶列表", "boostSelectDesc": "选择要置顶搜索结果48小时的列表",
-    "noActiveListings": "没有可置顶的活跃列表"
+    "noActiveListings": "没有可置顶的活跃列表",
+    "buyPoints": "购买积分",
+    "buyPointsDesc": "通过积分包即时充值余额",
+    "buyPointsComingSoon": "在线支付即将推出！",
+    "buyPointsComingSoonDesc": "Xendit / DOKU 支付即将上线。目前可通过徽章和活动赚取积分。",
+    "pack": { "starter": "入门包", "starterDesc": "适合尝试第一次置顶", "popular": "热门包", "popularDesc": "最佳性价比——最受欢迎", "premium": "高级包", "premiumDesc": "为资深卖家准备", "mega": "超值包", "megaDesc": "最多积分，最多省" },
+    "packPoints": "{pts} 积分", "packPrice": "Rp {price}", "bestValue": "最佳价值", "comingSoon": "即将推出", "paymentMethods": "通过 Xendit / DOKU 支付"
   }
 }

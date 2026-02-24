@@ -287,6 +287,25 @@
     },
     "boostSelectTitle": "Boost iklan",
     "boostSelectDesc": "Pilih iklan yang ingin di-boost ke posisi teratas selama 48 jam",
-    "noActiveListings": "Tidak ada iklan aktif untuk di-boost"
+    "noActiveListings": "Tidak ada iklan aktif untuk di-boost",
+    "buyPoints": "Beli Poin",
+    "buyPointsDesc": "Isi ulang saldo Anda secara instan dengan paket poin",
+    "buyPointsComingSoon": "Pembayaran online segera hadir!",
+    "buyPointsComingSoonDesc": "Pembayaran melalui Xendit / DOKU akan segera tersedia. Untuk saat ini, dapatkan poin melalui lencana dan aktivitas.",
+    "pack": {
+      "starter": "Paket Pemula",
+      "starterDesc": "Sempurna untuk mencoba boost pertama",
+      "popular": "Paket Populer",
+      "popularDesc": "Nilai terbaik — paling banyak dibeli",
+      "premium": "Paket Premium",
+      "premiumDesc": "Untuk penjual yang menginginkan semuanya",
+      "mega": "Paket Mega",
+      "megaDesc": "Poin maksimal, hemat maksimal"
+    },
+    "packPoints": "{pts} poin",
+    "packPrice": "Rp {price}",
+    "bestValue": "Terbaik",
+    "comingSoon": "Segera Hadir",
+    "paymentMethods": "Pembayaran via Xendit / DOKU"
   }
 }

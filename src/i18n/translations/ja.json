@@ -367,6 +367,12 @@
     "addon": { "boost": "出品ブースト", "boostDesc": "出品を48時間検索結果のトップに表示", "boost_premium": "注目出品", "boost_premiumDesc": "48時間ホームページに大きなカードで掲載", "vip": "VIPアカウント", "vipDesc": "VIPバッジ、+10%検索優先、30日間1回無料ブースト", "extra_listings": "追加5出品枠", "extra_listingsDesc": "30日間5つの追加出品枠", "protection": "優先出品者", "protectionDesc": "優先出品者バッジと+20%オーガニック表示30日間" },
     "dynamic": { "completed_deal": "完了した取引", "five_star_review": "5★レビュー受信", "validated_report": "確認済み詐欺報告" },
     "boostSelectTitle": "出品をブースト", "boostSelectDesc": "48時間トップに表示する出品を選択してください",
-    "noActiveListings": "ブーストできるアクティブな出品はありません"
+    "noActiveListings": "ブーストできるアクティブな出品はありません",
+    "buyPoints": "ポイント購入",
+    "buyPointsDesc": "ポイントパックで残高を即時チャージ",
+    "buyPointsComingSoon": "オンライン決済まもなく開始！",
+    "buyPointsComingSoonDesc": "Xendit / DOKU 決済がまもなく利用可能になります。現在はバッジとアクティビティでポイントを獲得できます。",
+    "pack": { "starter": "スターターパック", "starterDesc": "初めてのブーストに最適", "popular": "人気パック", "popularDesc": "最もお得 — 一番人気", "premium": "プレミアムパック", "premiumDesc": "パワーセラー向け", "mega": "メガパック", "megaDesc": "最大ポイント、最大節約" },
+    "packPoints": "{pts} ポイント", "packPrice": "Rp {price}", "bestValue": "最もお得", "comingSoon": "近日公開", "paymentMethods": "Xendit / DOKU 決済"
   }
 }
