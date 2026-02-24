@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck } from 'lucide-react';
+import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
@@ -65,6 +65,23 @@ export default function ListingCard({ listing, sellerProfile: sellerProfileProp,
     enabled: favCountProp === undefined && !listing.favorites,
   });
 
+  const { data: activeBoosts } = useQuery({
+    queryKey: ['listing-boosts', listing.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('user_addons')
+        .select('addon_type')
+        .eq('listing_id', listing.id)
+        .eq('active', true)
+        .in('addon_type', ['boost', 'boost_premium']);
+      return data || [];
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const isBoosted = activeBoosts?.some(a => a.addon_type === 'boost') || false;
+  const isFeatured = activeBoosts?.some(a => a.addon_type === 'boost_premium') || false;
+
   const resolvedProfile = sellerProfileProp ?? listing.profiles ?? fetchedSellerProfile;
   const resolvedFavCount = favCountProp ?? listing.favorites?.[0]?.count ?? fetchedFavCount ?? 0;
 
@@ -102,6 +119,21 @@ export default function ListingCard({ listing, sellerProfile: sellerProfileProp,
           <Badge className="absolute top-2 left-2 bg-card/90 text-foreground text-xs">
             {CATEGORY_ICONS[listing.category]} {t(`categories.${listing.category}`)}
           </Badge>
+          {(isBoosted || isFeatured) && (
+            <div className="absolute bottom-2 left-2 flex gap-1">
+              {isFeatured ? (
+                <Badge className="bg-amber-500 text-white text-[10px] gap-1 font-bold shadow animate-pulse">
+                  <Star className="h-3 w-3" />
+                  Featured
+                </Badge>
+              ) : (
+                <Badge className="bg-blue-500 text-white text-[10px] gap-1 font-bold shadow">
+                  <Rocket className="h-3 w-3" />
+                  Boosted
+                </Badge>
+              )}
+            </div>
+          )}
           <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
             {isPro ? (
               <Badge className="bg-primary text-primary-foreground text-[10px] gap-1 font-bold shadow">
