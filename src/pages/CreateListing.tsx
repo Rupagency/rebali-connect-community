@@ -131,9 +131,10 @@ export default function CreateListing() {
   };
 
   // Watermark function — diagonal repeating pattern for uniform coverage
-  const addWatermark = async (file: File, username: string): Promise<File> => {
+  const addWatermark = async (file: File | Blob, username: string): Promise<Blob> => {
     return new Promise((resolve) => {
       const img = new Image();
+      img.crossOrigin = 'anonymous';
       img.onload = () => {
         const canvas = document.createElement('canvas');
         const w = img.width;
@@ -143,7 +144,6 @@ export default function CreateListing() {
         const ctx = canvas.getContext('2d')!;
         ctx.drawImage(img, 0, 0);
 
-        // Consistent font size relative to the shorter side
         const shortSide = Math.min(w, h);
         const fontSize = Math.max(16, Math.round(shortSide / 28));
         const date = new Date().toLocaleDateString('fr-FR');
@@ -156,7 +156,6 @@ export default function CreateListing() {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // Rotate -30° and tile the watermark across the entire image
         const angle = -30 * (Math.PI / 180);
         const metrics = ctx.measureText(text);
         const textW = metrics.width + fontSize * 3;
@@ -176,14 +175,36 @@ export default function CreateListing() {
         ctx.restore();
 
         canvas.toBlob((blob) => {
+          resolve(blob || new Blob());
+        }, 'image/jpeg', 0.9);
+      };
+      if (file instanceof File || file instanceof Blob) {
+        img.src = URL.createObjectURL(file);
+      }
+    });
+  };
+
+  // Re-watermark an image from a URL
+  const rewatermarkFromUrl = async (url: string, username: string): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(async (blob) => {
           if (blob) {
-            resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+            const result = await addWatermark(blob, username);
+            resolve(result);
           } else {
-            resolve(file);
+            resolve(new Blob());
           }
         }, 'image/jpeg', 0.9);
       };
-      img.src = URL.createObjectURL(file);
+      img.src = url;
     });
   };
 
@@ -213,8 +234,18 @@ export default function CreateListing() {
         }).eq('id', editId);
         if (error) throw error;
 
-        // Upload new images
+        // Re-watermark existing images with uniform new watermark
         const username = profile?.display_name || 'user';
+        for (const img of existingImageUrls) {
+          try {
+            const watermarked = await rewatermarkFromUrl(img.url, username);
+            await supabase.storage.from('listings').update(img.storage_path, watermarked, { upsert: true });
+          } catch (e) {
+            console.warn('Failed to re-watermark existing image', img.storage_path, e);
+          }
+        }
+
+        // Upload new images
         const startIndex = existingImageUrls.length;
         for (let i = 0; i < photos.length; i++) {
           const watermarked = await addWatermark(photos[i], username);
