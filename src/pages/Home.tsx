@@ -148,8 +148,123 @@ export default function Home() {
               onSelect={(title) => navigate(`/browse?q=${encodeURIComponent(title)}`)}
               className="[&_input]:pl-11 [&_input]:h-13 [&_input]:text-base [&_input]:border-border [&_input]:bg-card [&_input]:rounded-full [&_input]:shadow-sm"
             />
+            <Button
+              type="button"
+              size="lg"
+              variant={showFilters ? 'default' : 'outline'}
+              className="rounded-full px-4 relative"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <SlidersHorizontal className="h-5 w-5" />
+              {hasActiveFilters && (
+                <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-destructive" />
+              )}
+            </Button>
             <Button type="submit" size="lg" className="rounded-full px-7 font-bold shadow-md">{t('common.search')}</Button>
           </form>
+
+          {/* Advanced Filters Panel */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden max-w-2xl mx-auto"
+              >
+                <div className="mt-4 p-4 rounded-2xl bg-card/80 backdrop-blur border border-border shadow-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-semibold text-foreground">
+                      {t('browse.filters') || 'Filters'}
+                    </span>
+                    {hasActiveFilters && (
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        className="text-xs text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
+                      >
+                        <X className="h-3 w-3" />
+                        {t('search.clearAll') || 'Clear all'}
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {/* Category */}
+                    <Select value={filterCategory} onValueChange={setFilterCategory}>
+                      <SelectTrigger className="h-10 rounded-lg bg-background text-sm">
+                        <SelectValue placeholder={t('browse.category') || 'Category'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map((cat) => (
+                          <SelectItem key={cat} value={cat}>
+                            {CATEGORY_ICONS[cat]} {t(`categories.${cat}`)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Condition */}
+                    <Select value={filterCondition} onValueChange={setFilterCondition}>
+                      <SelectTrigger className="h-10 rounded-lg bg-background text-sm">
+                        <SelectValue placeholder={t('browse.condition') || 'Condition'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONDITIONS.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {t(`condition.${c}`)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Location */}
+                    <Select value={filterLocation} onValueChange={setFilterLocation}>
+                      <SelectTrigger className="h-10 rounded-lg bg-background text-sm">
+                        <SelectValue placeholder={t('browse.location') || 'Location'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {LOCATIONS.map((loc) => (
+                          <SelectItem key={loc} value={loc}>
+                            {t(`locations.${loc}`)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Min Price */}
+                    <Input
+                      type="number"
+                      placeholder={t('browse.minPrice') || 'Min price'}
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      className="h-10 rounded-lg bg-background text-sm"
+                      min={0}
+                    />
+
+                    {/* Max Price */}
+                    <Input
+                      type="number"
+                      placeholder={t('browse.maxPrice') || 'Max price'}
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      className="h-10 rounded-lg bg-background text-sm"
+                      min={0}
+                    />
+
+                    {/* Search button inside filters */}
+                    <Button
+                      type="button"
+                      onClick={() => navigate(buildSearchUrl())}
+                      className="h-10 rounded-lg font-bold"
+                    >
+                      {t('common.search')}
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
