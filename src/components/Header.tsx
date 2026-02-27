@@ -79,10 +79,7 @@ export default function Header() {
             <span className="sr-only">Toggle theme</span>
           </Button>
 
-          <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/browse')}>
-            <Bell className="h-5 w-5" strokeWidth={1.5} />
-            <span className="text-[10px]">{t('nav.searches')}</span>
-          </Button>
+          <NotificationBell />
           <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={authGuard('/favorites')}>
             <Heart className="h-5 w-5" strokeWidth={1.5} />
             <span className="text-[10px]">{t('nav.favorites')}</span>

@@ -580,6 +580,9 @@ export default function Profile() {
       {/* WhatsApp Verification */}
       <WhatsAppVerification user={user} profile={profile} refreshProfile={refreshProfile} />
 
+      {/* Saved Search Alerts (VIP) */}
+      <SavedSearches />
+
       {/* Identity Verification */}
       <IdVerification user={user} profile={profile} refreshProfile={refreshProfile} />
 
