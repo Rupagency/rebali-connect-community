@@ -2,10 +2,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import SearchAutocomplete from '@/components/SearchAutocomplete';
 import ListingCard from '@/components/ListingCard';
 import ListingMarquee from '@/components/ListingMarquee';
 import AnimatedHeroText from '@/components/AnimatedHeroText';
-import { Search, Plus, ArrowRight, Star } from 'lucide-react';
+import { Plus, ArrowRight, Star } from 'lucide-react';
 import CategoryMarquee from '@/components/CategoryMarquee';
 import { CATEGORY_ICONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
@@ -113,15 +114,12 @@ export default function Home() {
             {t('home.heroSub')}
           </p>
           <form onSubmit={handleSearch} className="max-w-lg mx-auto flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                placeholder={t('home.searchPlaceholder')}
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="pl-11 h-13 text-base border-border bg-card rounded-full shadow-sm"
-              />
-            </div>
+            <SearchAutocomplete
+              value={searchQuery}
+              onChange={setSearchQuery}
+              onSelect={(title) => navigate(`/browse?q=${encodeURIComponent(title)}`)}
+              className="[&_input]:pl-11 [&_input]:h-13 [&_input]:text-base [&_input]:border-border [&_input]:bg-card [&_input]:rounded-full [&_input]:shadow-sm"
+            />
             <Button type="submit" size="lg" className="rounded-full px-7 font-bold shadow-md">{t('common.search')}</Button>
           </form>
         </div>
