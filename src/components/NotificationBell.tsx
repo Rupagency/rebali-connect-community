@@ -111,10 +111,10 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
             : "top-full mt-1 right-0 w-80"
         )}>
           <div className="flex items-center justify-between px-3 py-2 border-b">
-            <span className="text-sm font-semibold">Notifications</span>
+            <span className="text-sm font-semibold">{t('notifications.title')}</span>
             {unreadCount > 0 && (
               <button onClick={markAllRead} className="text-xs text-primary hover:underline">
-                Tout marquer lu
+                {t('notifications.markAllRead')}
               </button>
             )}
           </div>
