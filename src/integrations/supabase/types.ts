@@ -242,6 +242,7 @@ export type Database = {
       listing_translations: {
         Row: {
           description: string
+          fts_vector: unknown
           id: string
           is_machine: boolean
           lang: string
@@ -251,6 +252,7 @@ export type Database = {
         }
         Insert: {
           description?: string
+          fts_vector?: unknown
           id?: string
           is_machine?: boolean
           lang: string
@@ -260,6 +262,7 @@ export type Database = {
         }
         Update: {
           description?: string
+          fts_vector?: unknown
           id?: string
           is_machine?: boolean
           lang?: string
@@ -285,6 +288,7 @@ export type Database = {
           currency: string
           description_original: string
           extra_fields: Json | null
+          fts_vector: unknown
           id: string
           lang_original: string
           location_area: string
@@ -303,6 +307,7 @@ export type Database = {
           currency?: string
           description_original: string
           extra_fields?: Json | null
+          fts_vector?: unknown
           id?: string
           lang_original?: string
           location_area: string
@@ -321,6 +326,7 @@ export type Database = {
           currency?: string
           description_original?: string
           extra_fields?: Json | null
+          fts_vector?: unknown
           id?: string
           lang_original?: string
           location_area?: string
