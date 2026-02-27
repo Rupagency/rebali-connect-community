@@ -3,9 +3,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Home, Search, Plus, MessageCircle, User, Bell } from 'lucide-react';
+import { Home, Search, Plus, MessageCircle, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import NotificationBell from './NotificationBell';
 
 export default function BottomNav() {
   const navigate = useNavigate();
@@ -33,7 +32,6 @@ export default function BottomNav() {
     ...(user && profile?.phone_verified
       ? [{ icon: MessageCircle, labelKey: 'nav.messages', path: '/messages' }]
       : []),
-    { key: 'notifications', custom: true } as any,
     { icon: User, labelKey: 'nav.profile', path: '/profile' },
   ];
 
@@ -49,12 +47,6 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t md:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-16 px-2">
         {NAV_ITEMS.map((item) => {
-          // Custom notification bell slot
-          if (item.custom) {
-            if (!user) return null;
-            return <NotificationBell key="notifications" compact />;
-          }
-
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
 
