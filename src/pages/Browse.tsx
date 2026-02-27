@@ -27,14 +27,16 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Browse() {
   const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Initialize all filters from URL params
   const [search, setSearch] = useState(searchParams.get('q') || '');
   const [category, setCategory] = useState(searchParams.get('category') || 'all');
   const [location, setLocation] = useState(searchParams.get('location') || 'all');
-  const [subcategory, setSubcategory] = useState('all');
-  const [condition, setCondition] = useState('all');
-  const [sort, setSort] = useState('newest');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [subcategory, setSubcategory] = useState(searchParams.get('subcategory') || 'all');
+  const [condition, setCondition] = useState(searchParams.get('condition') || 'all');
+  const [sort, setSort] = useState(searchParams.get('sort') || 'newest');
+  const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
   const [showFilters, setShowFilters] = useState(false);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [radiusKm, setRadiusKm] = useState(25);
@@ -42,6 +44,20 @@ export default function Browse() {
   const [geoError, setGeoError] = useState('');
 
   const debouncedSearch = useDebounce(search, 300);
+
+  // Sync filters to URL params
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    if (debouncedSearch) params.q = debouncedSearch;
+    if (category !== 'all') params.category = category;
+    if (subcategory !== 'all') params.subcategory = subcategory;
+    if (location !== 'all') params.location = location;
+    if (condition !== 'all') params.condition = condition;
+    if (sort !== 'newest') params.sort = sort;
+    if (minPrice) params.minPrice = minPrice;
+    if (maxPrice) params.maxPrice = maxPrice;
+    setSearchParams(params, { replace: true });
+  }, [debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice]);
 
   const locateMe = () => {
     if (!navigator.geolocation) {
