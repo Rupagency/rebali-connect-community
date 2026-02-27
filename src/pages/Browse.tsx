@@ -147,17 +147,12 @@ export default function Browse() {
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold mb-6">{t('nav.browse')}</h1>
 
-      {/* Search bar */}
+      {/* Search bar with autocomplete */}
       <div className="flex gap-2 mb-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder={t('home.searchPlaceholder')}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="pl-9"
-          />
-        </div>
+        <SearchAutocomplete
+          value={search}
+          onChange={setSearch}
+        />
         <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)} className="md:hidden">
           <SlidersHorizontal className="h-4 w-4" />
         </Button>
