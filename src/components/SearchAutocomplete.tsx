@@ -71,6 +71,16 @@ export default function SearchAutocomplete({
     setRecentSearches(getRecentSearches());
   }, []);
 
+  // Fetch trending searches
+  const { data: trendingSearches } = useQuery({
+    queryKey: ['trending-searches'],
+    queryFn: async () => {
+      const { data } = await supabase.rpc('get_trending_searches', { max_results: 6 });
+      return (data as { term: string; search_count: number }[]) || [];
+    },
+    staleTime: 5 * 60_000, // 5 min cache
+  });
+
   const { data: suggestions, isFetching } = useQuery({
     queryKey: ['search-suggestions', debouncedValue],
     queryFn: async () => {
@@ -85,9 +95,20 @@ export default function SearchAutocomplete({
     enabled: debouncedValue.length >= 2,
   });
 
+  // Log search to DB (fire-and-forget, debounced)
+  const loggedRef = useRef<string>('');
+  useEffect(() => {
+    if (debouncedValue.length >= 2 && debouncedValue !== loggedRef.current) {
+      loggedRef.current = debouncedValue;
+      supabase.from('search_logs').insert({ term: debouncedValue }).then(() => {});
+    }
+  }, [debouncedValue]);
+
   const hasSuggestions = suggestions && suggestions.length > 0 && debouncedValue.length >= 2;
   const showRecent = !value && recentSearches.length > 0;
-  const shouldOpen = hasSuggestions || showRecent;
+  const hasTrending = !value && !showRecent && trendingSearches && trendingSearches.length > 0;
+  const showTrendingWithRecent = !value && showRecent && trendingSearches && trendingSearches.length > 0;
+  const shouldOpen = hasSuggestions || showRecent || hasTrending;
 
   // Close on click outside
   useEffect(() => {
