@@ -139,10 +139,10 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
-                        {(notif.listings as any)?.title_original || 'Annonce'}
+                        {(notif.listings as any)?.title_original || t('notifications.listing')}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Alerte : « {(notif.saved_searches as any)?.keyword} »
+                        {t('notifications.alertLabel')} : « {(notif.saved_searches as any)?.keyword} »
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {new Date(notif.created_at).toLocaleDateString()}
