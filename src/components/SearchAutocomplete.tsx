@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
-import { Search, X, Loader2, Clock, Trash2 } from 'lucide-react';
+import { Search, X, Loader2, Clock, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const RECENT_KEY = 'rebali_recent_searches';
