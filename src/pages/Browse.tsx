@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { CATEGORIES, LOCATIONS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
-import { Search, SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
+import { SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 
 function useDebounce<T>(value: T, delay: number): T {
