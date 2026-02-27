@@ -81,6 +81,13 @@ export default function Home() {
 
   const { data: featuredListings, isLoading: featuredLoading } = useFeaturedListings();
 
+  // Batch fetch boosts & fav counts for all listings (eliminates N+1)
+  const latestIds = (listings || []).map((l: any) => l.id);
+  const featuredIds = (featuredListings || []).map((l: any) => l.id);
+  const allIds = [...new Set([...latestIds, ...featuredIds])];
+  const { data: boostsMap } = useListingBoosts(allIds);
+  const { data: favCountsMap } = useListingFavCounts(allIds);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) navigate(`/browse?q=${encodeURIComponent(searchQuery)}`);
