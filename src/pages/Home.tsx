@@ -2,20 +2,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import SearchAutocomplete from '@/components/SearchAutocomplete';
 import ListingCard from '@/components/ListingCard';
 import ListingMarquee from '@/components/ListingMarquee';
 import AnimatedHeroText from '@/components/AnimatedHeroText';
-import { Plus, ArrowRight, Star } from 'lucide-react';
+import { Plus, ArrowRight, Star, SlidersHorizontal, X } from 'lucide-react';
 import CategoryMarquee from '@/components/CategoryMarquee';
-import { CATEGORY_ICONS } from '@/lib/constants';
+import { CATEGORY_ICONS, CATEGORIES, CONDITIONS, LOCATIONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { Skeleton } from '@/components/ui/skeleton';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function useCategoryListings(category: string) {
   return useQuery({
