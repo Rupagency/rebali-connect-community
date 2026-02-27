@@ -14,8 +14,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X, Fingerprint, Wifi, WifiOff, ShieldCheck, ShieldAlert, FileCheck, MessageCircle, Coins } from 'lucide-react';
+import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X, Fingerprint, Wifi, WifiOff, ShieldCheck, ShieldAlert, FileCheck, MessageCircle, Coins, TrendingUp } from 'lucide-react';
 import { CATEGORY_TREE } from '@/lib/constants';
+import SearchAnalytics from '@/components/admin/SearchAnalytics';
 
 function VerificationCard({ verification, profileName, onApprove, onReject }: {
   verification: any;
@@ -959,9 +960,12 @@ export default function Admin() {
       <ListingDetailDialog />
 
       <Tabs defaultValue="stats">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="stats" className="flex items-center gap-1">
             <BarChart3 className="h-4 w-4" /> <span className="hidden sm:inline">{t('admin.statistics')}</span>
+          </TabsTrigger>
+          <TabsTrigger value="search-analytics" className="flex items-center gap-1">
+            <TrendingUp className="h-4 w-4" /> <span className="hidden sm:inline">Recherches</span>
           </TabsTrigger>
           <TabsTrigger value="reports" className="flex items-center gap-1">
             <AlertTriangle className="h-4 w-4" /> <span className="hidden sm:inline">{t('admin.reports')}</span> ({pendingReports.length})
@@ -993,6 +997,11 @@ export default function Admin() {
             <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{archivedListings.length}</p><p className="text-xs text-muted-foreground">{t('admin.archivedListings')}</p></CardContent></Card>
             <Card><CardContent className="p-4 text-center"><CheckCircle className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{resolvedReports.length}</p><p className="text-xs text-muted-foreground">{t('admin.resolvedReports')}</p></CardContent></Card>
           </div>
+        </TabsContent>
+
+        {/* Search Analytics Tab */}
+        <TabsContent value="search-analytics" className="mt-4">
+          <SearchAnalytics />
         </TabsContent>
 
         {/* Reports Tab */}
