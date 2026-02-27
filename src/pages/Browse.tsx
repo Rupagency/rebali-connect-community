@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useQuery } from '@tanstack/react-query';
+import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { supabase } from '@/integrations/supabase/client';
 import ListingCard from '@/components/ListingCard';
 import { Input } from '@/components/ui/input';
@@ -65,19 +66,7 @@ export default function Browse() {
     setRadiusKm(25);
   };
 
-  // Fetch active boosts to sort them higher
-  const { data: activeBoostedIds } = useQuery({
-    queryKey: ['active-boosts'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('user_addons')
-        .select('listing_id')
-        .in('addon_type', ['boost', 'boost_premium'])
-        .eq('active', true);
-      return new Set((data || []).map(b => b.listing_id).filter(Boolean));
-    },
-    staleTime: 2 * 60 * 1000,
-  });
+  // Active boosts now fetched via batch hook below
 
   const { data: listings, isLoading } = useQuery({
     queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice],
@@ -92,7 +81,7 @@ export default function Browse() {
 
       let query = supabase
         .from('listings')
-        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller), favorites(count)')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
         .eq('status', 'active');
 
       if (matchingIds) query = query.in('id', matchingIds);
@@ -112,6 +101,11 @@ export default function Browse() {
     },
   });
 
+  // Batch fetch boosts & fav counts
+  const listingIds = (listings || []).map((l: any) => l.id);
+  const { data: boostsMap } = useListingBoosts(listingIds);
+  const { data: favCountsMap } = useListingFavCounts(listingIds);
+
   // Filter by distance client-side, then sort boosted listings first
   const filteredListings = useMemo(() => {
     let result = listings || [];
@@ -122,16 +116,16 @@ export default function Browse() {
         return getDistanceKm(userCoords.lat, userCoords.lng, coords.lat, coords.lng) <= radiusKm;
       });
     }
-    // Sort boosted listings to the top
-    if (activeBoostedIds && activeBoostedIds.size > 0) {
+    // Sort boosted listings to the top using batch data
+    if (boostsMap && boostsMap.size > 0) {
       result = [...result].sort((a: any, b: any) => {
-        const aBoost = activeBoostedIds.has(a.id) ? 1 : 0;
-        const bBoost = activeBoostedIds.has(b.id) ? 1 : 0;
+        const aBoost = boostsMap.has(a.id) ? 1 : 0;
+        const bBoost = boostsMap.has(b.id) ? 1 : 0;
         return bBoost - aBoost;
       });
     }
     return result;
-  }, [listings, userCoords, radiusKm, activeBoostedIds]);
+  }, [listings, userCoords, radiusKm, boostsMap]);
 
   const clearFilters = () => {
     setSearch('');
@@ -284,7 +278,7 @@ export default function Browse() {
       ) : filteredListings && filteredListings.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredListings.map((listing: any) => (
-            <ListingCard key={listing.id} listing={listing} />
+            <ListingCard key={listing.id} listing={listing} boostTypes={boostsMap?.get(listing.id)} favCount={favCountsMap?.get(listing.id) ?? 0} />
           ))}
         </div>
       ) : (

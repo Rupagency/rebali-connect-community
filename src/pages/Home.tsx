@@ -10,8 +10,9 @@ import CategoryMarquee from '@/components/CategoryMarquee';
 import { CATEGORY_ICONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
@@ -21,7 +22,7 @@ function useCategoryListings(category: string) {
     queryFn: async () => {
       const { data } = await supabase
         .from('listings')
-        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller), favorites(count)')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
         .eq('status', 'active')
         .eq('category', category)
         .order('created_at', { ascending: false })
@@ -48,7 +49,7 @@ function useFeaturedListings() {
 
       const { data } = await supabase
         .from('listings')
-        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller), favorites(count)')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
         .eq('status', 'active')
         .in('id', listingIds)
         .limit(20);
@@ -70,7 +71,7 @@ export default function Home() {
     queryFn: async () => {
       const { data } = await supabase
         .from('listings')
-        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller), favorites(count)')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
         .eq('status', 'active')
         .order('created_at', { ascending: false })
         .limit(20);
@@ -79,6 +80,13 @@ export default function Home() {
   });
 
   const { data: featuredListings, isLoading: featuredLoading } = useFeaturedListings();
+
+  // Batch fetch boosts & fav counts for all listings (eliminates N+1)
+  const latestIds = (listings || []).map((l: any) => l.id);
+  const featuredIds = (featuredListings || []).map((l: any) => l.id);
+  const allIds = [...new Set([...latestIds, ...featuredIds])];
+  const { data: boostsMap } = useListingBoosts(allIds);
+  const { data: favCountsMap } = useListingFavCounts(allIds);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,7 +184,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.05 }}
                   >
-                    <ListingCard listing={listing} />
+                    <ListingCard listing={listing} boostTypes={boostsMap?.get(listing.id)} favCount={favCountsMap?.get(listing.id) ?? 0} />
                   </motion.div>
                 ))
               )}
@@ -218,23 +226,30 @@ function CategoryRow({ category, featuredListings }: { category: string; feature
   const { t } = useLanguage();
   const { data: listings, isLoading } = useCategoryListings(category);
 
-  // Inject 1-2 random featured listings into the category marquee
+  // Use a stable ref for randomization to avoid re-shuffling on every render
+  const seedRef = useRef(Math.random());
+
+  // Inject 1-2 featured listings into the category marquee (stable order)
   const mergedListings = useMemo(() => {
     if (!listings || listings.length === 0) return [];
     if (!featuredListings || featuredListings.length === 0) return listings;
 
-    // Pick up to 2 random featured listings not already in this category
     const categoryIds = new Set(listings.map((l: any) => l.id));
     const eligible = featuredListings.filter((f: any) => !categoryIds.has(f.id));
-    const shuffled = [...eligible].sort(() => Math.random() - 0.5);
+    // Stable shuffle using seed
+    const seed = seedRef.current;
+    const shuffled = [...eligible].sort((a, b) => {
+      const ha = (a.id.charCodeAt(0) * seed) % 1;
+      const hb = (b.id.charCodeAt(0) * seed) % 1;
+      return ha - hb;
+    });
     const toInject = shuffled.slice(0, Math.min(2, shuffled.length));
 
     if (toInject.length === 0) return listings;
 
-    // Insert at random positions
     const result = [...listings];
-    toInject.forEach((item: any) => {
-      const pos = Math.floor(Math.random() * (result.length + 1));
+    toInject.forEach((item: any, idx: number) => {
+      const pos = Math.min(Math.floor((seed * (idx + 1) * 7) % (result.length + 1)), result.length);
       result.splice(pos, 0, item);
     });
     return result;
