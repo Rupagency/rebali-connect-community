@@ -159,11 +159,14 @@ export default function SearchAutocomplete({
   }, []);
 
   // Compute all items for keyboard nav
+  const trendingItems = (hasTrending ? trendingSearches!.map((t) => t.term) : showTrendingWithRecent ? trendingSearches!.map((t) => t.term) : []);
   const allItems = hasSuggestions
     ? suggestions!.map((s) => s.title)
     : showRecent
-      ? recentSearches
-      : [];
+      ? [...recentSearches, ...trendingItems]
+      : hasTrending
+        ? trendingItems
+        : [];
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open || allItems.length === 0) return;
