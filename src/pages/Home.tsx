@@ -96,9 +96,30 @@ export default function Home() {
   const { data: boostsMap } = useListingBoosts(allIds);
   const { data: favCountsMap } = useListingFavCounts(allIds);
 
+  const buildSearchUrl = () => {
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set('q', searchQuery.trim());
+    if (filterCategory) params.set('category', filterCategory);
+    if (filterCondition) params.set('condition', filterCondition);
+    if (filterLocation) params.set('location', filterLocation);
+    if (minPrice) params.set('minPrice', minPrice);
+    if (maxPrice) params.set('maxPrice', maxPrice);
+    return `/browse?${params.toString()}`;
+  };
+
+  const hasActiveFilters = filterCategory || filterCondition || filterLocation || minPrice || maxPrice;
+
+  const clearFilters = () => {
+    setFilterCategory('');
+    setFilterCondition('');
+    setFilterLocation('');
+    setMinPrice('');
+    setMaxPrice('');
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) navigate(`/browse?q=${encodeURIComponent(searchQuery)}`);
+    navigate(buildSearchUrl());
   };
 
   const hasFeatured = !featuredLoading && featuredListings && featuredListings.length > 0;
