@@ -419,5 +419,18 @@
       "proBadge": "प्रो विक्रेता बैज",
       "proBadgeDesc": "सत्यापित Pro बैज के साथ अलग दिखें"
     }
+  },
+  "browse": {
+    "filters": "फ़िल्टर",
+    "category": "श्रेणी",
+    "condition": "स्थिति",
+    "location": "क्षेत्र",
+    "minPrice": "न्यूनतम मूल्य",
+    "maxPrice": "अधिकतम मूल्य"
+  },
+  "search": {
+    "recentSearches": "हाल की खोजें",
+    "clearAll": "सब हटाएं",
+    "trending": "ट्रेंडिंग"
   }
 }

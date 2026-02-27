@@ -419,5 +419,18 @@
       "proBadge": "Pro Satıcı Rozeti",
       "proBadgeDesc": "Doğrulanmış Pro rozeti ile öne çıkın"
     }
+  },
+  "browse": {
+    "filters": "Filtreler",
+    "category": "Kategori",
+    "condition": "Durum",
+    "location": "Konum",
+    "minPrice": "Min fiyat",
+    "maxPrice": "Maks fiyat"
+  },
+  "search": {
+    "recentSearches": "Son aramalar",
+    "clearAll": "Tümünü temizle",
+    "trending": "Trend"
   }
 }

@@ -351,5 +351,18 @@
       "proBadge": "Lencana Penjual Pro",
       "proBadgeDesc": "Tampil beda dengan lencana Pro terverifikasi"
     }
+  },
+  "browse": {
+    "filters": "Filter",
+    "category": "Kategori",
+    "condition": "Kondisi",
+    "location": "Lokasi",
+    "minPrice": "Harga min",
+    "maxPrice": "Harga maks"
+  },
+  "search": {
+    "recentSearches": "Pencarian terbaru",
+    "clearAll": "Hapus semua",
+    "trending": "Tren"
   }
 }
