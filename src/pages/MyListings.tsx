@@ -178,11 +178,11 @@ export default function MyListings() {
         {activeListings.length}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}
       </p>
 
-      <Tabs defaultValue="active">
-        <TabsList className="mb-4">
-          <TabsTrigger value="active">{t('myListings.active')} ({activeListings.length})</TabsTrigger>
-          <TabsTrigger value="sold">{t('myListings.sold')} ({soldListings.length})</TabsTrigger>
-          <TabsTrigger value="archived">{t('myListings.archived')} ({archivedListings.length})</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="mb-4 w-full grid grid-cols-3">
+          <TabsTrigger value="active" className="text-xs sm:text-sm">{t('myListings.active')} ({activeListings.length})</TabsTrigger>
+          <TabsTrigger value="sold" className="text-xs sm:text-sm">{t('myListings.sold')} ({soldListings.length})</TabsTrigger>
+          <TabsTrigger value="archived" className="text-xs sm:text-sm">{t('myListings.archived')} ({archivedListings.length})</TabsTrigger>
         </TabsList>
         {['active', 'sold', 'archived'].map(tab => {
           const items = tab === 'active' ? activeListings : tab === 'sold' ? soldListings : archivedListings;
