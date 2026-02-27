@@ -250,6 +250,8 @@ export default function Browse() {
             <SelectItem value="newest">{t('filters.sortNewest')}</SelectItem>
             <SelectItem value="price_low">{t('filters.sortPriceLow')}</SelectItem>
             <SelectItem value="price_high">{t('filters.sortPriceHigh')}</SelectItem>
+            <SelectItem value="most_viewed">{t('filters.sortMostViewed')}</SelectItem>
+            <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
