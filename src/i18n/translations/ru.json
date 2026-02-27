@@ -262,5 +262,18 @@
       "proBadge": "Значок Про Продавца",
       "proBadgeDesc": "Выделяйтесь с верифицированным значком Pro"
     }
+  },
+  "browse": {
+    "filters": "Фильтры",
+    "category": "Категория",
+    "condition": "Состояние",
+    "location": "Район",
+    "minPrice": "Мин. цена",
+    "maxPrice": "Макс. цена"
+  },
+  "search": {
+    "recentSearches": "Недавние поиски",
+    "clearAll": "Очистить все",
+    "trending": "В тренде"
   }
 }

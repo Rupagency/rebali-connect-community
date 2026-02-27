@@ -338,5 +338,18 @@
       "proBadge": "Pro-Verkäufer-Abzeichen",
       "proBadgeDesc": "Heben Sie sich mit einem verifizierten Pro-Abzeichen ab"
     }
+  },
+  "browse": {
+    "filters": "Filter",
+    "category": "Kategorie",
+    "condition": "Zustand",
+    "location": "Standort",
+    "minPrice": "Mindestpreis",
+    "maxPrice": "Höchstpreis"
+  },
+  "search": {
+    "recentSearches": "Letzte Suchen",
+    "clearAll": "Alle löschen",
+    "trending": "Trends"
   }
 }

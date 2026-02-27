@@ -404,5 +404,18 @@
       "proBadge": "Badge Vendeur Pro",
       "proBadgeDesc": "Démarquez-vous avec un badge Pro vérifié"
     }
+  },
+  "browse": {
+    "filters": "Filtres",
+    "category": "Catégorie",
+    "condition": "État",
+    "location": "Zone",
+    "minPrice": "Prix min",
+    "maxPrice": "Prix max"
+  },
+  "search": {
+    "recentSearches": "Recherches récentes",
+    "clearAll": "Tout effacer",
+    "trending": "Tendances"
   }
 }

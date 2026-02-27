@@ -262,5 +262,18 @@
       "proBadge": "Pro Verkoper-badge",
       "proBadgeDesc": "Val op met een geverifieerde Pro-badge"
     }
+  },
+  "browse": {
+    "filters": "Filters",
+    "category": "Categorie",
+    "condition": "Staat",
+    "location": "Locatie",
+    "minPrice": "Min prijs",
+    "maxPrice": "Max prijs"
+  },
+  "search": {
+    "recentSearches": "Recente zoekopdrachten",
+    "clearAll": "Alles wissen",
+    "trending": "Trending"
   }
 }

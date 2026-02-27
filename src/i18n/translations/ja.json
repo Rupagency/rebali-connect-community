@@ -418,5 +418,18 @@
       "proBadge": "プロセラーバッジ",
       "proBadgeDesc": "認証済みProバッジで目立つ"
     }
+  },
+  "browse": {
+    "filters": "フィルター",
+    "category": "カテゴリー",
+    "condition": "状態",
+    "location": "エリア",
+    "minPrice": "最低価格",
+    "maxPrice": "最高価格"
+  },
+  "search": {
+    "recentSearches": "最近の検索",
+    "clearAll": "すべて削除",
+    "trending": "トレンド"
   }
 }

@@ -281,5 +281,18 @@
       "proBadge": "Insignia Vendedor Pro",
       "proBadgeDesc": "Destaca con una insignia Pro verificada"
     }
+  },
+  "browse": {
+    "filters": "Filtros",
+    "category": "Categoría",
+    "condition": "Estado",
+    "location": "Zona",
+    "minPrice": "Precio mín",
+    "maxPrice": "Precio máx"
+  },
+  "search": {
+    "recentSearches": "Búsquedas recientes",
+    "clearAll": "Borrar todo",
+    "trending": "Tendencias"
   }
 }

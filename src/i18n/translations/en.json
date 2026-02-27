@@ -557,5 +557,18 @@
       "proBadge": "Pro Seller badge",
       "proBadgeDesc": "Stand out with a verified Pro badge"
     }
+  },
+  "browse": {
+    "filters": "Filters",
+    "category": "Category",
+    "condition": "Condition",
+    "location": "Location",
+    "minPrice": "Min price",
+    "maxPrice": "Max price"
+  },
+  "search": {
+    "recentSearches": "Recent searches",
+    "clearAll": "Clear all",
+    "trending": "Trending"
   }
 }

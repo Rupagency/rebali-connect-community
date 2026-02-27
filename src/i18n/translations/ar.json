@@ -419,5 +419,18 @@
       "proBadge": "شارة بائع محترف",
       "proBadgeDesc": "تميز بشارة Pro موثقة"
     }
+  },
+  "browse": {
+    "filters": "الفلاتر",
+    "category": "الفئة",
+    "condition": "الحالة",
+    "location": "المنطقة",
+    "minPrice": "السعر الأدنى",
+    "maxPrice": "السعر الأقصى"
+  },
+  "search": {
+    "recentSearches": "عمليات البحث الأخيرة",
+    "clearAll": "مسح الكل",
+    "trending": "الرائج"
   }
 }

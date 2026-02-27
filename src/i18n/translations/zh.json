@@ -262,5 +262,18 @@
       "proBadge": "专业卖家徽章",
       "proBadgeDesc": "用认证的 Pro 徽章脱颖而出"
     }
+  },
+  "browse": {
+    "filters": "筛选",
+    "category": "类别",
+    "condition": "状况",
+    "location": "区域",
+    "minPrice": "最低价",
+    "maxPrice": "最高价"
+  },
+  "search": {
+    "recentSearches": "最近搜索",
+    "clearAll": "清除全部",
+    "trending": "热门搜索"
   }
 }
