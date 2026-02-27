@@ -33,7 +33,6 @@ export default function BottomNav() {
     ...(user && profile?.phone_verified
       ? [{ icon: MessageCircle, labelKey: 'nav.messages', path: '/messages' }]
       : []),
-    { key: 'notifications', custom: true } as any,
     { icon: User, labelKey: 'nav.profile', path: '/profile' },
   ];
 
