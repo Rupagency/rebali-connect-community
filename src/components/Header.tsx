@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Header() {
   const { t } = useLanguage();
