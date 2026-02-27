@@ -999,6 +999,11 @@ export default function Admin() {
           </div>
         </TabsContent>
 
+        {/* Search Analytics Tab */}
+        <TabsContent value="search-analytics" className="mt-4">
+          <SearchAnalytics />
+        </TabsContent>
+
         {/* Reports Tab */}
         <TabsContent value="reports" className="mt-4">
           <Tabs defaultValue="pending">
