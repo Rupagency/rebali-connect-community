@@ -929,6 +929,14 @@ export type Database = {
       }
       increment_views: { Args: { _listing_id: string }; Returns: undefined }
       search_listings: { Args: { search_term: string }; Returns: string[] }
+      search_suggestions: {
+        Args: { max_results?: number; search_term: string }
+        Returns: {
+          category: string
+          listing_id: string
+          title: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
