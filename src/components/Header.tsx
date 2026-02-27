@@ -30,6 +30,16 @@ export default function Header() {
     navigate(user ? path : '/auth');
   };
 
+  const { data: unreadCount = 0 } = useQuery({
+    queryKey: ['unread-messages-count', user?.id],
+    queryFn: async () => {
+      const { data } = await supabase.rpc('get_total_unread_messages', { _user_id: user!.id });
+      return (data as number) || 0;
+    },
+    enabled: !!user,
+    refetchInterval: 15_000,
+  });
+
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
