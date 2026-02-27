@@ -9,8 +9,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPrice, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS } from '@/lib/constants';
-import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 
@@ -22,6 +23,8 @@ export default function MyListings() {
   const [boostDialogOpen, setBoostDialogOpen] = useState(false);
   const [boostListingId, setBoostListingId] = useState<string | null>(null);
   const [purchasing, setPurchasing] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'active';
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -72,6 +75,23 @@ export default function MyListings() {
     await supabase.from('listings').update({ status: status as any }).eq('id', id);
     qc.invalidateQueries({ queryKey: ['my-listings'] });
     toast({ title: t(statusToastMap[status] || status) });
+  };
+
+  const deleteListing = async (id: string) => {
+    setDeleting(true);
+    // Delete related data first, then the listing
+    await supabase.from('listing_images').delete().eq('listing_id', id);
+    await supabase.from('favorites').delete().eq('listing_id', id);
+    await supabase.from('listing_translations').delete().eq('listing_id', id);
+    const { error } = await supabase.from('listings').delete().eq('id', id);
+    if (error) {
+      toast({ title: t('common.error'), variant: 'destructive' });
+    } else {
+      toast({ title: t('myListings.deleted') });
+      qc.invalidateQueries({ queryKey: ['my-listings'] });
+    }
+    setDeleting(false);
+    setDeleteId(null);
   };
 
   const getBoostStatus = (listingId: string) => {
@@ -154,9 +174,16 @@ export default function MyListings() {
                 </>
               )}
               {(listing.status === 'sold' || listing.status === 'archived') && (
-                <Button size="sm" variant="outline" onClick={() => updateStatus(listing.id, 'active')} className="h-7 text-xs px-2">
-                  <ArchiveRestore className="h-3 w-3 mr-1" /> {t('listing.reactivate')}
-                </Button>
+                <>
+                  <Button size="sm" variant="outline" onClick={() => updateStatus(listing.id, 'active')} className="h-7 text-xs px-2">
+                    <ArchiveRestore className="h-3 w-3 mr-1" /> {t('listing.reactivate')}
+                  </Button>
+                  {listing.status === 'archived' && (
+                    <Button size="sm" variant="ghost" onClick={() => setDeleteId(listing.id)} className="h-7 text-xs px-2 text-destructive hover:text-destructive">
+                      <Trash2 className="h-3 w-3 mr-1" /> {t('common.delete')}
+                    </Button>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -237,6 +264,26 @@ export default function MyListings() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('myListings.deleteTitle')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('myListings.deleteDescription')}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>{t('common.cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteId && deleteListing(deleteId)}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? '...' : t('common.delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

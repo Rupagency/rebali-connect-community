@@ -136,7 +136,10 @@
   "myListings": {
     "title": "My Listings", "active": "Active", "sold": "Sold", "archived": "Archived", "draft": "Draft",
     "noListings": "You don't have any listings yet", "createFirst": "Create your first listing",
-    "activeCount": "active listings out of 5"
+    "activeCount": "active listings out of 5",
+    "deleted": "Listing permanently deleted",
+    "deleteTitle": "Delete this listing?",
+    "deleteDescription": "This action is permanent and cannot be undone. All images and data associated with this listing will be removed."
   },
   "report": {
     "title": "Report Listing", "reason": "Reason", "scam": "Scam / Fraud", "prohibited": "Prohibited item",
