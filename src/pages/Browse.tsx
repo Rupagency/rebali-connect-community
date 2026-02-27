@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { supabase } from '@/integrations/supabase/client';
 import ListingCard from '@/components/ListingCard';
+import SearchAutocomplete from '@/components/SearchAutocomplete';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
