@@ -188,7 +188,7 @@
   "filters": {
     "allCategories": "全カテゴリー", "allSubcategories": "全サブカテゴリー", "allLocations": "全ての場所",
     "allConditions": "全ての状態", "priceRange": "価格帯", "minPrice": "最低価格", "maxPrice": "最高価格",
-    "sortNewest": "新着順", "sortPriceLow": "価格：安い順", "sortPriceHigh": "価格：高い順",
+    "sortNewest": "新着順", "sortPriceLow": "価格：安い順", "sortPriceHigh": "価格：高い順", "sortMostViewed": "閲覧数順", "sortMostLiked": "人気順",
     "clearFilters": "フィルターをクリア", "results": "件の結果",
     "locateMe": "現在地を取得", "localized": "位置情報取得済み", "geoError": "位置情報にアクセスできません", "geoNotSupported": "位置情報はサポートされていません"
   },

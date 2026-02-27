@@ -119,6 +119,8 @@ export default function Browse() {
       if (sort === 'newest') query = query.order('created_at', { ascending: false });
       else if (sort === 'price_low') query = query.order('price', { ascending: true });
       else if (sort === 'price_high') query = query.order('price', { ascending: false });
+      else if (sort === 'most_viewed') query = query.order('views_count', { ascending: false });
+      else if (sort === 'most_liked') query = query.order('created_at', { ascending: false });
 
       const { data } = await query.range(pageParam, pageParam + PAGE_SIZE - 1);
       return data || [];
@@ -148,6 +150,11 @@ export default function Browse() {
         return getDistanceKm(userCoords.lat, userCoords.lng, coords.lat, coords.lng) <= radiusKm;
       });
     }
+    if (sort === 'most_liked' && favCountsMap && favCountsMap.size > 0) {
+      result = [...result].sort((a: any, b: any) => {
+        return (favCountsMap.get(b.id) ?? 0) - (favCountsMap.get(a.id) ?? 0);
+      });
+    }
     if (boostsMap && boostsMap.size > 0) {
       result = [...result].sort((a: any, b: any) => {
         const aBoost = boostsMap.has(a.id) ? 1 : 0;
@@ -156,7 +163,7 @@ export default function Browse() {
       });
     }
     return result;
-  }, [listings, userCoords, radiusKm, boostsMap]);
+  }, [listings, userCoords, radiusKm, boostsMap, favCountsMap, sort]);
 
   // Intersection Observer for infinite scroll
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -250,6 +257,8 @@ export default function Browse() {
             <SelectItem value="newest">{t('filters.sortNewest')}</SelectItem>
             <SelectItem value="price_low">{t('filters.sortPriceLow')}</SelectItem>
             <SelectItem value="price_high">{t('filters.sortPriceHigh')}</SelectItem>
+            <SelectItem value="most_viewed">{t('filters.sortMostViewed')}</SelectItem>
+            <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

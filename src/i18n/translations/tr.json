@@ -189,7 +189,7 @@
   "filters": {
     "allCategories": "Tüm Kategoriler", "allSubcategories": "Tüm Alt Kategoriler", "allLocations": "Tüm Konumlar",
     "allConditions": "Tüm Durumlar", "priceRange": "Fiyat Aralığı", "minPrice": "Min fiyat", "maxPrice": "Maks fiyat",
-    "sortNewest": "En yeni", "sortPriceLow": "Fiyat: Düşükten Yükseğe", "sortPriceHigh": "Fiyat: Yüksekten Düşüğe",
+    "sortNewest": "En yeni", "sortPriceLow": "Fiyat: Düşükten Yükseğe", "sortPriceHigh": "Fiyat: Yüksekten Düşüğe", "sortMostViewed": "En çok görüntülenen", "sortMostLiked": "En çok beğenilen",
     "clearFilters": "Filtreleri temizle", "results": "sonuç",
     "locateMe": "Konumumu bul", "localized": "Konumlandı", "geoError": "Konumunuza erişilemiyor", "geoNotSupported": "Coğrafi konum desteklenmiyor"
   },
