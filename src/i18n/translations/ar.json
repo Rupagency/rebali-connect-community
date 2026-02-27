@@ -189,7 +189,7 @@
   "filters": {
     "allCategories": "جميع الفئات", "allSubcategories": "جميع الفئات الفرعية", "allLocations": "جميع المواقع",
     "allConditions": "جميع الحالات", "priceRange": "نطاق السعر", "minPrice": "أقل سعر", "maxPrice": "أعلى سعر",
-    "sortNewest": "الأحدث أولاً", "sortPriceLow": "السعر: من الأقل للأعلى", "sortPriceHigh": "السعر: من الأعلى للأقل",
+    "sortNewest": "الأحدث أولاً", "sortPriceLow": "السعر: من الأقل للأعلى", "sortPriceHigh": "السعر: من الأعلى للأقل", "sortMostViewed": "الأكثر مشاهدة", "sortMostLiked": "الأكثر إعجاباً",
     "clearFilters": "مسح الفلاتر", "results": "نتائج",
     "locateMe": "حدد موقعي", "localized": "تم تحديد الموقع", "geoError": "تعذر الوصول لموقعك", "geoNotSupported": "تحديد الموقع غير مدعوم"
   },
