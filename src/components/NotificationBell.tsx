@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Bell } from 'lucide-react';
@@ -13,6 +14,7 @@ interface NotificationBellProps {
 }
 
 export default function NotificationBell({ compact = false }: NotificationBellProps) {
+  const { t } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -80,7 +82,7 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
               </span>
             )}
           </div>
-          <span className="text-[10px]">Alertes</span>
+          <span className="text-[10px]">{t('notifications.alerts')}</span>
         </button>
       ) : (
         <Button
@@ -97,7 +99,7 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
               </span>
             )}
           </div>
-          <span className="text-[10px]">Alertes</span>
+          <span className="text-[10px]">{t('notifications.alerts')}</span>
         </Button>
       )}
 
@@ -109,17 +111,17 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
             : "top-full mt-1 right-0 w-80"
         )}>
           <div className="flex items-center justify-between px-3 py-2 border-b">
-            <span className="text-sm font-semibold">Notifications</span>
+            <span className="text-sm font-semibold">{t('notifications.title')}</span>
             {unreadCount > 0 && (
               <button onClick={markAllRead} className="text-xs text-primary hover:underline">
-                Tout marquer lu
+                {t('notifications.markAllRead')}
               </button>
             )}
           </div>
 
           {notifications.length === 0 ? (
             <div className="p-4 text-center text-sm text-muted-foreground">
-              Aucune notification
+              {t('notifications.empty')}
             </div>
           ) : (
             <div>
@@ -137,10 +139,10 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
-                        {(notif.listings as any)?.title_original || 'Annonce'}
+                        {(notif.listings as any)?.title_original || t('notifications.listing')}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Alerte : « {(notif.saved_searches as any)?.keyword} »
+                        {t('notifications.alertLabel')} : « {(notif.saved_searches as any)?.keyword} »
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {new Date(notif.created_at).toLocaleDateString()}
