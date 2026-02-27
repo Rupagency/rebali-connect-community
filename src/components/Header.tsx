@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Header() {
   const { t } = useLanguage();
@@ -27,6 +29,16 @@ export default function Header() {
   const authGuard = (path: string) => () => {
     navigate(user ? path : '/auth');
   };
+
+  const { data: unreadCount = 0 } = useQuery({
+    queryKey: ['unread-messages-count', user?.id],
+    queryFn: async () => {
+      const { data } = await supabase.rpc('get_total_unread_messages', { _user_id: user!.id });
+      return (data as number) || 0;
+    },
+    enabled: !!user,
+    refetchInterval: 15_000,
+  });
 
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b">
@@ -88,8 +100,13 @@ export default function Header() {
             <span className="text-[10px]">{t('nav.favorites')}</span>
           </Button>
           {user && profile?.phone_verified && (
-            <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3" onClick={() => navigate('/messages')}>
+            <Button variant="ghost" size="sm" className="flex-col items-center gap-0.5 h-auto py-1.5 px-3 relative" onClick={() => navigate('/messages')}>
               <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
               <span className="text-[10px]">{t('nav.messages')}</span>
             </Button>
           )}
