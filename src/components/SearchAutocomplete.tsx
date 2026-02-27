@@ -288,6 +288,45 @@ export default function SearchAutocomplete({
             </>
           )}
 
+          {/* Trending searches (shown when input is empty) */}
+          {!hasSuggestions && !value && trendingSearches && trendingSearches.length > 0 && (
+            <>
+              <li className="flex items-center gap-2 px-3 py-2 border-b border-border">
+                <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                <span className="text-xs font-medium text-muted-foreground">
+                  {t('search.trending') || 'Trending'}
+                </span>
+              </li>
+              {trendingSearches.map((item, i) => {
+                const itemIndex = showRecent ? recentSearches.length + i : i;
+                return (
+                  <li
+                    key={`trending-${item.term}`}
+                    role="option"
+                    aria-selected={itemIndex === activeIndex}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2.5 text-sm cursor-pointer transition-colors',
+                      itemIndex === activeIndex
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent/50',
+                    )}
+                    onMouseEnter={() => setActiveIndex(itemIndex)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      handleSelect(item.term);
+                    }}
+                  >
+                    <TrendingUp className="h-3.5 w-3.5 text-primary/60 shrink-0" />
+                    <span className="truncate capitalize">{item.term}</span>
+                    <span className="ml-auto text-xs text-muted-foreground shrink-0">
+                      {item.search_count}×
+                    </span>
+                  </li>
+                );
+              })}
+            </>
+          )}
+
           {/* Suggestions from API */}
           {hasSuggestions &&
             suggestions!.map((s, i) => (
