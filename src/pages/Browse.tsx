@@ -150,6 +150,11 @@ export default function Browse() {
         return getDistanceKm(userCoords.lat, userCoords.lng, coords.lat, coords.lng) <= radiusKm;
       });
     }
+    if (sort === 'most_liked' && favCountsMap && favCountsMap.size > 0) {
+      result = [...result].sort((a: any, b: any) => {
+        return (favCountsMap.get(b.id) ?? 0) - (favCountsMap.get(a.id) ?? 0);
+      });
+    }
     if (boostsMap && boostsMap.size > 0) {
       result = [...result].sort((a: any, b: any) => {
         const aBoost = boostsMap.has(a.id) ? 1 : 0;
@@ -158,7 +163,7 @@ export default function Browse() {
       });
     }
     return result;
-  }, [listings, userCoords, radiusKm, boostsMap]);
+  }, [listings, userCoords, radiusKm, boostsMap, favCountsMap, sort]);
 
   // Intersection Observer for infinite scroll
   const sentinelRef = useRef<HTMLDivElement>(null);
