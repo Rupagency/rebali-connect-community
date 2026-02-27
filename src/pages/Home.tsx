@@ -129,7 +129,7 @@ export default function Home() {
       <CategoryMarquee />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="relative bg-gradient-to-br from-primary/10 via-background to-accent/10">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
@@ -141,7 +141,7 @@ export default function Home() {
           <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-xl mx-auto font-medium">
             {t('home.heroSub')}
           </p>
-          <form onSubmit={handleSearch} className="max-w-lg mx-auto flex gap-2">
+          <form onSubmit={handleSearch} className="max-w-lg mx-auto flex gap-2 relative z-20">
             <SearchAutocomplete
               value={searchQuery}
               onChange={setSearchQuery}
