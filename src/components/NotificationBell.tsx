@@ -66,25 +66,45 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
 
   return (
     <div className="relative" ref={ref}>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="flex-col items-center gap-0.5 h-auto py-1.5 px-3 relative"
-        onClick={() => setOpen(!open)}
-      >
-        <div className="relative">
-          <Bell className="h-5 w-5" strokeWidth={1.5} />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1.5 -right-2.5 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1">
-              {unreadCount > 99 ? '99+' : unreadCount}
-            </span>
-          )}
-        </div>
-        <span className="text-[10px]">Alertes</span>
-      </Button>
+      {compact ? (
+        <button
+          onClick={() => setOpen(!open)}
+          className="flex flex-col items-center justify-center gap-0.5 py-1 px-3 transition-colors text-muted-foreground"
+        >
+          <div className="relative">
+            <Bell className="h-5 w-5" strokeWidth={1.5} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px]">Alertes</span>
+        </button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex-col items-center gap-0.5 h-auto py-1.5 px-3 relative"
+          onClick={() => setOpen(!open)}
+        >
+          <div className="relative">
+            <Bell className="h-5 w-5" strokeWidth={1.5} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-full h-4 min-w-[16px] flex items-center justify-center px-1">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px]">Alertes</span>
+        </Button>
+      )}
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-80 bg-card border rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
+        <div className={cn(
+          "absolute top-full mt-1 bg-card border rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto",
+          compact ? "right-0 left-auto w-[calc(100vw-2rem)] max-w-80 -translate-x-1/4" : "right-0 w-80"
+        )}>
           <div className="flex items-center justify-between px-3 py-2 border-b">
             <span className="text-sm font-semibold">Notifications</span>
             {unreadCount > 0 && (
