@@ -314,9 +314,7 @@ export default function PointsShop() {
             })}
           </div>
           <div className="p-3 rounded-lg bg-muted/50 border border-border text-center space-y-1">
-            <p className="text-sm font-medium">{t('points.buyPointsComingSoon')}</p>
-            <p className="text-xs text-muted-foreground">{t('points.buyPointsComingSoonDesc')}</p>
-            <p className="text-[10px] text-muted-foreground mt-2">{t('points.paymentMethods')}</p>
+            <p className="text-[10px] text-muted-foreground">{t('points.paymentMethods')}</p>
           </div>
         </CardContent>
       </Card>
