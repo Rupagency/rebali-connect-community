@@ -1167,7 +1167,13 @@ export default function Admin() {
                     <TableCell><Badge variant="outline">{t(`profile.${p.user_type}`)}</Badge></TableCell>
                     <TableCell className="text-sm text-muted-foreground">{new Date(p.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      {p.is_banned ? <Badge variant="destructive">{t('admin.banned')}</Badge> : <Badge variant="secondary">{t('admin.activeStat')}</Badge>}
+                      <div className="flex gap-1">
+                        {p.is_banned ? <Badge variant="destructive">{t('admin.banned')}</Badge> : <Badge variant="secondary">{t('admin.activeStat')}</Badge>}
+                        {p.is_verified_seller && <Badge className="bg-green-500/10 text-green-600 border-green-500/20 text-[10px]"><ShieldCheck className="h-3 w-3 mr-0.5" />{t('security.verifiedSeller')}</Badge>}
+                        {!p.is_verified_seller && idVerifications?.some((v: any) => v.user_id === p.id && v.status === 'pending') && (
+                          <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-[10px]"><Clock className="h-3 w-3 mr-0.5" />{t('admin.pending')}</Badge>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm">{getUserListings(p.id).length}</TableCell>
                     <TableCell>
