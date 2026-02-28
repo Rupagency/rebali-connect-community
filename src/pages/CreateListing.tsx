@@ -327,9 +327,10 @@ export default function CreateListing() {
 
         if (error) throw error;
 
-        // Upload images with watermark
+        // Upload images with watermark + hash
         const username = profile?.display_name || 'user';
         for (let i = 0; i < photos.length; i++) {
+          const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const ext = 'jpg';
           const path = `${user.id}/${listing.id}/${i}.${ext}`;
@@ -338,7 +339,8 @@ export default function CreateListing() {
             listing_id: listing.id,
             storage_path: path,
             sort_order: i,
-          });
+            image_hash: imageHash,
+          } as any);
         }
 
         // Create translation placeholders - set the user's language as the original text
