@@ -212,9 +212,19 @@ export default function VIP() {
                   </div>
                 ))}
               </div>
-              <Button className="w-full gap-2" disabled>
-                <Lock className="h-4 w-4" />
-                {t('pro.comingSoon')}
+              <Button
+                className="w-full gap-2"
+                disabled={subscribing || !!activeSub}
+                onClick={handleSubscribe}
+              >
+                {subscribing ? (
+                  <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                ) : activeSub ? (
+                  <ShieldCheck className="h-4 w-4" />
+                ) : (
+                  <Crown className="h-4 w-4" />
+                )}
+                {subscribing ? '...' : activeSub ? t('pro.currentPlan') : t('pro.subscribe')}
               </Button>
               <p className="text-[10px] text-center text-muted-foreground">{t('pro.paymentMethods')}</p>
             </CardContent>
