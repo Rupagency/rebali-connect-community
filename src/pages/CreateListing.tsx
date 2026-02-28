@@ -290,9 +290,10 @@ export default function CreateListing() {
           }
         }
 
-        // Upload new images
+        // Upload new images with hash
         const startIndex = existingImageUrls.length;
         for (let i = 0; i < photos.length; i++) {
+          const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const path = `${user.id}/${editId}/${startIndex + i}.jpg`;
           await supabase.storage.from('listings').upload(path, watermarked);
@@ -300,7 +301,8 @@ export default function CreateListing() {
             listing_id: editId,
             storage_path: path,
             sort_order: startIndex + i,
-          });
+            image_hash: imageHash,
+          } as any);
         }
 
         // Trigger translation in background
