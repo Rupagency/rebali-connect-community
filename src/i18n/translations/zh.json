@@ -276,5 +276,28 @@
     "recentSearches": "最近搜索",
     "clearAll": "清除全部",
     "trending": "热门搜索"
+  },
+  "dashboard": {
+    "title": "卖家仪表板",
+    "subtitle": "跟踪您的列表表现",
+    "businessOnly": "卖家仪表板仅适用于商业账户。",
+    "proRequired": "订阅Pro以解锁详细统计数据。",
+    "subscribePro": "订阅Pro",
+    "goToProfile": "前往个人资料",
+    "last7days": "最近7天",
+    "last30days": "最近30天",
+    "allTime": "所有时间",
+    "totalViews": "总浏览量",
+    "totalFavorites": "收藏",
+    "waClicks": "WA点击",
+    "conversionRate": "转化率",
+    "conversations": "对话",
+    "listingsPerformance": "列表表现",
+    "active": "活跃",
+    "sold": "已售",
+    "sortViews": "按浏览排序",
+    "sortFavorites": "按收藏排序",
+    "sortWaClicks": "按WA点击排序",
+    "noListings": "暂无列表"
   }
 }

@@ -434,5 +434,28 @@
     "recentSearches": "Son aramalar",
     "clearAll": "Tümünü temizle",
     "trending": "Trend"
+  },
+  "dashboard": {
+    "title": "Satıcı Paneli",
+    "subtitle": "İlanlarınızın performansını takip edin",
+    "businessOnly": "Satıcı paneli yalnızca İşletme hesapları için kullanılabilir.",
+    "proRequired": "Ayrıntılı istatistikleri açmak için Pro'ya abone olun.",
+    "subscribePro": "Pro'ya abone ol",
+    "goToProfile": "Profile git",
+    "last7days": "Son 7 gün",
+    "last30days": "Son 30 gün",
+    "allTime": "Tüm zamanlar",
+    "totalViews": "Toplam Görüntüleme",
+    "totalFavorites": "Favoriler",
+    "waClicks": "WA Tıklamaları",
+    "conversionRate": "Dönüşüm",
+    "conversations": "Sohbetler",
+    "listingsPerformance": "İlan Performansı",
+    "active": "Aktif",
+    "sold": "Satıldı",
+    "sortViews": "Görüntülemeye göre sırala",
+    "sortFavorites": "Favorilere göre sırala",
+    "sortWaClicks": "WA tıklamalarına göre sırala",
+    "noListings": "Henüz ilan yok"
   }
 }

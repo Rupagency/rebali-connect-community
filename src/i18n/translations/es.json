@@ -295,5 +295,28 @@
     "recentSearches": "Búsquedas recientes",
     "clearAll": "Borrar todo",
     "trending": "Tendencias"
+  },
+  "dashboard": {
+    "title": "Panel del vendedor",
+    "subtitle": "Sigue el rendimiento de tus anuncios",
+    "businessOnly": "El panel está disponible solo para cuentas Business.",
+    "proRequired": "Suscríbete a Pro para desbloquear estadísticas detalladas.",
+    "subscribePro": "Suscribirse a Pro",
+    "goToProfile": "Ir al perfil",
+    "last7days": "Últimos 7 días",
+    "last30days": "Últimos 30 días",
+    "allTime": "Todo el tiempo",
+    "totalViews": "Vistas totales",
+    "totalFavorites": "Favoritos",
+    "waClicks": "Clics WA",
+    "conversionRate": "Conversión",
+    "conversations": "Conversaciones",
+    "listingsPerformance": "Rendimiento de anuncios",
+    "active": "Activo",
+    "sold": "Vendido",
+    "sortViews": "Ordenar por vistas",
+    "sortFavorites": "Ordenar por favoritos",
+    "sortWaClicks": "Ordenar por clics WA",
+    "noListings": "Aún no hay anuncios"
   }
 }

@@ -276,5 +276,28 @@
     "recentSearches": "Недавние поиски",
     "clearAll": "Очистить все",
     "trending": "В тренде"
+  },
+  "dashboard": {
+    "title": "Панель продавца",
+    "subtitle": "Отслеживайте эффективность ваших объявлений",
+    "businessOnly": "Панель доступна только для бизнес-аккаунтов.",
+    "proRequired": "Подпишитесь на Pro для доступа к подробной статистике.",
+    "subscribePro": "Подписаться на Pro",
+    "goToProfile": "К профилю",
+    "last7days": "Последние 7 дней",
+    "last30days": "Последние 30 дней",
+    "allTime": "За всё время",
+    "totalViews": "Всего просмотров",
+    "totalFavorites": "Избранное",
+    "waClicks": "Клики WA",
+    "conversionRate": "Конверсия",
+    "conversations": "Диалоги",
+    "listingsPerformance": "Эффективность объявлений",
+    "active": "Активно",
+    "sold": "Продано",
+    "sortViews": "По просмотрам",
+    "sortFavorites": "По избранному",
+    "sortWaClicks": "По кликам WA",
+    "noListings": "Пока нет объявлений"
   }
 }

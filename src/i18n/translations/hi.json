@@ -434,5 +434,28 @@
     "recentSearches": "हाल की खोजें",
     "clearAll": "सब हटाएं",
     "trending": "ट्रेंडिंग"
+  },
+  "dashboard": {
+    "title": "विक्रेता डैशबोर्ड",
+    "subtitle": "अपने विज्ञापनों का प्रदर्शन ट्रैक करें",
+    "businessOnly": "विक्रेता डैशबोर्ड केवल व्यावसायिक खातों के लिए उपलब्ध है।",
+    "proRequired": "विस्तृत आँकड़े अनलॉक करने के लिए Pro की सदस्यता लें।",
+    "subscribePro": "Pro सदस्यता लें",
+    "goToProfile": "प्रोफ़ाइल पर जाएं",
+    "last7days": "पिछले 7 दिन",
+    "last30days": "पिछले 30 दिन",
+    "allTime": "सभी समय",
+    "totalViews": "कुल दृश्य",
+    "totalFavorites": "पसंदीदा",
+    "waClicks": "WA क्लिक",
+    "conversionRate": "रूपांतरण",
+    "conversations": "बातचीत",
+    "listingsPerformance": "विज्ञापन प्रदर्शन",
+    "active": "सक्रिय",
+    "sold": "बिक गया",
+    "sortViews": "दृश्यों के अनुसार क्रमबद्ध करें",
+    "sortFavorites": "पसंदीदा के अनुसार क्रमबद्ध करें",
+    "sortWaClicks": "WA क्लिक के अनुसार क्रमबद्ध करें",
+    "noListings": "अभी तक कोई विज्ञापन नहीं"
   }
 }

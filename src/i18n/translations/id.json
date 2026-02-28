@@ -365,5 +365,28 @@
     "recentSearches": "Pencarian terbaru",
     "clearAll": "Hapus semua",
     "trending": "Tren"
+  },
+  "dashboard": {
+    "title": "Dashboard Penjual",
+    "subtitle": "Pantau performa iklan Anda",
+    "businessOnly": "Dashboard penjual hanya tersedia untuk akun Bisnis.",
+    "proRequired": "Berlangganan Pro untuk membuka statistik detail iklan Anda.",
+    "subscribePro": "Berlangganan Pro",
+    "goToProfile": "Ke Profil",
+    "last7days": "7 hari terakhir",
+    "last30days": "30 hari terakhir",
+    "allTime": "Semua waktu",
+    "totalViews": "Total Tampilan",
+    "totalFavorites": "Favorit",
+    "waClicks": "Klik WA",
+    "conversionRate": "Konversi",
+    "conversations": "Percakapan",
+    "listingsPerformance": "Performa Iklan",
+    "active": "Aktif",
+    "sold": "Terjual",
+    "sortViews": "Urutkan tampilan",
+    "sortFavorites": "Urutkan favorit",
+    "sortWaClicks": "Urutkan klik WA",
+    "noListings": "Belum ada iklan"
   }
 }
