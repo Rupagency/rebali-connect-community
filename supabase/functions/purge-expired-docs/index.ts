@@ -17,11 +17,12 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Find verifications approved/rejected > 30 days ago, not yet purged
+    // Find verifications rejected > 30 days ago, not yet purged
+    // Approved verifications are kept permanently for admin reference
     const { data: toPurge, error: fetchError } = await supabaseAdmin
       .from("id_verifications")
       .select("id, document_path, selfie_path")
-      .in("status", ["approved", "rejected"])
+      .eq("status", "rejected")
       .is("documents_purged_at", null)
       .lt("created_at", new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
 
