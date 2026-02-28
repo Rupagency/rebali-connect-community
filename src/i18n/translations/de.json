@@ -352,5 +352,28 @@
     "recentSearches": "Letzte Suchen",
     "clearAll": "Alle löschen",
     "trending": "Trends"
+  },
+  "dashboard": {
+    "title": "Verkäufer-Dashboard",
+    "subtitle": "Verfolgen Sie die Leistung Ihrer Anzeigen",
+    "businessOnly": "Das Dashboard ist nur für Business-Konten verfügbar.",
+    "proRequired": "Abonnieren Sie Pro, um detaillierte Statistiken freizuschalten.",
+    "subscribePro": "Pro abonnieren",
+    "goToProfile": "Zum Profil",
+    "last7days": "Letzte 7 Tage",
+    "last30days": "Letzte 30 Tage",
+    "allTime": "Gesamte Zeit",
+    "totalViews": "Gesamtaufrufe",
+    "totalFavorites": "Favoriten",
+    "waClicks": "WA-Klicks",
+    "conversionRate": "Konversion",
+    "conversations": "Gespräche",
+    "listingsPerformance": "Anzeigenleistung",
+    "active": "Aktiv",
+    "sold": "Verkauft",
+    "sortViews": "Nach Aufrufen sortieren",
+    "sortFavorites": "Nach Favoriten sortieren",
+    "sortWaClicks": "Nach WA-Klicks sortieren",
+    "noListings": "Noch keine Anzeigen"
   }
 }

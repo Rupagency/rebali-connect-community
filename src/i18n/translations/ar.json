@@ -434,5 +434,28 @@
     "recentSearches": "عمليات البحث الأخيرة",
     "clearAll": "مسح الكل",
     "trending": "الرائج"
+  },
+  "dashboard": {
+    "title": "لوحة تحكم البائع",
+    "subtitle": "تتبع أداء إعلاناتك",
+    "businessOnly": "لوحة التحكم متاحة فقط لحسابات الأعمال.",
+    "proRequired": "اشترك في Pro لفتح الإحصائيات التفصيلية.",
+    "subscribePro": "الاشتراك في Pro",
+    "goToProfile": "الذهاب إلى الملف الشخصي",
+    "last7days": "آخر 7 أيام",
+    "last30days": "آخر 30 يومًا",
+    "allTime": "كل الأوقات",
+    "totalViews": "إجمالي المشاهدات",
+    "totalFavorites": "المفضلة",
+    "waClicks": "نقرات واتساب",
+    "conversionRate": "التحويل",
+    "conversations": "المحادثات",
+    "listingsPerformance": "أداء الإعلانات",
+    "active": "نشط",
+    "sold": "مباع",
+    "sortViews": "ترتيب حسب المشاهدات",
+    "sortFavorites": "ترتيب حسب المفضلة",
+    "sortWaClicks": "ترتيب حسب نقرات واتساب",
+    "noListings": "لا توجد إعلانات بعد"
   }
 }

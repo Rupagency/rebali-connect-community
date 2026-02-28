@@ -276,5 +276,28 @@
     "recentSearches": "Recente zoekopdrachten",
     "clearAll": "Alles wissen",
     "trending": "Trending"
+  },
+  "dashboard": {
+    "title": "Verkopersdashboard",
+    "subtitle": "Volg de prestaties van uw advertenties",
+    "businessOnly": "Het dashboard is alleen beschikbaar voor zakelijke accounts.",
+    "proRequired": "Abonneer op Pro om gedetailleerde statistieken te ontgrendelen.",
+    "subscribePro": "Abonneer op Pro",
+    "goToProfile": "Naar profiel",
+    "last7days": "Laatste 7 dagen",
+    "last30days": "Laatste 30 dagen",
+    "allTime": "Alle tijd",
+    "totalViews": "Totaal weergaven",
+    "totalFavorites": "Favorieten",
+    "waClicks": "WA-klikken",
+    "conversionRate": "Conversie",
+    "conversations": "Gesprekken",
+    "listingsPerformance": "Advertentieprestaties",
+    "active": "Actief",
+    "sold": "Verkocht",
+    "sortViews": "Sorteren op weergaven",
+    "sortFavorites": "Sorteren op favorieten",
+    "sortWaClicks": "Sorteren op WA-klikken",
+    "noListings": "Nog geen advertenties"
   }
 }

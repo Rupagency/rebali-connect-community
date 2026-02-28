@@ -433,5 +433,28 @@
     "recentSearches": "最近の検索",
     "clearAll": "すべて削除",
     "trending": "トレンド"
+  },
+  "dashboard": {
+    "title": "出品者ダッシュボード",
+    "subtitle": "リストのパフォーマンスを追跡",
+    "businessOnly": "出品者ダッシュボードはビジネスアカウント専用です。",
+    "proRequired": "詳細な統計情報を解除するにはProに登録してください。",
+    "subscribePro": "Proに登録",
+    "goToProfile": "プロフィールへ",
+    "last7days": "過去7日間",
+    "last30days": "過去30日間",
+    "allTime": "全期間",
+    "totalViews": "合計閲覧数",
+    "totalFavorites": "お気に入り",
+    "waClicks": "WAクリック",
+    "conversionRate": "コンバージョン",
+    "conversations": "会話",
+    "listingsPerformance": "リストパフォーマンス",
+    "active": "アクティブ",
+    "sold": "売却済み",
+    "sortViews": "閲覧数で並べ替え",
+    "sortFavorites": "お気に入りで並べ替え",
+    "sortWaClicks": "WAクリックで並べ替え",
+    "noListings": "リストがまだありません"
   }
 }
