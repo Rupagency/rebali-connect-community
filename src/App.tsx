@@ -34,6 +34,7 @@ import PointsShop from "./pages/PointsShop";
 const queryClient = new QueryClient({});
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <LanguageProvider>
