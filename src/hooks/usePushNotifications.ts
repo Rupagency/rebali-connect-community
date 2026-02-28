@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY as string | undefined;
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -14,6 +13,10 @@ function urlBase64ToUint8Array(base64String: string) {
     outputArray[i] = rawData.charCodeAt(i);
   }
   return outputArray;
+}
+
+function getPushManager(reg: ServiceWorkerRegistration): any {
+  return (reg as any).pushManager;
 }
 
 export function usePushNotifications() {
@@ -30,17 +33,17 @@ export function usePushNotifications() {
     }
   }, []);
 
-  // Check existing subscription
   useEffect(() => {
     if (!isSupported || !user) return;
     navigator.serviceWorker.ready.then(async (reg) => {
-      const sub = await reg.pushManager.getSubscription();
+      const pm = getPushManager(reg);
+      const sub = await pm.getSubscription();
       setIsSubscribed(!!sub);
     });
   }, [isSupported, user]);
 
   const subscribe = useCallback(async () => {
-    if (!isSupported || !user) return false;
+    if (!isSupported || !user || !VAPID_PUBLIC_KEY) return false;
 
     try {
       const perm = await Notification.requestPermission();
@@ -48,10 +51,11 @@ export function usePushNotifications() {
       if (perm !== "granted") return false;
 
       const reg = await navigator.serviceWorker.ready;
-      let sub = await reg.pushManager.getSubscription();
+      const pm = getPushManager(reg);
+      let sub = await pm.getSubscription();
 
       if (!sub) {
-        sub = await reg.pushManager.subscribe({
+        sub = await pm.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
         });
@@ -64,7 +68,7 @@ export function usePushNotifications() {
           endpoint: sub.endpoint,
           p256dh: subJson.keys!.p256dh!,
           auth: subJson.keys!.auth!,
-        },
+        } as any,
         { onConflict: "user_id,endpoint" }
       );
 
@@ -85,7 +89,8 @@ export function usePushNotifications() {
     if (!user) return;
     try {
       const reg = await navigator.serviceWorker.ready;
-      const sub = await reg.pushManager.getSubscription();
+      const pm = getPushManager(reg);
+      const sub = await pm.getSubscription();
       if (sub) {
         await sub.unsubscribe();
         await supabase
