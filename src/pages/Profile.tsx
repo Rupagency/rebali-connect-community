@@ -585,6 +585,16 @@ export default function Profile() {
       {/* WhatsApp Verification */}
       <WhatsAppVerification user={user} profile={profile} refreshProfile={refreshProfile} />
 
+      {/* Push Notifications */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t('notifications.title')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <PushNotificationToggle />
+        </CardContent>
+      </Card>
+
       {/* Saved Search Alerts (VIP) */}
       <SavedSearches />
 
