@@ -76,6 +76,25 @@ export default function VIP() {
 
   const currentPrice = billingCycle === 'monthly' ? monthlyPrice : annualPrice;
 
+  const handleSubscribe = async () => {
+    if (!user) { navigate('/auth'); return; }
+    setSubscribing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('xendit-create-invoice', {
+        body: { type: 'pro_subscription', plan_type: billingCycle },
+      });
+      if (error || data?.error) {
+        toast({ title: data?.error || 'Payment error', variant: 'destructive' });
+      } else if (data?.invoice_url) {
+        window.open(data.invoice_url, '_blank');
+        toast({ title: t('pro.redirectingPayment') });
+      }
+    } catch {
+      toast({ title: 'Payment error', variant: 'destructive' });
+    }
+    setSubscribing(false);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl space-y-8">
       {/* Header */}
