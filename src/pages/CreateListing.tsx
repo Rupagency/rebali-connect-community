@@ -227,6 +227,41 @@ export default function CreateListing() {
       return;
     }
 
+    // Run image moderation checks (hash duplicate detection)
+    setModerationWarnings([]);
+    if (photos.length > 0) {
+      try {
+        const firstHash = await computeImageHash(photos[0]);
+        const { data: modResult } = await supabase.functions.invoke('moderate-image', {
+          body: {
+            image_hash: firstHash,
+            title: form.title,
+            description: form.description,
+          },
+        });
+        if (modResult && !modResult.safe) {
+          const warnings = (modResult.warnings || []) as string[];
+          setModerationWarnings(warnings);
+          if (warnings.includes('duplicate_image')) {
+            const dupeTitle = modResult.duplicate_listings?.[0]?.title || '';
+            toast({
+              title: t('moderation.duplicateImage'),
+              description: dupeTitle ? `${t('moderation.duplicateOf')}: "${dupeTitle}"` : undefined,
+              variant: 'destructive',
+            });
+            setLoading(false);
+            return;
+          }
+          // Other warnings are shown but don't block
+          if (warnings.includes('similar_title')) {
+            toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
+          }
+        }
+      } catch (e) {
+        console.warn('Moderation check failed, proceeding anyway', e);
+      }
+    }
+
     setLoading(true);
     try {
       if (isEditMode && editId) {
