@@ -1,3 +1,4 @@
+import SEOHead from '@/components/SEOHead';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useInfiniteQuery } from '@tanstack/react-query';
