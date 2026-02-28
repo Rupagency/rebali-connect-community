@@ -6,6 +6,42 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const LANG_MAP: Record<string, string> = {
+  en: "en", id: "id", fr: "fr", es: "es", zh: "zh-CN", de: "de",
+  nl: "nl", ru: "ru", tr: "tr", ar: "ar", hi: "hi", ja: "ja",
+};
+
+async function translateText(text: string, targetLang: string, sourceLang = "auto"): Promise<string> {
+  if (sourceLang === targetLang) return text;
+  try {
+    const tl = LANG_MAP[targetLang] || targetLang;
+    const sl = sourceLang === "auto" ? "auto" : (LANG_MAP[sourceLang] || sourceLang);
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (!res.ok) return text;
+    const data = await res.json();
+    return data?.[0]?.map((s: any) => s[0]).join("") || text;
+  } catch {
+    return text;
+  }
+}
+
+// Pre-translated notification templates
+const ALERT_TEMPLATES: Record<string, { alert: string; newListing: string; seeIt: string }> = {
+  en: { alert: "Re-Bali Alert", newListing: "New listing matching your search", seeIt: "See listing" },
+  fr: { alert: "Alerte Re-Bali", newListing: "Nouvelle annonce correspondant à votre recherche", seeIt: "Voir l'annonce" },
+  id: { alert: "Pemberitahuan Re-Bali", newListing: "Iklan baru sesuai pencarian Anda", seeIt: "Lihat iklan" },
+  es: { alert: "Alerta Re-Bali", newListing: "Nuevo anuncio que coincide con tu búsqueda", seeIt: "Ver anuncio" },
+  de: { alert: "Re-Bali Alarm", newListing: "Neue Anzeige passend zu Ihrer Suche", seeIt: "Anzeige ansehen" },
+  nl: { alert: "Re-Bali Melding", newListing: "Nieuwe advertentie bij uw zoekopdracht", seeIt: "Bekijk advertentie" },
+  ru: { alert: "Уведомление Re-Bali", newListing: "Новое объявление по вашему запросу", seeIt: "Посмотреть" },
+  zh: { alert: "Re-Bali 提醒", newListing: "符合您搜索的新列表", seeIt: "查看列表" },
+  tr: { alert: "Re-Bali Uyarısı", newListing: "Aramanıza uyan yeni ilan", seeIt: "İlanı gör" },
+  ar: { alert: "تنبيه Re-Bali", newListing: "إعلان جديد يطابق بحثك", seeIt: "عرض الإعلان" },
+  hi: { alert: "Re-Bali अलर्ट", newListing: "आपकी खोज से मेल खाता नया विज्ञापन", seeIt: "विज्ञापन देखें" },
+  ja: { alert: "Re-Bali アラート", newListing: "検索に一致する新しいリスト", seeIt: "リストを見る" },
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -42,16 +78,12 @@ Deno.serve(async (req) => {
     let matchedCount = 0;
 
     for (const search of savedSearches) {
-      // Don't notify the seller about their own listing
       if (search.user_id === seller_id) continue;
 
-      // Check if keyword matches (case-insensitive, supports multi-word)
       const keywords = search.keyword.toLowerCase().split(/\s+/);
       const matches = keywords.every((kw: string) => searchText.includes(kw));
-
       if (!matches) continue;
 
-      // Check if notification already exists for this listing+search combo
       const { data: existing } = await supabase
         .from("search_notifications")
         .select("id")
@@ -61,7 +93,6 @@ Deno.serve(async (req) => {
 
       if (existing && existing.length > 0) continue;
 
-      // Check user has active VIP addon
       const { data: vipAddon } = await supabase
         .from("user_addons")
         .select("id")
@@ -102,7 +133,7 @@ Deno.serve(async (req) => {
         console.error("Push notification error:", pushErr);
       }
 
-      // Send WhatsApp notification if user has verified WhatsApp
+      // Send WhatsApp notification (translated, with image like message notifications)
       if (fonnte) {
         const { data: profile } = await supabase
           .from("profiles")
@@ -112,6 +143,11 @@ Deno.serve(async (req) => {
 
         if (profile?.whatsapp) {
           const cleanTarget = profile.whatsapp.replace(/[^0-9]/g, "");
+          const lang = profile.preferred_lang || "en";
+          const tmpl = ALERT_TEMPLATES[lang] || ALERT_TEMPLATES.en;
+
+          // Translate listing title to user's language
+          const translatedTitle = await translateText(title, lang);
 
           // Get listing image
           const { data: listingImage } = await supabase
@@ -126,18 +162,17 @@ Deno.serve(async (req) => {
             ? `${supabaseUrl}/storage/v1/object/public/listings/${listingImage.storage_path}`
             : "";
 
-          const listingUrl = `https://rebali-connect-community.lovable.app/listing/${listing_id}`;
-
+          const listingUrl = `https://re-bali.com/listing/${listing_id}`;
           const priceFormatted = new Intl.NumberFormat("id-ID").format(price);
 
-          const waMessage = `🔔 *Alerte Re-Bali*
+          const waMessage = `🔔 *${tmpl.alert}*
 
-Nouvelle annonce correspondant à votre recherche "${search.keyword}" :
+${tmpl.newListing} "${search.keyword}" :
 
-📦 *${title}*
+📦 *${translatedTitle}*
 💰 ${priceFormatted} IDR
 
-👉 ${listingUrl}`;
+👉 ${tmpl.seeIt}: ${listingUrl}`;
 
           const formData = new FormData();
           formData.append("target", cleanTarget);
@@ -156,7 +191,6 @@ Nouvelle annonce correspondant à votre recherche "${search.keyword}" :
             const result = await fonnteRes.json();
             console.log(`WA sent to ${cleanTarget}:`, JSON.stringify(result));
 
-            // Mark as WA notified
             await supabase
               .from("search_notifications")
               .update({ notified_wa: true })
