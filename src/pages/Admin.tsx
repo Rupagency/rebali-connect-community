@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X, Fingerprint, Wifi, WifiOff, ShieldCheck, ShieldAlert, FileCheck, MessageCircle, Coins, TrendingUp } from 'lucide-react';
+import { Shield, AlertTriangle, Users, FileText, CheckCircle, BarChart3, Search, Ban, Eye, Phone, MessageSquare, Globe, Calendar, User, MapPin, Tag, Package, DollarSign, BarChart2, Trash2, Archive, Pencil, Save, X, Fingerprint, Wifi, WifiOff, ShieldCheck, ShieldAlert, FileCheck, MessageCircle, Coins, TrendingUp, Clock } from 'lucide-react';
 import { CATEGORY_TREE } from '@/lib/constants';
 import SearchAnalytics from '@/components/admin/SearchAnalytics';
 
@@ -642,6 +642,89 @@ export default function Admin() {
 
           <Separator />
 
+          {/* ID Verification Section */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4" /> {t('security.becomeVerified')}
+            </h4>
+            {(() => {
+              const userVerification = idVerifications?.filter((v: any) => v.user_id === selectedUser.id) || [];
+              const latestVerification = userVerification.length > 0 ? userVerification[0] : null;
+
+              if (selectedUser.is_verified_seller) {
+                return (
+                  <div className="flex items-center gap-3 p-3 rounded-md bg-green-500/10 border border-green-500/20">
+                    <ShieldCheck className="h-5 w-5 text-green-600" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-green-700">{t('security.verifiedSeller')}</p>
+                      <p className="text-xs text-muted-foreground">{t('security.verifiedSellerDesc')}</p>
+                    </div>
+                    <Badge className="bg-green-500/10 text-green-600 border-green-500/20">
+                      <ShieldCheck className="h-3 w-3 mr-1" /> {t('security.verifiedSeller')}
+                    </Badge>
+                  </div>
+                );
+              }
+
+              if (latestVerification?.status === 'pending') {
+                return (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 rounded-md bg-amber-500/10 border border-amber-500/20">
+                      <Clock className="h-5 w-5 text-amber-600" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-amber-700">{t('security.verificationPending')}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {latestVerification.document_type.toUpperCase()} — {new Date(latestVerification.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <VerificationCard
+                      verification={latestVerification}
+                      profileName={selectedUser.display_name || selectedUser.id.slice(0, 8)}
+                      onApprove={async () => {
+                        await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', latestVerification.id);
+                        await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', selectedUser.id);
+                        // Recalculate trust score
+                        await supabase.functions.invoke('calculate-trust-score', { body: { user_id: selectedUser.id } });
+                        refetchVerifications();
+                        qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+                        setSelectedUser((prev: any) => prev ? { ...prev, is_verified_seller: true } : null);
+                        toast({ title: t('security.approve') });
+                      }}
+                      onReject={async () => {
+                        await supabase.from('id_verifications').update({ status: 'rejected' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', latestVerification.id);
+                        refetchVerifications();
+                        toast({ title: t('security.reject') });
+                      }}
+                    />
+                  </div>
+                );
+              }
+
+              if (latestVerification?.status === 'rejected') {
+                return (
+                  <div className="flex items-center gap-3 p-3 rounded-md bg-destructive/10 border border-destructive/20">
+                    <X className="h-5 w-5 text-destructive" />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-destructive">{t('security.verificationRejected')}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(latestVerification.reviewed_at || latestVerification.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <p className="text-sm text-muted-foreground p-3 rounded-md border border-dashed text-center">
+                  {t('admin.noVerificationRequest')}
+                </p>
+              );
+            })()}
+          </div>
+
+          <Separator />
+
           {/* Admin actions */}
           <div className="flex gap-2">
             <Button
@@ -1084,7 +1167,13 @@ export default function Admin() {
                     <TableCell><Badge variant="outline">{t(`profile.${p.user_type}`)}</Badge></TableCell>
                     <TableCell className="text-sm text-muted-foreground">{new Date(p.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      {p.is_banned ? <Badge variant="destructive">{t('admin.banned')}</Badge> : <Badge variant="secondary">{t('admin.activeStat')}</Badge>}
+                      <div className="flex gap-1">
+                        {p.is_banned ? <Badge variant="destructive">{t('admin.banned')}</Badge> : <Badge variant="secondary">{t('admin.activeStat')}</Badge>}
+                        {p.is_verified_seller && <Badge className="bg-green-500/10 text-green-600 border-green-500/20 text-[10px]"><ShieldCheck className="h-3 w-3 mr-0.5" />{t('security.verifiedSeller')}</Badge>}
+                        {!p.is_verified_seller && idVerifications?.some((v: any) => v.user_id === p.id && v.status === 'pending') && (
+                          <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-[10px]"><Clock className="h-3 w-3 mr-0.5" />{t('admin.pending')}</Badge>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm">{getUserListings(p.id).length}</TableCell>
                     <TableCell>
@@ -1248,6 +1337,7 @@ export default function Admin() {
                         onApprove={async () => {
                           await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
                           await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', v.user_id);
+                          await supabase.functions.invoke('calculate-trust-score', { body: { user_id: v.user_id } });
                           refetchVerifications();
                           qc.invalidateQueries({ queryKey: ['admin-profiles'] });
                           toast({ title: t('security.approve') });
