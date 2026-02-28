@@ -26,11 +26,14 @@ export default function SEOHead({
   noindex = false,
   jsonLd,
 }: SEOHeadProps) {
+  const { language } = useLanguage();
   const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Buy & Sell Second-Hand in Bali`;
   const canonicalUrl = url ? `${SITE_URL}${url}` : undefined;
+  const pathForHreflang = url || '/';
 
   return (
     <Helmet>
+      <html lang={language} />
       <title>{fullTitle}</title>
       <meta name="description" content={description.slice(0, 160)} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
