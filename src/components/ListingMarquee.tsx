@@ -12,6 +12,7 @@ interface ListingMarqueeProps {
 
 export default function ListingMarquee({ listings, isLoading, emptyMessage }: ListingMarqueeProps) {
   const [paused, setPaused] = useState(false);
+  const isMobile = useIsMobile();
 
   const listingIds = (listings || []).map((l: any) => l.id);
   const { data: boostsMap } = useListingBoosts(listingIds);
