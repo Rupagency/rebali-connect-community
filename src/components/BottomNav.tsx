@@ -45,7 +45,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t md:hidden safe-area-bottom">
-      <div className="flex items-center justify-around h-12 px-2">
+      <div className="flex items-center justify-around h-10 px-2">
         {NAV_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
@@ -55,12 +55,12 @@ export default function BottomNav() {
               <button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className="flex flex-col items-center justify-center -mt-4"
+                className="flex flex-col items-center justify-center -mt-3"
               >
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg">
-                  <Icon className="h-5 w-5 text-primary-foreground" />
+                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                  <Icon className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="text-[9px] mt-0.5 font-semibold text-primary">{t(item.labelKey)}</span>
+                <span className="text-[8px] font-semibold text-primary">{t(item.labelKey)}</span>
               </button>
             );
           }
