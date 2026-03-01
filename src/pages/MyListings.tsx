@@ -107,11 +107,15 @@ export default function MyListings() {
     setBoostDialogOpen(true);
   };
 
-  const purchaseBoost = async (type: string) => {
-    if (!boostListingId) return;
+  const selectBoostType = (type: string) => {
+    setConfirmBoostType(type);
+  };
+
+  const purchaseBoost = async () => {
+    if (!boostListingId || !confirmBoostType) return;
     setPurchasing(true);
     const { data, error } = await supabase.functions.invoke('manage-points', {
-      body: { action: 'purchase', addon_type: type, listing_id: boostListingId },
+      body: { action: 'purchase', addon_type: confirmBoostType, listing_id: boostListingId },
     });
     if (error || data?.error) {
       const msg = data?.error === 'insufficient_points'
@@ -121,8 +125,10 @@ export default function MyListings() {
     } else {
       toast({ title: t('points.purchaseSuccess') });
       qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      qc.invalidateQueries({ queryKey: ['my-listings'] });
     }
     setPurchasing(false);
+    setConfirmBoostType(null);
     setBoostDialogOpen(false);
   };
 
