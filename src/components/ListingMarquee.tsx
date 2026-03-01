@@ -37,16 +37,16 @@ export default function ListingMarquee({ listings, isLoading, emptyMessage }: Li
     );
   }
 
-  const items = isMobile ? listings : [...listings, ...listings];
+  const items = [...listings, ...listings];
 
   return (
     <div
-      className={isMobile ? 'overflow-x-auto scrollbar-hide' : 'overflow-hidden'}
-      onMouseEnter={() => !isMobile && setPaused(true)}
-      onMouseLeave={() => !isMobile && setPaused(false)}
+      className="overflow-x-auto scrollbar-hide"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
       <div
-        className={`flex gap-3 w-max pl-1 ${isMobile ? '' : `listing-marquee ${paused ? 'paused' : ''}`}`}
+        className={`listing-marquee flex gap-3 w-max pl-1 ${paused ? 'paused' : ''}`}
       >
         {items.map((listing: any, i: number) => (
           <ListingCardSmall
