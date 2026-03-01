@@ -1124,6 +1124,7 @@ export type Database = {
           title: string
         }[]
       }
+      validate_content: { Args: { content: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
