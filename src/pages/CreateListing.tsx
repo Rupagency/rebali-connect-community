@@ -46,6 +46,7 @@ export default function CreateListing() {
   const [previews, setPreviews] = useState<string[]>([]);
   const [locating, setLocating] = useState(false);
   const [moderationWarnings, setModerationWarnings] = useState<string[]>([]);
+  const subcategoryRef = useRef<HTMLDivElement>(null);
 
   // Compute SHA-256 hash of a file for duplicate detection
   const computeImageHash = async (file: File | Blob): Promise<string> => {
