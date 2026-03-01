@@ -40,15 +40,13 @@ export default function CategoryMarquee() {
 
   const subcategories = hoveredCat ? CATEGORY_TREE[hoveredCat] : [];
 
-  const categoriesToRender = isMobile ? CATEGORIES : [...CATEGORIES, ...CATEGORIES];
-
   return (
     <section className="border-b border-border/50 bg-card overflow-visible relative">
-      <div className={isMobile ? 'overflow-x-auto scrollbar-hide' : 'overflow-hidden'}>
+      <div className="overflow-x-auto scrollbar-hide">
         <div
-          className={`flex w-max ${isMobile ? '' : `marquee-track ${paused ? 'paused' : ''}`}`}
+          className={`marquee-track flex w-max ${paused ? 'paused' : ''}`}
         >
-          {categoriesToRender.map((cat, i) => (
+          {[...CATEGORIES, ...CATEGORIES].map((cat, i) => (
             <Link
               key={`${cat}-${i}`}
               to={`/browse?category=${cat}`}
