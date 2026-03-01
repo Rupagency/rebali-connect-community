@@ -121,7 +121,8 @@ Deno.serve(async (req) => {
     const fonntData = await fonntRes.json();
 
     if (!fonntRes.ok || fonntData.status === false) {
-      return new Response(JSON.stringify({ error: "sms_send_failed", details: fonntData }), {
+      console.error("Fonnte send failed:", fonntData);
+      return new Response(JSON.stringify({ error: "sms_send_failed" }), {
         status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -130,7 +131,8 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    console.error("send-otp error:", err);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }

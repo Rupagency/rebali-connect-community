@@ -21,8 +21,12 @@ serve(async (req) => {
     const callbackToken = req.headers.get("x-callback-token");
     const expectedToken = Deno.env.get("XENDIT_SECRET_KEY");
     
-    if (!callbackToken || !expectedToken) {
-      console.warn("Missing callback token or secret key");
+    if (!callbackToken || !expectedToken || callbackToken !== expectedToken) {
+      console.error("Invalid or missing callback token");
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const body = await req.json();
@@ -173,8 +177,7 @@ serve(async (req) => {
     });
   } catch (error: unknown) {
     console.error("Webhook error:", error);
-    const msg = error instanceof Error ? error.message : "Unknown error";
-    return new Response(JSON.stringify({ error: msg }), {
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
