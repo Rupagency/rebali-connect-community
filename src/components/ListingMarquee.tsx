@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ListingCardSmall from '@/components/ListingCardSmall';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useListingBoosts } from '@/hooks/useListingEnrichment';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ListingMarqueeProps {
   listings: any[];
