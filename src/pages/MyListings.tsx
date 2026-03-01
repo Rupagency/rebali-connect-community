@@ -23,6 +23,7 @@ export default function MyListings() {
   const [boostDialogOpen, setBoostDialogOpen] = useState(false);
   const [boostListingId, setBoostListingId] = useState<string | null>(null);
   const [purchasing, setPurchasing] = useState(false);
+  const [confirmBoostType, setConfirmBoostType] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [searchParams] = useSearchParams();
