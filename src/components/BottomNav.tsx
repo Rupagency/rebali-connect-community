@@ -82,7 +82,7 @@ export default function BottomNav() {
                   </span>
                 )}
               </div>
-              <span className={cn("text-[10px]", isActive && "font-bold")}>{t(item.labelKey)}</span>
+              <span className={cn("text-[9px]", isActive && "font-bold")}>{t(item.labelKey)}</span>
             </button>
           );
         })}
