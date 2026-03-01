@@ -11,8 +11,9 @@ export async function initCapacitor() {
 
   // Status bar styling
   await StatusBar.setStyle({ style: Style.Dark });
+  await StatusBar.setOverlaysWebView({ overlay: true });
   if (Capacitor.getPlatform() === 'android') {
-    await StatusBar.setBackgroundColor({ color: '#0f766e' });
+    await StatusBar.setBackgroundColor({ color: '#00000000' });
   }
 
   // Hide splash screen after app is ready
