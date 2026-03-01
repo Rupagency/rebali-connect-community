@@ -55,7 +55,7 @@ export default function BottomNav() {
               <button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className="flex flex-col items-center justify-center -mt-4"
+                className="flex flex-col items-center justify-center -mt-3"
               >
                 <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-lg">
                   <Icon className="h-4 w-4 text-primary-foreground" />
