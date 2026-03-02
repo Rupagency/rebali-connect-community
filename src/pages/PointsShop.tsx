@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { openExternal } from '@/lib/openExternal';
 import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp, CreditCard, Zap, Lock } from 'lucide-react';
 
 interface PointsData {
@@ -77,7 +78,7 @@ export default function PointsShop() {
       if (error || data?.error) {
         toast({ title: data?.error || 'Payment error', variant: 'destructive' });
       } else if (data?.invoice_url) {
-        window.open(data.invoice_url, '_blank');
+        openExternal(data.invoice_url);
         toast({ title: t('points.redirectingPayment') });
       }
     } catch {

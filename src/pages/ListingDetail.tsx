@@ -18,6 +18,7 @@ import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Share2, Heart,
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
+import { openExternal } from '@/lib/openExternal';
 import { useEffect, useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
@@ -386,17 +387,17 @@ export default function ListingDetail() {
                               window.location.href = `fb://share/?link=${encodeURIComponent(ogUrl)}`;
                               // Fallback to web if app not installed
                               setTimeout(() => {
-                                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`, '_blank');
+                              openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`);
                               }, 1200);
                               return;
                             }
 
-                            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`, '_blank');
+                            openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`);
                           }}>
                             <Facebook className="h-4 w-4 mr-2" />
                             {t('share.facebook')}
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(ogUrl)}`, '_blank')}>
+                          <DropdownMenuItem onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(ogUrl)}`)}>
                             <MessageCircle className="h-4 w-4 mr-2" />
                             {t('share.whatsapp')}
                           </DropdownMenuItem>
@@ -494,11 +495,9 @@ export default function ListingDetail() {
             <div>
               <h2 className="text-xl font-extrabold mb-3">{t('listing.location')}</h2>
               <p className="font-bold mb-3">{t(`locations.${listing.location_area}`)}, Bali</p>
-              <a
-                href={`https://www.google.com/maps/search/${encodeURIComponent(t(`locations.${listing.location_area}`) + ', Bali, Indonesia')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow relative"
+              <div
+                onClick={() => openExternal(`https://www.google.com/maps/search/${encodeURIComponent(t(`locations.${listing.location_area}`) + ', Bali, Indonesia')}`)}
+                className="block rounded-xl overflow-hidden border border-border hover:shadow-md transition-shadow relative cursor-pointer"
               >
                 <iframe
                   title="Map"

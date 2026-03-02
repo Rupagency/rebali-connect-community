@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { openExternal } from '@/lib/openExternal';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -85,7 +86,7 @@ export default function VIP() {
       if (error || data?.error) {
         toast({ title: data?.error || 'Payment error', variant: 'destructive' });
       } else if (data?.invoice_url) {
-        window.open(data.invoice_url, '_blank');
+        openExternal(data.invoice_url);
         toast({ title: t('pro.redirectingPayment') });
       }
     } catch {
