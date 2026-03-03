@@ -67,7 +67,7 @@ export default function SavedSearches() {
           <p className="text-sm text-muted-foreground">
             {t('savedSearches.promoDesc')}
           </p>
-          <Button variant="outline" className="gap-2" onClick={() => isNativePlatform ? openExternalAuthenticated(`${window.location.origin}/points`) : window.location.href = '/points'}>
+          <Button variant="outline" className="gap-2" onClick={() => isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/points`) : window.location.href = '/points'}>
             <Crown className="h-4 w-4" />
             {t('savedSearches.becomeVip')}
           </Button>

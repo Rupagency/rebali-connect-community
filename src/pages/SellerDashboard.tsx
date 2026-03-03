@@ -161,7 +161,7 @@ export default function SellerDashboard() {
         </div>
         <h1 className="text-2xl font-bold">{t('dashboard.title')}</h1>
         <p className="text-muted-foreground">{t('dashboard.proRequired')}</p>
-        <Button onClick={() => isNativePlatform ? openExternalAuthenticated(`${window.location.origin}/points`) : navigate('/points')} className="gap-2">
+        <Button onClick={() => isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/points`) : navigate('/points')} className="gap-2">
           <Crown className="h-4 w-4" /> {t('dashboard.subscribePro')}
         </Button>
       </div>
