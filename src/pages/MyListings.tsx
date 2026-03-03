@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { isNativePlatform } from '@/capacitor';
+import { openExternal } from '@/lib/openExternal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -136,6 +138,10 @@ export default function MyListings() {
   };
 
   const openBoostDialog = (listingId: string) => {
+    if (isNativePlatform) {
+      openExternal(`${window.location.origin}/points`);
+      return;
+    }
     setBoostListingId(listingId);
     setBoostDialogOpen(true);
   };
