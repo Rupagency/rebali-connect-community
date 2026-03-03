@@ -38,7 +38,32 @@ Créer le fichier `.env` à la racine du projet avec les variables d'environneme
 
 ---
 
-## Étape 2 — Build + Sync
+## Étape 2 — Générer les icônes et splash screens
+
+Placer le logo **1024x1024 PNG** dans les fichiers suivants à la racine du projet :
+
+```
+assets/
+├── icon-only.png          ← Le logo seul (1024x1024, fond transparent OK)
+├── icon.png               ← Le logo avec fond de couleur (1024x1024, sans transparence)
+├── splash.png             ← Image pour le splash screen (2732x2732)
+└── splash-dark.png        ← Splash screen mode sombre (2732x2732, optionnel)
+```
+
+Puis lancer cette commande qui génère TOUTES les tailles automatiquement :
+
+```bash
+npx capacitor-assets generate --iconBackgroundColor "#0f766e" --splashBackgroundColor "#0f766e"
+```
+
+Cette commande crée automatiquement :
+- Toutes les tailles d'icônes iOS (de 40x40 à 1024x1024)
+- Toutes les tailles d'icônes Android (de 48x48 à 192x192)
+- Tous les splash screens iOS et Android
+
+---
+
+## Étape 3 — Build + Sync
 
 ```bash
 npm run build:mobile
@@ -48,7 +73,7 @@ Cette commande build le projet web et synchronise les fichiers vers les projets 
 
 ---
 
-## Étape 3A — Publication iOS (App Store)
+## Étape 4A — Publication iOS (App Store)
 
 ### Ouvrir dans Xcode
 
@@ -64,17 +89,6 @@ npm run cap:open:ios
 4. Sélectionner l'équipe (il faut un **compte Apple Developer** à 99$/an)
    - Créer un compte sur https://developer.apple.com/programs/
 5. Le Bundle Identifier sera `com.rebali.app`
-
-### Ajouter les icônes
-
-1. Dans Xcode, ouvrir `Assets.xcassets` > `AppIcon`
-2. Glisser les icônes aux bonnes tailles :
-   - **1024x1024** — App Store
-   - **180x180** — iPhone (3x)
-   - **120x120** — iPhone (2x)
-   - **167x167** — iPad Pro
-   - **152x152** — iPad
-3. Ou utiliser un générateur automatique : https://www.appicon.co/
 
 ### Tester sur simulateur
 
@@ -107,7 +121,7 @@ npm run cap:open:ios
 
 ---
 
-## Étape 3B — Publication Android (Google Play)
+## Étape 4B — Publication Android (Google Play)
 
 ### Ouvrir dans Android Studio
 
