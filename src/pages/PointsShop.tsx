@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { openExternalAuthenticated } from '@/lib/openExternal';
+import { openExternal, openExternalAuthenticated } from '@/lib/openExternal';
 import { isNativePlatform } from '@/capacitor';
 import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp, CreditCard, Zap, Lock } from 'lucide-react';
 
