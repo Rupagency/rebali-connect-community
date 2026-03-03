@@ -626,5 +626,37 @@
     "similarTitle": "Warning: A listing with a very similar title already exists",
     "imageReused": "This image has been used in multiple listings",
     "suspiciousContent": "Suspicious content detected in your listing"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
+  },
+  "footer": {
+    "tagline": "The trusted marketplace for buying and selling in Bali",
+    "explore": "Marketplace",
+    "company": "Company",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Support",
+    "copyright": "All rights reserved.",
+    "trustBadgesPoints": "Trust, Badges & Points"
   }
 }
