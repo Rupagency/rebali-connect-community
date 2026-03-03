@@ -1,0 +1,2 @@
+ALTER TABLE public.id_verifications DROP CONSTRAINT id_verifications_document_type_check;
+ALTER TABLE public.id_verifications ADD CONSTRAINT id_verifications_document_type_check CHECK (document_type = ANY (ARRAY['ktp'::text, 'passport'::text, 'selfie'::text]));
