@@ -4,7 +4,7 @@
     "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "back": "Back", "next": "Next",
     "publish": "Publish", "loading": "Loading...", "noResults": "No results found", "viewAll": "View all",
     "price": "Price", "free": "Free", "contact": "Contact", "report": "Report", "share": "Share",
-    "close": "Close", "confirm": "Confirm", "or": "or", "submit": "Submit", "required": "Required", "optional": "Optional", "private": "Private", "pro": "Pro"
+    "close": "Close", "confirm": "Confirm", "or": "or", "and": "and", "submit": "Submit", "required": "Required", "optional": "Optional", "private": "Private", "pro": "Pro"
   },
   "nav": { "home": "Home", "browse": "Browse", "sell": "Sell", "myListings": "My Listings", "profile": "Profile", "admin": "Admin", "about": "About", "safety": "Safety Tips", "rules": "Rules", "vip": "VIP", "searches": "Searches", "favorites": "Favorites", "messages": "Messages", "loginSignup": "Log in" },
   "home": {
@@ -118,7 +118,8 @@
     "resetPassword": "Reset Password", "newPassword": "New password", "updatePassword": "Update Password",
     "passwordUpdated": "Password updated successfully!", "emailRequired": "Email is required",
     "passwordRequired": "Password is required", "passwordMin": "Password must be at least 6 characters",
-    "passwordMismatch": "Passwords don't match", "verifyEmail": "Please verify your email to post listings"
+    "passwordMismatch": "Passwords don't match", "verifyEmail": "Please verify your email to post listings",
+    "acceptTerms": "I accept the", "acceptTermsRequired": "You must accept the Terms of Use and Privacy Policy to create an account"
   },
   "profile": {
     "title": "Profile Settings", "displayName": "Display Name", "phone": "Phone Number", "whatsapp": "WhatsApp Number",

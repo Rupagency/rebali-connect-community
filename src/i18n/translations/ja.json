@@ -4,7 +4,7 @@
     "save": "保存", "cancel": "キャンセル", "delete": "削除", "edit": "編集", "back": "戻る", "next": "次へ",
     "publish": "公開", "loading": "読み込み中...", "noResults": "結果が見つかりません", "viewAll": "すべて表示",
     "price": "価格", "free": "無料", "contact": "連絡", "report": "報告", "share": "共有",
-    "close": "閉じる", "confirm": "確認", "or": "または", "submit": "送信", "required": "必須", "optional": "任意", "private": "個人", "pro": "プロ"
+    "close": "閉じる", "confirm": "確認", "or": "または", "and": "と", "submit": "送信", "required": "必須", "optional": "任意", "private": "個人", "pro": "プロ"
   },
   "nav": { "home": "ホーム", "browse": "閲覧", "sell": "出品", "myListings": "マイ出品", "profile": "プロフィール", "admin": "管理", "about": "概要", "safety": "安全のヒント", "rules": "ルール", "vip": "VIP", "searches": "検索", "favorites": "お気に入り", "messages": "メッセージ", "loginSignup": "ログイン" },
   "home": {
@@ -101,7 +101,8 @@
     "resetPassword": "パスワードリセット", "newPassword": "新しいパスワード", "updatePassword": "パスワードを更新",
     "passwordUpdated": "パスワードが更新されました！", "emailRequired": "メールアドレスは必須です",
     "passwordRequired": "パスワードは必須です", "passwordMin": "パスワードは6文字以上必要です",
-    "passwordMismatch": "パスワードが一致しません", "verifyEmail": "出品するにはメールを確認してください"
+    "passwordMismatch": "パスワードが一致しません", "verifyEmail": "出品するにはメールを確認してください",
+    "acceptTerms": "同意します", "acceptTermsRequired": "アカウントを作成するには利用規約とプライバシーポリシーに同意する必要があります"
   },
   "profile": {
     "title": "プロフィール設定", "displayName": "表示名", "phone": "電話番号", "whatsapp": "WhatsApp番号",
