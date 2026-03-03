@@ -4,7 +4,7 @@
     "save": "حفظ", "cancel": "إلغاء", "delete": "حذف", "edit": "تعديل", "back": "رجوع", "next": "التالي",
     "publish": "نشر", "loading": "جاري التحميل...", "noResults": "لا توجد نتائج", "viewAll": "عرض الكل",
     "price": "السعر", "free": "مجاني", "contact": "تواصل", "report": "إبلاغ", "share": "مشاركة",
-    "close": "إغلاق", "confirm": "تأكيد", "or": "أو", "submit": "إرسال", "required": "مطلوب", "optional": "اختياري", "private": "خاص", "pro": "محترف"
+    "close": "إغلاق", "confirm": "تأكيد", "or": "أو", "and": "و", "submit": "إرسال", "required": "مطلوب", "optional": "اختياري", "private": "خاص", "pro": "محترف"
   },
   "nav": { "home": "الرئيسية", "browse": "تصفح", "sell": "بيع", "myListings": "إعلاناتي", "profile": "الملف الشخصي", "admin": "الإدارة", "about": "حول", "safety": "نصائح السلامة", "rules": "القواعد", "vip": "VIP", "searches": "عمليات البحث", "favorites": "المفضلة", "messages": "الرسائل", "loginSignup": "تسجيل الدخول" },
   "home": {
@@ -103,7 +103,8 @@
     "resetPassword": "إعادة تعيين كلمة المرور", "newPassword": "كلمة مرور جديدة", "updatePassword": "تحديث كلمة المرور",
     "passwordUpdated": "تم تحديث كلمة المرور!", "emailRequired": "البريد الإلكتروني مطلوب",
     "passwordRequired": "كلمة المرور مطلوبة", "passwordMin": "كلمة المرور 6 أحرف على الأقل",
-    "passwordMismatch": "كلمتا المرور غير متطابقتين", "verifyEmail": "يرجى التحقق من بريدك لنشر الإعلانات"
+    "passwordMismatch": "كلمتا المرور غير متطابقتين", "verifyEmail": "يرجى التحقق من بريدك لنشر الإعلانات",
+    "acceptTerms": "أوافق على", "acceptTermsRequired": "يجب قبول شروط الاستخدام وسياسة الخصوصية لإنشاء حساب"
   },
   "profile": {
     "title": "إعدادات الملف الشخصي", "displayName": "الاسم المعروض", "phone": "رقم الهاتف", "whatsapp": "رقم واتساب",

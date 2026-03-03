@@ -4,7 +4,7 @@
     "save": "Kaydet", "cancel": "İptal", "delete": "Sil", "edit": "Düzenle", "back": "Geri", "next": "İleri",
     "publish": "Yayınla", "loading": "Yükleniyor...", "noResults": "Sonuç bulunamadı", "viewAll": "Tümünü gör",
     "price": "Fiyat", "free": "Ücretsiz", "contact": "İletişim", "report": "Şikayet", "share": "Paylaş",
-    "close": "Kapat", "confirm": "Onayla", "or": "veya", "submit": "Gönder", "required": "Zorunlu", "optional": "İsteğe bağlı", "private": "Bireysel", "pro": "Profesyonel"
+    "close": "Kapat", "confirm": "Onayla", "or": "veya", "and": "ve", "submit": "Gönder", "required": "Zorunlu", "optional": "İsteğe bağlı", "private": "Bireysel", "pro": "Profesyonel"
   },
   "nav": { "home": "Ana Sayfa", "browse": "Göz At", "sell": "Sat", "myListings": "İlanlarım", "profile": "Profil", "admin": "Yönetici", "about": "Hakkında", "safety": "Güvenlik İpuçları", "rules": "Kurallar", "vip": "VIP", "searches": "Aramalar", "favorites": "Favoriler", "messages": "Mesajlar", "loginSignup": "Giriş yap" },
   "home": {
@@ -103,7 +103,8 @@
     "resetPassword": "Şifre Sıfırla", "newPassword": "Yeni şifre", "updatePassword": "Şifreyi Güncelle",
     "passwordUpdated": "Şifre başarıyla güncellendi!", "emailRequired": "E-posta gerekli",
     "passwordRequired": "Şifre gerekli", "passwordMin": "Şifre en az 6 karakter olmalı",
-    "passwordMismatch": "Şifreler eşleşmiyor", "verifyEmail": "İlan yayınlamak için e-postanızı doğrulayın"
+    "passwordMismatch": "Şifreler eşleşmiyor", "verifyEmail": "İlan yayınlamak için e-postanızı doğrulayın",
+    "acceptTerms": "Kabul ediyorum", "acceptTermsRequired": "Hesap oluşturmak için Kullanım Koşullarını ve Gizlilik Politikasını kabul etmelisiniz"
   },
   "profile": {
     "title": "Profil Ayarları", "displayName": "Görüntülenen Ad", "phone": "Telefon Numarası", "whatsapp": "WhatsApp Numarası",

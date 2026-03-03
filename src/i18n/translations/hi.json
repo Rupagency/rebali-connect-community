@@ -4,7 +4,7 @@
     "save": "सहेजें", "cancel": "रद्द करें", "delete": "हटाएं", "edit": "संपादित करें", "back": "वापस", "next": "अगला",
     "publish": "प्रकाशित करें", "loading": "लोड हो रहा है...", "noResults": "कोई परिणाम नहीं मिला", "viewAll": "सभी देखें",
     "price": "मूल्य", "free": "मुफ़्त", "contact": "संपर्क", "report": "रिपोर्ट", "share": "शेयर",
-    "close": "बंद करें", "confirm": "पुष्टि करें", "or": "या", "submit": "सबमिट करें", "required": "आवश्यक", "optional": "वैकल्पिक", "private": "व्यक्तिगत", "pro": "पेशेवर"
+    "close": "बंद करें", "confirm": "पुष्टि करें", "or": "या", "and": "और", "submit": "सबमिट करें", "required": "आवश्यक", "optional": "वैकल्पिक", "private": "व्यक्तिगत", "pro": "पेशेवर"
   },
   "nav": { "home": "होम", "browse": "ब्राउज़ करें", "sell": "बेचें", "myListings": "मेरे विज्ञापन", "profile": "प्रोफ़ाइल", "admin": "व्यवस्थापक", "about": "हमारे बारे में", "safety": "सुरक्षा सुझाव", "rules": "नियम", "vip": "VIP", "searches": "खोज", "favorites": "पसंदीदा", "messages": "संदेश", "loginSignup": "लॉग इन" },
   "home": {
@@ -103,7 +103,8 @@
     "resetPassword": "पासवर्ड रीसेट करें", "newPassword": "नया पासवर्ड", "updatePassword": "पासवर्ड अपडेट करें",
     "passwordUpdated": "पासवर्ड सफलतापूर्वक अपडेट हो गया!", "emailRequired": "ईमेल आवश्यक है",
     "passwordRequired": "पासवर्ड आवश्यक है", "passwordMin": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
-    "passwordMismatch": "पासवर्ड मेल नहीं खाते", "verifyEmail": "विज्ञापन पोस्ट करने के लिए अपना ईमेल सत्यापित करें"
+    "passwordMismatch": "पासवर्ड मेल नहीं खाते", "verifyEmail": "विज्ञापन पोस्ट करने के लिए अपना ईमेल सत्यापित करें",
+    "acceptTerms": "मैं स्वीकार करता/करती हूँ", "acceptTermsRequired": "खाता बनाने के लिए आपको उपयोग की शर्तें और गोपनीयता नीति स्वीकार करनी होगी"
   },
   "profile": {
     "title": "प्रोफ़ाइल सेटिंग्स", "displayName": "प्रदर्शन नाम", "phone": "फ़ोन नंबर", "whatsapp": "WhatsApp नंबर",
