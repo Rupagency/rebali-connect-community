@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { isNativePlatform } from '@/capacitor';
-import { openExternalAuthenticated } from '@/lib/openExternal';
+import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
