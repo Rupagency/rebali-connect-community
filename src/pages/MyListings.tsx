@@ -139,7 +139,7 @@ export default function MyListings() {
 
   const openBoostDialog = (listingId: string) => {
     if (isNativePlatform) {
-      openExternalAuthenticated(`${window.location.origin}/points`);
+      openExternalAuthenticated(`${WEBAPP_URL}/points`);
       return;
     }
     setBoostListingId(listingId);

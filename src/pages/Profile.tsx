@@ -527,7 +527,7 @@ export default function Profile() {
               <TrustIndicator score={profile.trust_score} riskLevel={profile.risk_level as 'low' | 'medium' | 'high'} />
               <Button variant="outline" size="sm" className="gap-2" onClick={() => {
                 if (isNativePlatform) {
-                  openExternalAuthenticated(`${window.location.origin}/points`);
+                  openExternalAuthenticated(`${WEBAPP_URL}/points`);
                 } else {
                   navigate('/points');
                 }
