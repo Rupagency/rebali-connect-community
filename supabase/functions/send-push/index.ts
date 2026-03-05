@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 // Web Push implementation using web-push library
-import webpush from "npm:web-push@3.6.7";
+import webpush from "https://esm.sh/web-push@3.6.7";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
