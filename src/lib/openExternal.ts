@@ -22,12 +22,41 @@ export async function openExternal(url: string) {
  * as a URL hash, so the webapp can auto-authenticate the user.
  * Falls back to openExternal if no session is available.
  */
+/**
+ * Returns true when the current page is displayed inside a Capacitor
+ * in-app browser (opened via openExternalAuthenticated with ?source=native).
+ */
+export function isInAppBrowser(): boolean {
+  return new URLSearchParams(window.location.search).get('source') === 'native';
+}
+
+/**
+ * Opens a URL, handling the in-app browser case: if we're already inside
+ * an in-app browser we navigate directly instead of trying to spawn a second one.
+ */
+export async function openOrNavigate(url: string) {
+  if (isInAppBrowser()) {
+    window.location.href = url;
+  } else {
+    await openExternal(url);
+  }
+}
+
+/**
+ * Opens an external URL with the current user's session tokens appended
+ * as a URL hash, so the webapp can auto-authenticate the user.
+ * Falls back to openExternal if no session is available.
+ */
 export async function openExternalAuthenticated(url: string) {
   const { data: { session } } = await supabase.auth.getSession();
 
   if (session?.access_token && session?.refresh_token) {
-    const separator = url.includes('#') ? '&' : '#';
-    const authenticatedUrl = `${url}${separator}access_token=${session.access_token}&refresh_token=${session.refresh_token}&type=bearer`;
+    // Add source=native so the opened page knows it's inside an in-app browser
+    const urlObj = new URL(url);
+    urlObj.searchParams.set('source', 'native');
+    const baseUrl = urlObj.toString();
+    const separator = baseUrl.includes('#') ? '&' : '#';
+    const authenticatedUrl = `${baseUrl}${separator}access_token=${session.access_token}&refresh_token=${session.refresh_token}&type=bearer`;
     await openExternal(authenticatedUrl);
   } else {
     await openExternal(url);
