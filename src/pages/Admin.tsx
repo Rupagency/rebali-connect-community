@@ -1277,9 +1277,17 @@ export default function Admin() {
 
         {/* Users Tab */}
         <TabsContent value="users" className="mt-4">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4 flex-wrap">
             <Search className="h-4 w-4 text-muted-foreground" />
             <Input placeholder={t('admin.searchUsers')} value={userSearch} onChange={(e) => setUserSearch(e.target.value)} className="max-w-sm" />
+            <Select value={userTypeFilter} onValueChange={setUserTypeFilter}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('admin.allTypes') || 'All types'}</SelectItem>
+                <SelectItem value="private">{t('profile.private')}</SelectItem>
+                <SelectItem value="business">{t('profile.business')}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="rounded-md border">
             <Table>
