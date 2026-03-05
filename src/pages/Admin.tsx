@@ -638,6 +638,11 @@ export default function Admin() {
                   <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
                   <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
                 </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('admin.listingLimit') || 'Listing Limit Override'}</label>
+                  <Input type="number" min="0" value={editUserListingLimit} onChange={e => setEditUserListingLimit(e.target.value)} placeholder={t('admin.listingLimitPlaceholder') || 'Auto (leave empty)'} />
+                  <p className="text-[10px] text-muted-foreground mt-1">{t('admin.listingLimitHint') || 'Leave empty for default rules'}</p>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
