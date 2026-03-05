@@ -516,6 +516,7 @@ export default function Admin() {
     setEditUserWhatsapp(selectedUser.whatsapp || '');
     const userPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
     setEditUserPoints(String(userPts?.balance || 0));
+    setEditUserListingLimit(selectedUser.listing_limit_override != null ? String(selectedUser.listing_limit_override) : '');
     setEditingUser(true);
   };
 
