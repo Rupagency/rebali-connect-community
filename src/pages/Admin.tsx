@@ -522,12 +522,14 @@ export default function Admin() {
 
   const saveUserEdits = async () => {
     if (!selectedUser) return;
+    const listingLimitVal = editUserListingLimit.trim() === '' ? null : Math.max(0, parseInt(editUserListingLimit) || 0);
     await supabase.from('profiles').update({
       display_name: editUserDisplayName.trim() || null,
       preferred_lang: editUserLang,
       phone: editUserPhone.trim() || null,
       whatsapp: editUserWhatsapp.trim() || null,
-    }).eq('id', selectedUser.id);
+      listing_limit_override: listingLimitVal,
+    } as any).eq('id', selectedUser.id);
 
     // Update points if changed
     const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
@@ -545,6 +547,7 @@ export default function Admin() {
       preferred_lang: editUserLang,
       phone: editUserPhone.trim() || null,
       whatsapp: editUserWhatsapp.trim() || null,
+      listing_limit_override: listingLimitVal,
     } : null);
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setEditingUser(false);
