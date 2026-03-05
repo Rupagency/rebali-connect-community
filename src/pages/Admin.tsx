@@ -437,9 +437,37 @@ export default function Admin() {
   const activeListings = allListings?.filter((l: any) => l.status === 'active') || [];
   const archivedListings = allListings?.filter((l: any) => l.status === 'archived') || [];
 
-  const filteredProfiles = profiles?.filter((p: any) =>
-    !userSearch || p.display_name?.toLowerCase().includes(userSearch.toLowerCase())
-  ) || [];
+  const filteredProfiles = profiles?.filter((p: any) => {
+    const matchesSearch = !userSearch || p.display_name?.toLowerCase().includes(userSearch.toLowerCase());
+    const matchesType = userTypeFilter === 'all' || p.user_type === userTypeFilter;
+    return matchesSearch && matchesType;
+  }) || [];
+
+  // Compute max listings for a user
+  const getMaxListings = (userId: string) => {
+    const profile = profiles?.find((p: any) => p.id === userId);
+    if (!profile) return 5;
+
+    // Custom override
+    if (profile.listing_limit_override != null) {
+      const extraSlots = (allUserAddons || [])
+        .filter((a: any) => a.user_id === userId && a.active)
+        .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+      return profile.listing_limit_override + extraSlots;
+    }
+
+    const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    let base = ageDays < 7 ? 3 : 5;
+
+    const isPro = (proSubscriptions || []).some((s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date());
+    if (isPro) base = 50;
+
+    const extraSlots = (allUserAddons || [])
+      .filter((a: any) => a.user_id === userId && a.active)
+      .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+
+    return base + extraSlots;
+  };
 
   const filteredListings = allListings?.filter((l: any) => {
     const matchesSearch = !listingSearch || l.title_original?.toLowerCase().includes(listingSearch.toLowerCase());
