@@ -598,6 +598,7 @@ export type Database = {
           id: string
           is_banned: boolean
           is_verified_seller: boolean
+          listing_limit_override: number | null
           phone: string | null
           phone_verified: boolean
           preferred_lang: string
@@ -614,6 +615,7 @@ export type Database = {
           id: string
           is_banned?: boolean
           is_verified_seller?: boolean
+          listing_limit_override?: number | null
           phone?: string | null
           phone_verified?: boolean
           preferred_lang?: string
@@ -630,6 +632,7 @@ export type Database = {
           id?: string
           is_banned?: boolean
           is_verified_seller?: boolean
+          listing_limit_override?: number | null
           phone?: string | null
           phone_verified?: boolean
           preferred_lang?: string

@@ -290,6 +290,8 @@ export default function Admin() {
   const [editUserWhatsapp, setEditUserWhatsapp] = useState('');
   const [editUserDisplayName, setEditUserDisplayName] = useState('');
   const [editUserPoints, setEditUserPoints] = useState('');
+  const [editUserListingLimit, setEditUserListingLimit] = useState('');
+  const [userTypeFilter, setUserTypeFilter] = useState<string>('all');
 
   // Reports query
   const { data: reports } = useQuery({
@@ -381,6 +383,33 @@ export default function Admin() {
     enabled: isAdmin,
   });
 
+  // Pro subscriptions query
+  const { data: proSubscriptions } = useQuery({
+    queryKey: ['admin-pro-subscriptions'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('pro_subscriptions')
+        .select('*')
+        .eq('status', 'active');
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
+  // User addons query
+  const { data: allUserAddons } = useQuery({
+    queryKey: ['admin-user-addons'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('user_addons')
+        .select('*')
+        .eq('active', true)
+        .eq('addon_type', 'extra_listings');
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
   // Banned devices query
   const { data: bannedDevices, refetch: refetchBannedDevices } = useQuery({
     queryKey: ['admin-banned-devices'],
@@ -408,9 +437,37 @@ export default function Admin() {
   const activeListings = allListings?.filter((l: any) => l.status === 'active') || [];
   const archivedListings = allListings?.filter((l: any) => l.status === 'archived') || [];
 
-  const filteredProfiles = profiles?.filter((p: any) =>
-    !userSearch || p.display_name?.toLowerCase().includes(userSearch.toLowerCase())
-  ) || [];
+  const filteredProfiles = profiles?.filter((p: any) => {
+    const matchesSearch = !userSearch || p.display_name?.toLowerCase().includes(userSearch.toLowerCase());
+    const matchesType = userTypeFilter === 'all' || p.user_type === userTypeFilter;
+    return matchesSearch && matchesType;
+  }) || [];
+
+  // Compute max listings for a user
+  const getMaxListings = (userId: string) => {
+    const profile = profiles?.find((p: any) => p.id === userId);
+    if (!profile) return 5;
+
+    // Custom override
+    if (profile.listing_limit_override != null) {
+      const extraSlots = (allUserAddons || [])
+        .filter((a: any) => a.user_id === userId && a.active)
+        .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+      return profile.listing_limit_override + extraSlots;
+    }
+
+    const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    let base = ageDays < 7 ? 3 : 5;
+
+    const isPro = (proSubscriptions || []).some((s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date());
+    if (isPro) base = 50;
+
+    const extraSlots = (allUserAddons || [])
+      .filter((a: any) => a.user_id === userId && a.active)
+      .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+
+    return base + extraSlots;
+  };
 
   const filteredListings = allListings?.filter((l: any) => {
     const matchesSearch = !listingSearch || l.title_original?.toLowerCase().includes(listingSearch.toLowerCase());
@@ -459,17 +516,20 @@ export default function Admin() {
     setEditUserWhatsapp(selectedUser.whatsapp || '');
     const userPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
     setEditUserPoints(String(userPts?.balance || 0));
+    setEditUserListingLimit(selectedUser.listing_limit_override != null ? String(selectedUser.listing_limit_override) : '');
     setEditingUser(true);
   };
 
   const saveUserEdits = async () => {
     if (!selectedUser) return;
+    const listingLimitVal = editUserListingLimit.trim() === '' ? null : Math.max(0, parseInt(editUserListingLimit) || 0);
     await supabase.from('profiles').update({
       display_name: editUserDisplayName.trim() || null,
       preferred_lang: editUserLang,
       phone: editUserPhone.trim() || null,
       whatsapp: editUserWhatsapp.trim() || null,
-    }).eq('id', selectedUser.id);
+      listing_limit_override: listingLimitVal,
+    } as any).eq('id', selectedUser.id);
 
     // Update points if changed
     const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
@@ -487,6 +547,7 @@ export default function Admin() {
       preferred_lang: editUserLang,
       phone: editUserPhone.trim() || null,
       whatsapp: editUserWhatsapp.trim() || null,
+      listing_limit_override: listingLimitVal,
     } : null);
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setEditingUser(false);
@@ -577,6 +638,11 @@ export default function Admin() {
                   <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
                   <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
                 </div>
+                <div>
+                  <label className="text-xs text-muted-foreground">{t('admin.listingLimit') || 'Listing Limit Override'}</label>
+                  <Input type="number" min="0" value={editUserListingLimit} onChange={e => setEditUserListingLimit(e.target.value)} placeholder={t('admin.listingLimitPlaceholder') || 'Auto (leave empty)'} />
+                  <p className="text-[10px] text-muted-foreground mt-1">{t('admin.listingLimitHint') || 'Leave empty for default rules'}</p>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
@@ -613,6 +679,18 @@ export default function Admin() {
                   <div>
                     <p className="text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</p>
                     <p className="font-medium">{allUserPoints?.find((p: any) => p.user_id === selectedUser.id)?.balance || 0} pts</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Package className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <p className="text-muted-foreground">{t('admin.maxListings') || 'Max Listings'}</p>
+                    <p className="font-medium">
+                      {getUserListings(selectedUser.id).filter((l: any) => l.status === 'active').length} / {getMaxListings(selectedUser.id)}
+                      {selectedUser.listing_limit_override != null && (
+                        <span className="text-xs text-muted-foreground ml-1">(custom)</span>
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1199,9 +1277,17 @@ export default function Admin() {
 
         {/* Users Tab */}
         <TabsContent value="users" className="mt-4">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4 flex-wrap">
             <Search className="h-4 w-4 text-muted-foreground" />
             <Input placeholder={t('admin.searchUsers')} value={userSearch} onChange={(e) => setUserSearch(e.target.value)} className="max-w-sm" />
+            <Select value={userTypeFilter} onValueChange={setUserTypeFilter}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('admin.allTypes') || 'All types'}</SelectItem>
+                <SelectItem value="private">{t('profile.private')}</SelectItem>
+                <SelectItem value="business">{t('profile.business')}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="rounded-md border">
             <Table>
