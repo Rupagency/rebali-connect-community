@@ -383,6 +383,33 @@ export default function Admin() {
     enabled: isAdmin,
   });
 
+  // Pro subscriptions query
+  const { data: proSubscriptions } = useQuery({
+    queryKey: ['admin-pro-subscriptions'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('pro_subscriptions')
+        .select('*')
+        .eq('status', 'active');
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
+  // User addons query
+  const { data: allUserAddons } = useQuery({
+    queryKey: ['admin-user-addons'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('user_addons')
+        .select('*')
+        .eq('active', true)
+        .eq('addon_type', 'extra_listings');
+      return data || [];
+    },
+    enabled: isAdmin,
+  });
+
   // Banned devices query
   const { data: bannedDevices, refetch: refetchBannedDevices } = useQuery({
     queryKey: ['admin-banned-devices'],
