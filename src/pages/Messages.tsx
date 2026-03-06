@@ -15,6 +15,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/hooks/use-toast';
+import { useBlockedUsers } from '@/hooks/useBlockedUsers';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
@@ -32,6 +33,7 @@ export default function Messages() {
   const [inlineRating, setInlineRating] = useState(5);
   const [inlineHoverRating, setInlineHoverRating] = useState(0);
   const [inlineComment, setInlineComment] = useState('');
+  const blockedIds = useBlockedUsers();
 
   // Fetch conversations
   const { data: conversations, isLoading: convsLoading } = useQuery({
@@ -42,7 +44,11 @@ export default function Messages() {
         .select('*, listings!conversations_listing_id_fkey(title_original, listing_images(storage_path, sort_order)), buyer:profiles!conversations_buyer_id_fkey(id, display_name, avatar_url), seller:profiles!conversations_seller_id_fkey(id, display_name, avatar_url)')
         .or(`buyer_id.eq.${user!.id},seller_id.eq.${user!.id}`)
         .order('updated_at', { ascending: false });
-      return data || [];
+      // Filter out conversations with blocked users
+      return (data || []).filter((c: any) => {
+        const otherId = c.buyer_id === user!.id ? c.seller_id : c.buyer_id;
+        return !blockedIds.includes(otherId);
+      });
     },
     enabled: !!user,
   });

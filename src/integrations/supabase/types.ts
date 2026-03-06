@@ -976,6 +976,30 @@ export type Database = {
           },
         ]
       }
+      user_blocks: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
       user_devices: {
         Row: {
           browser: string | null
@@ -1202,6 +1226,10 @@ export type Database = {
         Returns: boolean
       }
       increment_views: { Args: { _listing_id: string }; Returns: undefined }
+      is_blocked: {
+        Args: { _blocked_id: string; _blocker_id: string }
+        Returns: boolean
+      }
       search_listings: { Args: { search_term: string }; Returns: string[] }
       search_suggestions: {
         Args: { max_results?: number; search_term: string }
