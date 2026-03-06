@@ -166,7 +166,7 @@ export default function PointsShop() {
     if (!user) { navigate('/auth'); return; }
     if (isNativePlatform) {
       openExternalAuthenticated(`${window.location.origin}/points`);
-      navigate(-1 as any);
+      navigate('/', { replace: true });
       return;
     }
     fetchData();
