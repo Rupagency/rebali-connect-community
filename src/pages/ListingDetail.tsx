@@ -27,6 +27,7 @@ import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import ListingCard from '@/components/ListingCard';
 import UserBadges from '@/components/UserBadges';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
+import BlockUserButton from '@/components/BlockUserButton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
@@ -586,9 +587,9 @@ export default function ListingDetail() {
               </>
             )}
 
-            {/* Report */}
+            {/* Report & Block */}
             {user && user.id !== listing.seller_id && (
-              <div className="mt-6 pt-4 border-t border-border">
+              <div className="mt-6 pt-4 border-t border-border space-y-2">
                 <Dialog open={reportOpen} onOpenChange={setReportOpen}>
                   <DialogTrigger asChild>
                     <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -614,6 +615,10 @@ export default function ListingDetail() {
                     </div>
                   </DialogContent>
                 </Dialog>
+                <BlockUserButton
+                  targetUserId={listing.seller_id}
+                  targetDisplayName={seller?.display_name || undefined}
+                />
               </div>
             )}
 
