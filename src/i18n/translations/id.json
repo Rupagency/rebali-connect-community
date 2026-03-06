@@ -398,5 +398,14 @@
     "similarTitle": "Peringatan: Iklan dengan judul serupa sudah ada",
     "imageReused": "Gambar ini telah digunakan di beberapa iklan",
     "suspiciousContent": "Konten mencurigakan terdeteksi dalam iklan Anda"
+  },
+  "block": {
+    "blockUser": "Blokir pengguna ini",
+    "unblock": "Buka blokir pengguna",
+    "confirmTitle": "Blokir pengguna?",
+    "confirmDesc": "Anda tidak akan melihat iklan atau pesan dari {{name}} lagi. Anda dapat membuka blokir nanti.",
+    "blocked": "Pengguna diblokir",
+    "blockedDesc": "Konten mereka telah disembunyikan dari feed Anda.",
+    "unblocked": "Pengguna dibuka blokirnya"
   }
 }

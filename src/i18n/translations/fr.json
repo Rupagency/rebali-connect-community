@@ -483,5 +483,14 @@
     "contact": "Contacter le support",
     "copyright": "Tous droits réservés.",
     "trustBadgesPoints": "Confiance, Badges & Points"
+  },
+  "block": {
+    "blockUser": "Bloquer cet utilisateur",
+    "unblock": "Débloquer l'utilisateur",
+    "confirmTitle": "Bloquer cet utilisateur ?",
+    "confirmDesc": "Vous ne verrez plus les annonces ni les messages de {{name}}. Vous pourrez le débloquer depuis son profil.",
+    "blocked": "Utilisateur bloqué",
+    "blockedDesc": "Son contenu a été masqué de votre fil.",
+    "unblocked": "Utilisateur débloqué"
   }
 }

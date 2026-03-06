@@ -653,5 +653,14 @@
     "contact": "Contact Support",
     "copyright": "All rights reserved.",
     "trustBadgesPoints": "Trust, Badges & Points"
+  },
+  "block": {
+    "blockUser": "Block this user",
+    "unblock": "Unblock user",
+    "confirmTitle": "Block user?",
+    "confirmDesc": "You will no longer see listings or messages from {{name}}. You can unblock them later from their profile.",
+    "blocked": "User blocked",
+    "blockedDesc": "Their content has been hidden from your feed.",
+    "unblocked": "User unblocked"
   }
 }
