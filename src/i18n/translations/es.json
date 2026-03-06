@@ -336,6 +336,8 @@
     "confirmDesc": "Ya no verás anuncios ni mensajes de {{name}}. Puedes desbloquearlo más tarde.",
     "blocked": "Usuario bloqueado",
     "blockedDesc": "Su contenido se ha ocultado de tu feed.",
-    "unblocked": "Usuario desbloqueado"
+    "unblocked": "Usuario desbloqueado",
+    "blockedUsersTitle": "Usuarios bloqueados",
+    "noBlockedUsers": "Aún no has bloqueado a nadie."
   }
 }

@@ -317,6 +317,8 @@
     "confirmDesc": "您将不再看到{{name}}的列表和消息。您可以稍后取消屏蔽。",
     "blocked": "用户已屏蔽",
     "blockedDesc": "其内容已从您的信息流中隐藏。",
-    "unblocked": "用户已取消屏蔽"
+    "unblocked": "用户已取消屏蔽",
+    "blockedUsersTitle": "已屏蔽用户",
+    "noBlockedUsers": "您还没有屏蔽任何人。"
   }
 }

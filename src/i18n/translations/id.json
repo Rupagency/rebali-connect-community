@@ -406,6 +406,8 @@
     "confirmDesc": "Anda tidak akan melihat iklan atau pesan dari {{name}} lagi. Anda dapat membuka blokir nanti.",
     "blocked": "Pengguna diblokir",
     "blockedDesc": "Konten mereka telah disembunyikan dari feed Anda.",
-    "unblocked": "Pengguna dibuka blokirnya"
+    "unblocked": "Pengguna dibuka blokirnya",
+    "blockedUsersTitle": "Pengguna yang diblokir",
+    "noBlockedUsers": "Anda belum memblokir siapa pun."
   }
 }

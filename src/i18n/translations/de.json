@@ -393,6 +393,8 @@
     "confirmDesc": "Du wirst keine Anzeigen oder Nachrichten von {{name}} mehr sehen. Du kannst die Blockierung später aufheben.",
     "blocked": "Benutzer blockiert",
     "blockedDesc": "Deren Inhalte wurden aus deinem Feed ausgeblendet.",
-    "unblocked": "Benutzer freigegeben"
+    "unblocked": "Benutzer freigegeben",
+    "blockedUsersTitle": "Blockierte Benutzer",
+    "noBlockedUsers": "Du hast noch niemanden blockiert."
   }
 }
