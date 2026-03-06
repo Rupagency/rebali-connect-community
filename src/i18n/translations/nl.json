@@ -317,6 +317,8 @@
     "confirmDesc": "Je ziet geen advertenties of berichten meer van {{name}}. Je kunt later deblokkeren.",
     "blocked": "Gebruiker geblokkeerd",
     "blockedDesc": "Hun inhoud is verborgen uit je feed.",
-    "unblocked": "Gebruiker gedeblokkeerd"
+    "unblocked": "Gebruiker gedeblokkeerd",
+    "blockedUsersTitle": "Geblokkeerde gebruikers",
+    "noBlockedUsers": "Je hebt nog niemand geblokkeerd."
   }
 }

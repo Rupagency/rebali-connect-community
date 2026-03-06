@@ -488,6 +488,8 @@
     "confirmDesc": "{{name}} kullanıcısının ilanlarını ve mesajlarını artık görmeyeceksiniz. Daha sonra engeli kaldırabilirsiniz.",
     "blocked": "Kullanıcı engellendi",
     "blockedDesc": "İçerikleri akışınızdan gizlendi.",
-    "unblocked": "Kullanıcının engeli kaldırıldı"
+    "unblocked": "Kullanıcının engeli kaldırıldı",
+    "blockedUsersTitle": "Engellenen kullanıcılar",
+    "noBlockedUsers": "Henüz kimseyi engellemediniz."
   }
 }
