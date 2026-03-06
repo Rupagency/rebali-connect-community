@@ -79,8 +79,9 @@ export default function PointsShop() {
       if (error || data?.error) {
         toast({ title: data?.error || 'Payment error', variant: 'destructive' });
       } else if (data?.invoice_url) {
+        const inApp = (await import('@/lib/openExternal')).isInAppBrowser();
+        toast({ title: `DEBUG: inApp=${inApp}, url=${data.invoice_url.substring(0, 50)}...` });
         await openOrNavigate(data.invoice_url);
-        toast({ title: t('points.redirectingPayment') });
       }
     } catch {
       toast({ title: 'Payment error', variant: 'destructive' });
