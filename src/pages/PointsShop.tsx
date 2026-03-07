@@ -466,8 +466,10 @@ export default function PointsShop() {
                           ? `🏅 ${t(`badges.${tx.reason.replace('badge:', '')}`)}`
                           : tx.reason.startsWith('addon:')
                           ? `🛒 ${t(`points.addon.${tx.reason.replace('addon:', '')}`)}`
-                          : tx.reason.startsWith('dynamic:')
+                           : tx.reason.startsWith('dynamic:')
                           ? `⚡ ${t(`points.dynamic.${tx.reason.replace('dynamic:', '')}`)}`
+                          : tx.reason.startsWith('referral:')
+                          ? `🤝 ${t('referral.title')}`
                           : tx.reason
                         }
                       </p>
