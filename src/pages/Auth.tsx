@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
-import { User, Briefcase } from 'lucide-react';
+import { User, Briefcase, Gift, ClipboardPaste } from 'lucide-react';
 import { PasswordInput } from '@/components/PasswordInput';
 import { PasswordStrength } from '@/components/PasswordStrength';
 import { Checkbox } from '@/components/ui/checkbox';
