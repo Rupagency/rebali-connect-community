@@ -110,6 +110,36 @@ export default function PointsShop() {
     setLoading(false);
   };
 
+  const fetchReferralStats = async () => {
+    if (!user) return;
+    const { data } = await supabase.functions.invoke('manage-points', {
+      body: { action: 'get_referral_stats' },
+    });
+    if (data) setReferralStats(data);
+  };
+
+  const copyReferralCode = () => {
+    if (referralStats?.referral_code) {
+      navigator.clipboard.writeText(referralStats.referral_code);
+      toast({ title: t('referral.copied') });
+    }
+  };
+
+  const shareReferralLink = () => {
+    const code = referralStats?.referral_code;
+    if (!code) return;
+    const link = `${window.location.origin}/auth?tab=signup&ref=${code}`;
+    const message = t('referral.shareMessage')
+      .replace('{code}', code)
+      .replace('{link}', link);
+    if (navigator.share) {
+      navigator.share({ text: message }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(message);
+      toast({ title: t('referral.copied') });
+    }
+  };
+
   const syncBadges = async () => {
     setSyncing(true);
     const { data, error } = await supabase.functions.invoke('manage-points', {
@@ -171,6 +201,7 @@ export default function PointsShop() {
       return;
     }
     fetchData();
+    fetchReferralStats();
   }, [user, authLoading]);
 
   if (loading) {
