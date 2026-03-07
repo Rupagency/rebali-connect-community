@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { openOrNavigate, openExternalAuthenticated } from '@/lib/openExternal';
 import { isNativePlatform } from '@/capacitor';
-import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp, CreditCard, Zap, Lock } from 'lucide-react';
+import { Coins, Rocket, Crown, Package, ArrowUp, ArrowDown, RefreshCw, History, Sparkles, Star, ShieldPlus, TrendingUp, CreditCard, Zap, Lock, Users, Copy, Share2, Gift } from 'lucide-react';
 
 interface PointsData {
   balance: number;
