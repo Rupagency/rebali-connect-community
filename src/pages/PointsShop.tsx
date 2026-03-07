@@ -68,6 +68,7 @@ export default function PointsShop() {
   const [userListings, setUserListings] = useState<{ id: string; title_original: string }[]>([]);
   const [loadingListings, setLoadingListings] = useState(false);
   const [buyingPack, setBuyingPack] = useState<string | null>(null);
+  const [referralStats, setReferralStats] = useState<any>(null);
 
   const handleBuyPoints = async (packId: string) => {
     if (!user) { navigate('/auth'); return; }
