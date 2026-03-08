@@ -424,7 +424,7 @@ export default function CreateListing() {
               <Card key={cat}
                 className={`cursor-pointer transition-all hover:shadow-md ${form.category === cat ? 'ring-2 ring-primary' : ''}`}
                 onClick={() => {
-                  setForm(f => ({ ...f, category: cat, subcategory: '' }));
+                  setForm(f => ({ ...f, category: cat, subcategory: '', listing_type: 'sale' }));
                   setTimeout(() => subcategoryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                 }}>
                 <CardContent className="p-4 text-center">
