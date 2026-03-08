@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Rocket, Star } from 'lucide-react';
+import { MapPin, Briefcase, Rocket, Star, Home } from 'lucide-react';
 import { formatPrice, CATEGORY_PLACEHOLDERS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -19,6 +19,7 @@ interface ListingCardSmallProps {
     created_at: string;
     seller_id: string;
     extra_fields?: any;
+    listing_type?: string;
     listing_images?: { storage_path: string }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
@@ -76,6 +77,11 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               <Briefcase className="h-2.5 w-2.5" />
             </Badge>
           )}
+          {listing.listing_type === 'rent' && (
+            <Badge className="absolute bottom-1.5 left-1.5 bg-violet-600 text-white text-[9px] gap-0.5 px-1 py-0 font-bold shadow">
+              <Home className="h-2.5 w-2.5" />
+            </Badge>
+          )}
         </div>
         <CardContent className="p-2">
           <h3 className="font-semibold text-xs line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
@@ -85,6 +91,9 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
             {listing.category === 'emploi' && listing.extra_fields?.salary_negotiable === 'true'
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
+            {listing.listing_type === 'rent' && (
+              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{t('listing.perMonth')}</span>
+            )}
           </p>
           <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">
             <MapPin className="h-2.5 w-2.5" />

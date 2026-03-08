@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { CATEGORIES, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
+import { CATEGORIES, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm, CATEGORIES_WITH_RENTAL } from '@/lib/constants';
 import { SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
@@ -38,6 +38,7 @@ export default function Browse() {
   const [subcategory, setSubcategory] = useState(searchParams.get('subcategory') || 'all');
   const [condition, setCondition] = useState(searchParams.get('condition') || 'all');
   const [sort, setSort] = useState(searchParams.get('sort') || 'newest');
+  const [listingType, setListingType] = useState(searchParams.get('listingType') || 'all');
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
   const [showFilters, setShowFilters] = useState(false);
@@ -57,10 +58,11 @@ export default function Browse() {
     if (location !== 'all') params.location = location;
     if (condition !== 'all') params.condition = condition;
     if (sort !== 'newest') params.sort = sort;
+    if (listingType !== 'all') params.listingType = listingType;
     if (minPrice) params.minPrice = minPrice;
     if (maxPrice) params.maxPrice = maxPrice;
     setSearchParams(params, { replace: true });
-  }, [debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice]);
+  }, [debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice]);
 
   const locateMe = async () => {
     setGeoLoading(true);
@@ -90,7 +92,7 @@ export default function Browse() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice],
+    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice],
     queryFn: async ({ pageParam = 0 }) => {
       // If searching, use multilingual search RPC to get matching IDs first
       let matchingIds: string[] | null = null;
@@ -110,6 +112,7 @@ export default function Browse() {
       if (subcategory !== 'all') query = query.eq('subcategory', subcategory);
       if (location !== 'all') query = query.eq('location_area', location);
       if (condition !== 'all') query = query.eq('condition', condition as any);
+      if (listingType !== 'all') query = query.eq('listing_type', listingType);
       if (minPrice) query = query.gte('price', Number(minPrice));
       if (maxPrice) query = query.lte('price', Number(maxPrice));
 
@@ -192,13 +195,16 @@ export default function Browse() {
     setLocation('all');
     setCondition('all');
     setSort('newest');
+    setListingType('all');
     setMinPrice('');
     setMaxPrice('');
     clearGeo();
     setSearchParams({});
   };
 
-  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || minPrice || maxPrice || userCoords;
+  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || listingType !== 'all' || minPrice || maxPrice || userCoords;
+
+  const showListingTypeFilter = category === 'all' || (CATEGORIES_WITH_RENTAL as readonly string[]).includes(category);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -275,6 +281,16 @@ export default function Browse() {
             <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
           </SelectContent>
         </Select>
+        {showListingTypeFilter && (
+          <Select value={listingType} onValueChange={setListingType}>
+            <SelectTrigger><SelectValue placeholder={t('filters.allTypes')} /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('filters.allTypes')}</SelectItem>
+              <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
+              <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       {/* Price range + Geolocation */}

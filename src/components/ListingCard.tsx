@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star } from 'lucide-react';
+import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
@@ -24,6 +24,7 @@ interface ListingCardProps {
     created_at: string;
     seller_id: string;
     extra_fields?: any;
+    listing_type?: string;
     listing_images?: { storage_path: string }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
@@ -79,6 +80,12 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
           <Badge className="absolute top-2 left-2 bg-card/90 text-foreground text-xs">
             {CATEGORY_ICONS[listing.category]} {t(`categories.${listing.category}`)}
           </Badge>
+          {listing.listing_type === 'rent' && (
+            <Badge className="absolute bottom-2 right-2 bg-violet-600 text-white text-[10px] gap-1 font-bold shadow">
+              <Home className="h-3 w-3" />
+              {t('listing.rental')}
+            </Badge>
+          )}
           {(isBoosted || isFeatured) && (
             <div className="absolute bottom-2 left-2 flex gap-1">
               {isFeatured ? (
@@ -124,6 +131,9 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
             {listing.category === 'emploi' && listing.extra_fields?.salary_negotiable === 'true'
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
+            {listing.listing_type === 'rent' && (
+              <span className="text-sm font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+            )}
           </p>
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
