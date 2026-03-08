@@ -255,11 +255,16 @@ export default function ListingDetail() {
         .single();
       if (newConv) {
         toast({ title: t('messages.conversationStarted') });
-        // Trigger real estate services promo BEFORE navigating (fire-and-forget)
+        // Trigger real estate services promo BEFORE navigating
         if (listing.category === 'immobilier') {
-          supabase.functions.invoke('notify-realestate-services', {
-            body: { buyer_id: user.id, conversation_id: newConv.id },
-          }).catch(() => {});
+          try {
+            const res = await supabase.functions.invoke('notify-realestate-services', {
+              body: { buyer_id: user.id, conversation_id: newConv.id },
+            });
+            console.log('notify-realestate-services response:', res);
+          } catch (e) {
+            console.error('notify-realestate-services error:', e);
+          }
         }
         navigate(`/messages?conv=${newConv.id}`);
       }
