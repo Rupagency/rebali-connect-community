@@ -487,8 +487,27 @@ export default function CreateListing() {
           )}
           {!(form.category === 'emploi' && extraFields.salary_negotiable === 'true') && (
             <div>
-              <Label>{form.category === 'emploi' ? t('createListing.salaryLabel') : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR</span></Label>
+              <Label>
+                {form.category === 'emploi' ? t('createListing.salaryLabel')
+                  : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
+                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + t('listing.perMonth') : ''}</span>
+              </Label>
               <Input type="number" min="0" placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} />
+            </div>
+          )}
+          {/* Listing type selector (sale/rent) */}
+          {(CATEGORIES_WITH_RENTAL as readonly string[]).includes(form.category) && 
+           !(SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(form.subcategory) && 
+           !(SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(form.subcategory) && (
+            <div>
+              <Label>{t('createListing.listingTypeLabel')}</Label>
+              <Select value={form.listing_type} onValueChange={v => setForm(f => ({ ...f, listing_type: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
+                  <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
           <div>
