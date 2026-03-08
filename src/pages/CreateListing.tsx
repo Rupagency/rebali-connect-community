@@ -222,7 +222,8 @@ export default function CreateListing() {
   };
 
   const handlePublish = async () => {
-    if (!user || !canPost) return;
+    if (!user || !canPost || loading) return;
+    setLoading(true);
 
     // Check content for suspicious patterns
     if (checkContent(form.description) || checkContent(form.title)) {
