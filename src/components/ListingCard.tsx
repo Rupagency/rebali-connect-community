@@ -125,6 +125,9 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
             {listing.category === 'emploi' && listing.extra_fields?.salary_negotiable === 'true'
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
+            {listing.listing_type === 'rent' && (
+              <span className="text-sm font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+            )}
           </p>
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
