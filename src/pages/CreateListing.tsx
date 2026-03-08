@@ -279,7 +279,8 @@ export default function CreateListing() {
           location_area: form.location,
           condition: form.condition as any,
           extra_fields: extraFields,
-        }).eq('id', editId);
+          listing_type: form.listing_type,
+        } as any).eq('id', editId);
         if (error) throw error;
 
         // Re-watermark existing images with uniform new watermark
