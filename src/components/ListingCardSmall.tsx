@@ -86,6 +86,9 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
             {listing.category === 'emploi' && listing.extra_fields?.salary_negotiable === 'true'
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
+            {listing.listing_type === 'rent' && (
+              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{t('listing.perMonth')}</span>
+            )}
           </p>
           <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">
             <MapPin className="h-2.5 w-2.5" />
