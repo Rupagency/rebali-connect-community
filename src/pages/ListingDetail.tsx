@@ -255,13 +255,13 @@ export default function ListingDetail() {
         .single();
       if (newConv) {
         toast({ title: t('messages.conversationStarted') });
-        navigate(`/messages?conv=${newConv.id}`);
-        // Trigger real estate services promo (non-blocking)
+        // Trigger real estate services promo BEFORE navigating (fire-and-forget)
         if (listing.category === 'immobilier') {
           supabase.functions.invoke('notify-realestate-services', {
             body: { buyer_id: user.id, conversation_id: newConv.id },
           }).catch(() => {});
         }
+        navigate(`/messages?conv=${newConv.id}`);
       }
     }
   };
