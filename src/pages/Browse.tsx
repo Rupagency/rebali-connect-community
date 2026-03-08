@@ -38,6 +38,7 @@ export default function Browse() {
   const [subcategory, setSubcategory] = useState(searchParams.get('subcategory') || 'all');
   const [condition, setCondition] = useState(searchParams.get('condition') || 'all');
   const [sort, setSort] = useState(searchParams.get('sort') || 'newest');
+  const [listingType, setListingType] = useState(searchParams.get('listingType') || 'all');
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
   const [showFilters, setShowFilters] = useState(false);
