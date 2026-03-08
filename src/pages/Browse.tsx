@@ -58,10 +58,11 @@ export default function Browse() {
     if (location !== 'all') params.location = location;
     if (condition !== 'all') params.condition = condition;
     if (sort !== 'newest') params.sort = sort;
+    if (listingType !== 'all') params.listingType = listingType;
     if (minPrice) params.minPrice = minPrice;
     if (maxPrice) params.maxPrice = maxPrice;
     setSearchParams(params, { replace: true });
-  }, [debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice]);
+  }, [debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice]);
 
   const locateMe = async () => {
     setGeoLoading(true);
