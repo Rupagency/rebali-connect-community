@@ -329,7 +329,8 @@ export default function CreateListing() {
           condition: form.condition as any,
           status: 'active',
           extra_fields: extraFields,
-        }).select().single();
+          listing_type: form.listing_type,
+        } as any).select().single();
 
         if (error) throw error;
 
