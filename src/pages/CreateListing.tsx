@@ -90,6 +90,7 @@ export default function CreateListing() {
         currency: data.currency,
         location: data.location_area,
         condition: data.condition,
+        listing_type: (data as any).listing_type || 'sale',
       });
       if (data.extra_fields && typeof data.extra_fields === 'object') {
         setExtraFields(data.extra_fields as Record<string, string>);
