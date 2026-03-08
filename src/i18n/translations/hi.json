@@ -205,8 +205,10 @@
     "allConditions": "सभी स्थितियां", "priceRange": "मूल्य सीमा", "minPrice": "न्यूनतम मूल्य", "maxPrice": "अधिकतम मूल्य",
     "sortNewest": "नवीनतम पहले", "sortPriceLow": "मूल्य: कम से अधिक", "sortPriceHigh": "मूल्य: अधिक से कम", "sortMostViewed": "सबसे ज़्यादा देखे गए", "sortMostLiked": "सबसे ज़्यादा पसंद",
     "clearFilters": "फ़िल्टर साफ़ करें", "results": "परिणाम",
-    "locateMe": "मेरा स्थान खोजें", "localized": "स्थान मिला", "geoError": "आपके स्थान तक पहुंच नहीं हो सकी", "geoNotSupported": "जियोलोकेशन समर्थित नहीं है"
+    "locateMe": "मेरा स्थान खोजें", "localized": "स्थान मिला", "geoError": "आपके स्थान तक पहुंच नहीं हो सकी", "geoNotSupported": "जियोलोकेशन समर्थित नहीं है",
+    "listingType": "प्रकार", "allTypes": "बिक्री और किराया"
   },
+  "listingType": { "sale": "बिक्री", "rent": "किराया" },
   "footer": {
     "tagline": "बाली का विश्वसनीय प्लेटफ़ॉर्म", "explore": "खोजें", "company": "कंपनी", "legal": "कानूनी",
     "terms": "सेवा की शर्तें", "privacy": "गोपनीयता नीति", "contact": "सहायता से संपर्क करें", "copyright": "सर्वाधिकार सुरक्षित।", "trustBadgesPoints": "विश्वास, बैज और अंक"
