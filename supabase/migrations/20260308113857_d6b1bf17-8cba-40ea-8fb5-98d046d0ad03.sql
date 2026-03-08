@@ -1,0 +1,2 @@
+DELETE FROM messages WHERE conversation_id IN ('73f19cb1-24cc-48d7-8b52-70423cfbb996', '713823cc-4846-492c-bcf2-6347fad24ecc');
+DELETE FROM conversations WHERE id IN ('73f19cb1-24cc-48d7-8b52-70423cfbb996', '713823cc-4846-492c-bcf2-6347fad24ecc');
