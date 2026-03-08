@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, REBALI_WA_NUMBER } from '@/lib/constants';
 import TrustIndicator from '@/components/TrustIndicator';
-import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Share2, Heart, ChevronRight, ThumbsUp, Star, Briefcase, ArrowRight, ShieldCheck, Facebook, Instagram, Copy, Link2 } from 'lucide-react';
+import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Share2, Heart, ChevronRight, ThumbsUp, Star, Briefcase, ArrowRight, ShieldCheck, Facebook, Instagram, Copy, Link2, Home } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
