@@ -106,7 +106,7 @@
     "passwordUpdated": "تم تحديث كلمة المرور!", "emailRequired": "البريد الإلكتروني مطلوب",
     "passwordRequired": "كلمة المرور مطلوبة", "passwordMin": "كلمة المرور 6 أحرف على الأقل",
     "passwordMismatch": "كلمتا المرور غير متطابقتين", "verifyEmail": "يرجى التحقق من بريدك لنشر الإعلانات",
-    "acceptTerms": "أوافق على", "acceptTermsRequired": "يجب قبول شروط الاستخدام وسياسة الخصوصية لإنشاء حساب"
+    "acceptTerms": "أوافق على", "acceptTermsRequired": "يجب قبول شروط الاستخدام وسياسة الخصوصية لإنشاء حساب", "userAlreadyExists": "هذا الحساب موجود بالفعل", "tryLogin": "حاول تسجيل الدخول بهذا البريد الإلكتروني.", "signupSuccess": "تم إنشاء الحساب بنجاح! مرحبًا بك في Re-Bali."
   },
   "profile": {
     "title": "إعدادات الملف الشخصي", "displayName": "الاسم المعروض", "phone": "رقم الهاتف", "whatsapp": "رقم واتساب",
