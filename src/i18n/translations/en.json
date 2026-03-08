@@ -107,7 +107,9 @@
     "listingCreated": "Listing created successfully!", "limitReached": "You have reached the maximum of 5 active listings",
     "atLeastOnePhoto": "Upload at least one photo",
     "whatsappRequired": "You must verify your WhatsApp number before posting a listing.",
-    "verifyWhatsapp": "Verify my WhatsApp"
+    "verifyWhatsapp": "Verify my WhatsApp",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "Welcome back", "loginSubtitle": "Sign in to your Re-Bali account",
