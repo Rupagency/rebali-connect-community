@@ -126,7 +126,7 @@
     "passwordUpdated": "Password updated successfully!", "emailRequired": "Email is required",
     "passwordRequired": "Password is required", "passwordMin": "Password must be at least 6 characters",
     "passwordMismatch": "Passwords don't match", "verifyEmail": "Please verify your email to post listings",
-    "acceptTerms": "I accept the", "acceptTermsRequired": "You must accept the Terms of Use and Privacy Policy to create an account"
+    "acceptTerms": "I accept the", "acceptTermsRequired": "You must accept the Terms of Use and Privacy Policy to create an account", "userAlreadyExists": "This account already exists", "tryLogin": "Try logging in with this email instead.", "signupSuccess": "Account created successfully! Welcome to Re-Bali."
   },
   "profile": {
     "title": "Profile Settings", "displayName": "Display Name", "phone": "Phone Number", "whatsapp": "WhatsApp Number",

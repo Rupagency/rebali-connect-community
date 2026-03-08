@@ -106,7 +106,7 @@
     "passwordUpdated": "Şifre başarıyla güncellendi!", "emailRequired": "E-posta gerekli",
     "passwordRequired": "Şifre gerekli", "passwordMin": "Şifre en az 6 karakter olmalı",
     "passwordMismatch": "Şifreler eşleşmiyor", "verifyEmail": "İlan yayınlamak için e-postanızı doğrulayın",
-    "acceptTerms": "Kabul ediyorum", "acceptTermsRequired": "Hesap oluşturmak için Kullanım Koşullarını ve Gizlilik Politikasını kabul etmelisiniz"
+    "acceptTerms": "Kabul ediyorum", "acceptTermsRequired": "Hesap oluşturmak için Kullanım Koşullarını ve Gizlilik Politikasını kabul etmelisiniz", "userAlreadyExists": "Bu hesap zaten mevcut", "tryLogin": "Bu e-posta ile giriş yapmayı deneyin.", "signupSuccess": "Hesap başarıyla oluşturuldu! Re-Bali'ye hoş geldiniz."
   },
   "profile": {
     "title": "Profil Ayarları", "displayName": "Görüntülenen Ad", "phone": "Telefon Numarası", "whatsapp": "WhatsApp Numarası",
