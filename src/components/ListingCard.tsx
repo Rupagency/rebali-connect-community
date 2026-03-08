@@ -24,6 +24,7 @@ interface ListingCardProps {
     created_at: string;
     seller_id: string;
     extra_fields?: any;
+    listing_type?: string;
     listing_images?: { storage_path: string }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
