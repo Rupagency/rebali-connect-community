@@ -315,6 +315,7 @@ export type Database = {
           fts_vector: unknown
           id: string
           lang_original: string
+          listing_type: string
           location_area: string
           price: number
           seller_id: string
@@ -334,6 +335,7 @@ export type Database = {
           fts_vector?: unknown
           id?: string
           lang_original?: string
+          listing_type?: string
           location_area: string
           price?: number
           seller_id: string
@@ -353,6 +355,7 @@ export type Database = {
           fts_vector?: unknown
           id?: string
           lang_original?: string
+          listing_type?: string
           location_area?: string
           price?: number
           seller_id?: string
