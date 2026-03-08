@@ -112,6 +112,7 @@ export default function Browse() {
       if (subcategory !== 'all') query = query.eq('subcategory', subcategory);
       if (location !== 'all') query = query.eq('location_area', location);
       if (condition !== 'all') query = query.eq('condition', condition as any);
+      if (listingType !== 'all') query = query.eq('listing_type', listingType);
       if (minPrice) query = query.gte('price', Number(minPrice));
       if (maxPrice) query = query.lte('price', Number(maxPrice));
 
