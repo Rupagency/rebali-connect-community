@@ -40,6 +40,7 @@ export default function CreateListing() {
     currency: 'IDR',
     location: '',
     condition: 'good',
+    listing_type: 'sale',
   });
   const [extraFields, setExtraFields] = useState<Record<string, string>>({});
   const [photos, setPhotos] = useState<File[]>([]);
