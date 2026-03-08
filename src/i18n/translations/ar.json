@@ -205,8 +205,10 @@
     "allConditions": "جميع الحالات", "priceRange": "نطاق السعر", "minPrice": "أقل سعر", "maxPrice": "أعلى سعر",
     "sortNewest": "الأحدث أولاً", "sortPriceLow": "السعر: من الأقل للأعلى", "sortPriceHigh": "السعر: من الأعلى للأقل", "sortMostViewed": "الأكثر مشاهدة", "sortMostLiked": "الأكثر إعجاباً",
     "clearFilters": "مسح الفلاتر", "results": "نتائج",
-    "locateMe": "حدد موقعي", "localized": "تم تحديد الموقع", "geoError": "تعذر الوصول لموقعك", "geoNotSupported": "تحديد الموقع غير مدعوم"
+    "locateMe": "حدد موقعي", "localized": "تم تحديد الموقع", "geoError": "تعذر الوصول لموقعك", "geoNotSupported": "تحديد الموقع غير مدعوم",
+    "listingType": "النوع", "allTypes": "بيع وإيجار"
   },
+  "listingType": { "sale": "بيع", "rent": "إيجار" },
   "footer": {
     "tagline": "منصة بالي الموثوقة", "explore": "استكشف", "company": "الشركة", "legal": "قانوني",
     "terms": "شروط الاستخدام", "privacy": "سياسة الخصوصية", "contact": "اتصل بالدعم", "copyright": "جميع الحقوق محفوظة.", "trustBadgesPoints": "الثقة والشارات والنقاط"

@@ -1,0 +1,1 @@
+ALTER TABLE public.listings ADD COLUMN listing_type text NOT NULL DEFAULT 'sale';

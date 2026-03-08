@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE } from '@/lib/constants';
 import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle } from 'lucide-react';
@@ -40,6 +40,7 @@ export default function CreateListing() {
     currency: 'IDR',
     location: '',
     condition: 'good',
+    listing_type: 'sale',
   });
   const [extraFields, setExtraFields] = useState<Record<string, string>>({});
   const [photos, setPhotos] = useState<File[]>([]);
@@ -89,6 +90,7 @@ export default function CreateListing() {
         currency: data.currency,
         location: data.location_area,
         condition: data.condition,
+        listing_type: (data as any).listing_type || 'sale',
       });
       if (data.extra_fields && typeof data.extra_fields === 'object') {
         setExtraFields(data.extra_fields as Record<string, string>);
@@ -277,7 +279,8 @@ export default function CreateListing() {
           location_area: form.location,
           condition: form.condition as any,
           extra_fields: extraFields,
-        }).eq('id', editId);
+          listing_type: form.listing_type,
+        } as any).eq('id', editId);
         if (error) throw error;
 
         // Re-watermark existing images with uniform new watermark
@@ -326,7 +329,8 @@ export default function CreateListing() {
           condition: form.condition as any,
           status: 'active',
           extra_fields: extraFields,
-        }).select().single();
+          listing_type: form.listing_type,
+        } as any).select().single();
 
         if (error) throw error;
 
@@ -420,7 +424,7 @@ export default function CreateListing() {
               <Card key={cat}
                 className={`cursor-pointer transition-all hover:shadow-md ${form.category === cat ? 'ring-2 ring-primary' : ''}`}
                 onClick={() => {
-                  setForm(f => ({ ...f, category: cat, subcategory: '' }));
+                  setForm(f => ({ ...f, category: cat, subcategory: '', listing_type: 'sale' }));
                   setTimeout(() => subcategoryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                 }}>
                 <CardContent className="p-4 text-center">
@@ -438,7 +442,12 @@ export default function CreateListing() {
                 {CATEGORY_TREE[form.category].map(sub => (
                   <Card key={sub}
                     className={`cursor-pointer transition-all hover:shadow-md ${form.subcategory === sub ? 'ring-2 ring-primary' : ''}`}
-                    onClick={() => setForm(f => ({ ...f, subcategory: sub }))}>
+                    onClick={() => {
+                      const autoType = (SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(sub) ? 'rent'
+                        : (SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(sub) ? 'sale'
+                        : form.listing_type;
+                      setForm(f => ({ ...f, subcategory: sub, listing_type: autoType }));
+                    }}>
                     <CardContent className="p-3 text-center">
                       <span className="font-medium text-sm">{t(`subcategories.${sub}`)}</span>
                     </CardContent>
@@ -478,8 +487,27 @@ export default function CreateListing() {
           )}
           {!(form.category === 'emploi' && extraFields.salary_negotiable === 'true') && (
             <div>
-              <Label>{form.category === 'emploi' ? t('createListing.salaryLabel') : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR</span></Label>
+              <Label>
+                {form.category === 'emploi' ? t('createListing.salaryLabel')
+                  : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
+                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + t('listing.perMonth') : ''}</span>
+              </Label>
               <Input type="number" min="0" placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} />
+            </div>
+          )}
+          {/* Listing type selector (sale/rent) */}
+          {(CATEGORIES_WITH_RENTAL as readonly string[]).includes(form.category) && 
+           !(SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(form.subcategory) && 
+           !(SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(form.subcategory) && (
+            <div>
+              <Label>{t('createListing.listingTypeLabel')}</Label>
+              <Select value={form.listing_type} onValueChange={v => setForm(f => ({ ...f, listing_type: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
+                  <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
           <div>

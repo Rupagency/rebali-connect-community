@@ -88,6 +88,18 @@ export const CATEGORIES = Object.keys(CATEGORY_TREE);
 
 export const CONDITIONS = ["new", "like_new", "good", "fair", "for_parts"] as const;
 
+// Listing types: sale or rent
+export const LISTING_TYPES = ["sale", "rent"] as const;
+
+// Categories that support both sale and rental
+export const CATEGORIES_WITH_RENTAL = ["immobilier", "vehicules", "materiel_pro", "electronique", "maison_jardin"] as const;
+
+// Subcategories that force listing_type = 'rent'
+export const SUBCATEGORIES_FORCE_RENT = ["locations", "colocations", "locations_saisonnieres"] as const;
+
+// Subcategories that force listing_type = 'sale'
+export const SUBCATEGORIES_FORCE_SALE = ["ventes_immobilieres"] as const;
+
 export const LOCATION_GROUPS = {
   bali: [
     "canggu", "ubud", "seminyak", "lovina", "uluwatu", "denpasar", "sanur",

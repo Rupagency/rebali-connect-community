@@ -205,8 +205,10 @@
     "allConditions": "Tüm Durumlar", "priceRange": "Fiyat Aralığı", "minPrice": "Min fiyat", "maxPrice": "Maks fiyat",
     "sortNewest": "En yeni", "sortPriceLow": "Fiyat: Düşükten Yükseğe", "sortPriceHigh": "Fiyat: Yüksekten Düşüğe", "sortMostViewed": "En çok görüntülenen", "sortMostLiked": "En çok beğenilen",
     "clearFilters": "Filtreleri temizle", "results": "sonuç",
-    "locateMe": "Konumumu bul", "localized": "Konumlandı", "geoError": "Konumunuza erişilemiyor", "geoNotSupported": "Coğrafi konum desteklenmiyor"
+    "locateMe": "Konumumu bul", "localized": "Konumlandı", "geoError": "Konumunuza erişilemiyor", "geoNotSupported": "Coğrafi konum desteklenmiyor",
+    "listingType": "Tür", "allTypes": "Satış & Kiralık"
   },
+  "listingType": { "sale": "Satılık", "rent": "Kiralık" },
   "footer": {
     "tagline": "Bali'nin güvenilir ilan platformu", "explore": "Keşfet", "company": "Şirket", "legal": "Yasal",
     "terms": "Kullanım Şartları", "privacy": "Gizlilik Politikası", "contact": "Destek ile iletişim", "copyright": "Tüm hakları saklıdır.", "trustBadgesPoints": "Güven, Rozetler ve Puanlar"
