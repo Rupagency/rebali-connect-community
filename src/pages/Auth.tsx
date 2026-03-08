@@ -93,9 +93,13 @@ export default function Auth() {
       },
     });
     if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      // Show a clearer message for "already registered" errors
+      if (error.message?.includes('already registered') || error.message?.includes('already exists')) {
+        toast({ title: t('auth.userAlreadyExists'), description: t('auth.tryLogin'), variant: 'destructive' });
+      } else {
+        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      }
     } else {
-      toast({ title: t('auth.magicLinkSent') });
       // Register referral code if provided
       if (referralCode.trim() && signUpData?.user) {
         try {
@@ -105,6 +109,15 @@ export default function Auth() {
         } catch {
           // Silently fail - referral is best-effort
         }
+      }
+      // If session exists, user was auto-logged in (no email confirmation required)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        toast({ title: t('auth.signupSuccess') });
+        navigate('/');
+      } else {
+        // Email confirmation required
+        toast({ title: t('auth.magicLinkSent') });
       }
     }
     setLoading(false);
