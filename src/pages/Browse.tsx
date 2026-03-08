@@ -202,7 +202,9 @@ export default function Browse() {
     setSearchParams({});
   };
 
-  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || minPrice || maxPrice || userCoords;
+  const hasFilters = search || category !== 'all' || subcategory !== 'all' || location !== 'all' || condition !== 'all' || listingType !== 'all' || minPrice || maxPrice || userCoords;
+
+  const showListingTypeFilter = category === 'all' || CATEGORIES_WITH_RENTAL.includes(category);
 
   return (
     <div className="container mx-auto px-4 py-6">
