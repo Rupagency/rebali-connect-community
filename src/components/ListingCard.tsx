@@ -80,6 +80,12 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
           <Badge className="absolute top-2 left-2 bg-card/90 text-foreground text-xs">
             {CATEGORY_ICONS[listing.category]} {t(`categories.${listing.category}`)}
           </Badge>
+          {listing.listing_type === 'rent' && (
+            <Badge className="absolute bottom-2 right-2 bg-violet-600 text-white text-[10px] gap-1 font-bold shadow">
+              <Home className="h-3 w-3" />
+              {t('listing.rental')}
+            </Badge>
+          )}
           {(isBoosted || isFeatured) && (
             <div className="absolute bottom-2 left-2 flex gap-1">
               {isFeatured ? (

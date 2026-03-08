@@ -281,6 +281,16 @@ export default function Browse() {
             <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
           </SelectContent>
         </Select>
+        {showListingTypeFilter && (
+          <Select value={listingType} onValueChange={setListingType}>
+            <SelectTrigger><SelectValue placeholder={t('filters.allTypes')} /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('filters.allTypes')}</SelectItem>
+              <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
+              <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       {/* Price range + Geolocation */}

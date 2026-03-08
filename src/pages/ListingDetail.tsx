@@ -451,11 +451,22 @@ export default function ListingDetail() {
               {listing.category === 'emploi' && (
                 <p className="text-sm font-semibold text-muted-foreground mb-0.5">{t('createListing.salaryLabel')}</p>
               )}
-              <p className="text-3xl font-extrabold text-primary mb-1">
-                {listing.category === 'emploi' && (listing.extra_fields as any)?.salary_negotiable === 'true'
-                  ? t('createListing.salaryNegotiable')
-                  : formatPrice(listing.price, listing.currency)}
-              </p>
+              <div className="flex items-center gap-3 mb-1">
+                <p className="text-3xl font-extrabold text-primary">
+                  {listing.category === 'emploi' && (listing.extra_fields as any)?.salary_negotiable === 'true'
+                    ? t('createListing.salaryNegotiable')
+                    : formatPrice(listing.price, listing.currency)}
+                  {listing.listing_type === 'rent' && (
+                    <span className="text-lg font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+                  )}
+                </p>
+                {listing.listing_type === 'rent' && (
+                  <Badge className="bg-violet-600 text-white gap-1 font-bold">
+                    <Home className="h-3.5 w-3.5" />
+                    {t('listing.rental')}
+                  </Badge>
+                )}
+              </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground mt-2">
                 <span>{timeAgo}</span>
                 <span className="flex items-center gap-1"><Eye className="h-4 w-4" />{listing.views_count}</span>

@@ -77,6 +77,11 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               <Briefcase className="h-2.5 w-2.5" />
             </Badge>
           )}
+          {listing.listing_type === 'rent' && (
+            <Badge className="absolute bottom-1.5 left-1.5 bg-violet-600 text-white text-[9px] gap-0.5 px-1 py-0 font-bold shadow">
+              <Home className="h-2.5 w-2.5" />
+            </Badge>
+          )}
         </div>
         <CardContent className="p-2">
           <h3 className="font-semibold text-xs line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
