@@ -92,7 +92,7 @@ export default function Browse() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, minPrice, maxPrice],
+    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice],
     queryFn: async ({ pageParam = 0 }) => {
       // If searching, use multilingual search RPC to get matching IDs first
       let matchingIds: string[] | null = null;
