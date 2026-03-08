@@ -442,7 +442,12 @@ export default function CreateListing() {
                 {CATEGORY_TREE[form.category].map(sub => (
                   <Card key={sub}
                     className={`cursor-pointer transition-all hover:shadow-md ${form.subcategory === sub ? 'ring-2 ring-primary' : ''}`}
-                    onClick={() => setForm(f => ({ ...f, subcategory: sub }))}>
+                    onClick={() => {
+                      const autoType = (SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(sub) ? 'rent'
+                        : (SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(sub) ? 'sale'
+                        : form.listing_type;
+                      setForm(f => ({ ...f, subcategory: sub, listing_type: autoType }));
+                    }}>
                     <CardContent className="p-3 text-center">
                       <span className="font-medium text-sm">{t(`subcategories.${sub}`)}</span>
                     </CardContent>
