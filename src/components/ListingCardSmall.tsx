@@ -92,7 +92,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
             {listing.listing_type === 'rent' && (
-              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{t('listing.perMonth')}</span>
+              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
             )}
           </p>
           <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">

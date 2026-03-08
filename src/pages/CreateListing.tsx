@@ -510,6 +510,20 @@ export default function CreateListing() {
               </Select>
             </div>
           )}
+          {/* Rental period selector */}
+          {form.listing_type === 'rent' && (
+            <div>
+              <Label>{t('createListing.rentalPeriodLabel')}</Label>
+              <Select value={extraFields.rental_period || 'monthly'} onValueChange={v => setExtraFields(prev => ({ ...prev, rental_period: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">{t('rentalPeriod.daily')}</SelectItem>
+                  <SelectItem value="monthly">{t('rentalPeriod.monthly')}</SelectItem>
+                  <SelectItem value="yearly">{t('rentalPeriod.yearly')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div>
             <Label>{t('createListing.locationLabel')} *</Label>
             <div className="flex gap-2">

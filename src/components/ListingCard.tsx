@@ -132,7 +132,7 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
             {listing.listing_type === 'rent' && (
-              <span className="text-sm font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+              <span className="text-sm font-medium text-muted-foreground ml-1">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
             )}
           </p>
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">

@@ -457,7 +457,7 @@ export default function ListingDetail() {
                     ? t('createListing.salaryNegotiable')
                     : formatPrice(listing.price, listing.currency)}
                   {listing.listing_type === 'rent' && (
-                    <span className="text-lg font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+                    <span className="text-lg font-medium text-muted-foreground ml-1">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
                   )}
                 </p>
                 {listing.listing_type === 'rent' && (
