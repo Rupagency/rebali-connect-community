@@ -89,7 +89,9 @@
     "phoneVerified": "Phone verified",
     "loginToContact": "Log in to contact the seller",
     "yourMessage": "Your message",
-    "sendViaWhatsApp": "Send via WhatsApp"
+    "sendViaWhatsApp": "Send via WhatsApp",
+    "perMonth": "/month",
+    "rental": "Rental"
   },
   "createListing": {
     "title": "Create a Listing", "stepCategory": "Category", "stepDetails": "Details", "stepPhotos": "Photos",
