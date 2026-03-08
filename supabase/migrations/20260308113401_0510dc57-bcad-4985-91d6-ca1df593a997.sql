@@ -1,0 +1,1 @@
+DELETE FROM conversations WHERE id = 'b390641e-2c00-4fb5-bc55-0effcda48888';
