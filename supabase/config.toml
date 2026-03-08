@@ -56,3 +56,9 @@ verify_jwt = false
 
 [functions.send-contact]
 verify_jwt = false
+
+[functions.send-business-services]
+verify_jwt = false
+
+[functions.notify-realestate-services]
+verify_jwt = false

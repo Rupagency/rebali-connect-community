@@ -35,6 +35,7 @@ const PointsShop = lazy(() => import("./pages/PointsShop"));
 const SellerDashboard = lazy(() => import("./pages/SellerDashboard"));
 const Contact = lazy(() => import("./pages/Contact"));
 const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
+const BusinessServices = lazy(() => import("./pages/BusinessServices"));
 
 const queryClient = new QueryClient({});
 
@@ -92,6 +93,7 @@ const App = () => {
                   <Route path="/dashboard" element={<SellerDashboard />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/blocked-users" element={<BlockedUsers />} />
+                  <Route path="/business-services" element={<BusinessServices />} />
                   
                   <Route path="/seller/:id" element={<SellerProfile />} />
                   <Route path="*" element={<NotFound />} />

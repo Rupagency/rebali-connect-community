@@ -256,6 +256,12 @@ export default function ListingDetail() {
       if (newConv) {
         toast({ title: t('messages.conversationStarted') });
         navigate(`/messages?conv=${newConv.id}`);
+        // Trigger real estate services promo (non-blocking)
+        if (listing.category === 'immobilier') {
+          supabase.functions.invoke('notify-realestate-services', {
+            body: { buyer_id: user.id, conversation_id: newConv.id },
+          }).catch(() => {});
+        }
       }
     }
   };
