@@ -195,6 +195,7 @@ export default function Browse() {
     setLocation('all');
     setCondition('all');
     setSort('newest');
+    setListingType('all');
     setMinPrice('');
     setMaxPrice('');
     clearGeo();
