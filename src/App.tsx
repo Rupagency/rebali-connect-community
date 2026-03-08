@@ -35,6 +35,7 @@ const PointsShop = lazy(() => import("./pages/PointsShop"));
 const SellerDashboard = lazy(() => import("./pages/SellerDashboard"));
 const Contact = lazy(() => import("./pages/Contact"));
 const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
+const BusinessServices = lazy(() => import("./pages/BusinessServices"));
 
 const queryClient = new QueryClient({});
 
