@@ -490,7 +490,7 @@ export default function CreateListing() {
               <Label>
                 {form.category === 'emploi' ? t('createListing.salaryLabel')
                   : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
-                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + t('listing.perMonth') : ''}</span>
+                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + getRentalPeriodSuffix(extraFields.rental_period, t) : ''}</span>
               </Label>
               <Input type="number" min="0" placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} />
             </div>
