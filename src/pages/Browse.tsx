@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { CATEGORIES, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
+import { CATEGORIES, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm, CATEGORIES_WITH_RENTAL } from '@/lib/constants';
 import { SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
