@@ -75,8 +75,10 @@
     "edit": "संपादित करें", "editListing": "विज्ञापन संपादित करें", "update": "विज्ञापन अपडेट करें",
     "updated": "विज्ञापन अपडेट हो गया!", "contactWhatsApp": "WhatsApp पर संपर्क करें",
     "phoneVerified": "फ़ोन सत्यापित", "loginToContact": "विक्रेता से संपर्क के लिए लॉग इन करें",
-    "yourMessage": "आपका संदेश", "sendViaWhatsApp": "WhatsApp से भेजें"
+    "yourMessage": "आपका संदेश", "sendViaWhatsApp": "WhatsApp से भेजें",
+    "perDay": "/दिन", "perMonth": "/माह", "perYear": "/वर्ष", "rental": "किराया"
   },
+  "rentalPeriod": { "daily": "प्रति दिन", "monthly": "प्रति माह", "yearly": "प्रति वर्ष" },
   "createListing": {
     "title": "विज्ञापन बनाएं", "stepCategory": "श्रेणी", "stepDetails": "विवरण", "stepPhotos": "फ़ोटो",
     "stepPreview": "पूर्वावलोकन", "selectCategory": "श्रेणी चुनें", "selectSubcategory": "उप-श्रेणी चुनें",
