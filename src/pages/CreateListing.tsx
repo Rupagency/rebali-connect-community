@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
 import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle } from 'lucide-react';
@@ -490,7 +490,7 @@ export default function CreateListing() {
               <Label>
                 {form.category === 'emploi' ? t('createListing.salaryLabel')
                   : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
-                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + t('listing.perMonth') : ''}</span>
+                  : t('createListing.priceLabel')} * <span className="text-muted-foreground font-normal text-xs">IDR{form.listing_type === 'rent' ? ' ' + getRentalPeriodSuffix(extraFields.rental_period, t) : ''}</span>
               </Label>
               <Input type="number" min="0" placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} />
             </div>
@@ -506,6 +506,20 @@ export default function CreateListing() {
                 <SelectContent>
                   <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
                   <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {/* Rental period selector */}
+          {form.listing_type === 'rent' && (
+            <div>
+              <Label>{t('createListing.rentalPeriodLabel')}</Label>
+              <Select value={extraFields.rental_period || 'monthly'} onValueChange={v => setExtraFields(prev => ({ ...prev, rental_period: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">{t('rentalPeriod.daily')}</SelectItem>
+                  <SelectItem value="monthly">{t('rentalPeriod.monthly')}</SelectItem>
+                  <SelectItem value="yearly">{t('rentalPeriod.yearly')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

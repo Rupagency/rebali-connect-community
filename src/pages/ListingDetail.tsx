@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, REBALI_WA_NUMBER } from '@/lib/constants';
+import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, REBALI_WA_NUMBER, getRentalPeriodSuffix } from '@/lib/constants';
 import TrustIndicator from '@/components/TrustIndicator';
 import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Share2, Heart, ChevronRight, ThumbsUp, Star, Briefcase, ArrowRight, ShieldCheck, Facebook, Instagram, Copy, Link2, Home } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -457,7 +457,7 @@ export default function ListingDetail() {
                     ? t('createListing.salaryNegotiable')
                     : formatPrice(listing.price, listing.currency)}
                   {listing.listing_type === 'rent' && (
-                    <span className="text-lg font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+                    <span className="text-lg font-medium text-muted-foreground ml-1">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
                   )}
                 </p>
                 {listing.listing_type === 'rent' && (

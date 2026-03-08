@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Rocket, Star, Home } from 'lucide-react';
-import { formatPrice, CATEGORY_PLACEHOLDERS } from '@/lib/constants';
+import { formatPrice, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 
 interface ListingCardSmallProps {
@@ -92,7 +92,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
             {listing.listing_type === 'rent' && (
-              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{t('listing.perMonth')}</span>
+              <span className="text-[10px] font-medium text-muted-foreground ml-0.5">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
             )}
           </p>
           <div className="flex items-center gap-1 mt-1 text-[10px] text-muted-foreground">

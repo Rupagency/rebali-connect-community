@@ -75,8 +75,10 @@
     "edit": "تعديل", "editListing": "تعديل الإعلان", "update": "تحديث الإعلان",
     "updated": "تم تحديث الإعلان!", "contactWhatsApp": "تواصل عبر واتساب",
     "phoneVerified": "هاتف موثق", "loginToContact": "سجل دخولك للتواصل مع البائع",
-    "yourMessage": "رسالتك", "sendViaWhatsApp": "إرسال عبر واتساب"
+    "yourMessage": "رسالتك", "sendViaWhatsApp": "إرسال عبر واتساب",
+    "perDay": "/يوم", "perMonth": "/شهر", "perYear": "/سنة", "rental": "إيجار"
   },
+  "rentalPeriod": { "daily": "باليوم", "monthly": "بالشهر", "yearly": "بالسنة" },
   "createListing": {
     "title": "إنشاء إعلان", "stepCategory": "الفئة", "stepDetails": "التفاصيل", "stepPhotos": "الصور",
     "stepPreview": "معاينة", "selectCategory": "اختر فئة", "selectSubcategory": "اختر فئة فرعية",

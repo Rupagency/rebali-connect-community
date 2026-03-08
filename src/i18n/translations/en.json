@@ -90,9 +90,12 @@
     "loginToContact": "Log in to contact the seller",
     "yourMessage": "Your message",
     "sendViaWhatsApp": "Send via WhatsApp",
+    "perDay": "/day",
     "perMonth": "/month",
+    "perYear": "/year",
     "rental": "Rental"
   },
+  "rentalPeriod": { "daily": "Per day", "monthly": "Per month", "yearly": "Per year" },
   "createListing": {
     "title": "Create a Listing", "stepCategory": "Category", "stepDetails": "Details", "stepPhotos": "Photos",
     "stepPreview": "Preview", "selectCategory": "Select a category", "selectSubcategory": "Select a subcategory",

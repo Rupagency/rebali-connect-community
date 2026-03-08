@@ -4,7 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home } from 'lucide-react';
-import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS } from '@/lib/constants';
+import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
@@ -132,7 +132,7 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
               ? t('createListing.salaryNegotiable')
               : formatPrice(listing.price, listing.currency)}
             {listing.listing_type === 'rent' && (
-              <span className="text-sm font-medium text-muted-foreground ml-1">{t('listing.perMonth')}</span>
+              <span className="text-sm font-medium text-muted-foreground ml-1">{getRentalPeriodSuffix((listing.extra_fields as any)?.rental_period, t)}</span>
             )}
           </p>
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">

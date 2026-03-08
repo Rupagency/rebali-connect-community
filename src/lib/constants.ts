@@ -546,3 +546,15 @@ export function formatPrice(price: number, currency: string): string {
   });
   return formatter.format(price);
 }
+
+export const RENTAL_PERIODS = ['daily', 'monthly', 'yearly'] as const;
+export type RentalPeriod = typeof RENTAL_PERIODS[number];
+
+export function getRentalPeriodSuffix(period: string | undefined, t: (key: string) => string): string {
+  switch (period) {
+    case 'daily': return t('listing.perDay');
+    case 'yearly': return t('listing.perYear');
+    case 'monthly':
+    default: return t('listing.perMonth');
+  }
+}

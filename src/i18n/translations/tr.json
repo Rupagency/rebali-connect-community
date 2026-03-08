@@ -75,8 +75,10 @@
     "edit": "Düzenle", "editListing": "İlanı Düzenle", "update": "İlanı Güncelle",
     "updated": "İlan güncellendi!", "contactWhatsApp": "WhatsApp ile iletişim",
     "phoneVerified": "Telefon doğrulandı", "loginToContact": "Satıcıyla iletişim kurmak için giriş yapın",
-    "yourMessage": "Mesajınız", "sendViaWhatsApp": "WhatsApp ile gönder"
+    "yourMessage": "Mesajınız", "sendViaWhatsApp": "WhatsApp ile gönder",
+    "perDay": "/gün", "perMonth": "/ay", "perYear": "/yıl", "rental": "Kiralık"
   },
+  "rentalPeriod": { "daily": "Günlük", "monthly": "Aylık", "yearly": "Yıllık" },
   "createListing": {
     "title": "İlan Oluştur", "stepCategory": "Kategori", "stepDetails": "Detaylar", "stepPhotos": "Fotoğraflar",
     "stepPreview": "Önizleme", "selectCategory": "Kategori seçin", "selectSubcategory": "Alt kategori seçin",

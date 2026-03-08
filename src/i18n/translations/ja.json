@@ -73,8 +73,10 @@
     "edit": "編集", "editListing": "出品を編集", "update": "出品を更新",
     "updated": "出品が更新されました！", "contactWhatsApp": "WhatsAppで連絡",
     "phoneVerified": "電話番号確認済み", "loginToContact": "出品者に連絡するにはログインしてください",
-    "yourMessage": "メッセージ", "sendViaWhatsApp": "WhatsAppで送信"
+    "yourMessage": "メッセージ", "sendViaWhatsApp": "WhatsAppで送信",
+    "perDay": "/日", "perMonth": "/月", "perYear": "/年", "rental": "レンタル"
   },
+  "rentalPeriod": { "daily": "日単位", "monthly": "月単位", "yearly": "年単位" },
   "createListing": {
     "title": "出品する", "stepCategory": "カテゴリー", "stepDetails": "詳細", "stepPhotos": "写真",
     "stepPreview": "プレビュー", "selectCategory": "カテゴリーを選択", "selectSubcategory": "サブカテゴリーを選択",
