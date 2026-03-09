@@ -28,6 +28,7 @@ import ListingCard from '@/components/ListingCard';
 import UserBadges from '@/components/UserBadges';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
 import BlockUserButton from '@/components/BlockUserButton';
+import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
