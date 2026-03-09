@@ -33,6 +33,7 @@ const Messages = lazy(() => import("./pages/Messages"));
 const TrustBadges = lazy(() => import("./pages/TrustBadges"));
 const PointsShop = lazy(() => import("./pages/PointsShop"));
 const SellerDashboard = lazy(() => import("./pages/SellerDashboard"));
+const ProSubscription = lazy(() => import("./pages/ProSubscription"));
 const Contact = lazy(() => import("./pages/Contact"));
 const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
 const BusinessServices = lazy(() => import("./pages/BusinessServices"));
