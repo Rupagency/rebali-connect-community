@@ -74,7 +74,11 @@
     "fileTooLarge": "Bestand moet een afbeelding zijn van minder dan 5 MB",
     "submitVerification": "Verificatie indienen",
     "verificationSubmitted": "Verificatie ingediend! We beoordelen het binnenkort.",
-    "verificationError": "Verificatie indienen mislukt"
+    "verificationError": "Verificatie indienen mislukt",
+    "selfieOnlyDesc": "Neem een selfie om de badge Geverifieerde Verkoper te krijgen",
+    "takeSelfie": "Neem een selfie",
+    "selfieInstructions": "Maak een duidelijke foto van uw gezicht met de frontcamera",
+    "openCamera": "Camera openen"
   },
   "favorites": {
     "title": "Mijn Favorieten",

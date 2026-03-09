@@ -123,7 +123,11 @@
     "fileTooLarge": "Le fichier doit être une image de moins de 5 Mo",
     "submitVerification": "Soumettre la vérification",
     "verificationSubmitted": "Vérification soumise ! Nous l'examinerons sous peu.",
-    "verificationError": "Échec de la soumission"
+    "verificationError": "Échec de la soumission",
+    "selfieOnlyDesc": "Prenez un selfie pour obtenir le badge Vendeur Vérifié",
+    "takeSelfie": "Prenez un selfie",
+    "selfieInstructions": "Prenez une photo claire de votre visage avec la caméra frontale",
+    "openCamera": "Ouvrir la caméra"
   },
   "favorites": {
     "title": "Mes Favoris",

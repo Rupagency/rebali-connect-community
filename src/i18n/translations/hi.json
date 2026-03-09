@@ -253,7 +253,11 @@
     "selfieHint": "अपनी आईडी को अपने चेहरे के बगल में रखें", "chooseFile": "फ़ाइल चुनें (अधिकतम 5 MB)",
     "fileTooLarge": "फ़ाइल 5 MB से कम की छवि होनी चाहिए",
     "submitVerification": "सत्यापन जमा करें", "verificationSubmitted": "सत्यापन जमा किया गया!",
-    "verificationError": "सत्यापन जमा करने में विफल"
+    "verificationError": "सत्यापन जमा करने में विफल",
+    "selfieOnlyDesc": "सत्यापित विक्रेता बैज पाने के लिए सेल्फी लें",
+    "takeSelfie": "सेल्फी लें",
+    "selfieInstructions": "फ्रंट कैमरे से अपने चेहरे की स्पष्ट फोटो लें",
+    "openCamera": "कैमरा खोलें"
   },
   "favorites": { "title": "मेरे पसंदीदा", "empty": "आपने अभी तक कोई पसंदीदा नहीं सहेजा है" },
   "messages": {

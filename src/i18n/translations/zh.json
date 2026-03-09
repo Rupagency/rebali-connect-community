@@ -74,7 +74,11 @@
     "fileTooLarge": "文件必须是小于5 MB的图片",
     "submitVerification": "提交验证",
     "verificationSubmitted": "验证已提交！我们将尽快审核。",
-    "verificationError": "提交验证失败"
+    "verificationError": "提交验证失败",
+    "selfieOnlyDesc": "拍一张自拍以获得认证卖家徽章",
+    "takeSelfie": "拍自拍",
+    "selfieInstructions": "使用前置摄像头拍一张清晰的面部照片",
+    "openCamera": "打开相机"
   },
   "favorites": {
     "title": "我的收藏",

@@ -74,7 +74,11 @@
     "fileTooLarge": "El archivo debe ser una imagen de menos de 5 MB",
     "submitVerification": "Enviar verificación",
     "verificationSubmitted": "¡Verificación enviada! La revisaremos en breve.",
-    "verificationError": "Error al enviar la verificación"
+    "verificationError": "Error al enviar la verificación",
+    "selfieOnlyDesc": "Tómate un selfie para obtener la insignia de Vendedor Verificado",
+    "takeSelfie": "Tómate un selfie",
+    "selfieInstructions": "Toma una foto clara de tu rostro con la cámara frontal",
+    "openCamera": "Abrir cámara"
   },
   "favorites": {
     "title": "Mis Favoritos",
