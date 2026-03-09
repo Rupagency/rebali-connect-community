@@ -228,7 +228,7 @@
       "boost": "Subir al inicio", "boostDesc": "Tu anuncio aparece primero en su categoría durante 48 horas",
       "boost_premium": "Destacar en portada", "boost_premiumDesc": "Tu anuncio se destaca en la página de inicio durante 48 horas",
       "active_seller": "Vendedor Activo", "active_sellerDesc": "Insignia + 15% visibilidad orgánica + 2 impulsos incluidos (30 días)",
-      "extra_listings": "+5 Espacios", "extra_listingsDesc": "Desbloquea 5 espacios de anuncios adicionales por 30 días",
+      "extra_listings": "+7 Espacios", "extra_listingsDesc": "Desbloquea 7 espacios de anuncios adicionales por 30 días",
       "expert_seller": "Vendedor Experto", "expert_sellerDesc": "Insignia Experto + 30% visibilidad + 5 impulsos + analíticas (30 días)"
     },
     "dynamic": { "completed_deal": "Venta completada", "five_star_review": "Reseña 5★ recibida", "validated_report": "Reporte de estafa validado" },
