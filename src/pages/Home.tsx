@@ -445,6 +445,19 @@ export default function Home() {
         <ListingMarquee listings={listings || []} isLoading={isLoading} emptyMessage={t('common.noResults')} />
       </section>
 
+      {/* 🚀 Homepage Boosted Listings - Marquee */}
+      {(homepageBoostedLoading || (homepageBoosted && homepageBoosted.length > 0)) && (
+        <section className="container mx-auto px-4 py-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+              <Star className="h-5 w-5 text-amber-500" />
+              {t('home.highlightedListings')}
+            </h2>
+          </div>
+          <ListingMarquee listings={homepageBoosted || []} isLoading={homepageBoostedLoading} emptyMessage="" />
+        </section>
+      )}
+
       {/* 🎯 Personalized Recommendations (logged-in users only) */}
       {user && recommendedListings && recommendedListings.length > 0 && (
         <section className="container mx-auto px-4 py-10">
