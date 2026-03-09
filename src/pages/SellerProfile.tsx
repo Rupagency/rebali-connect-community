@@ -30,6 +30,23 @@ export default function SellerProfile() {
     enabled: !!id,
   });
 
+  // Check if this seller has an agence subscription (redirect to business page)
+  const { data: hasAgenceSub } = useQuery({
+    queryKey: ['seller-agence-check', id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('pro_subscriptions')
+        .select('id')
+        .eq('user_id', id!)
+        .eq('plan_type', 'agence')
+        .eq('status', 'active')
+        .gt('expires_at', new Date().toISOString())
+        .limit(1);
+      return (data?.length || 0) > 0;
+    },
+    enabled: !!id && seller?.user_type === 'business',
+  });
+
   const { data: listings } = useQuery({
     queryKey: ['seller-listings', id],
     queryFn: async () => {
@@ -62,6 +79,11 @@ export default function SellerProfile() {
     : 0;
 
   const isPro = seller?.user_type === 'business';
+
+  // Redirect agence sellers to their business page
+  if (hasAgenceSub) {
+    return <Navigate to={`/business/${id}`} replace />;
+  }
 
   if (!seller) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.loading')}</div>;
 
