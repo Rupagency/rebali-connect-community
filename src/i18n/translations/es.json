@@ -235,6 +235,7 @@
     "boostSelectTitle": "Subir un anuncio al inicio",
     "boostSelectDesc": "Elige qué anuncio subir al inicio de los resultados por 48 horas",
     "noActiveListings": "No tienes anuncios activos para promocionar",
+    "boost": { "dialogTitle": "Impulsar este anuncio", "dialogChoose": "Elige el tipo de impulso a aplicar", "dialogConfirm": "Confirma tu compra", "useStock": "Usar un boost en stock", "useStockDesc": "Boost 48h gratis • {count} disponible(s)", "free": "Gratis", "boost48h": "Boost 48h", "boost48hDesc": "Primero en tu categoría", "premium": "Boost Premium", "premiumDesc": "Destacado en la página principal", "confirmQuestion": "¿Estás seguro de querer usar tus puntos para este boost?", "back": "Volver", "confirm": "Confirmar", "alreadyBoosted": "Este anuncio ya está impulsado", "noStockBoosts": "No hay boosts en stock", "stockApplied": "🚀 ¡Boost aplicado desde tu stock!", "stockCount": "{count} boost(s) en stock", "stockDesc": "Incluido con tu estado de vendedor — haz clic en Boost en un anuncio para usar", "stockShopDesc": "Ve a Mis anuncios para aplicarlos", "myListings": "Mis anuncios", "addonFailed": "Error: fallo al crear el boost" },
     "buyPoints": "Comprar Puntos",
     "buyPointsDesc": "Recarga tu saldo al instante con un paquete de puntos",
     "buyPointsComingSoon": "¡Pago en línea próximamente!",
