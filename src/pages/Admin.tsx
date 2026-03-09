@@ -611,8 +611,8 @@ export default function Admin() {
     toast({ title: t('admin.profileSaved') || 'Profile saved' });
   };
 
-  // User detail dialog content
-  const UserDetailDialog = () => {
+  // User detail dialog content — rendered inline (not as a component) to avoid remounting on state changes
+  const userDetailDialogContent = (() => {
     if (!selectedUser) return null;
     const userListings = getUserListings(selectedUser.id);
     const userReports = getUserReports(selectedUser.id);
@@ -658,7 +658,7 @@ export default function Admin() {
               ) : (
                 <div className="flex gap-1">
                   <Button size="sm" onClick={saveUserEdits}>
-                    <Save className="h-3 w-3 mr-1" /> {t('admin.saveListing') || 'Save'}
+                    <Save className="h-3 w-3 mr-1" /> {t('common.save')}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => setEditingUser(false)}>
                     <X className="h-3 w-3" />
@@ -733,9 +733,9 @@ export default function Admin() {
                   </div>
                 )}
                 <div>
-                  <label className="text-xs text-muted-foreground">{t('admin.listingLimit') || 'Listing Limit Override'}</label>
+                  <label className="text-xs text-muted-foreground">{t('admin.maxListings') || 'Listing Limit Override'}</label>
                   <Input type="number" min="0" value={editUserListingLimit} onChange={e => setEditUserListingLimit(e.target.value)} placeholder={t('admin.listingLimitPlaceholder') || 'Auto (leave empty)'} />
-                  <p className="text-[10px] text-muted-foreground mt-1">{t('admin.listingLimitHint') || 'Leave empty for default rules'}</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">{t('admin.listingLimitDefault') || 'Leave empty for default rules'}</p>
                 </div>
               </div>
             ) : (
@@ -1034,7 +1034,7 @@ export default function Admin() {
         </DialogContent>
       </Dialog>
     );
-  };
+  })();
 
 
   const startEditListing = () => {
@@ -1074,7 +1074,7 @@ export default function Admin() {
 
   const categories: string[] = Object.keys(CATEGORY_TREE);
 
-  const ListingDetailDialog = () => {
+  const listingDetailDialogContent = (() => {
     if (!selectedListing) return null;
     const seller = profiles?.find((p: any) => p.id === selectedListing.seller_id);
     const listingReports = reports?.filter((r: any) => r.listing_id === selectedListing.id) || [];
@@ -1320,7 +1320,7 @@ export default function Admin() {
         </DialogContent>
       </Dialog>
     );
-  };
+  })();
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-5xl">
@@ -1328,8 +1328,8 @@ export default function Admin() {
         <Shield className="h-7 w-7" /> {t('admin.title')}
       </h1>
 
-      <UserDetailDialog />
-      <ListingDetailDialog />
+      {userDetailDialogContent}
+      {listingDetailDialogContent}
 
       <Tabs defaultValue="stats">
         <TabsList className="grid w-full grid-cols-7">
