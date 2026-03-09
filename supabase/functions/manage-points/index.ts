@@ -283,14 +283,14 @@ Deno.serve(async (req) => {
       }
 
       // Create included boosts for active_seller and expert_seller
+      // These boosts expire with the seller status (30 days), not 48h
       const includedBoosts = INCLUDED_BOOSTS[addon_type] || 0;
       if (includedBoosts > 0) {
-        const boostExpires = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
         const boostInserts = Array.from({ length: includedBoosts }, () => ({
           user_id: user.id,
           addon_type: "boost",
           listing_id: null, // To be assigned later when user chooses
-          expires_at: boostExpires,
+          expires_at: expiresAt, // Same expiry as the seller status (30 days)
           extra_slots: 0,
           active: true,
         }));

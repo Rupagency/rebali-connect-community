@@ -304,7 +304,7 @@ export default function MyListings() {
                   <p className="font-semibold text-sm">Boost 48h</p>
                   <p className="text-xs text-muted-foreground">Tête de liste dans ta catégorie</p>
                 </div>
-                <span className="font-bold text-primary">40 pts</span>
+                <span className="font-bold text-primary">50 pts</span>
               </button>
               <button
                 onClick={() => selectBoostType('boost_premium')}
@@ -317,7 +317,7 @@ export default function MyListings() {
                   <p className="font-semibold text-sm">Boost Premium</p>
                   <p className="text-xs text-muted-foreground">Mise en avant sur la page d'accueil</p>
                 </div>
-                <span className="font-bold text-primary">80 pts</span>
+                <span className="font-bold text-primary">100 pts</span>
               </button>
             </div>
           ) : (
