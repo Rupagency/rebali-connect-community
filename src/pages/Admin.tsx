@@ -685,10 +685,47 @@ export default function Admin() {
                   <label className="text-xs text-muted-foreground">{t('profile.whatsapp')}</label>
                   <Input value={editUserWhatsapp} onChange={e => setEditUserWhatsapp(e.target.value)} placeholder="+62..." />
                 </div>
-                <div>
-                  <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
-                  <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
-                </div>
+                {selectedUser.user_type === 'business' ? (
+                  <>
+                    <Separator />
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Abonnement Pro</h4>
+                    <div>
+                      <label className="text-xs text-muted-foreground">Statut</label>
+                      <Select value={editSubStatus} onValueChange={setEditSubStatus}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">Aucun abonnement</SelectItem>
+                          <SelectItem value="active">Actif</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {editSubStatus === 'active' && (
+                      <>
+                        <div>
+                          <label className="text-xs text-muted-foreground">Plan</label>
+                          <Select value={editSubPlanType} onValueChange={setEditSubPlanType}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="free_pro">Pro Gratuit</SelectItem>
+                              <SelectItem value="vendeur_pro">Vendeur Pro (99k/mois)</SelectItem>
+                              <SelectItem value="agence">Agence (249k/mois)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground">Durée (mois)</label>
+                          <Input type="number" min="1" max="12" value={editSubDurationMonths} onChange={e => setEditSubDurationMonths(e.target.value)} />
+                          <p className="text-[10px] text-muted-foreground mt-1">À partir d'aujourd'hui</p>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div>
+                    <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
+                    <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
+                  </div>
+                )}
                 <div>
                   <label className="text-xs text-muted-foreground">{t('admin.listingLimit') || 'Listing Limit Override'}</label>
                   <Input type="number" min="0" value={editUserListingLimit} onChange={e => setEditUserListingLimit(e.target.value)} placeholder={t('admin.listingLimitPlaceholder') || 'Auto (leave empty)'} />
