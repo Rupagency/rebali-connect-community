@@ -188,7 +188,12 @@
     "msgCount": "Messages",
     "relayStatus": "Status",
     "noVerificationRequest": "No verification request submitted",
-    "viewDocuments": "View Documents"
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "About Re-Bali",
