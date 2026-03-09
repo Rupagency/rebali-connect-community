@@ -173,8 +173,8 @@ Deno.serve(async (req) => {
     // --- Award dynamic points ---
     if (action === "award_dynamic") {
       const DYNAMIC_REWARDS: Record<string, number> = {
-        completed_deal: 5,
-        five_star_review: 3,
+        completed_deal: 8,
+        five_star_review: 5,
         validated_report: 10,
       };
       const reward = DYNAMIC_REWARDS[event_type];
