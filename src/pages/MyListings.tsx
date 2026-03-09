@@ -325,10 +325,10 @@ export default function MyListings() {
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Rocket className="h-5 w-5 text-blue-500" /> Boost cette annonce
+              <Rocket className="h-5 w-5 text-blue-500" /> {t('points.boost.dialogTitle')}
             </DialogTitle>
             <DialogDescription>
-              {confirmBoostType ? 'Confirme ton achat' : 'Choisis le type de boost à appliquer'}
+              {confirmBoostType ? t('points.boost.dialogConfirm') : t('points.boost.dialogChoose')}
             </DialogDescription>
           </DialogHeader>
 
@@ -345,10 +345,10 @@ export default function MyListings() {
                     <Zap className="h-5 w-5 text-emerald-500" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-sm">Utiliser un boost en stock</p>
-                    <p className="text-xs text-muted-foreground">Boost 48h gratuit • {stockBoostCount} disponible{stockBoostCount > 1 ? 's' : ''}</p>
+                    <p className="font-semibold text-sm">{t('points.boost.useStock')}</p>
+                    <p className="text-xs text-muted-foreground">{t('points.boost.useStockDesc').replace('{count}', String(stockBoostCount))}</p>
                   </div>
-                  <Badge className="bg-emerald-500 text-white">Gratuit</Badge>
+                  <Badge className="bg-emerald-500 text-white">{t('points.boost.free')}</Badge>
                 </button>
               )}
 
@@ -360,8 +360,8 @@ export default function MyListings() {
                   <Rocket className="h-5 w-5 text-blue-500" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm">Boost 48h</p>
-                  <p className="text-xs text-muted-foreground">Tête de liste dans ta catégorie</p>
+                  <p className="font-semibold text-sm">{t('points.boost.boost48h')}</p>
+                  <p className="text-xs text-muted-foreground">{t('points.boost.boost48hDesc')}</p>
                 </div>
                 <span className="font-bold text-primary">50 pts</span>
               </button>
@@ -373,8 +373,8 @@ export default function MyListings() {
                   <Star className="h-5 w-5 text-amber-500" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm">Boost Premium</p>
-                  <p className="text-xs text-muted-foreground">Mise en avant sur la page d'accueil</p>
+                  <p className="font-semibold text-sm">{t('points.boost.premium')}</p>
+                  <p className="text-xs text-muted-foreground">{t('points.boost.premiumDesc')}</p>
                 </div>
                 <span className="font-bold text-primary">100 pts</span>
               </button>
@@ -386,19 +386,19 @@ export default function MyListings() {
                   {confirmBoostType === 'boost_premium' ? <Star className="h-5 w-5 text-amber-500" /> : <Rocket className="h-5 w-5 text-blue-500" />}
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm">{confirmBoostType === 'boost_premium' ? 'Boost Premium' : 'Boost 48h'}</p>
+                  <p className="font-semibold text-sm">{confirmBoostType === 'boost_premium' ? t('points.boost.premium') : t('points.boost.boost48h')}</p>
                   <p className="text-xs text-muted-foreground">{confirmBoostType === 'boost_premium' ? '100 pts' : '50 pts'}</p>
                 </div>
               </div>
               <p className="text-sm text-center text-muted-foreground">
-                Es-tu sûr de vouloir utiliser tes points pour ce boost ?
+                {t('points.boost.confirmQuestion')}
               </p>
               <DialogFooter className="flex gap-2 sm:gap-2">
                 <Button variant="outline" onClick={() => setConfirmBoostType(null)} disabled={purchasing}>
-                  Retour
+                  {t('points.boost.back')}
                 </Button>
                 <Button onClick={purchaseBoost} disabled={purchasing}>
-                  {purchasing ? '...' : 'Confirmer'}
+                  {purchasing ? '...' : t('points.boost.confirm')}
                 </Button>
               </DialogFooter>
             </div>
