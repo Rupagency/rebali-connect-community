@@ -581,7 +581,7 @@ export default function ListingDetail() {
               </div>
               {seller && (
                 <div className="mt-3 space-y-2">
-                  <ActiveSellerStatus userId={seller.id} />
+                  <ActiveSellerStatus userId={seller.id} showStock={false} />
                   <UserBadges userId={seller.id} profile={seller} compact />
                   <TrustIndicator score={seller.trust_score ?? 50} riskLevel={(seller.risk_level as 'low' | 'medium' | 'high') || 'low'} />
                 </div>
