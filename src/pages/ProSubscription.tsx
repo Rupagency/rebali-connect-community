@@ -96,6 +96,7 @@ export default function ProSubscription() {
       case 'boosts': return Rocket;
       case 'badge': return ShieldCheck;
       case 'analytics': return BarChart3;
+      case 'searchAlerts': return Bell;
       default: return Check;
     }
   };
