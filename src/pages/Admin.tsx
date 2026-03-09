@@ -557,7 +557,8 @@ export default function Admin() {
       
       if (editSubStatus === 'none' && activeSub) {
         // Cancel existing subscription
-        await supabase.from('pro_subscriptions').update({ status: 'cancelled', cancelled_at: new Date().toISOString() }).eq('id', activeSub.id);
+        const { error } = await supabase.from('pro_subscriptions').update({ status: 'cancelled', cancelled_at: new Date().toISOString() }).eq('id', activeSub.id);
+        if (error) { console.error('Cancel sub error:', error); toast({ title: 'Erreur: ' + error.message, variant: 'destructive' }); }
       } else if (editSubStatus === 'active') {
         const durationMonths = Math.max(1, parseInt(editSubDurationMonths) || 1);
         const boostsIncluded = editSubPlanType === 'agence' ? 10 : editSubPlanType === 'vendeur_pro' ? 3 : 0;
@@ -567,17 +568,19 @@ export default function Admin() {
           // Update existing subscription
           const newExpiry = new Date();
           newExpiry.setMonth(newExpiry.getMonth() + durationMonths);
-          await supabase.from('pro_subscriptions').update({
+          const { error } = await supabase.from('pro_subscriptions').update({
             plan_type: editSubPlanType,
             expires_at: newExpiry.toISOString(),
             monthly_boosts_included: boostsIncluded,
             price_idr: priceIdr,
           }).eq('id', activeSub.id);
+          if (error) { console.error('Update sub error:', error); toast({ title: 'Erreur: ' + error.message, variant: 'destructive' }); }
+          else toast({ title: `Plan mis à jour: ${editSubPlanType}` });
         } else {
           // Create new subscription
           const expiresAt = new Date();
           expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
-          await supabase.from('pro_subscriptions').insert({
+          const { error } = await supabase.from('pro_subscriptions').insert({
             user_id: selectedUser.id,
             plan_type: editSubPlanType,
             status: 'active',
@@ -587,9 +590,12 @@ export default function Admin() {
             price_idr: priceIdr,
             payment_method: 'admin',
           });
+          if (error) { console.error('Insert sub error:', error); toast({ title: 'Erreur: ' + error.message, variant: 'destructive' }); }
+          else toast({ title: `Abonnement ${editSubPlanType} créé` });
         }
       }
-      qc.invalidateQueries({ queryKey: ['admin-pro-subscriptions'] });
+      await qc.invalidateQueries({ queryKey: ['admin-pro-subscriptions'] });
+      await qc.refetchQueries({ queryKey: ['admin-pro-subscriptions'] });
     }
 
     setSelectedUser((prev: any) => prev ? {
