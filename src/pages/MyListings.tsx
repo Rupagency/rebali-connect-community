@@ -296,8 +296,8 @@ export default function MyListings() {
             <Zap className="h-5 w-5 text-blue-500" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold">{stockBoostCount} boost{stockBoostCount > 1 ? 's' : ''} en stock</p>
-            <p className="text-xs text-muted-foreground">Inclus avec ton statut vendeur — clique "Boost" sur une annonce pour l'utiliser</p>
+            <p className="text-sm font-semibold">{t('points.boost.stockCount').replace('{count}', String(stockBoostCount))}</p>
+            <p className="text-xs text-muted-foreground">{t('points.boost.stockDesc')}</p>
           </div>
         </div>
       )}
