@@ -423,19 +423,19 @@
       "fiveStarReview": "5★ review received",
       "validatedReport": "Validated scam report"
     },
-    "monthlyCap": "Monthly cap: 150 pts from activity (resets each month)",
+    "monthlyCap": "Monthly cap: 200 pts from activity (resets each month)",
     "pointsHowToSpend": "What you can buy",
     "addon": {
-      "boost": "Listing Boost",
+      "boost": "Push to Top",
       "boostDesc": "Push a listing to the top of category results for 48 hours",
-      "boost_premium": "Featured Listing",
+      "boost_premium": "Homepage Spotlight",
       "boost_premiumDesc": "Featured on homepage with larger card for 48 hours",
-      "vip": "VIP Account",
-      "vipDesc": "VIP badge, +10% search priority, 1 free boost for 30 days",
+      "active_seller": "Active Seller",
+      "active_sellerDesc": "Badge + 15% organic visibility + 2 included boosts (30 days)",
       "extraListings": "Extra 5 Listings",
       "extraListingsDesc": "Get 5 additional listing slots for 30 days (max 2 packs)",
-      "protection": "Priority Seller",
-      "protectionDesc": "Priority Seller badge and +20% organic visibility for 30 days"
+      "expert_seller": "Expert Seller",
+      "expert_sellerDesc": "Expert badge + 30% visibility + 5 boosts + analytics (30 days)"
     },
     "pointsNote": "Important notes:",
     "pointsNote1": "Points are a one-time use currency — they are permanently deducted upon purchase.",

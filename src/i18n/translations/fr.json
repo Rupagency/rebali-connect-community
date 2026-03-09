@@ -331,12 +331,12 @@
       "boostDesc": "Votre annonce apparaît en premier dans sa catégorie pendant 48h",
       "boost_premium": "À la une",
       "boost_premiumDesc": "Votre annonce est mise en avant sur la page d'accueil pendant 48h",
-      "vip": "Statut VIP",
-      "vipDesc": "Badge VIP sur votre profil, +10% priorité recherche, 1 remontée gratuite pendant 30 jours",
+      "active_seller": "Vendeur Actif",
+      "active_sellerDesc": "Badge + 15% visibilité organique + 2 boosts inclus (30j)",
       "extra_listings": "+5 Emplacements",
       "extra_listingsDesc": "Débloquez 5 emplacements d'annonces supplémentaires pendant 30 jours",
-      "protection": "Badge Vendeur de Confiance",
-      "protectionDesc": "Affichez un badge Vendeur de Confiance et gagnez +20% de visibilité organique pendant 30 jours"
+      "expert_seller": "Vendeur Expert",
+      "expert_sellerDesc": "Badge Expert + 30% visibilité + 5 boosts + analytics (30j)"
     },
     "dynamic": {
       "completed_deal": "Deal conclu",
@@ -354,14 +354,14 @@
     "openWebapp": "Continuer sur le web",
     "boostAndRewards": "Boosts & Récompenses",
     "pack": {
-      "starter": "Petit Boost",
-      "starterDesc": "Idéal pour tester un premier boost",
-      "popular": "Le plus populaire",
-      "popularDesc": "Meilleur rapport qualité-prix — le plus acheté",
-      "premium": "Pro",
-      "premiumDesc": "Pour les vendeurs qui veulent tout",
-      "mega": "Business",
-      "megaDesc": "Maximum de points, maximum d'économies"
+      "starter": "Starter",
+      "starterDesc": "1 boost catégorie",
+      "popular": "Popular",
+      "popularDesc": "1 statut Vendeur Actif",
+      "pro": "Pro",
+      "proDesc": "1 statut Vendeur Expert",
+      "business": "Business",
+      "businessDesc": "2× Expert + boosts bonus"
     },
     "packPoints": "{pts} points",
     "packPrice": "Rp {price}",
