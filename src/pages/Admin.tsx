@@ -1034,7 +1034,7 @@ export default function Admin() {
         </DialogContent>
       </Dialog>
     );
-  };
+  })();
 
 
   const startEditListing = () => {
