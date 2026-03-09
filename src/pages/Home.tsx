@@ -213,6 +213,7 @@ export default function Home() {
   });
 
   const { data: featuredListings, isLoading: featuredLoading } = useFeaturedListings();
+  const { data: homepageBoosted, isLoading: homepageBoostedLoading } = useHomepageBoostedListings();
 
   // Personalized recommendations (only for logged-in users)
   const { data: recommendedListings, isLoading: recoLoading } = useRecommendedListings(user?.id);
@@ -221,7 +222,8 @@ export default function Home() {
   const latestIds = (listings || []).map((l: any) => l.id);
   const featuredIds = (featuredListings || []).map((l: any) => l.id);
   const recoIds = (recommendedListings || []).map((l: any) => l.id);
-  const allIds = [...new Set([...latestIds, ...featuredIds, ...recoIds])];
+  const homepageBoostedIds = (homepageBoosted || []).map((l: any) => l.id);
+  const allIds = [...new Set([...latestIds, ...featuredIds, ...recoIds, ...homepageBoostedIds])];
   const { data: boostsMap } = useListingBoosts(allIds);
   const { data: favCountsMap } = useListingFavCounts(allIds);
 
