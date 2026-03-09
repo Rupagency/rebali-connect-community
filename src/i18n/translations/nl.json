@@ -1,4 +1,5 @@
 {
+  "nav": { "home": "Home", "browse": "Bladeren", "sell": "Publiceren", "myListings": "Mijn advertenties", "profile": "Profiel", "admin": "Admin", "about": "Over ons", "safety": "Veiligheidstips", "rules": "Regels", "vip": "VIP", "searches": "Zoekopdrachten", "favorites": "Favorieten", "messages": "Berichten", "loginSignup": "Inloggen" },
   "search": {
     "placeholder": "Waar ben je naar op zoek?",
     "locationPlaceholder": "Plaats",
