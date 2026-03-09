@@ -1074,7 +1074,7 @@ export default function Admin() {
 
   const categories: string[] = Object.keys(CATEGORY_TREE);
 
-  const ListingDetailDialog = () => {
+  const listingDetailDialogContent = (() => {
     if (!selectedListing) return null;
     const seller = profiles?.find((p: any) => p.id === selectedListing.seller_id);
     const listingReports = reports?.filter((r: any) => r.listing_id === selectedListing.id) || [];
