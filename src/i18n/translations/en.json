@@ -813,5 +813,15 @@
       "badge": "Verified badge",
       "analytics": "Analytics"
     }
+  },
+  "business": {
+    "portfolio": "Portfolio",
+    "editPage": "Edit Business Page",
+    "logo": "Business Logo",
+    "uploadLogo": "Upload logo",
+    "name": "Business Name",
+    "namePlaceholder": "Your company name",
+    "description": "Description",
+    "descPlaceholder": "Describe your business..."
   }
 }
