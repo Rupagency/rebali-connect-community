@@ -95,6 +95,12 @@ export default function MyListings() {
     enabled: !!user,
   });
 
+  // Fetch unassigned stock boosts (from active_seller / expert_seller purchases)
+  const stockBoosts = activeBoosts?.filter(
+    b => b.addon_type === 'boost' && !b.listing_id && b.expires_at && new Date(b.expires_at).getTime() > Date.now()
+  ) || [];
+  const stockBoostCount = stockBoosts.length;
+
   if (!user) { navigate('/auth'); return null; }
 
   const activeListings = listings?.filter((l: any) => l.status === 'active') || [];
