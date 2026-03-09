@@ -156,6 +156,28 @@ export default function MyListings() {
     setConfirmBoostType(type);
   };
 
+  const useStockBoost = async () => {
+    if (!boostListingId) return;
+    setPurchasing(true);
+    const { data, error } = await supabase.functions.invoke('manage-points', {
+      body: { action: 'use_stock_boost', listing_id: boostListingId },
+    });
+    if (error || data?.error) {
+      const msg = data?.error === 'already_boosted'
+        ? 'Cette annonce est déjà boostée'
+        : data?.error === 'no_stock_boosts'
+        ? 'Aucun boost en stock'
+        : t('points.purchaseError');
+      toast({ title: msg, variant: 'destructive' });
+    } else {
+      toast({ title: '🚀 Boost appliqué depuis ton stock !' });
+      await qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      await qc.invalidateQueries({ queryKey: ['my-listings'] });
+    }
+    setPurchasing(false);
+    setBoostDialogOpen(false);
+  };
+
   const purchaseBoost = async () => {
     if (!boostListingId || !confirmBoostType) return;
     setPurchasing(true);
