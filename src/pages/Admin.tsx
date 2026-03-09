@@ -611,8 +611,8 @@ export default function Admin() {
     toast({ title: t('admin.profileSaved') || 'Profile saved' });
   };
 
-  // User detail dialog content
-  const UserDetailDialog = () => {
+  // User detail dialog content — rendered inline (not as a component) to avoid remounting on state changes
+  const userDetailDialogContent = (() => {
     if (!selectedUser) return null;
     const userListings = getUserListings(selectedUser.id);
     const userReports = getUserReports(selectedUser.id);
