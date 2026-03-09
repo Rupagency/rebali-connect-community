@@ -234,19 +234,19 @@
       "fiveStarReview": "5★-Bewertung erhalten",
       "validatedReport": "Bestätigter Betrugsbericht"
     },
-    "monthlyCap": "Monatliches Limit: 150 Pkt. aus Aktivität (wird monatlich zurückgesetzt)",
+    "monthlyCap": "Monatliches Limit: 200 Pkt. aus Aktivität (wird monatlich zurückgesetzt)",
     "pointsHowToSpend": "Was Sie kaufen können",
     "addon": {
       "boost": "Anzeigen-Boost",
       "boostDesc": "Anzeige 48 Stunden an die Spitze der Kategorie-Ergebnisse",
       "boost_premium": "Premium-Anzeige",
       "boost_premiumDesc": "48 Stunden auf der Startseite mit größerer Karte hervorgehoben",
-      "vip": "VIP-Konto",
-      "vipDesc": "VIP-Abzeichen, +10% Suchpriorität, 1 gratis Boost für 30 Tage",
+      "active_seller": "Aktiver Verkäufer",
+      "active_sellerDesc": "Abzeichen + 15% organische Sichtbarkeit + 2 Boosts inklusive (30 Tage)",
       "extraListings": "Extra 5 Anzeigen",
       "extraListingsDesc": "5 zusätzliche Anzeigenplätze für 30 Tage (max. 2 Pakete)",
-      "protection": "Prioritäts-Verkäufer",
-      "protectionDesc": "Prioritäts-Verkäufer-Abzeichen und +20% organische Sichtbarkeit für 30 Tage"
+      "expert_seller": "Experten-Verkäufer",
+      "expert_sellerDesc": "Experten-Abzeichen + 30% Sichtbarkeit + 5 Boosts + Statistiken (30 Tage)"
     },
     "pointsNote": "Wichtige Hinweise:",
     "pointsNote1": "Punkte sind eine Einmalwährung — sie werden beim Kauf dauerhaft abgezogen.",
