@@ -17,6 +17,8 @@ const POINT_PACKS: Record<string, { points: number; price: number }> = {
 const PRO_PLANS: Record<string, { price: number; label: string; boosts: number }> = {
   vendeur_pro: { price: 99000, label: "Vendeur Pro", boosts: 5 },
   agence: { price: 249000, label: "Agence / Business", boosts: 10 },
+  monthly: { price: 149000, label: "Pro Mensuel", boosts: 5 },
+  annual: { price: 1490000, label: "Pro Annuel", boosts: 5 },
 };
 
 const BOOST_PACKS: Record<string, { quantity: number; price: number }> = {
@@ -88,15 +90,16 @@ serve(async (req) => {
     } else if (type === "pro_subscription") {
       const plan = PRO_PLANS[plan_type];
       if (!plan) {
-        return new Response(JSON.stringify({ error: "Invalid plan_type. Use vendeur_pro or agence" }), {
+        return new Response(JSON.stringify({ error: "Invalid plan_type. Use vendeur_pro, agence, monthly, or annual" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       amount = plan.price;
-      description = `Re-Bali Pro: ${plan.label} (30 jours)`;
+      const duration = plan_type === "annual" ? "365 jours" : "30 jours";
+      description = `Re-Bali Pro: ${plan.label} (${duration})`;
       invoiceType = "pro_subscription";
-      successRedirect = `${origin}/pro-subscription?payment=success`;
+      successRedirect = `${origin}/vip?payment=success`;
     } else if (type === "pro_boosts") {
       const boostPack = BOOST_PACKS[pack_id];
       if (!boostPack) {
