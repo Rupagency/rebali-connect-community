@@ -520,6 +520,11 @@ export default function Admin() {
     const userPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
     setEditUserPoints(String(userPts?.balance || 0));
     setEditUserListingLimit(selectedUser.listing_limit_override != null ? String(selectedUser.listing_limit_override) : '');
+    // Init subscription fields for Pro users
+    const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === selectedUser.id && s.status === 'active');
+    setEditSubPlanType(activeSub?.plan_type || 'vendeur_pro');
+    setEditSubStatus(activeSub ? 'active' : 'none');
+    setEditSubDurationMonths('1');
     setEditingUser(true);
   };
 
