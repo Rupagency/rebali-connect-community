@@ -13,7 +13,7 @@ interface Props {
   isOwner?: boolean;
 }
 
-export default function ActiveSellerStatus({ userId, showStock = true }: Props) {
+export default function ActiveSellerStatus({ userId, showStock = true, isOwner = false }: Props) {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
