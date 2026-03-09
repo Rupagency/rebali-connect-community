@@ -72,12 +72,14 @@ export default function ActiveSellerStatus({ userId, showStock = true, isOwner =
                   {t('sellerStatus.active')}
                 </Badge>
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                <Clock className="h-3 w-3" />
-                <span>
-                  {t('sellerStatus.remaining')}: {getRemainingTime(sellerStatus.expires_at!) || t('sellerStatus.expired')}
-                </span>
-              </div>
+              {isOwner && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                  <Clock className="h-3 w-3" />
+                  <span>
+                    {t('sellerStatus.remaining')}: {getRemainingTime(sellerStatus.expires_at!) || t('sellerStatus.expired')}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}
