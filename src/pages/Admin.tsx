@@ -653,7 +653,7 @@ export default function Admin() {
               <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userInfo')}</h4>
               {!editingUser ? (
                 <Button size="sm" variant="ghost" onClick={startEditUser}>
-                  <Pencil className="h-3 w-3 mr-1" /> {t('admin.editListing') || 'Edit'}
+                  <Pencil className="h-3 w-3 mr-1" /> {t('common.edit')}
                 </Button>
               ) : (
                 <div className="flex gap-1">
