@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
 import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
-import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle } from 'lucide-react';
+import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
