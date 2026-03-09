@@ -74,7 +74,11 @@
     "fileTooLarge": "Datei muss ein Bild unter 5 MB sein",
     "submitVerification": "Verifizierung einreichen",
     "verificationSubmitted": "Verifizierung eingereicht! Wir prüfen sie in Kürze.",
-    "verificationError": "Verifizierung fehlgeschlagen"
+    "verificationError": "Verifizierung fehlgeschlagen",
+    "selfieOnlyDesc": "Machen Sie ein Selfie, um das Verifizierter-Verkäufer-Abzeichen zu erhalten",
+    "takeSelfie": "Selfie machen",
+    "selfieInstructions": "Machen Sie ein klares Foto Ihres Gesichts mit der Frontkamera",
+    "openCamera": "Kamera öffnen"
   },
   "favorites": {
     "title": "Meine Favoriten",

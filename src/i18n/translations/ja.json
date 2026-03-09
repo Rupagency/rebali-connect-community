@@ -251,7 +251,11 @@
     "selfieHint": "IDを顔の横に持ってください", "chooseFile": "ファイルを選択（最大5MB）",
     "fileTooLarge": "ファイルは5MB以下の画像にしてください",
     "submitVerification": "確認を送信", "verificationSubmitted": "確認が送信されました！",
-    "verificationError": "確認の送信に失敗しました"
+    "verificationError": "確認の送信に失敗しました",
+    "selfieOnlyDesc": "認証済みセラーバッジを取得するには自撮りしてください",
+    "takeSelfie": "自撮りする",
+    "selfieInstructions": "フロントカメラで顔の鮮明な写真を撮ってください",
+    "openCamera": "カメラを開く"
   },
   "favorites": { "title": "お気に入り", "empty": "まだお気に入りはありません" },
   "messages": {

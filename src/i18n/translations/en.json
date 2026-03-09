@@ -296,7 +296,11 @@
     "fileTooLarge": "File must be an image under 5 MB",
     "submitVerification": "Submit verification",
     "verificationSubmitted": "Verification submitted! We'll review it shortly.",
-    "verificationError": "Failed to submit verification"
+    "verificationError": "Failed to submit verification",
+    "selfieOnlyDesc": "Take a selfie to get the Verified Seller badge",
+    "takeSelfie": "Take a selfie",
+    "selfieInstructions": "Take a clear photo of your face using the front camera",
+    "openCamera": "Open camera"
   },
   "favorites": {
     "title": "My Favorites",

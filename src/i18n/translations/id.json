@@ -74,7 +74,11 @@
     "fileTooLarge": "File harus berupa gambar di bawah 5 MB",
     "submitVerification": "Kirim verifikasi",
     "verificationSubmitted": "Verifikasi terkirim! Kami akan meninjaunya segera.",
-    "verificationError": "Gagal mengirim verifikasi"
+    "verificationError": "Gagal mengirim verifikasi",
+    "selfieOnlyDesc": "Ambil selfie untuk mendapatkan lencana Penjual Terverifikasi",
+    "takeSelfie": "Ambil selfie",
+    "selfieInstructions": "Ambil foto wajah Anda dengan jelas menggunakan kamera depan",
+    "openCamera": "Buka kamera"
   },
   "favorites": {
     "title": "Favorit Saya",

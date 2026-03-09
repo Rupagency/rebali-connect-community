@@ -253,7 +253,11 @@
     "selfieHint": "أمسك هويتك بجانب وجهك", "chooseFile": "اختر ملفاً (حد أقصى 5 ميجابايت)",
     "fileTooLarge": "يجب أن يكون الملف صورة أقل من 5 ميجابايت",
     "submitVerification": "إرسال التحقق", "verificationSubmitted": "تم إرسال التحقق!",
-    "verificationError": "فشل إرسال التحقق"
+    "verificationError": "فشل إرسال التحقق",
+    "selfieOnlyDesc": "التقط صورة سيلفي للحصول على شارة بائع موثق",
+    "takeSelfie": "التقط سيلفي",
+    "selfieInstructions": "التقط صورة واضحة لوجهك باستخدام الكاميرا الأمامية",
+    "openCamera": "فتح الكاميرا"
   },
   "favorites": { "title": "مفضلاتي", "empty": "لم تحفظ أي مفضلات بعد" },
   "messages": {

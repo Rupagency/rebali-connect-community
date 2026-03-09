@@ -253,7 +253,11 @@
     "selfieHint": "Kimliğinizi yüzünüzün yanında tutun", "chooseFile": "Dosya seçin (maks 5 MB)",
     "fileTooLarge": "Dosya 5 MB altında bir resim olmalıdır",
     "submitVerification": "Doğrulama gönder", "verificationSubmitted": "Doğrulama gönderildi!",
-    "verificationError": "Doğrulama gönderilemedi"
+    "verificationError": "Doğrulama gönderilemedi",
+    "selfieOnlyDesc": "Doğrulanmış Satıcı rozetini almak için selfie çekin",
+    "takeSelfie": "Selfie çekin",
+    "selfieInstructions": "Ön kamerayla yüzünüzün net bir fotoğrafını çekin",
+    "openCamera": "Kamerayı aç"
   },
   "favorites": { "title": "Favorilerim", "empty": "Henüz favori kaydetmediniz" },
   "messages": {
