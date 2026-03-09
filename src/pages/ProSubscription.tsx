@@ -58,6 +58,14 @@ export default function ProSubscription() {
   const navigate = useNavigate();
   const [subscribing, setSubscribing] = useState<string | null>(null);
 
+  // On native, redirect to in-app browser so payments work outside the store
+  useEffect(() => {
+    if (isNativePlatform) {
+      openExternalAuthenticated(`${WEBAPP_URL}/pro-subscription`);
+      navigate('/', { replace: true });
+    }
+  }, []);
+
   if (!user) { navigate('/auth'); return null; }
   if (!isPro) { navigate('/profile'); return null; }
 

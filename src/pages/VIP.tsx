@@ -77,6 +77,14 @@ export default function VIP() {
 
   const currentPrice = billingCycle === 'monthly' ? monthlyPrice : annualPrice;
 
+  // On native, redirect to in-app browser so payments work outside the store
+  useEffect(() => {
+    if (isNativePlatform) {
+      openExternalAuthenticated(`${WEBAPP_URL}/vip`);
+      navigate('/', { replace: true });
+    }
+  }, []);
+
   const handleSubscribe = async () => {
     if (!user) { navigate('/auth'); return; }
     setSubscribing(true);
