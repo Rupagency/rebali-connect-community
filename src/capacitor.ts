@@ -13,6 +13,12 @@ export async function initCapacitor() {
   document.body.classList.add('capacitor-native');
   document.body.classList.add(`capacitor-${Capacitor.getPlatform()}`);
 
+  // Detect Android nav bar height and set CSS variable
+  if (Capacitor.getPlatform() === 'android') {
+    const navBarHeight = window.screen.height - window.innerHeight - (window.screen.height - window.outerHeight);
+    document.documentElement.style.setProperty('--android-nav-height', `${Math.max(navBarHeight, 48)}px`);
+  }
+
   // Status bar styling
   await StatusBar.setStyle({ style: Style.Dark });
   await StatusBar.setOverlaysWebView({ overlay: true });
