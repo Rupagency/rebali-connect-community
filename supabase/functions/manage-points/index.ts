@@ -303,6 +303,56 @@ Deno.serve(async (req) => {
       });
     }
 
+    // --- Use a stock boost (assign unassigned boost to a listing) ---
+    if (action === "use_stock_boost") {
+      if (!listing_id) {
+        return new Response(JSON.stringify({ error: "missing_listing_id" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Check for existing active boost on this listing
+      const { data: existingBoost } = await supabase.from("user_addons")
+        .select("id")
+        .eq("listing_id", listing_id)
+        .eq("active", true)
+        .in("addon_type", ["boost", "boost_premium"])
+        .gt("expires_at", new Date().toISOString())
+        .limit(1);
+      if (existingBoost && existingBoost.length > 0) {
+        return new Response(JSON.stringify({ error: "already_boosted" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Find an unassigned stock boost for this user
+      const { data: stockBoost } = await supabase.from("user_addons")
+        .select("id, expires_at")
+        .eq("user_id", user.id)
+        .eq("addon_type", "boost")
+        .eq("active", true)
+        .is("listing_id", null)
+        .gt("expires_at", new Date().toISOString())
+        .order("expires_at", { ascending: true })
+        .limit(1);
+
+      if (!stockBoost || stockBoost.length === 0) {
+        return new Response(JSON.stringify({ error: "no_stock_boosts" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Assign the boost to the listing, reset expiry to 48h from now
+      const newExpiry = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
+      await supabase.from("user_addons")
+        .update({ listing_id, expires_at: newExpiry })
+        .eq("id", stockBoost[0].id);
+
+      return new Response(JSON.stringify({ success: true, boost_id: stockBoost[0].id }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // --- Get balance ---
     if (action === "get_balance") {
       // Reset monthly counter if new month
