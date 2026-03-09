@@ -500,14 +500,13 @@ export default function Profile() {
       .from('profiles')
       .update({
         display_name: form.display_name,
-        preferred_lang: form.preferred_lang,
+        preferred_lang: language,
       })
       .eq('id', user.id);
 
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
     else {
       toast({ title: t('profile.saved') });
-      setLanguage(form.preferred_lang as any);
       await refreshProfile();
     }
     setLoading(false);
