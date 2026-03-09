@@ -197,19 +197,19 @@
       "fiveStarReview": "Ulasan 5★ diterima",
       "validatedReport": "Laporan scam tervalidasi"
     },
-    "monthlyCap": "Batas bulanan: 150 pts dari aktivitas (reset setiap bulan)",
+    "monthlyCap": "Batas bulanan: 200 pts dari aktivitas (reset setiap bulan)",
     "pointsHowToSpend": "Yang bisa Anda beli",
     "addon": {
       "boost": "Boost Iklan",
       "boostDesc": "Naikkan iklan ke posisi teratas kategori selama 48 jam",
       "boost_premium": "Iklan Unggulan",
       "boost_premiumDesc": "Tampil di halaman utama dengan kartu lebih besar selama 48 jam",
-      "vip": "Akun VIP",
-      "vipDesc": "Lencana VIP, +10% prioritas pencarian, 1 boost gratis selama 30 hari",
+      "active_seller": "Penjual Aktif",
+      "active_sellerDesc": "Lencana + 15% visibilitas organik + 2 boost termasuk (30 hari)",
       "extraListings": "5 Iklan Tambahan",
       "extraListingsDesc": "5 slot iklan tambahan selama 30 hari (maks 2 paket)",
-      "protection": "Penjual Prioritas",
-      "protectionDesc": "Lencana Penjual Prioritas dan +20% visibilitas organik selama 30 hari"
+      "expert_seller": "Penjual Ahli",
+      "expert_sellerDesc": "Lencana Ahli + 30% visibilitas + 5 boost + analitik (30 hari)"
     },
     "pointsNote": "Catatan penting:",
     "pointsNote1": "Poin adalah mata uang sekali pakai — dikurangi permanen saat pembelian.",
