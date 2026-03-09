@@ -446,5 +446,30 @@
     "unblocked": "Pengguna dibuka blokirnya",
     "blockedUsersTitle": "Pengguna yang diblokir",
     "noBlockedUsers": "Anda belum memblokir siapa pun."
+  },
+  "howItWorks": {
+    "subtitle": "Baik jual maupun beli, semuanya mudah, cepat, dan 100% gratis",
+    "step": "Langkah",
+    "sellerTitle": "Penjual",
+    "seller1Title": "Buat iklan Anda",
+    "seller1Desc": "Ambil foto, tulis deskripsi, dan tentukan harga. Terbitkan dalam hitungan menit, sepenuhnya gratis.",
+    "seller2Title": "Terima pesan",
+    "seller2Desc": "Pembeli yang tertarik menghubungi Anda langsung via WhatsApp atau pesan bawaan.",
+    "seller3Title": "Selesaikan penjualan",
+    "seller3Desc": "Temui pembeli, periksa bersama, dan selesaikan transaksi dengan aman.",
+    "buyerTitle": "Pembeli",
+    "buyer1Title": "Temukan yang Anda cari",
+    "buyer1Desc": "Jelajahi ribuan iklan berdasarkan kategori, lokasi, atau kata kunci dengan pencarian cerdas kami.",
+    "buyer2Title": "Simpan & bandingkan",
+    "buyer2Desc": "Tambahkan ke favorit, aktifkan notifikasi, dan terima rekomendasi yang dipersonalisasi.",
+    "buyer3Title": "Hubungi & beli",
+    "buyer3Desc": "Chat langsung dengan penjual, negosiasi, dan selesaikan pembelian secara langsung.",
+    "trust1Title": "Penjual terverifikasi",
+    "trust1Desc": "Verifikasi identitas dan skor kepercayaan untuk setiap penjual.",
+    "trust2Title": "100% gratis",
+    "trust2Desc": "Tanpa biaya, tanpa komisi. Pasang iklan dan beli tanpa batas.",
+    "trust3Title": "Publikasi instan",
+    "trust3Desc": "Iklan Anda langsung tayang dalam hitungan detik, terlihat oleh seluruh komunitas.",
+    "cta": "Pasang iklan pertama Anda"
   }
 }

@@ -355,5 +355,30 @@
     "unblocked": "用户已取消屏蔽",
     "blockedUsersTitle": "已屏蔽用户",
     "noBlockedUsers": "您还没有屏蔽任何人。"
+  },
+  "howItWorks": {
+    "subtitle": "无论是卖还是买，都简单、快速、100%免费",
+    "step": "步骤",
+    "sellerTitle": "卖家",
+    "seller1Title": "创建您的列表",
+    "seller1Desc": "拍照、写描述、定价格。几分钟内发布，完全免费。",
+    "seller2Title": "接收消息",
+    "seller2Desc": "感兴趣的买家通过WhatsApp或内置聊天直接联系您。",
+    "seller3Title": "完成销售",
+    "seller3Desc": "与买家见面，共同检查，安全完成交易。",
+    "buyerTitle": "买家",
+    "buyer1Title": "找到您需要的",
+    "buyer1Desc": "通过我们的智能搜索按类别、位置或关键词浏览数千条列表。",
+    "buyer2Title": "收藏与比较",
+    "buyer2Desc": "添加到收藏夹，开启提醒，获取个性化推荐。",
+    "buyer3Title": "联系并购买",
+    "buyer3Desc": "直接与卖家聊天，协商价格，当面完成购买。",
+    "trust1Title": "认证卖家",
+    "trust1Desc": "每位卖家都有身份验证和信任评分。",
+    "trust2Title": "100%免费",
+    "trust2Desc": "无费用，无佣金。无限制发布和购买。",
+    "trust3Title": "即时发布",
+    "trust3Desc": "您的列表几秒钟内上线，整个社区可见。",
+    "cta": "发布您的第一个列表"
   }
 }

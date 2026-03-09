@@ -355,5 +355,30 @@
     "unblocked": "Gebruiker gedeblokkeerd",
     "blockedUsersTitle": "Geblokkeerde gebruikers",
     "noBlockedUsers": "Je hebt nog niemand geblokkeerd."
+  },
+  "howItWorks": {
+    "subtitle": "Of je nu verkoopt of koopt, het is eenvoudig, snel en 100% gratis",
+    "step": "Stap",
+    "sellerTitle": "Verkopers",
+    "seller1Title": "Maak je advertentie",
+    "seller1Desc": "Maak foto's, schrijf een beschrijving en stel je prijs in. Publiceer in minuten, helemaal gratis.",
+    "seller2Title": "Ontvang berichten",
+    "seller2Desc": "Geïnteresseerde kopers nemen rechtstreeks contact met je op via WhatsApp of de ingebouwde messenger.",
+    "seller3Title": "Sluit de verkoop",
+    "seller3Desc": "Ontmoet de koper, inspecteer samen en rond de transactie veilig af.",
+    "buyerTitle": "Kopers",
+    "buyer1Title": "Vind wat je zoekt",
+    "buyer1Desc": "Blader door duizenden advertenties op categorie, locatie of trefwoord met onze slimme zoekfunctie.",
+    "buyer2Title": "Opslaan & vergelijken",
+    "buyer2Desc": "Voeg toe aan favorieten, activeer meldingen en ontvang gepersonaliseerde aanbevelingen.",
+    "buyer3Title": "Neem contact op & koop",
+    "buyer3Desc": "Chat rechtstreeks met de verkoper, onderhandel en rond je aankoop persoonlijk af.",
+    "trust1Title": "Geverifieerde verkopers",
+    "trust1Desc": "Identiteitsverificatie en vertrouwensscore voor elke verkoper.",
+    "trust2Title": "100% gratis",
+    "trust2Desc": "Geen kosten, geen commissies. Adverteer en koop zonder limieten.",
+    "trust3Title": "Direct publiceren",
+    "trust3Desc": "Je advertentie staat in seconden online, zichtbaar voor de hele community.",
+    "cta": "Plaats je eerste advertentie"
   }
 }

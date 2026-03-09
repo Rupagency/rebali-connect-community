@@ -529,5 +529,30 @@
     "unblocked": "Kullanıcının engeli kaldırıldı",
     "blockedUsersTitle": "Engellenen kullanıcılar",
     "noBlockedUsers": "Henüz kimseyi engellemediniz."
+  },
+  "howItWorks": {
+    "subtitle": "Satın da alsanız satsanız da, basit, hızlı ve %100 ücretsiz",
+    "step": "Adım",
+    "sellerTitle": "Satıcılar",
+    "seller1Title": "İlanınızı oluşturun",
+    "seller1Desc": "Fotoğraf çekin, açıklama yazın ve fiyatınızı belirleyin. Dakikalar içinde yayınlayın, tamamen ücretsiz.",
+    "seller2Title": "Mesaj alın",
+    "seller2Desc": "İlgili alıcılar size doğrudan WhatsApp veya yerleşik mesajlaşma ile ulaşır.",
+    "seller3Title": "Satışı tamamlayın",
+    "seller3Desc": "Alıcıyla buluşun, birlikte kontrol edin ve işlemi güvenle tamamlayın.",
+    "buyerTitle": "Alıcılar",
+    "buyer1Title": "Aradığınızı bulun",
+    "buyer1Desc": "Akıllı aramamızla kategori, konum veya anahtar kelimeye göre binlerce ilana göz atın.",
+    "buyer2Title": "Kaydedin ve karşılaştırın",
+    "buyer2Desc": "Favorilere ekleyin, bildirimleri etkinleştirin ve kişiselleştirilmiş öneriler alın.",
+    "buyer3Title": "İletişime geçin ve satın alın",
+    "buyer3Desc": "Satıcıyla doğrudan sohbet edin, pazarlık yapın ve satın alımınızı yüz yüze tamamlayın.",
+    "trust1Title": "Doğrulanmış satıcılar",
+    "trust1Desc": "Her satıcı için kimlik doğrulama ve güven puanı.",
+    "trust2Title": "%100 ücretsiz",
+    "trust2Desc": "Ücret yok, komisyon yok. Sınırsız ilan verin ve satın alın.",
+    "trust3Title": "Anında yayınlama",
+    "trust3Desc": "İlanınız saniyeler içinde yayına girer, tüm topluluk tarafından görülür.",
+    "cta": "İlk ilanınızı yayınlayın"
   }
 }

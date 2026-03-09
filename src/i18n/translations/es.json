@@ -374,5 +374,30 @@
     "unblocked": "Usuario desbloqueado",
     "blockedUsersTitle": "Usuarios bloqueados",
     "noBlockedUsers": "Aún no has bloqueado a nadie."
+  },
+  "howItWorks": {
+    "subtitle": "Ya sea vendiendo o comprando, es simple, rápido y 100% gratis",
+    "step": "Paso",
+    "sellerTitle": "Vendedores",
+    "seller1Title": "Crea tu anuncio",
+    "seller1Desc": "Toma fotos, escribe una descripción y fija tu precio. Publica en minutos, completamente gratis.",
+    "seller2Title": "Recibe mensajes",
+    "seller2Desc": "Los compradores interesados te contactan directamente por WhatsApp o el mensajero integrado.",
+    "seller3Title": "Cierra la venta",
+    "seller3Desc": "Reúnete con el comprador, inspeccionen juntos y finalicen la transacción de forma segura.",
+    "buyerTitle": "Compradores",
+    "buyer1Title": "Encuentra lo que necesitas",
+    "buyer1Desc": "Explora miles de anuncios por categoría, ubicación o palabra clave con nuestra búsqueda inteligente.",
+    "buyer2Title": "Guarda y compara",
+    "buyer2Desc": "Añade a favoritos, activa alertas y recibe recomendaciones personalizadas.",
+    "buyer3Title": "Contacta y compra",
+    "buyer3Desc": "Chatea directamente con el vendedor, negocia y completa tu compra en persona.",
+    "trust1Title": "Vendedores verificados",
+    "trust1Desc": "Verificación de identidad y puntuación de confianza para cada vendedor.",
+    "trust2Title": "100% gratis",
+    "trust2Desc": "Sin tarifas, sin comisiones. Publica y compra sin límites.",
+    "trust3Title": "Publicación instantánea",
+    "trust3Desc": "Tu anuncio se publica en segundos, visible para toda la comunidad.",
+    "cta": "Publica tu primer anuncio"
   }
 }
