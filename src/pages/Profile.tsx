@@ -388,7 +388,7 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
 }
 
 export default function Profile() {
-  const { t, setLanguage } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const { user, profile, refreshProfile, signOut } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -413,10 +413,10 @@ export default function Profile() {
     if (profile) {
       setForm({
         display_name: profile.display_name || '',
-        preferred_lang: profile.preferred_lang || 'en',
+        preferred_lang: language,
       });
     }
-  }, [profile]);
+  }, [profile, language]);
 
   useEffect(() => {
     if (!user) return;
