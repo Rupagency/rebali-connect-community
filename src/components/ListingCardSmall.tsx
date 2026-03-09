@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Rocket, Star, Home } from 'lucide-react';
+import { MapPin, Briefcase, Rocket, Star, Home, ShieldCheck } from 'lucide-react';
 import { formatPrice, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -75,6 +75,11 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
           {isPro && (
             <Badge className="absolute top-1.5 right-1.5 bg-primary text-primary-foreground text-[9px] gap-0.5 px-1 py-0 font-bold shadow">
               <Briefcase className="h-2.5 w-2.5" />
+            </Badge>
+          )}
+          {!isPro && listing.profiles?.is_verified_seller && (
+            <Badge className="absolute top-1.5 right-1.5 bg-green-500/90 text-white text-[9px] gap-0.5 px-1 py-0 font-bold shadow">
+              <ShieldCheck className="h-2.5 w-2.5" />
             </Badge>
           )}
           {listing.listing_type === 'rent' && (
