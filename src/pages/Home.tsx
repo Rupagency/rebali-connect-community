@@ -64,6 +64,34 @@ function useFeaturedListings() {
   });
 }
 
+function useHomepageBoostedListings() {
+  return useQuery({
+    queryKey: ['homepage-boosted-listings'],
+    queryFn: async () => {
+      const { data: boosts } = await supabase
+        .from('user_addons')
+        .select('listing_id')
+        .eq('addon_type', 'boost_homepage')
+        .eq('active', true);
+
+      if (!boosts || boosts.length === 0) return [];
+
+      const listingIds = boosts.map(b => b.listing_id).filter(Boolean) as string[];
+      if (listingIds.length === 0) return [];
+
+      const { data } = await supabase
+        .from('listings')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
+        .eq('status', 'active')
+        .in('id', listingIds)
+        .limit(20);
+
+      return data || [];
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+}
+
 function useRecommendedListings(userId: string | undefined) {
   return useQuery({
     queryKey: ['recommended-listings', userId],
