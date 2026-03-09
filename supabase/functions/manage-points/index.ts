@@ -282,8 +282,23 @@ Deno.serve(async (req) => {
         });
       }
 
+      // Create included boosts for active_seller and expert_seller
+      const includedBoosts = INCLUDED_BOOSTS[addon_type] || 0;
+      if (includedBoosts > 0) {
+        const boostExpires = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
+        const boostInserts = Array.from({ length: includedBoosts }, () => ({
+          user_id: user.id,
+          addon_type: "boost",
+          listing_id: null, // To be assigned later when user chooses
+          expires_at: boostExpires,
+          extra_slots: 0,
+          active: true,
+        }));
+        await supabase.from("user_addons").insert(boostInserts);
+      }
+
       const { data: updatedPoints } = await supabase.from("user_points").select("*").eq("user_id", user.id).single();
-      return new Response(JSON.stringify({ success: true, points: updatedPoints }), {
+      return new Response(JSON.stringify({ success: true, points: updatedPoints, included_boosts: includedBoosts }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }

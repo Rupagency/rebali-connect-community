@@ -39,16 +39,16 @@ interface Transaction {
 const ADDON_CONFIG = [
   { type: 'boost', icon: Rocket, color: 'text-blue-500', bgColor: 'bg-blue-500/10 border-blue-500/20' },
   { type: 'boost_premium', icon: Star, color: 'text-purple-500', bgColor: 'bg-purple-500/10 border-purple-500/20', needsListing: true },
-  { type: 'vip', icon: Crown, color: 'text-amber-500', bgColor: 'bg-amber-500/10 border-amber-500/20' },
+  { type: 'active_seller', icon: TrendingUp, color: 'text-amber-500', bgColor: 'bg-amber-500/10 border-amber-500/20' },
   { type: 'extra_listings', icon: Package, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10 border-emerald-500/20' },
-  { type: 'protection', icon: ShieldPlus, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10 border-cyan-500/20' },
+  { type: 'expert_seller', icon: Crown, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10 border-cyan-500/20' },
 ];
 
 const POINT_PACKS = [
-  { id: 'starter', points: 50, price: 29000, icon: Zap },
-  { id: 'popular', points: 120, price: 59000, icon: Star, bestValue: true },
-  { id: 'premium', points: 250, price: 99000, icon: Crown },
-  { id: 'mega', points: 600, price: 199000, icon: Sparkles },
+  { id: 'starter', points: 50, price: 25000, icon: Zap },
+  { id: 'popular', points: 150, price: 59000, icon: Star, bestValue: true },
+  { id: 'pro', points: 300, price: 99000, icon: Crown },
+  { id: 'business', points: 650, price: 189000, icon: Sparkles },
 ];
 
 export default function PointsShop() {
