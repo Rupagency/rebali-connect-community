@@ -55,13 +55,9 @@ export default function UserBadges({ userId, profile, compact }: UserBadgesProps
   const { data } = useQuery({
     queryKey: ['user-badges-data', userId],
     queryFn: async () => {
-      const { count: dealCount } = await supabase
-        .from('conversations')
-        .select('*', { count: 'exact', head: true })
-        .or(`buyer_id.eq.${userId},seller_id.eq.${userId}`)
-        .eq('deal_closed', true)
-        .eq('buyer_confirmed', true);
-      return { completedDeals: dealCount || 0 };
+      const { data: count } = await supabase
+        .rpc('get_completed_deals_count', { _user_id: userId });
+      return { completedDeals: (count as number) || 0 };
     },
     staleTime: 5 * 60 * 1000,
   });
