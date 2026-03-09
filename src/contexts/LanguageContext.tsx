@@ -29,6 +29,24 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback((key: string) => getTranslation(language, key), [language]);
 
+  // Sync language from profile on login
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('preferred_lang')
+          .eq('id', session.user.id)
+          .single();
+        if (data?.preferred_lang && data.preferred_lang !== language) {
+          setLanguageState(data.preferred_lang as LanguageCode);
+          localStorage.setItem('rebali-lang', data.preferred_lang);
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
