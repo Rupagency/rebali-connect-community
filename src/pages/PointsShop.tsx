@@ -277,11 +277,11 @@ export default function PointsShop() {
               <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3">
                 <Zap className="h-5 w-5 text-emerald-500 flex-shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold">{stockBoosts.length} boost{stockBoosts.length > 1 ? 's' : ''} en stock</p>
-                  <p className="text-xs text-muted-foreground">Va dans "Mes annonces" pour les appliquer</p>
+                  <p className="text-sm font-semibold">{t('points.boost.stockCount').replace('{count}', String(stockBoosts.length))}</p>
+                  <p className="text-xs text-muted-foreground">{t('points.boost.stockShopDesc')}</p>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => navigate('/my-listings')} className="text-xs">
-                  Mes annonces
+                  {t('points.boost.myListings')}
                 </Button>
               </div>
             );
