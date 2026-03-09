@@ -1,5 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { openOrNavigate } from '@/lib/openExternal';
+import { openOrNavigate, openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
+import { isNativePlatform } from '@/capacitor';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import {
   Crown, Check, X, Rocket, BarChart3, Package, Lock,
   Zap, Star, TrendingUp, ShieldCheck, Award, Briefcase
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -75,6 +76,14 @@ export default function VIP() {
   const savingsPercent = Math.round((1 - annualMonthly / monthlyPrice) * 100);
 
   const currentPrice = billingCycle === 'monthly' ? monthlyPrice : annualPrice;
+
+  // On native, redirect to in-app browser so payments work outside the store
+  useEffect(() => {
+    if (isNativePlatform) {
+      openExternalAuthenticated(`${WEBAPP_URL}/vip`);
+      navigate('/', { replace: true });
+    }
+  }, []);
 
   const handleSubscribe = async () => {
     if (!user) { navigate('/auth'); return; }
