@@ -37,6 +37,7 @@ const ProSubscription = lazy(() => import("./pages/ProSubscription"));
 const Contact = lazy(() => import("./pages/Contact"));
 const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
 const BusinessServices = lazy(() => import("./pages/BusinessServices"));
+const BusinessPage = lazy(() => import("./pages/BusinessPage"));
 
 const queryClient = new QueryClient({});
 
