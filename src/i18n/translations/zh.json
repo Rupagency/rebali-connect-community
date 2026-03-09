@@ -381,5 +381,6 @@
     "trust3Title": "即时发布",
     "trust3Desc": "您的列表几秒钟内上线，整个社区可见。",
     "cta": "发布您的第一个列表"
-  }
+  },
+  "sellerStatus": { "active": "活跃", "remaining": "剩余时间", "expired": "已过期", "daysShort": "天", "boostsInStock": "个加速可用", "boostsDesc": "从我的列表中使用", "use": "使用" }
 }

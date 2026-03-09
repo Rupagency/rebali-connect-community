@@ -555,5 +555,6 @@
     "trust3Title": "نشر فوري",
     "trust3Desc": "إعلانك يظهر في ثوانٍ، مرئي لجميع أفراد المجتمع.",
     "cta": "انشر إعلانك الأول"
-  }
+  },
+  "sellerStatus": { "active": "نشط", "remaining": "الوقت المتبقي", "expired": "منتهي", "daysShort": "ي", "boostsInStock": "تعزيز(ات) متاحة", "boostsDesc": "استخدمها من إعلاناتي", "use": "استخدام" }
 }

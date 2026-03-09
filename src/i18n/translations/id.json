@@ -472,5 +472,6 @@
     "trust3Title": "Publikasi instan",
     "trust3Desc": "Iklan Anda langsung tayang dalam hitungan detik, terlihat oleh seluruh komunitas.",
     "cta": "Pasang iklan pertama Anda"
-  }
+  },
+  "sellerStatus": { "active": "Aktif", "remaining": "Sisa waktu", "expired": "Kedaluwarsa", "daysShort": "h", "boostsInStock": "boost tersedia", "boostsDesc": "Gunakan dari Iklan Saya", "use": "Gunakan" }
 }

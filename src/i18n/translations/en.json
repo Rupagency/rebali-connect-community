@@ -755,5 +755,14 @@
     "trust3Title": "Instant publishing",
     "trust3Desc": "Your listing goes live in seconds, visible to the entire community.",
     "cta": "Post your first listing"
+  },
+  "sellerStatus": {
+    "active": "Active",
+    "remaining": "Time left",
+    "expired": "Expired",
+    "daysShort": "d",
+    "boostsInStock": "boost(s) in stock",
+    "boostsDesc": "Use them on your listings from My Listings",
+    "use": "Use"
   }
 }

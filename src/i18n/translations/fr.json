@@ -580,5 +580,14 @@
     "trust3Title": "Publication instantanée",
     "trust3Desc": "Votre annonce est en ligne en quelques secondes, visible par toute la communauté.",
     "cta": "Publiez votre première annonce"
+  },
+  "sellerStatus": {
+    "active": "Actif",
+    "remaining": "Temps restant",
+    "expired": "Expiré",
+    "daysShort": "j",
+    "boostsInStock": "boost(s) en stock",
+    "boostsDesc": "Utilisez-les sur vos annonces depuis Mes Annonces",
+    "use": "Utiliser"
   }
 }

@@ -22,6 +22,7 @@ import { z } from 'zod';
 import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload, LogOut, Coins, FileText, ShieldAlert, Ban } from 'lucide-react';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
+import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import SavedSearches from '@/components/SavedSearches';
 import PushNotificationToggle from '@/components/PushNotificationToggle';
 import ReferralWidget from '@/components/ReferralWidget';
@@ -524,6 +525,7 @@ export default function Profile() {
           {/* Badges & Trust */}
           {profile && (
             <div className="mt-4 space-y-3 border-t pt-4">
+              <ActiveSellerStatus userId={user.id} />
               <UserBadges userId={user.id} profile={profile} />
               <TrustIndicator score={profile.trust_score} riskLevel={profile.risk_level as 'low' | 'medium' | 'high'} />
               <Button variant="outline" size="sm" className="gap-2" onClick={() => {
