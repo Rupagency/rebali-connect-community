@@ -7,9 +7,14 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-callback-token, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const PRO_PLANS: Record<string, { durationDays: number }> = {
-  monthly: { durationDays: 30 },
-  annual: { durationDays: 365 },
+const PRO_PLANS: Record<string, { durationDays: number; boosts: number }> = {
+  vendeur_pro: { durationDays: 30, boosts: 5 },
+  agence: { durationDays: 30, boosts: 10 },
+};
+
+const BOOST_PACKS: Record<string, { quantity: number }> = {
+  boost_1: { quantity: 1 },
+  boost_10: { quantity: 10 },
 };
 
 serve(async (req) => {
@@ -110,7 +115,6 @@ serve(async (req) => {
     if (dbStatus === "paid") {
       if (invoice.invoice_type === "points" && invoice.points_amount) {
         // Credit points to user
-        // First check/create user_points row
         const { data: existingPoints } = await supabase
           .from("user_points")
           .select("id, balance, total_earned")
@@ -143,6 +147,7 @@ serve(async (req) => {
         });
 
         console.log(`Credited ${invoice.points_amount} points to user ${invoice.user_id}`);
+
       } else if (invoice.invoice_type === "pro_subscription" && invoice.plan_type) {
         const plan = PRO_PLANS[invoice.plan_type];
         if (!plan) {
@@ -155,7 +160,16 @@ serve(async (req) => {
 
         const now = new Date();
         const expiresAt = new Date(now.getTime() + plan.durationDays * 24 * 60 * 60 * 1000);
+        const boostResetAt = new Date(expiresAt);
 
+        // Deactivate any existing active subscription
+        await supabase
+          .from("pro_subscriptions")
+          .update({ status: "replaced", cancelled_at: now.toISOString() })
+          .eq("user_id", invoice.user_id)
+          .eq("status", "active");
+
+        // Create new subscription
         await supabase.from("pro_subscriptions").insert({
           user_id: invoice.user_id,
           plan_type: invoice.plan_type,
@@ -163,11 +177,39 @@ serve(async (req) => {
           started_at: now.toISOString(),
           expires_at: expiresAt.toISOString(),
           price_idr: invoice.amount_idr,
+          monthly_boosts_included: plan.boosts,
+          monthly_boosts_used: 0,
+          monthly_boosts_reset_at: boostResetAt.toISOString(),
           payment_method: "xendit",
           payment_reference: xenditInvoiceId,
         });
 
+        // Ensure user_type is 'business'
+        await supabase
+          .from("profiles")
+          .update({ user_type: "business" })
+          .eq("id", invoice.user_id);
+
         console.log(`Activated Pro ${invoice.plan_type} for user ${invoice.user_id} until ${expiresAt.toISOString()}`);
+
+      } else if (invoice.invoice_type === "pro_boosts" && invoice.pack_id) {
+        const boostPack = BOOST_PACKS[invoice.pack_id];
+        if (!boostPack) {
+          console.error("Unknown boost pack:", invoice.pack_id);
+          return new Response(JSON.stringify({ ok: true }), {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        // Add purchased boosts
+        await supabase.from("pro_boost_purchases").insert({
+          user_id: invoice.user_id,
+          boosts_remaining: boostPack.quantity,
+          amount_paid: invoice.amount_idr,
+        });
+
+        console.log(`Added ${boostPack.quantity} purchased boosts for user ${invoice.user_id}`);
       }
     }
 

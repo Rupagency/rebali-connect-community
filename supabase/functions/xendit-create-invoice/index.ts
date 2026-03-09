@@ -14,9 +14,14 @@ const POINT_PACKS: Record<string, { points: number; price: number }> = {
   business: { points: 650, price: 189000 },
 };
 
-const PRO_PLANS: Record<string, { price: number; durationDays: number }> = {
-  monthly: { price: 149000, durationDays: 30 },
-  annual: { price: 1490000, durationDays: 365 },
+const PRO_PLANS: Record<string, { price: number; label: string; boosts: number }> = {
+  vendeur_pro: { price: 99000, label: "Vendeur Pro", boosts: 5 },
+  agence: { price: 249000, label: "Agence / Business", boosts: 10 },
+};
+
+const BOOST_PACKS: Record<string, { quantity: number; price: number }> = {
+  boost_1: { quantity: 1, price: 20000 },
+  boost_10: { quantity: 10, price: 150000 },
 };
 
 serve(async (req) => {
@@ -64,6 +69,8 @@ serve(async (req) => {
     let description: string;
     let invoiceType: string;
     let pointsAmount: number | null = null;
+    let successRedirect: string;
+    const origin = req.headers.get("origin") || "https://rebali-connect-community.lovable.app";
 
     if (type === "points") {
       const pack = POINT_PACKS[pack_id];
@@ -77,17 +84,31 @@ serve(async (req) => {
       pointsAmount = pack.points;
       description = `Re-Bali Points Pack: ${pack.points} points`;
       invoiceType = "points";
+      successRedirect = `${origin}/points?payment=success`;
     } else if (type === "pro_subscription") {
       const plan = PRO_PLANS[plan_type];
       if (!plan) {
-        return new Response(JSON.stringify({ error: "Invalid plan_type" }), {
+        return new Response(JSON.stringify({ error: "Invalid plan_type. Use vendeur_pro or agence" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       amount = plan.price;
-      description = `Re-Bali Pro ${plan_type === "annual" ? "Annual" : "Monthly"} Subscription`;
+      description = `Re-Bali Pro: ${plan.label} (30 jours)`;
       invoiceType = "pro_subscription";
+      successRedirect = `${origin}/pro-subscription?payment=success`;
+    } else if (type === "pro_boosts") {
+      const boostPack = BOOST_PACKS[pack_id];
+      if (!boostPack) {
+        return new Response(JSON.stringify({ error: "Invalid pack_id. Use boost_1 or boost_10" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      amount = boostPack.price;
+      description = `Re-Bali Boosts: ${boostPack.quantity} boost(s)`;
+      invoiceType = "pro_boosts";
+      successRedirect = `${origin}/dashboard?payment=success`;
     } else {
       return new Response(JSON.stringify({ error: "Invalid type" }), {
         status: 400,
@@ -108,25 +129,13 @@ serve(async (req) => {
         currency: "IDR",
         description,
         customer: { email: userEmail },
-        success_redirect_url: `${req.headers.get("origin") || "https://rebali-connect-community.lovable.app"}/points?payment=success`,
-        failure_redirect_url: `${req.headers.get("origin") || "https://rebali-connect-community.lovable.app"}/points?payment=failed`,
+        success_redirect_url: successRedirect,
+        failure_redirect_url: `${origin}/dashboard?payment=failed`,
         invoice_duration: 3600, // 1 hour
         payment_methods: [
-          "BCA",
-          "BNI",
-          "BSI",
-          "BRI",
-          "MANDIRI",
-          "PERMATA",
-          "SAHABAT_SAMPOERNA",
-          "OVO",
-          "DANA",
-          "SHOPEEPAY",
-          "LINKAJA",
-          "JENIUSPAY",
-          "ASTRAPAY",
-          "QRIS",
-          "CREDIT_CARD",
+          "BCA", "BNI", "BSI", "BRI", "MANDIRI", "PERMATA", "SAHABAT_SAMPOERNA",
+          "OVO", "DANA", "SHOPEEPAY", "LINKAJA", "JENIUSPAY", "ASTRAPAY",
+          "QRIS", "CREDIT_CARD",
         ],
       }),
     });
@@ -150,7 +159,7 @@ serve(async (req) => {
         xendit_invoice_id: xenditData.id,
         xendit_invoice_url: xenditData.invoice_url,
         invoice_type: invoiceType,
-        pack_id: type === "points" ? pack_id : null,
+        pack_id: type === "points" ? pack_id : (type === "pro_boosts" ? pack_id : null),
         plan_type: type === "pro_subscription" ? plan_type : null,
         amount_idr: amount,
         points_amount: pointsAmount,
