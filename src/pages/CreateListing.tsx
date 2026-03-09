@@ -159,8 +159,7 @@ export default function CreateListing() {
 
         const shortSide = Math.min(w, h);
         const fontSize = Math.max(16, Math.round(shortSide / 28));
-        const date = new Date().toLocaleDateString('fr-FR');
-        const text = `Re-Bali • @${username} • ${date}`;
+        const text = `Re-Bali.com • @${username}`;
 
         ctx.font = `bold ${fontSize}px Arial, sans-serif`;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
@@ -284,16 +283,9 @@ export default function CreateListing() {
         } as any).eq('id', editId);
         if (error) throw error;
 
-        // Re-watermark existing images with uniform new watermark
+        // Existing images already have a watermark burned in — do NOT re-watermark
+        // (re-watermarking layers a second watermark on top, causing visual inconsistency)
         const username = profile?.display_name || 'user';
-        for (const img of existingImageUrls) {
-          try {
-            const watermarked = await rewatermarkFromUrl(img.url, username);
-            await supabase.storage.from('listings').update(img.storage_path, watermarked, { upsert: true });
-          } catch (e) {
-            console.warn('Failed to re-watermark existing image', img.storage_path, e);
-          }
-        }
 
         // Upload new images with hash
         const startIndex = existingImageUrls.length;
