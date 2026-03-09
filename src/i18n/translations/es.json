@@ -78,7 +78,20 @@
     "selfieOnlyDesc": "Tómate un selfie para obtener la insignia de Vendedor Verificado",
     "takeSelfie": "Tómate un selfie",
     "selfieInstructions": "Toma una foto clara de tu rostro con la cámara frontal",
-    "openCamera": "Abrir cámara"
+    "openCamera": "Abrir cámara",
+    "npwpTitle": "Verificación NPWP",
+    "npwpDesc": "Sube una foto de tu NPWP (ID fiscal) para activar tu cuenta Pro. Un miembro del equipo lo verificará.",
+    "npwpVerified": "NPWP Verificado",
+    "npwpVerifiedDesc": "Tu NPWP ha sido verificado. Ya puedes vender en Re-Bali.",
+    "npwpPendingDesc": "Tu NPWP está siendo revisado por nuestro equipo. Esto suele tardar 24-48 horas.",
+    "npwpRejected": "Tu verificación NPWP fue rechazada. Por favor sube una foto legible.",
+    "npwpUploadLabel": "Sube tu NPWP",
+    "npwpUploadHint": "Toma una foto clara de tu NPWP (máx. 5 MB)",
+    "npwpRetake": "Elegir otra foto",
+    "npwpChooseFile": "Elegir una foto de tu NPWP",
+    "npwpSubmit": "Enviar NPWP para verificación",
+    "npwpRequiredToSell": "Debes verificar tu NPWP antes de poder vender como Pro. Ve a tu perfil para subirlo.",
+    "npwpGoVerify": "Verificar mi NPWP"
   },
   "favorites": {
     "title": "Mis Favoritos",

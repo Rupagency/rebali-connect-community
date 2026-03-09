@@ -78,7 +78,20 @@
     "selfieOnlyDesc": "Сделайте селфи, чтобы получить значок Проверенного продавца",
     "takeSelfie": "Сделайте селфи",
     "selfieInstructions": "Сделайте чёткое фото лица с фронтальной камеры",
-    "openCamera": "Открыть камеру"
+    "openCamera": "Открыть камеру",
+    "npwpTitle": "Верификация NPWP",
+    "npwpDesc": "Загрузите фото вашего NPWP (налоговый ID) для активации Pro аккаунта. Сотрудник проверит его.",
+    "npwpVerified": "NPWP Подтверждён",
+    "npwpVerifiedDesc": "Ваш NPWP подтверждён. Теперь вы можете продавать на Re-Bali.",
+    "npwpPendingDesc": "Ваш NPWP проверяется нашей командой. Обычно это занимает 24-48 часов.",
+    "npwpRejected": "Верификация NPWP отклонена. Загрузите чёткое фото.",
+    "npwpUploadLabel": "Загрузите ваш NPWP",
+    "npwpUploadHint": "Сделайте чёткое фото NPWP (макс. 5 МБ)",
+    "npwpRetake": "Выбрать другое фото",
+    "npwpChooseFile": "Выберите фото NPWP",
+    "npwpSubmit": "Отправить NPWP на проверку",
+    "npwpRequiredToSell": "Вы должны верифицировать NPWP, чтобы продавать как Pro. Перейдите в профиль.",
+    "npwpGoVerify": "Верифицировать мой NPWP"
   },
   "favorites": {
     "title": "Мои избранные",

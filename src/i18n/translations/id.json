@@ -78,7 +78,20 @@
     "selfieOnlyDesc": "Ambil selfie untuk mendapatkan lencana Penjual Terverifikasi",
     "takeSelfie": "Ambil selfie",
     "selfieInstructions": "Ambil foto wajah Anda dengan jelas menggunakan kamera depan",
-    "openCamera": "Buka kamera"
+    "openCamera": "Buka kamera",
+    "npwpTitle": "Verifikasi NPWP",
+    "npwpDesc": "Unggah foto NPWP Anda untuk mengaktifkan akun Pro. Tim kami akan memverifikasinya.",
+    "npwpVerified": "NPWP Terverifikasi",
+    "npwpVerifiedDesc": "NPWP Anda telah diverifikasi. Anda sekarang dapat berjualan di Re-Bali.",
+    "npwpPendingDesc": "NPWP Anda sedang ditinjau oleh tim kami. Biasanya memakan waktu 24-48 jam.",
+    "npwpRejected": "Verifikasi NPWP Anda ditolak. Silakan unggah foto NPWP yang jelas dan terbaca.",
+    "npwpUploadLabel": "Unggah NPWP Anda",
+    "npwpUploadHint": "Ambil foto NPWP yang jelas (maks 5 MB)",
+    "npwpRetake": "Pilih foto lain",
+    "npwpChooseFile": "Pilih foto NPWP Anda",
+    "npwpSubmit": "Kirim NPWP untuk verifikasi",
+    "npwpRequiredToSell": "Anda harus memverifikasi NPWP sebelum dapat berjualan sebagai Pro. Buka profil untuk mengunggahnya.",
+    "npwpGoVerify": "Verifikasi NPWP saya"
   },
   "favorites": {
     "title": "Favorit Saya",

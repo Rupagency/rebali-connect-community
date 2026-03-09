@@ -78,7 +78,20 @@
     "selfieOnlyDesc": "Neem een selfie om de badge Geverifieerde Verkoper te krijgen",
     "takeSelfie": "Neem een selfie",
     "selfieInstructions": "Maak een duidelijke foto van uw gezicht met de frontcamera",
-    "openCamera": "Camera openen"
+    "openCamera": "Camera openen",
+    "npwpTitle": "NPWP-verificatie",
+    "npwpDesc": "Upload een foto van uw NPWP (belasting-ID) om uw Pro-account te activeren. Een medewerker zal het verifiëren.",
+    "npwpVerified": "NPWP Geverifieerd",
+    "npwpVerifiedDesc": "Uw NPWP is geverifieerd. U kunt nu verkopen op Re-Bali.",
+    "npwpPendingDesc": "Uw NPWP wordt beoordeeld door ons team. Dit duurt meestal 24-48 uur.",
+    "npwpRejected": "Uw NPWP-verificatie is afgewezen. Upload een duidelijke foto.",
+    "npwpUploadLabel": "Upload uw NPWP",
+    "npwpUploadHint": "Maak een duidelijke foto van uw NPWP (max 5 MB)",
+    "npwpRetake": "Andere foto kiezen",
+    "npwpChooseFile": "Kies een foto van uw NPWP",
+    "npwpSubmit": "NPWP indienen ter verificatie",
+    "npwpRequiredToSell": "U moet uw NPWP verifiëren voordat u als Pro kunt verkopen. Ga naar uw profiel.",
+    "npwpGoVerify": "Mijn NPWP verifiëren"
   },
   "favorites": {
     "title": "Mijn Favorieten",
