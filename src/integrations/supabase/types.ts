@@ -1282,6 +1282,7 @@ export type Database = {
         }[]
       }
       get_active_listing_count: { Args: { _user_id: string }; Returns: number }
+      get_completed_deals_count: { Args: { _user_id: string }; Returns: number }
       get_favorites_count: { Args: { _listing_id: string }; Returns: number }
       get_listing_fav_counts: {
         Args: { _listing_ids: string[] }
