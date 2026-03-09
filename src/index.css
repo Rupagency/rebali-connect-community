@@ -121,6 +121,16 @@
   padding-bottom: max(6px, calc(env(safe-area-inset-bottom, 0px) * 0.4));
 }
 
+/* Android native: system nav bar overlaps — add generous fixed padding */
+body.capacitor-android .safe-area-bottom {
+  padding-bottom: 28px;
+}
+
+/* Also increase main content bottom padding on Android to avoid overlap */
+body.capacitor-android main {
+  padding-bottom: 4rem !important;
+}
+
 /* Category marquee animation */
 @keyframes marquee-scroll {
   0% { transform: translateX(0); }
