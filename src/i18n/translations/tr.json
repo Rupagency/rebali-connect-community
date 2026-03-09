@@ -386,7 +386,7 @@
     "maxExtraListings": "Maksimum 2 ekstra ilan paketi izni",
     "history": "İşlem Geçmişi", "noTransactions": "Henüz işlem yok. Puan kazanmak için rozetlerinizi senkronize edin!",
     "monthlyDynamic": "Aylık aktivite puanları", "nudge": "{addon}'a {pts} puan kaldı!",
-    "addon": { "boost": "Öne Çıkar", "boostDesc": "İlanınız 48 saat kategorisinde ilk sırada görünür", "boost_premium": "Ana Sayfada Göster", "boost_premiumDesc": "İlanınız 48 saat ana sayfada öne çıkarılır", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extra_listings": "+5 İlan Yeri", "extra_listingsDesc": "30 gün için 5 ek ilan yeri açın", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
+    "addon": { "boost": "Öne Çıkar", "boostDesc": "İlanınız 48 saat kategorisinde ilk sırada görünür", "boost_premium": "Ana Sayfada Göster", "boost_premiumDesc": "İlanınız 48 saat ana sayfada öne çıkarılır", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extra_listings": "+7 İlan Yeri", "extra_listingsDesc": "30 gün için 7 ek ilan yeri açın", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
     "dynamic": { "completed_deal": "Tamamlanan anlaşma", "five_star_review": "5★ değerlendirme alındı", "validated_report": "Doğrulanmış dolandırıcılık raporu" },
     "boostSelectTitle": "İlanı öne çıkar", "boostSelectDesc": "48 saat en üste çıkarmak istediğiniz ilanı seçin",
     "noActiveListings": "Tanıtılacak aktif ilan yok",

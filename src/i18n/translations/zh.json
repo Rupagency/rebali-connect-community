@@ -212,7 +212,7 @@
     "maxExtraListings": "最多允许2个额外列表包", "history": "交易记录",
     "noTransactions": "暂无交易记录。同步您的徽章来赚取积分！",
     "monthlyDynamic": "每月活动积分", "nudge": "距离{addon}还差{pts}分！",
-    "addon": { "boost": "置顶推送", "boostDesc": "您的广告48小时内显示在分类最顶部", "boost_premium": "首页推荐", "boost_premiumDesc": "您的广告48小时内在首页突出展示", "active_seller": "活跃卖家", "active_sellerDesc": "徽章 + 15%自然可见度 + 2次置顶（30天）", "extra_listings": "+5个广告位", "extra_listingsDesc": "解锁5个额外广告位30天", "expert_seller": "专家卖家", "expert_sellerDesc": "专家徽章 + 30%可见度 + 5次置顶 + 数据分析（30天）" },
+    "addon": { "boost": "置顶推送", "boostDesc": "您的广告48小时内显示在分类最顶部", "boost_premium": "首页推荐", "boost_premiumDesc": "您的广告48小时内在首页突出展示", "active_seller": "活跃卖家", "active_sellerDesc": "徽章 + 15%自然可见度 + 2次置顶（30天）", "extra_listings": "+7个广告位", "extra_listingsDesc": "解锁7个额外广告位30天", "expert_seller": "专家卖家", "expert_sellerDesc": "专家徽章 + 30%可见度 + 5次置顶 + 数据分析（30天）" },
     "dynamic": { "completed_deal": "已完成交易", "five_star_review": "收到5★评价", "validated_report": "已验证的欺诈举报" },
     "boostSelectTitle": "置顶推送广告", "boostSelectDesc": "选择要置顶48小时的广告",
     "noActiveListings": "没有可推广的活跃广告",

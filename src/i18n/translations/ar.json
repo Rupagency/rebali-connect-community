@@ -386,7 +386,7 @@
     "maxExtraListings": "الحد الأقصى حزمتان من الإعلانات الإضافية",
     "history": "سجل المعاملات", "noTransactions": "لا توجد معاملات بعد. زامن شاراتك لكسب النقاط!",
     "monthlyDynamic": "نقاط النشاط الشهرية", "nudge": "أنت على بعد {pts} نقطة من {addon}!",
-    "addon": { "boost": "ارفع للأعلى", "boostDesc": "إعلانك يظهر أولاً في فئته لمدة 48 ساعة", "boost_premium": "على الصفحة الرئيسية", "boost_premiumDesc": "إعلانك يُبرز على الصفحة الرئيسية لمدة 48 ساعة", "active_seller": "بائع نشط", "active_sellerDesc": "شارة + 15% ظهور طبيعي + 2 تعزيز مُدرج (30 يوماً)", "extra_listings": "+5 أماكن إعلانية", "extra_listingsDesc": "افتح 5 أماكن إعلانية إضافية لمدة 30 يوماً", "expert_seller": "بائع خبير", "expert_sellerDesc": "شارة خبير + 30% ظهور + 5 تعزيزات + تحليلات (30 يوماً)" },
+    "addon": { "boost": "ارفع للأعلى", "boostDesc": "إعلانك يظهر أولاً في فئته لمدة 48 ساعة", "boost_premium": "على الصفحة الرئيسية", "boost_premiumDesc": "إعلانك يُبرز على الصفحة الرئيسية لمدة 48 ساعة", "active_seller": "بائع نشط", "active_sellerDesc": "شارة + 15% ظهور طبيعي + 2 تعزيز مُدرج (30 يوماً)", "extra_listings": "+7 أماكن إعلانية", "extra_listingsDesc": "افتح 7 أماكن إعلانية إضافية لمدة 30 يوماً", "expert_seller": "بائع خبير", "expert_sellerDesc": "شارة خبير + 30% ظهور + 5 تعزيزات + تحليلات (30 يوماً)" },
     "dynamic": { "completed_deal": "صفقة مكتملة", "five_star_review": "تقييم 5★ مستلم", "validated_report": "بلاغ احتيال مؤكد" },
     "boostSelectTitle": "ارفع إعلاناً للأعلى", "boostSelectDesc": "اختر الإعلان الذي تريد رفعه لمدة 48 ساعة",
     "noActiveListings": "لا توجد إعلانات نشطة للترويج",

@@ -384,7 +384,7 @@
     "maxExtraListings": "追加出品パックは最大2つまで",
     "history": "取引履歴", "noTransactions": "取引はまだありません。バッジを同期してポイントを獲得しましょう！",
     "monthlyDynamic": "月間活動ポイント", "nudge": "{addon}まであと{pts}pt！",
-    "addon": { "boost": "トップに表示", "boostDesc": "出品が48時間カテゴリーの最上部に表示されます", "boost_premium": "ホームページに掲載", "boost_premiumDesc": "出品が48時間ホームページで目立つように表示されます", "active_seller": "アクティブセラー", "active_sellerDesc": "バッジ + 15%オーガニック表示 + 2ブースト付き（30日）", "extra_listings": "+5出品枠", "extra_listingsDesc": "30日間5つの追加出品枠を解放", "expert_seller": "エキスパートセラー", "expert_sellerDesc": "エキスパートバッジ + 30%表示 + 5ブースト + 分析（30日）" },
+    "addon": { "boost": "トップに表示", "boostDesc": "出品が48時間カテゴリーの最上部に表示されます", "boost_premium": "ホームページに掲載", "boost_premiumDesc": "出品が48時間ホームページで目立つように表示されます", "active_seller": "アクティブセラー", "active_sellerDesc": "バッジ + 15%オーガニック表示 + 2ブースト付き（30日）", "extra_listings": "+7出品枠", "extra_listingsDesc": "30日間7つの追加出品枠を解放", "expert_seller": "エキスパートセラー", "expert_sellerDesc": "エキスパートバッジ + 30%表示 + 5ブースト + 分析（30日）" },
     "dynamic": { "completed_deal": "完了した取引", "five_star_review": "5★レビュー受信", "validated_report": "確認済み詐欺報告" },
     "boostSelectTitle": "出品をトップに表示", "boostSelectDesc": "48時間トップに表示する出品を選択",
     "noActiveListings": "プロモートできるアクティブな出品はありません",
