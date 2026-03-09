@@ -525,7 +525,7 @@ export default function Profile() {
           {/* Badges & Trust */}
           {profile && (
             <div className="mt-4 space-y-3 border-t pt-4">
-              <ActiveSellerStatus userId={user.id} />
+              <ActiveSellerStatus userId={user.id} isOwner={true} />
               <UserBadges userId={user.id} profile={profile} />
               <TrustIndicator score={profile.trust_score} riskLevel={profile.risk_level as 'low' | 'medium' | 'high'} />
               <Button variant="outline" size="sm" className="gap-2" onClick={() => {

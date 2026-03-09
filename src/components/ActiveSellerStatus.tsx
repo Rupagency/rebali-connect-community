@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button';
 interface Props {
   userId: string;
   showStock?: boolean;
+  isOwner?: boolean;
 }
 
-export default function ActiveSellerStatus({ userId, showStock = true }: Props) {
+export default function ActiveSellerStatus({ userId, showStock = true, isOwner = false }: Props) {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
@@ -71,12 +72,14 @@ export default function ActiveSellerStatus({ userId, showStock = true }: Props) 
                   {t('sellerStatus.active')}
                 </Badge>
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                <Clock className="h-3 w-3" />
-                <span>
-                  {t('sellerStatus.remaining')}: {getRemainingTime(sellerStatus.expires_at!) || t('sellerStatus.expired')}
-                </span>
-              </div>
+              {isOwner && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                  <Clock className="h-3 w-3" />
+                  <span>
+                    {t('sellerStatus.remaining')}: {getRemainingTime(sellerStatus.expires_at!) || t('sellerStatus.expired')}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}
