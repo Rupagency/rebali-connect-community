@@ -215,7 +215,7 @@ export default function Auth() {
                     >
                       <Briefcase className="h-6 w-6" />
                       <span className="text-sm font-medium">{t('auth.proAccount')}</span>
-                      <span className="text-xs text-muted-foreground text-center">{t('auth.proDesc')}</span>
+                      <span className="text-xs text-muted-foreground text-center">{t('auth.proDescFull')}</span>
                     </button>
                   </div>
                 </div>
@@ -223,7 +223,8 @@ export default function Auth() {
                   <Label>{t('auth.displayName')}</Label>
                   <Input value={displayName} onChange={e => setDisplayName(e.target.value)} required />
                 </div>
-                {/* Referral code - prominent placement */}
+                {/* Referral code - only for private accounts (pro has no points) */}
+                {userType === 'private' && (
                 <div className="rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 p-3 space-y-1.5">
                   <div className="flex items-center gap-2 text-sm font-medium text-primary">
                     <Gift className="h-4 w-4" />
@@ -258,6 +259,14 @@ export default function Auth() {
                     </Button>
                   </div>
                 </div>
+                )}
+                {/* Pro account info */}
+                {userType === 'business' && (
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-1">
+                  <p className="text-sm font-medium text-primary">{t('pro.freeProIncluded')}</p>
+                  <p className="text-xs text-muted-foreground">{t('pro.freeProSignupDesc')}</p>
+                </div>
+                )}
                 <div>
                   <Label>{t('auth.email')}</Label>
                   <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />

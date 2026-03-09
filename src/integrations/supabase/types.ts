@@ -548,12 +548,39 @@ export type Database = {
         }
         Relationships: []
       }
+      pro_boost_purchases: {
+        Row: {
+          amount_paid: number
+          boosts_remaining: number
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          amount_paid?: number
+          boosts_remaining?: number
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          amount_paid?: number
+          boosts_remaining?: number
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pro_subscriptions: {
         Row: {
           cancelled_at: string | null
           created_at: string
           expires_at: string
           id: string
+          monthly_boosts_included: number
+          monthly_boosts_reset_at: string | null
+          monthly_boosts_used: number
           payment_method: string | null
           payment_reference: string | null
           plan_type: string
@@ -568,6 +595,9 @@ export type Database = {
           created_at?: string
           expires_at: string
           id?: string
+          monthly_boosts_included?: number
+          monthly_boosts_reset_at?: string | null
+          monthly_boosts_used?: number
           payment_method?: string | null
           payment_reference?: string | null
           plan_type: string
@@ -582,6 +612,9 @@ export type Database = {
           created_at?: string
           expires_at?: string
           id?: string
+          monthly_boosts_included?: number
+          monthly_boosts_reset_at?: string | null
+          monthly_boosts_used?: number
           payment_method?: string | null
           payment_reference?: string | null
           plan_type?: string

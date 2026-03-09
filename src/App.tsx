@@ -33,6 +33,7 @@ const Messages = lazy(() => import("./pages/Messages"));
 const TrustBadges = lazy(() => import("./pages/TrustBadges"));
 const PointsShop = lazy(() => import("./pages/PointsShop"));
 const SellerDashboard = lazy(() => import("./pages/SellerDashboard"));
+const ProSubscription = lazy(() => import("./pages/ProSubscription"));
 const Contact = lazy(() => import("./pages/Contact"));
 const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
 const BusinessServices = lazy(() => import("./pages/BusinessServices"));
@@ -91,6 +92,7 @@ const App = () => {
                   <Route path="/trust-badges" element={<TrustBadges />} />
                   <Route path="/points" element={<PointsShop />} />
                   <Route path="/dashboard" element={<SellerDashboard />} />
+                  <Route path="/pro-subscription" element={<ProSubscription />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/blocked-users" element={<BlockedUsers />} />
                   <Route path="/business-services" element={<BusinessServices />} />
