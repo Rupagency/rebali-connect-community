@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Sprout, Clock, Award, Crown, CheckCircle, ShieldCheck,
   Handshake, Target, Flame, Trophy, Medal,
-  Shield, Info, Coins, Zap, Star, LayoutGrid, ShieldPlus, Gem
+  Shield, Info, Coins, Zap, Star, LayoutGrid, Gem, TrendingUp
 } from 'lucide-react';
 
 const BADGE_LIST = [
