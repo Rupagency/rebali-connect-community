@@ -9,6 +9,7 @@ import ListingCard from '@/components/ListingCard';
 import { User, Briefcase, Star, Calendar, Package, ShieldCheck, CheckCircle } from 'lucide-react';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
+import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import BlockUserButton from '@/components/BlockUserButton';
 
 export default function SellerProfile() {
