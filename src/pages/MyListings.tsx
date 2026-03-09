@@ -188,9 +188,9 @@ export default function MyListings() {
       const msg = data?.error === 'insufficient_points'
         ? t('points.insufficientPoints')
         : data?.error === 'already_boosted'
-        ? 'Cette annonce est déjà boostée'
+        ? t('points.boost.alreadyBoosted')
         : data?.error === 'addon_creation_failed'
-        ? `Erreur: ${data?.details || 'création du boost échouée'}`
+        ? `${t('points.boost.addonFailed')}: ${data?.details || ''}`
         : t('points.purchaseError');
       toast({ title: msg, variant: 'destructive' });
     } else {
