@@ -616,8 +616,8 @@ export default function Profile() {
       {/* WhatsApp Verification */}
       <WhatsAppVerification user={user} profile={profile} refreshProfile={refreshProfile} />
 
-      {/* Referral Widget */}
-      <ReferralWidget />
+      {/* Referral Widget - only for private accounts */}
+      {profile?.user_type !== 'business' && <ReferralWidget />}
 
       {/* Push Notifications */}
       <Card>
