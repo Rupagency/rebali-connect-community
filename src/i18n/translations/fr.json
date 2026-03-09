@@ -532,5 +532,30 @@
     "unblocked": "Utilisateur débloqué",
     "blockedUsersTitle": "Utilisateurs bloqués",
     "noBlockedUsers": "Vous n'avez bloqué personne pour le moment."
+  },
+  "howItWorks": {
+    "subtitle": "Que vous vendiez ou achetiez, c'est simple, rapide et 100% gratuit",
+    "step": "Étape",
+    "sellerTitle": "Vendeurs",
+    "seller1Title": "Créez votre annonce",
+    "seller1Desc": "Prenez des photos, rédigez une description et fixez votre prix. Publication en quelques minutes, sans aucun frais.",
+    "seller2Title": "Recevez des messages",
+    "seller2Desc": "Les acheteurs intéressés vous contactent directement via WhatsApp ou la messagerie intégrée.",
+    "seller3Title": "Concluez la vente",
+    "seller3Desc": "Rencontrez l'acheteur, vérifiez ensemble et finalisez la transaction en toute sécurité.",
+    "buyerTitle": "Acheteurs",
+    "buyer1Title": "Trouvez ce que vous cherchez",
+    "buyer1Desc": "Parcourez des milliers d'annonces par catégorie, localisation ou mot-clé avec notre recherche intelligente.",
+    "buyer2Title": "Sauvegardez & comparez",
+    "buyer2Desc": "Ajoutez vos favoris, activez des alertes et recevez des recommandations personnalisées.",
+    "buyer3Title": "Contactez & achetez",
+    "buyer3Desc": "Échangez directement avec le vendeur, négociez et finalisez votre achat en personne.",
+    "trust1Title": "Vendeurs vérifiés",
+    "trust1Desc": "Vérification d'identité et score de confiance pour chaque vendeur.",
+    "trust2Title": "100% gratuit",
+    "trust2Desc": "Aucun frais, aucune commission. Publiez et achetez sans limite.",
+    "trust3Title": "Publication instantanée",
+    "trust3Desc": "Votre annonce est en ligne en quelques secondes, visible par toute la communauté.",
+    "cta": "Publiez votre première annonce"
   }
 }

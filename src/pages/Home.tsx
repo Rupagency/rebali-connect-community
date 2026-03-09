@@ -469,24 +469,7 @@ export default function Home() {
       )}
 
       {/* How it works */}
-      <section className="bg-card border-t border-border/50 py-14 mt-4">
-        <div className="container mx-auto px-4">
-          <h2 className="text-xl md:text-2xl font-extrabold text-center mb-10">{t('home.howItWorks')}</h2>
-          <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {[
-              { emoji: '📸', title: t('home.step1Title'), desc: t('home.step1Desc') },
-              { emoji: '💬', title: t('home.step2Title'), desc: t('home.step2Desc') },
-              { emoji: '🤝', title: t('home.step3Title'), desc: t('home.step3Desc') },
-            ].map((step, i) => (
-              <div key={i} className="text-center p-6 rounded-2xl bg-background border border-border/50">
-                <span className="text-5xl mb-4 block">{step.emoji}</span>
-                <h3 className="text-lg font-bold mb-2">{step.title}</h3>
-                <p className="text-sm text-muted-foreground font-medium">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HowItWorks />
 
       {/* Category: Immobilier (with featured injection) */}
       <CategoryRow category="immobilier" featuredListings={featuredListings} />

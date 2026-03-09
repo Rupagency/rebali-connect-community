@@ -707,5 +707,30 @@
     "unblocked": "User unblocked",
     "blockedUsersTitle": "Blocked users",
     "noBlockedUsers": "You haven't blocked anyone yet."
+  },
+  "howItWorks": {
+    "subtitle": "Whether you're selling or buying, it's simple, fast, and 100% free",
+    "step": "Step",
+    "sellerTitle": "Sellers",
+    "seller1Title": "Create your listing",
+    "seller1Desc": "Take photos, write a description and set your price. Publish in minutes, completely free.",
+    "seller2Title": "Receive messages",
+    "seller2Desc": "Interested buyers contact you directly via WhatsApp or the built-in messenger.",
+    "seller3Title": "Close the sale",
+    "seller3Desc": "Meet the buyer, inspect together and finalize the transaction safely.",
+    "buyerTitle": "Buyers",
+    "buyer1Title": "Find what you need",
+    "buyer1Desc": "Browse thousands of listings by category, location, or keyword with our smart search.",
+    "buyer2Title": "Save & compare",
+    "buyer2Desc": "Add to favorites, enable alerts and receive personalized recommendations.",
+    "buyer3Title": "Contact & buy",
+    "buyer3Desc": "Chat directly with the seller, negotiate and complete your purchase in person.",
+    "trust1Title": "Verified sellers",
+    "trust1Desc": "Identity verification and trust score for every seller.",
+    "trust2Title": "100% free",
+    "trust2Desc": "No fees, no commissions. List and buy without limits.",
+    "trust3Title": "Instant publishing",
+    "trust3Desc": "Your listing goes live in seconds, visible to the entire community.",
+    "cta": "Post your first listing"
   }
 }
