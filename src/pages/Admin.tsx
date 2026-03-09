@@ -1328,7 +1328,7 @@ export default function Admin() {
         <Shield className="h-7 w-7" /> {t('admin.title')}
       </h1>
 
-      <UserDetailDialog />
+      {userDetailDialogContent}
       <ListingDetailDialog />
 
       <Tabs defaultValue="stats">
