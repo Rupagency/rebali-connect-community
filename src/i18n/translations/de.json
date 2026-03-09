@@ -292,6 +292,7 @@
     "boostSelectTitle": "Anzeige nach oben schieben",
     "boostSelectDesc": "Wähle die Anzeige, die 48 Stunden an die Spitze soll",
     "noActiveListings": "Keine aktiven Anzeigen zum Bewerben",
+    "boost": { "dialogTitle": "Diese Anzeige boosten", "dialogChoose": "Wähle die Art des Boosts", "dialogConfirm": "Kauf bestätigen", "useStock": "Boost aus Vorrat nutzen", "useStockDesc": "Gratis 48h-Boost • {count} verfügbar", "free": "Gratis", "boost48h": "Boost 48h", "boost48hDesc": "An der Spitze deiner Kategorie", "premium": "Premium Boost", "premiumDesc": "Auf der Startseite hervorgehoben", "confirmQuestion": "Bist du sicher, dass du deine Punkte für diesen Boost verwenden möchtest?", "back": "Zurück", "confirm": "Bestätigen", "alreadyBoosted": "Diese Anzeige ist bereits geboostet", "noStockBoosts": "Keine Boosts im Vorrat", "stockApplied": "🚀 Boost aus Vorrat angewendet!", "stockCount": "{count} Boost(s) im Vorrat", "stockDesc": "Im Verkäuferstatus enthalten — klicke Boost bei einer Anzeige", "stockShopDesc": "Gehe zu Meine Anzeigen um sie anzuwenden", "myListings": "Meine Anzeigen", "addonFailed": "Fehler: Boost-Erstellung fehlgeschlagen" },
     "buyPoints": "Punkte kaufen",
     "buyPointsDesc": "Laden Sie Ihr Guthaben sofort mit einem Punktepaket auf",
     "buyPointsComingSoon": "Online-Zahlung kommt bald!",

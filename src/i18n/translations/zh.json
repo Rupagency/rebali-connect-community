@@ -216,6 +216,7 @@
     "dynamic": { "completed_deal": "已完成交易", "five_star_review": "收到5★评价", "validated_report": "已验证的欺诈举报" },
     "boostSelectTitle": "置顶推送广告", "boostSelectDesc": "选择要置顶48小时的广告",
     "noActiveListings": "没有可推广的活跃广告",
+    "boost": { "dialogTitle": "推广此广告", "dialogChoose": "选择推广类型", "dialogConfirm": "确认购买", "useStock": "使用库存推广", "useStockDesc": "免费48小时推广 • {count}个可用", "free": "免费", "boost48h": "推广48小时", "boost48hDesc": "分类顶部显示", "premium": "高级推广", "premiumDesc": "首页突出展示", "confirmQuestion": "确定要使用积分进行此推广吗？", "back": "返回", "confirm": "确认", "alreadyBoosted": "此广告已在推广中", "noStockBoosts": "库存中无推广", "stockApplied": "🚀 已使用库存推广！", "stockCount": "{count}个推广库存", "stockDesc": "卖家状态包含 — 点击广告上的推广按钮使用", "stockShopDesc": "前往我的广告进行应用", "myListings": "我的广告", "addonFailed": "错误：创建推广失败" },
     "buyPoints": "购买积分",
     "buyPointsDesc": "通过积分包即时充值余额",
     "buyPointsComingSoon": "在线支付即将推出！",

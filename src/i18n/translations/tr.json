@@ -390,6 +390,7 @@
     "dynamic": { "completed_deal": "Tamamlanan anlaşma", "five_star_review": "5★ değerlendirme alındı", "validated_report": "Doğrulanmış dolandırıcılık raporu" },
     "boostSelectTitle": "İlanı öne çıkar", "boostSelectDesc": "48 saat en üste çıkarmak istediğiniz ilanı seçin",
     "noActiveListings": "Tanıtılacak aktif ilan yok",
+    "boost": { "dialogTitle": "Bu ilanı öne çıkar", "dialogChoose": "Uygulamak istediğiniz boost türünü seçin", "dialogConfirm": "Satın alımı onaylayın", "useStock": "Stoktan boost kullan", "useStockDesc": "Ücretsiz 48s boost • {count} mevcut", "free": "Ücretsiz", "boost48h": "Boost 48s", "boost48hDesc": "Kategorinizde en üstte", "premium": "Premium Boost", "premiumDesc": "Ana sayfada öne çıkan", "confirmQuestion": "Bu boost için puanlarınızı kullanmak istediğinizden emin misiniz?", "back": "Geri", "confirm": "Onayla", "alreadyBoosted": "Bu ilan zaten boost edilmiş", "noStockBoosts": "Stokta boost yok", "stockApplied": "🚀 Stoktan boost uygulandı!", "stockCount": "{count} boost stokta", "stockDesc": "Satıcı durumunuza dahil — kullanmak için bir ilanda Boost'a tıklayın", "stockShopDesc": "Uygulamak için İlanlarım'a gidin", "myListings": "İlanlarım", "addonFailed": "Hata: boost oluşturulamadı" },
     "buyPoints": "Puan Satın Al",
     "buyPointsDesc": "Bir puan paketiyle bakiyenizi anında doldurun",
     "buyPointsComingSoon": "Online ödeme yakında!",

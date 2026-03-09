@@ -390,6 +390,7 @@
     "dynamic": { "completed_deal": "صفقة مكتملة", "five_star_review": "تقييم 5★ مستلم", "validated_report": "بلاغ احتيال مؤكد" },
     "boostSelectTitle": "ارفع إعلاناً للأعلى", "boostSelectDesc": "اختر الإعلان الذي تريد رفعه لمدة 48 ساعة",
     "noActiveListings": "لا توجد إعلانات نشطة للترويج",
+    "boost": { "dialogTitle": "تعزيز هذا الإعلان", "dialogChoose": "اختر نوع التعزيز", "dialogConfirm": "تأكيد الشراء", "useStock": "استخدام تعزيز من المخزون", "useStockDesc": "تعزيز 48 ساعة مجاني • {count} متاح", "free": "مجاني", "boost48h": "تعزيز 48 ساعة", "boost48hDesc": "في أعلى قائمة فئتك", "premium": "تعزيز مميز", "premiumDesc": "مميز على الصفحة الرئيسية", "confirmQuestion": "هل أنت متأكد من استخدام نقاطك لهذا التعزيز؟", "back": "رجوع", "confirm": "تأكيد", "alreadyBoosted": "هذا الإعلان معزز بالفعل", "noStockBoosts": "لا يوجد تعزيز في المخزون", "stockApplied": "🚀 تم تطبيق التعزيز من مخزونك!", "stockCount": "{count} تعزيز في المخزون", "stockDesc": "مضمّن مع حالة البائع — انقر تعزيز على إعلان لاستخدامه", "stockShopDesc": "اذهب إلى إعلاناتي لتطبيقها", "myListings": "إعلاناتي", "addonFailed": "خطأ: فشل إنشاء التعزيز" },
     "buyPoints": "شراء نقاط",
     "buyPointsDesc": "اشحن رصيدك فوراً بحزمة نقاط",
     "buyPointsComingSoon": "الدفع الإلكتروني قريباً!",

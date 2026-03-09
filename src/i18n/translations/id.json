@@ -292,6 +292,7 @@
     "boostSelectTitle": "Naikkan iklan ke atas",
     "boostSelectDesc": "Pilih iklan yang ingin dinaikkan ke posisi teratas selama 48 jam",
     "noActiveListings": "Tidak ada iklan aktif untuk dipromosikan",
+    "boost": { "dialogTitle": "Boost iklan ini", "dialogChoose": "Pilih jenis boost yang ingin diterapkan", "dialogConfirm": "Konfirmasi pembelian", "useStock": "Gunakan boost dari stok", "useStockDesc": "Boost 48h gratis • {count} tersedia", "free": "Gratis", "boost48h": "Boost 48h", "boost48hDesc": "Posisi teratas di kategori Anda", "premium": "Boost Premium", "premiumDesc": "Disorot di halaman utama", "confirmQuestion": "Yakin ingin menggunakan poin untuk boost ini?", "back": "Kembali", "confirm": "Konfirmasi", "alreadyBoosted": "Iklan ini sudah di-boost", "noStockBoosts": "Tidak ada boost di stok", "stockApplied": "🚀 Boost diterapkan dari stok!", "stockCount": "{count} boost di stok", "stockDesc": "Termasuk dalam status penjual — klik Boost pada iklan untuk menggunakan", "stockShopDesc": "Buka Iklan Saya untuk menerapkannya", "myListings": "Iklan Saya", "addonFailed": "Error: gagal membuat boost" },
     "buyPoints": "Beli Poin",
     "buyPointsDesc": "Isi ulang saldo Anda secara instan dengan paket poin",
     "buyPointsComingSoon": "Pembayaran online segera hadir!",

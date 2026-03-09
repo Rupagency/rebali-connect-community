@@ -388,6 +388,7 @@
     "dynamic": { "completed_deal": "完了した取引", "five_star_review": "5★レビュー受信", "validated_report": "確認済み詐欺報告" },
     "boostSelectTitle": "出品をトップに表示", "boostSelectDesc": "48時間トップに表示する出品を選択",
     "noActiveListings": "プロモートできるアクティブな出品はありません",
+    "boost": { "dialogTitle": "この出品をブースト", "dialogChoose": "ブーストの種類を選択", "dialogConfirm": "購入を確認", "useStock": "ストックのブーストを使用", "useStockDesc": "無料48hブースト • {count}個利用可能", "free": "無料", "boost48h": "ブースト48h", "boost48hDesc": "カテゴリのトップに表示", "premium": "プレミアムブースト", "premiumDesc": "ホームページでハイライト", "confirmQuestion": "このブーストにポイントを使用しますか？", "back": "戻る", "confirm": "確認", "alreadyBoosted": "この出品は既にブースト中です", "noStockBoosts": "ストックにブーストがありません", "stockApplied": "🚀 ストックからブースト適用！", "stockCount": "{count}個のブーストをストック中", "stockDesc": "売り手ステータスに含まれます — 出品のブーストをクリックして使用", "stockShopDesc": "マイ出品に移動して適用", "myListings": "マイ出品", "addonFailed": "エラー: ブースト作成失敗" },
     "buyPoints": "ポイント購入",
     "buyPointsDesc": "ポイントパックで残高を即時チャージ",
     "buyPointsComingSoon": "オンライン決済まもなく開始！",
