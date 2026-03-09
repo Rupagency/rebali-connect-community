@@ -328,7 +328,7 @@ export default function MyListings() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{confirmBoostType === 'boost_premium' ? 'Boost Premium' : 'Boost 48h'}</p>
-                  <p className="text-xs text-muted-foreground">{confirmBoostType === 'boost_premium' ? '80 pts' : '40 pts'}</p>
+                  <p className="text-xs text-muted-foreground">{confirmBoostType === 'boost_premium' ? '100 pts' : '50 pts'}</p>
                 </div>
               </div>
               <p className="text-sm text-center text-muted-foreground">
