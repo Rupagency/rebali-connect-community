@@ -292,6 +292,9 @@ export default function Admin() {
   const [editUserPoints, setEditUserPoints] = useState('');
   const [editUserListingLimit, setEditUserListingLimit] = useState('');
   const [userTypeFilter, setUserTypeFilter] = useState<string>('all');
+  const [editSubPlanType, setEditSubPlanType] = useState('');
+  const [editSubStatus, setEditSubStatus] = useState('');
+  const [editSubDurationMonths, setEditSubDurationMonths] = useState('1');
 
   // Reports query
   const { data: reports } = useQuery({
