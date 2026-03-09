@@ -29,4 +29,4 @@ Disallow: /favorites
 Disallow: /points
 Disallow: /vip
 
-Sitemap: https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/sitemap
+Sitemap: https://re-bali.com/sitemap.xml
