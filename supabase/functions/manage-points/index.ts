@@ -262,7 +262,7 @@ Deno.serve(async (req) => {
       });
 
       const expiresAt = new Date(Date.now() + ADDON_DURATIONS[addon_type]).toISOString();
-      const extraSlots = addon_type === "extra_listings" ? 5 : 0;
+      const extraSlots = addon_type === "extra_listings" ? 7 : 0;
       const { error: insertError } = await supabase.from("user_addons").insert({
         user_id: user.id, addon_type,
         listing_id: (addon_type === "boost" || addon_type === "boost_premium") ? listing_id : null,
