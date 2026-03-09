@@ -54,13 +54,7 @@ function BoostPurchaseModal({ open, onOpenChange, t }: any) {
       if (error || data?.error) {
         toast({ title: data?.error || 'Payment error', variant: 'destructive' });
       } else if (data?.invoice_url) {
-        const a = document.createElement('a');
-        a.href = data.invoice_url;
-        a.target = '_self';
-        a.rel = 'noopener';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        await openOrNavigate(data.invoice_url);
       }
     } catch {
       toast({ title: 'Payment error', variant: 'destructive' });
