@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { isNativePlatform } from '@/capacitor';
-import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
+import { openExternalAuthenticated, openOrNavigate, WEBAPP_URL } from '@/lib/openExternal';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -54,13 +54,7 @@ function BoostPurchaseModal({ open, onOpenChange, t }: any) {
       if (error || data?.error) {
         toast({ title: data?.error || 'Payment error', variant: 'destructive' });
       } else if (data?.invoice_url) {
-        const a = document.createElement('a');
-        a.href = data.invoice_url;
-        a.target = '_self';
-        a.rel = 'noopener';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        await openOrNavigate(data.invoice_url);
       }
     } catch {
       toast({ title: 'Payment error', variant: 'destructive' });
@@ -364,10 +358,22 @@ export default function SellerDashboard() {
 
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-3">
-        <Button onClick={() => setBoostModalOpen(true)} variant="outline" className="gap-2">
+        <Button onClick={() => {
+          if (isNativePlatform) {
+            openExternalAuthenticated(`${WEBAPP_URL}/dashboard`);
+          } else {
+            setBoostModalOpen(true);
+          }
+        }} variant="outline" className="gap-2">
           <Rocket className="h-4 w-4" /> {t('pro.buyBoosts')}
         </Button>
-        <Button onClick={() => navigate('/pro-subscription')} variant="outline" className="gap-2">
+        <Button onClick={() => {
+          if (isNativePlatform) {
+            openExternalAuthenticated(`${WEBAPP_URL}/pro-subscription`);
+          } else {
+            navigate('/pro-subscription');
+          }
+        }} variant="outline" className="gap-2">
           <Crown className="h-4 w-4" /> {t('pro.manageSub')}
         </Button>
         <Button onClick={() => navigate('/create')} className="gap-2">
