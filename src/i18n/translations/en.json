@@ -504,12 +504,12 @@
       "boostDesc": "Your listing appears first in its category for 48 hours",
       "boost_premium": "Homepage Spotlight",
       "boost_premiumDesc": "Your listing is highlighted on the homepage for 48 hours",
-      "vip": "VIP Status",
-      "vipDesc": "VIP badge on your profile, +10% search priority, 1 free push to top for 30 days",
+      "active_seller": "Active Seller",
+      "active_sellerDesc": "Badge + 15% organic visibility + 2 included boosts (30 days)",
       "extra_listings": "+5 Listing Slots",
       "extra_listingsDesc": "Unlock 5 extra listing slots for 30 days",
-      "protection": "Trusted Seller Badge",
-      "protectionDesc": "Display a Trusted Seller badge and get +20% organic visibility for 30 days"
+      "expert_seller": "Expert Seller",
+      "expert_sellerDesc": "Expert badge + 30% visibility + 5 boosts + analytics (30 days)"
     },
     "dynamic": {
       "completed_deal": "Completed deal",
@@ -527,14 +527,14 @@
     "openWebapp": "Continue on Web",
     "boostAndRewards": "Boosts & Rewards",
     "pack": {
-      "starter": "Small Boost",
-      "starterDesc": "Perfect to try a first boost",
-      "popular": "Most Popular",
-      "popularDesc": "Best value — most purchased",
-      "premium": "Pro",
-      "premiumDesc": "For power sellers who want it all",
-      "mega": "Business",
-      "megaDesc": "Maximum points, maximum savings"
+      "starter": "Starter",
+      "starterDesc": "1 category boost",
+      "popular": "Popular",
+      "popularDesc": "1 Active Seller status",
+      "pro": "Pro",
+      "proDesc": "1 Expert Seller status",
+      "business": "Business",
+      "businessDesc": "2× Expert + bonus boosts"
     },
     "packPoints": "{pts} points",
     "packPrice": "Rp {price}",
