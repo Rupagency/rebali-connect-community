@@ -197,19 +197,19 @@
       "fiveStarReview": "Ulasan 5★ diterima",
       "validatedReport": "Laporan scam tervalidasi"
     },
-    "monthlyCap": "Batas bulanan: 150 pts dari aktivitas (reset setiap bulan)",
+    "monthlyCap": "Batas bulanan: 200 pts dari aktivitas (reset setiap bulan)",
     "pointsHowToSpend": "Yang bisa Anda beli",
     "addon": {
       "boost": "Boost Iklan",
       "boostDesc": "Naikkan iklan ke posisi teratas kategori selama 48 jam",
       "boost_premium": "Iklan Unggulan",
       "boost_premiumDesc": "Tampil di halaman utama dengan kartu lebih besar selama 48 jam",
-      "vip": "Akun VIP",
-      "vipDesc": "Lencana VIP, +10% prioritas pencarian, 1 boost gratis selama 30 hari",
+      "active_seller": "Penjual Aktif",
+      "active_sellerDesc": "Lencana + 15% visibilitas organik + 2 boost termasuk (30 hari)",
       "extraListings": "5 Iklan Tambahan",
       "extraListingsDesc": "5 slot iklan tambahan selama 30 hari (maks 2 paket)",
-      "protection": "Penjual Prioritas",
-      "protectionDesc": "Lencana Penjual Prioritas dan +20% visibilitas organik selama 30 hari"
+      "expert_seller": "Penjual Ahli",
+      "expert_sellerDesc": "Lencana Ahli + 30% visibilitas + 5 boost + analitik (30 hari)"
     },
     "pointsNote": "Catatan penting:",
     "pointsNote1": "Poin adalah mata uang sekali pakai — dikurangi permanen saat pembelian.",
@@ -277,12 +277,12 @@
       "boostDesc": "Iklan Anda muncul pertama di kategorinya selama 48 jam",
       "boost_premium": "Tampil di Beranda",
       "boost_premiumDesc": "Iklan Anda disorot di halaman utama selama 48 jam",
-      "vip": "Status VIP",
-      "vipDesc": "Lencana VIP di profil, +10% prioritas pencarian, 1 naik ke atas gratis selama 30 hari",
+      "active_seller": "Penjual Aktif",
+      "active_sellerDesc": "Lencana + 15% visibilitas organik + 2 boost termasuk (30 hari)",
       "extra_listings": "+5 Slot Iklan",
       "extra_listingsDesc": "Buka 5 slot iklan tambahan selama 30 hari",
-      "protection": "Lencana Penjual Terpercaya",
-      "protectionDesc": "Tampilkan lencana Penjual Terpercaya dan dapatkan +20% visibilitas organik selama 30 hari"
+      "expert_seller": "Penjual Ahli",
+      "expert_sellerDesc": "Lencana Ahli + 30% visibilitas + 5 boost + analitik (30 hari)"
     },
     "dynamic": {
       "completed_deal": "Deal selesai",
@@ -300,14 +300,14 @@
     "openWebapp": "Lanjutkan di Web",
     "boostAndRewards": "Boost & Hadiah",
     "pack": {
-      "starter": "Boost Kecil",
-      "starterDesc": "Sempurna untuk mencoba boost pertama",
-      "popular": "Paling Populer",
-      "popularDesc": "Nilai terbaik — paling banyak dibeli",
-      "premium": "Pro",
-      "premiumDesc": "Untuk penjual yang menginginkan semuanya",
-      "mega": "Business",
-      "megaDesc": "Poin maksimal, hemat maksimal"
+      "starter": "Starter",
+      "starterDesc": "1 boost kategori",
+      "popular": "Popular",
+      "popularDesc": "1 status Penjual Aktif",
+      "pro": "Pro",
+      "proDesc": "1 status Penjual Ahli",
+      "business": "Business",
+      "businessDesc": "2× Ahli + boost bonus"
     },
     "packPoints": "{pts} poin",
     "packPrice": "Rp {price}",

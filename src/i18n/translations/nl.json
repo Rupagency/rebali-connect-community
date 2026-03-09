@@ -198,9 +198,9 @@
     "pointsHowToEarn": "Punten verdienen met badges", "pointsEarnExplanation": "Synchroniseer je badges in de Puntenwinkel om punten te verdienen. Elke ontgrendelde badge geeft een eenmalige puntbeloning.",
     "dynamicEarningTitle": "Punten verdienen door activiteit", "dynamicEarningDesc": "Je verdient ook automatisch punten bij het afronden van deals, ontvangen van 5-sterren beoordelingen of indienen van gevalideerde fraudemeldingen.",
     "dynamic": { "completedDeal": "Afgeronde deal", "fiveStarReview": "5★-beoordeling ontvangen", "validatedReport": "Gevalideerde fraudemelding" },
-    "monthlyCap": "Maandelijks limiet: 150 pt uit activiteit (wordt maandelijks gereset)",
+    "monthlyCap": "Maandelijks limiet: 200 pt uit activiteit (wordt maandelijks gereset)",
     "pointsHowToSpend": "Wat je kunt kopen",
-    "addon": { "boost": "Advertentie Boost", "boostDesc": "Duw een advertentie naar de top van categorieresultaten voor 48 uur", "boost_premium": "Uitgelichte Advertentie", "boost_premiumDesc": "Uitgelicht op de homepagina met grotere kaart voor 48 uur", "vip": "VIP-account", "vipDesc": "VIP-badge, +10% zoekprioriteit, 1 gratis boost voor 30 dagen", "extraListings": "Extra 5 Advertenties", "extraListingsDesc": "5 extra advertentieplaatsen voor 30 dagen (max 2 pakketten)", "protection": "Prioriteitsverkoper", "protectionDesc": "Prioriteitsverkoper-badge en +20% organische zichtbaarheid voor 30 dagen" },
+    "addon": { "boost": "Advertentie Boost", "boostDesc": "Duw een advertentie naar de top van categorieresultaten voor 48 uur", "boost_premium": "Uitgelichte Advertentie", "boost_premiumDesc": "Uitgelicht op de homepagina met grotere kaart voor 48 uur", "active_seller": "Actieve Verkoper", "active_sellerDesc": "Badge + 15% organische zichtbaarheid + 2 boosts inbegrepen (30 dagen)", "extraListings": "Extra 5 Advertenties", "extraListingsDesc": "5 extra advertentieplaatsen voor 30 dagen (max 2 pakketten)", "expert_seller": "Expert Verkoper", "expert_sellerDesc": "Expert-badge + 30% zichtbaarheid + 5 boosts + statistieken (30 dagen)" },
     "pointsNote": "Belangrijke opmerkingen:", "pointsNote1": "Punten zijn eenmalig — ze worden permanent afgetrokken bij aankoop.", "pointsNote2": "Badge-synchronisatie kan slechts één keer per badge worden gedaan.", "pointsNote3": "Punten staan los van de vertrouwensscore."
   },
   "points": {
@@ -212,7 +212,7 @@
     "maxExtraListings": "Maximaal 2 extra advertentiepakketten toegestaan",
     "history": "Transactiegeschiedenis", "noTransactions": "Nog geen transacties. Synchroniseer je badges om punten te verdienen!",
     "monthlyDynamic": "Maandelijkse activiteitspunten", "nudge": "Je bent {pts} pt verwijderd van {addon}!",
-    "addon": { "boost": "Naar boven duwen", "boostDesc": "Je advertentie verschijnt 48 uur bovenaan in de categorie", "boost_premium": "Op de voorpagina", "boost_premiumDesc": "Je advertentie wordt 48 uur uitgelicht op de startpagina", "vip": "VIP-status", "vipDesc": "VIP-badge, +10% zoekprioriteit, 1 gratis naar boven duwen voor 30 dagen", "extra_listings": "+5 Advertentieplaatsen", "extra_listingsDesc": "5 extra advertentieplaatsen vrijspelen voor 30 dagen", "protection": "Betrouwbare Verkoper Badge", "protectionDesc": "Toon een Betrouwbare Verkoper badge en krijg +20% organische zichtbaarheid voor 30 dagen" },
+    "addon": { "boost": "Naar boven duwen", "boostDesc": "Je advertentie verschijnt 48 uur bovenaan in de categorie", "boost_premium": "Op de voorpagina", "boost_premiumDesc": "Je advertentie wordt 48 uur uitgelicht op de startpagina", "active_seller": "Actieve Verkoper", "active_sellerDesc": "Badge + 15% organische zichtbaarheid + 2 boosts inbegrepen (30 dagen)", "extra_listings": "+5 Advertentieplaatsen", "extra_listingsDesc": "5 extra advertentieplaatsen vrijspelen voor 30 dagen", "expert_seller": "Expert Verkoper", "expert_sellerDesc": "Expert-badge + 30% zichtbaarheid + 5 boosts + statistieken (30 dagen)" },
     "dynamic": { "completed_deal": "Afgeronde deal", "five_star_review": "5★-beoordeling ontvangen", "validated_report": "Gevalideerde fraudemelding" },
     "boostSelectTitle": "Advertentie naar boven duwen", "boostSelectDesc": "Kies welke advertentie 48 uur bovenaan moet staan",
     "noActiveListings": "Geen actieve advertenties om te promoten",
@@ -223,7 +223,7 @@
     "buyViaWebapp": "Om je punten te beheren, ga verder op de Re-Bali website. Je account blijft gesynchroniseerd.",
     "openWebapp": "Verder op het web",
     "boostAndRewards": "Boosts & Beloningen",
-    "pack": { "starter": "Kleine Boost", "starterDesc": "Perfect voor je eerste boost", "popular": "Meest Populair", "popularDesc": "Beste waarde — meest gekocht", "premium": "Pro", "premiumDesc": "Voor powerverkopers", "mega": "Business", "megaDesc": "Maximaal punten, maximaal besparen" },
+    "pack": { "starter": "Starter", "starterDesc": "1 categorie-boost", "popular": "Popular", "popularDesc": "1 Actieve Verkoper status", "pro": "Pro", "proDesc": "1 Expert Verkoper status", "business": "Business", "businessDesc": "2× Expert + bonus boosts" },
     "packPoints": "{pts} punten", "packPrice": "Rp {price}", "bestValue": "Beste waarde", "comingSoon": "Binnenkort", "paymentMethods": "Betaling via Xendit / DOKU"
   },
   "referral": {

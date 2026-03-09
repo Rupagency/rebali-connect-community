@@ -8,10 +8,10 @@ const corsHeaders = {
 };
 
 const POINT_PACKS: Record<string, { points: number; price: number }> = {
-  starter: { points: 50, price: 29000 },
-  popular: { points: 120, price: 59000 },
-  premium: { points: 250, price: 99000 },
-  mega: { points: 600, price: 199000 },
+  starter: { points: 50, price: 25000 },
+  popular: { points: 150, price: 59000 },
+  pro: { points: 300, price: 99000 },
+  business: { points: 650, price: 189000 },
 };
 
 const PRO_PLANS: Record<string, { price: number; durationDays: number }> = {

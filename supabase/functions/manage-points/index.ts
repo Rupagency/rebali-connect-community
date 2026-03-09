@@ -21,22 +21,28 @@ const BADGE_POINTS: Record<string, number> = {
 };
 
 const ADDON_COSTS: Record<string, number> = {
-  boost: 40,
-  boost_premium: 80,
-  vip: 120,
-  extra_listings: 90,
-  protection: 150,
+  boost: 50,
+  boost_premium: 100,
+  active_seller: 150,
+  extra_listings: 75,
+  expert_seller: 300,
 };
 
 const ADDON_DURATIONS: Record<string, number> = {
   boost: 48 * 60 * 60 * 1000,
   boost_premium: 48 * 60 * 60 * 1000,
-  vip: 30 * 24 * 60 * 60 * 1000,
+  active_seller: 30 * 24 * 60 * 60 * 1000,
   extra_listings: 30 * 24 * 60 * 60 * 1000,
-  protection: 30 * 24 * 60 * 60 * 1000,
+  expert_seller: 30 * 24 * 60 * 60 * 1000,
 };
 
-const DYNAMIC_MONTHLY_CAP = 150;
+// Number of included boosts for seller status addons
+const INCLUDED_BOOSTS: Record<string, number> = {
+  active_seller: 2,
+  expert_seller: 5,
+};
+
+const DYNAMIC_MONTHLY_CAP = 200;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -167,8 +173,8 @@ Deno.serve(async (req) => {
     // --- Award dynamic points ---
     if (action === "award_dynamic") {
       const DYNAMIC_REWARDS: Record<string, number> = {
-        completed_deal: 5,
-        five_star_review: 3,
+        completed_deal: 8,
+        five_star_review: 5,
         validated_report: 10,
       };
       const reward = DYNAMIC_REWARDS[event_type];
@@ -276,8 +282,23 @@ Deno.serve(async (req) => {
         });
       }
 
+      // Create included boosts for active_seller and expert_seller
+      const includedBoosts = INCLUDED_BOOSTS[addon_type] || 0;
+      if (includedBoosts > 0) {
+        const boostExpires = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
+        const boostInserts = Array.from({ length: includedBoosts }, () => ({
+          user_id: user.id,
+          addon_type: "boost",
+          listing_id: null, // To be assigned later when user chooses
+          expires_at: boostExpires,
+          extra_slots: 0,
+          active: true,
+        }));
+        await supabase.from("user_addons").insert(boostInserts);
+      }
+
       const { data: updatedPoints } = await supabase.from("user_points").select("*").eq("user_id", user.id).single();
-      return new Response(JSON.stringify({ success: true, points: updatedPoints }), {
+      return new Response(JSON.stringify({ success: true, points: updatedPoints, included_boosts: includedBoosts }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }

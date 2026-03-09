@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Sprout, Clock, Award, Crown, CheckCircle, ShieldCheck,
   Handshake, Target, Flame, Trophy, Medal,
-  Shield, Info, Coins, Zap, Star, LayoutGrid, ShieldPlus, Gem
+  Shield, Info, Coins, Zap, Star, LayoutGrid, Gem, TrendingUp
 } from 'lucide-react';
 
 const BADGE_LIST = [
@@ -47,17 +47,17 @@ const POINTS_BADGES = [
 ];
 
 const DYNAMIC_REWARDS = [
-  { key: 'completedDeal', pts: 5 },
-  { key: 'fiveStarReview', pts: 3 },
+  { key: 'completedDeal', pts: 8 },
+  { key: 'fiveStarReview', pts: 5 },
   { key: 'validatedReport', pts: 10 },
 ];
 
 const ADDONS = [
-  { key: 'boost', icon: Zap, cost: 40 },
-  { key: 'boost_premium', icon: Star, cost: 80 },
-  { key: 'vip', icon: Gem, cost: 120 },
-  { key: 'extraListings', icon: LayoutGrid, cost: 90 },
-  { key: 'protection', icon: ShieldPlus, cost: 150 },
+  { key: 'boost', icon: Zap, cost: 50 },
+  { key: 'boost_premium', icon: Star, cost: 100 },
+  { key: 'active_seller', icon: TrendingUp, cost: 150 },
+  { key: 'extra_listings', icon: LayoutGrid, cost: 75 },
+  { key: 'expert_seller', icon: Gem, cost: 300 },
 ];
 
 export default function TrustBadges() {
