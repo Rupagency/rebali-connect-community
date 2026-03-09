@@ -21,22 +21,28 @@ const BADGE_POINTS: Record<string, number> = {
 };
 
 const ADDON_COSTS: Record<string, number> = {
-  boost: 40,
-  boost_premium: 80,
-  vip: 120,
-  extra_listings: 90,
-  protection: 150,
+  boost: 50,
+  boost_premium: 100,
+  active_seller: 150,
+  extra_listings: 75,
+  expert_seller: 300,
 };
 
 const ADDON_DURATIONS: Record<string, number> = {
   boost: 48 * 60 * 60 * 1000,
   boost_premium: 48 * 60 * 60 * 1000,
-  vip: 30 * 24 * 60 * 60 * 1000,
+  active_seller: 30 * 24 * 60 * 60 * 1000,
   extra_listings: 30 * 24 * 60 * 60 * 1000,
-  protection: 30 * 24 * 60 * 60 * 1000,
+  expert_seller: 30 * 24 * 60 * 60 * 1000,
 };
 
-const DYNAMIC_MONTHLY_CAP = 150;
+// Number of included boosts for seller status addons
+const INCLUDED_BOOSTS: Record<string, number> = {
+  active_seller: 2,
+  expert_seller: 5,
+};
+
+const DYNAMIC_MONTHLY_CAP = 200;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
