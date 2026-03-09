@@ -195,13 +195,28 @@ export default function PointsShop() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) { navigate('/auth'); return; }
-    if (isNativePlatform) {
-      openExternalAuthenticated(`${window.location.origin}/points`);
-      navigate('/', { replace: true });
-      return;
-    }
-    fetchData();
-    fetchReferralStats();
+
+    // Pro/business accounts don't use points – redirect to their dashboard
+    const checkProRedirect = async () => {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_type')
+        .eq('id', user.id)
+        .single();
+      if (profile?.user_type === 'business') {
+        navigate('/dashboard', { replace: true });
+        return;
+      }
+
+      if (isNativePlatform) {
+        openExternalAuthenticated(`${window.location.origin}/points`);
+        navigate('/', { replace: true });
+        return;
+      }
+      fetchData();
+      fetchReferralStats();
+    };
+    checkProRedirect();
   }, [user, authLoading]);
 
   if (loading) {
