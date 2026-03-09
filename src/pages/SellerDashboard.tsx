@@ -358,10 +358,22 @@ export default function SellerDashboard() {
 
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-3">
-        <Button onClick={() => setBoostModalOpen(true)} variant="outline" className="gap-2">
+        <Button onClick={() => {
+          if (isNativePlatform) {
+            openExternalAuthenticated(`${WEBAPP_URL}/dashboard`);
+          } else {
+            setBoostModalOpen(true);
+          }
+        }} variant="outline" className="gap-2">
           <Rocket className="h-4 w-4" /> {t('pro.buyBoosts')}
         </Button>
-        <Button onClick={() => navigate('/pro-subscription')} variant="outline" className="gap-2">
+        <Button onClick={() => {
+          if (isNativePlatform) {
+            openExternalAuthenticated(`${WEBAPP_URL}/pro-subscription`);
+          } else {
+            navigate('/pro-subscription');
+          }
+        }} variant="outline" className="gap-2">
           <Crown className="h-4 w-4" /> {t('pro.manageSub')}
         </Button>
         <Button onClick={() => navigate('/create')} className="gap-2">
