@@ -821,6 +821,10 @@ export default function Admin() {
                         await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', selectedUser.id);
                         // Recalculate trust score
                         await supabase.functions.invoke('calculate-trust-score', { body: { user_id: selectedUser.id } });
+                        // For Pro users, send NPWP approval WhatsApp notification
+                        if (selectedUser.user_type === 'business') {
+                          await supabase.functions.invoke('notify-npwp-approved', { body: { user_id: selectedUser.id } });
+                        }
                         refetchVerifications();
                         qc.invalidateQueries({ queryKey: ['admin-profiles'] });
                         setSelectedUser((prev: any) => prev ? { ...prev, is_verified_seller: true } : null);
