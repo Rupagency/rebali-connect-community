@@ -70,12 +70,25 @@ export default function ListingDetail() {
     queryFn: async () => {
       const { data } = await supabase
         .from('listings')
-        .select('*, listing_images(id, storage_path, sort_order), listing_translations(lang, title, description, is_machine), profiles!seller_id(id, display_name, whatsapp, phone, user_type, avatar_url, created_at, is_verified_seller, phone_verified, trust_score, risk_level)')
+        .select('*, listing_images(id, storage_path, sort_order), listing_translations(lang, title, description, is_machine)')
         .eq('id', id!)
         .single();
       return data;
     },
     enabled: !!id,
+  });
+
+  const { data: sellerProfile } = useQuery({
+    queryKey: ['listing-seller', listing?.seller_id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('public_profiles')
+        .select('*')
+        .eq('id', listing!.seller_id)
+        .single();
+      return data;
+    },
+    enabled: !!listing?.seller_id,
   });
 
   const { data: favCount } = useQuery({
@@ -105,7 +118,7 @@ export default function ListingDetail() {
     enabled: !!id,
   });
 
-  const seller = listing?.profiles as any;
+  const seller = sellerProfile as any;
 
   const { data: sellerReviews } = useQuery({
     queryKey: ['seller-reviews', seller?.id],
