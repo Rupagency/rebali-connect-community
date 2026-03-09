@@ -539,14 +539,57 @@ export default function Admin() {
       listing_limit_override: listingLimitVal,
     } as any).eq('id', selectedUser.id);
 
-    // Update points if changed
-    const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
-    const newBalance = Math.max(0, parseInt(editUserPoints) || 0);
-    if (newBalance !== (currentPts?.balance || 0)) {
-      await supabase.functions.invoke('manage-points', {
-        body: { action: 'admin_set_balance', target_user_id: selectedUser.id, new_balance: newBalance },
-      });
-      qc.invalidateQueries({ queryKey: ['admin-user-points'] });
+    // Handle points for private users
+    if (selectedUser.user_type !== 'business') {
+      const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
+      const newBalance = Math.max(0, parseInt(editUserPoints) || 0);
+      if (newBalance !== (currentPts?.balance || 0)) {
+        await supabase.functions.invoke('manage-points', {
+          body: { action: 'admin_set_balance', target_user_id: selectedUser.id, new_balance: newBalance },
+        });
+        qc.invalidateQueries({ queryKey: ['admin-user-points'] });
+      }
+    }
+
+    // Handle subscription for Pro users
+    if (selectedUser.user_type === 'business') {
+      const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === selectedUser.id && s.status === 'active');
+      
+      if (editSubStatus === 'none' && activeSub) {
+        // Cancel existing subscription
+        await supabase.from('pro_subscriptions').update({ status: 'cancelled', cancelled_at: new Date().toISOString() }).eq('id', activeSub.id);
+      } else if (editSubStatus === 'active') {
+        const durationMonths = Math.max(1, parseInt(editSubDurationMonths) || 1);
+        const boostsIncluded = editSubPlanType === 'agence' ? 10 : editSubPlanType === 'vendeur_pro' ? 3 : 0;
+        const priceIdr = editSubPlanType === 'agence' ? 249000 : editSubPlanType === 'vendeur_pro' ? 99000 : 0;
+        
+        if (activeSub) {
+          // Update existing subscription
+          const newExpiry = new Date();
+          newExpiry.setMonth(newExpiry.getMonth() + durationMonths);
+          await supabase.from('pro_subscriptions').update({
+            plan_type: editSubPlanType,
+            expires_at: newExpiry.toISOString(),
+            monthly_boosts_included: boostsIncluded,
+            price_idr: priceIdr,
+          }).eq('id', activeSub.id);
+        } else {
+          // Create new subscription
+          const expiresAt = new Date();
+          expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
+          await supabase.from('pro_subscriptions').insert({
+            user_id: selectedUser.id,
+            plan_type: editSubPlanType,
+            status: 'active',
+            started_at: new Date().toISOString(),
+            expires_at: expiresAt.toISOString(),
+            monthly_boosts_included: boostsIncluded,
+            price_idr: priceIdr,
+            payment_method: 'admin',
+          });
+        }
+      }
+      qc.invalidateQueries({ queryKey: ['admin-pro-subscriptions'] });
     }
 
     setSelectedUser((prev: any) => prev ? {
