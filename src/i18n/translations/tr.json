@@ -372,9 +372,9 @@
     "pointsHowToEarn": "Rozetlerle puan kazanın", "pointsEarnExplanation": "Puan kazanmak için Puan Mağazası'nda rozetlerinizi senkronize edin. Her açılan rozet bir kerelik puan ödülü verir.",
     "dynamicEarningTitle": "Aktiviteyle puan kazanın", "dynamicEarningDesc": "Anlaşma tamamladığınızda, 5 yıldızlı değerlendirme aldığınızda veya doğrulanmış dolandırıcılık raporu gönderdiğinizde de otomatik puan kazanırsınız.",
     "dynamic": { "completedDeal": "Tamamlanan anlaşma", "fiveStarReview": "5★ değerlendirme alındı", "validatedReport": "Doğrulanmış dolandırıcılık raporu" },
-    "monthlyCap": "Aylık limit: Aktiviteden 150 puan (her ay sıfırlanır)",
+    "monthlyCap": "Aylık limit: Aktiviteden 200 puan (her ay sıfırlanır)",
     "pointsHowToSpend": "Neler satın alabilirsiniz",
-    "addon": { "boost": "İlan Öne Çıkarma", "boostDesc": "Bir ilanı 48 saat kategori sonuçlarının başına çıkarın", "boost_premium": "Öne Çıkan İlan", "boost_premiumDesc": "48 saat ana sayfada büyük kartla gösterilir", "vip": "VIP Hesap", "vipDesc": "VIP rozeti, +%10 arama önceliği, 30 gün boyunca 1 ücretsiz boost", "extraListings": "Ekstra 5 İlan", "extraListingsDesc": "30 gün boyunca 5 ek ilan yeri (maks 2 paket)", "protection": "Öncelikli Satıcı", "protectionDesc": "Öncelikli Satıcı rozeti ve 30 gün boyunca +%20 organik görünürlük" },
+    "addon": { "boost": "İlan Öne Çıkarma", "boostDesc": "Bir ilanı 48 saat kategori sonuçlarının başına çıkarın", "boost_premium": "Öne Çıkan İlan", "boost_premiumDesc": "48 saat ana sayfada büyük kartla gösterilir", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extraListings": "Ekstra 5 İlan", "extraListingsDesc": "30 gün boyunca 5 ek ilan yeri (maks 2 paket)", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
     "pointsNote": "Önemli notlar:", "pointsNote1": "Puanlar tek kullanımlıktır — satın alınca kalıcı olarak düşürülür.", "pointsNote2": "Rozet senkronizasyonu her rozet için yalnızca bir kez yapılabilir.", "pointsNote3": "Puanlar güven puanından bağımsızdır."
   },
   "points": {
@@ -386,7 +386,7 @@
     "maxExtraListings": "Maksimum 2 ekstra ilan paketi izni",
     "history": "İşlem Geçmişi", "noTransactions": "Henüz işlem yok. Puan kazanmak için rozetlerinizi senkronize edin!",
     "monthlyDynamic": "Aylık aktivite puanları", "nudge": "{addon}'a {pts} puan kaldı!",
-    "addon": { "boost": "Öne Çıkar", "boostDesc": "İlanınız 48 saat kategorisinde ilk sırada görünür", "boost_premium": "Ana Sayfada Göster", "boost_premiumDesc": "İlanınız 48 saat ana sayfada öne çıkarılır", "vip": "VIP Statüsü", "vipDesc": "VIP rozeti, +%10 arama önceliği, 30 gün 1 ücretsiz öne çıkarma", "extra_listings": "+5 İlan Yeri", "extra_listingsDesc": "30 gün için 5 ek ilan yeri açın", "protection": "Güvenilir Satıcı Rozeti", "protectionDesc": "Güvenilir Satıcı rozeti gösterin ve 30 gün +%20 organik görünürlük kazanın" },
+    "addon": { "boost": "Öne Çıkar", "boostDesc": "İlanınız 48 saat kategorisinde ilk sırada görünür", "boost_premium": "Ana Sayfada Göster", "boost_premiumDesc": "İlanınız 48 saat ana sayfada öne çıkarılır", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extra_listings": "+5 İlan Yeri", "extra_listingsDesc": "30 gün için 5 ek ilan yeri açın", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
     "dynamic": { "completed_deal": "Tamamlanan anlaşma", "five_star_review": "5★ değerlendirme alındı", "validated_report": "Doğrulanmış dolandırıcılık raporu" },
     "boostSelectTitle": "İlanı öne çıkar", "boostSelectDesc": "48 saat en üste çıkarmak istediğiniz ilanı seçin",
     "noActiveListings": "Tanıtılacak aktif ilan yok",
@@ -397,7 +397,7 @@
     "buyViaWebapp": "Puanlarınızı yönetmek için Re-Bali web sitesinde devam edin. Hesabınız senkronize kalır.",
     "openWebapp": "Web'de devam et",
     "boostAndRewards": "Boost ve Ödüller",
-    "pack": { "starter": "Küçük Boost", "starterDesc": "İlk boost'unuzu denemek için ideal", "popular": "En Popüler", "popularDesc": "En iyi değer — en çok satılan", "premium": "Pro", "premiumDesc": "Her şeyi isteyen satıcılar için", "mega": "Business", "megaDesc": "Maksimum puan, maksimum tasarruf" },
+    "pack": { "starter": "Starter", "starterDesc": "1 kategori boost", "popular": "Popular", "popularDesc": "1 Aktif Satıcı statüsü", "pro": "Pro", "proDesc": "1 Uzman Satıcı statüsü", "business": "Business", "businessDesc": "2× Uzman + bonus boostlar" },
     "packPoints": "{pts} puan", "packPrice": "Rp {price}", "bestValue": "En İyi Değer", "comingSoon": "Yakında", "paymentMethods": "Xendit / DOKU ile ödeme"
   },
   "referral": {

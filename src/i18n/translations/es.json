@@ -198,14 +198,14 @@
     "dynamicEarningTitle": "Ganar puntos por actividad",
     "dynamicEarningDesc": "También ganas puntos automáticamente al completar ventas, recibir reseñas de 5 estrellas o enviar reportes de estafa validados.",
     "dynamic": { "completedDeal": "Venta completada", "fiveStarReview": "Reseña 5★ recibida", "validatedReport": "Reporte de estafa validado" },
-    "monthlyCap": "Límite mensual: 150 pts por actividad (se reinicia cada mes)",
+    "monthlyCap": "Límite mensual: 200 pts por actividad (se reinicia cada mes)",
     "pointsHowToSpend": "Qué puedes comprar",
     "addon": {
       "boost": "Impulso de anuncio", "boostDesc": "Lleva un anuncio al tope de resultados de categoría por 48 horas",
       "boost_premium": "Anuncio Destacado", "boost_premiumDesc": "Destacado en portada con tarjeta más grande por 48 horas",
-      "vip": "Cuenta VIP", "vipDesc": "Insignia VIP, +10% prioridad en búsqueda, 1 impulso gratis por 30 días",
+      "active_seller": "Vendedor Activo", "active_sellerDesc": "Insignia + 15% visibilidad orgánica + 2 impulsos incluidos (30 días)",
       "extraListings": "5 Anuncios Extra", "extraListingsDesc": "5 espacios adicionales por 30 días (máx. 2 paquetes)",
-      "protection": "Vendedor Prioritario", "protectionDesc": "Insignia de Vendedor Prioritario y +20% visibilidad orgánica por 30 días"
+      "expert_seller": "Vendedor Experto", "expert_sellerDesc": "Insignia Experto + 30% visibilidad + 5 impulsos + analíticas (30 días)"
     },
     "pointsNote": "Notas importantes:",
     "pointsNote1": "Los puntos son de un solo uso — se deducen permanentemente al comprar.",
@@ -227,9 +227,9 @@
     "addon": {
       "boost": "Subir al inicio", "boostDesc": "Tu anuncio aparece primero en su categoría durante 48 horas",
       "boost_premium": "Destacar en portada", "boost_premiumDesc": "Tu anuncio se destaca en la página de inicio durante 48 horas",
-      "vip": "Estado VIP", "vipDesc": "Insignia VIP, +10% prioridad en búsqueda, 1 subida gratis durante 30 días",
+      "active_seller": "Vendedor Activo", "active_sellerDesc": "Insignia + 15% visibilidad orgánica + 2 impulsos incluidos (30 días)",
       "extra_listings": "+5 Espacios", "extra_listingsDesc": "Desbloquea 5 espacios de anuncios adicionales por 30 días",
-      "protection": "Insignia Vendedor de Confianza", "protectionDesc": "Muestra una insignia de Vendedor de Confianza y obtén +20% visibilidad orgánica por 30 días"
+      "expert_seller": "Vendedor Experto", "expert_sellerDesc": "Insignia Experto + 30% visibilidad + 5 impulsos + analíticas (30 días)"
     },
     "dynamic": { "completed_deal": "Venta completada", "five_star_review": "Reseña 5★ recibida", "validated_report": "Reporte de estafa validado" },
     "boostSelectTitle": "Subir un anuncio al inicio",
@@ -242,7 +242,7 @@
     "buyViaWebapp": "Para gestionar tus puntos, continúa en el sitio web de Re-Bali. Tu cuenta se mantiene sincronizada.",
     "openWebapp": "Continuar en la web",
     "boostAndRewards": "Boosts y Recompensas",
-    "pack": { "starter": "Boost Pequeño", "starterDesc": "Perfecto para probar tu primer boost", "popular": "Más Popular", "popularDesc": "Mejor valor — el más comprado", "premium": "Pro", "premiumDesc": "Para vendedores que lo quieren todo", "mega": "Business", "megaDesc": "Máximos puntos, máximo ahorro" },
+    "pack": { "starter": "Starter", "starterDesc": "1 impulso de categoría", "popular": "Popular", "popularDesc": "1 status Vendedor Activo", "pro": "Pro", "proDesc": "1 status Vendedor Experto", "business": "Business", "businessDesc": "2× Experto + impulsos bonus" },
     "packPoints": "{pts} puntos", "packPrice": "Rp {price}", "bestValue": "Mejor valor", "comingSoon": "Próximamente", "paymentMethods": "Pago vía Xendit / DOKU"
   },
   "referral": {

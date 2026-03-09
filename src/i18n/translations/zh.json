@@ -198,9 +198,9 @@
     "pointsHowToEarn": "通过徽章获取积分", "pointsEarnExplanation": "在积分商店同步您的徽章以获取积分。每个解锁的徽章给予一次性积分奖励。",
     "dynamicEarningTitle": "通过活动获取积分", "dynamicEarningDesc": "完成交易、收到5星评价或提交经验证的欺诈举报时，您也会自动获得积分。",
     "dynamic": { "completedDeal": "已完成交易", "fiveStarReview": "收到5★评价", "validatedReport": "已验证的欺诈举报" },
-    "monthlyCap": "月度上限：活动积分150分（每月重置）",
+    "monthlyCap": "月度上限：活动积分200分（每月重置）",
     "pointsHowToSpend": "可以购买什么",
-    "addon": { "boost": "列表置顶", "boostDesc": "将列表推至分类结果顶部48小时", "boost_premium": "精选列表", "boost_premiumDesc": "在首页以大卡片展示48小时", "vip": "VIP账户", "vipDesc": "VIP徽章，+10%搜索优先级，30天内1次免费置顶", "extraListings": "额外5个列表位", "extraListingsDesc": "30天内获得5个额外列表位（最多2个包）", "protection": "优先卖家", "protectionDesc": "优先卖家徽章和+20%自然可见度30天" },
+    "addon": { "boost": "列表置顶", "boostDesc": "将列表推至分类结果顶部48小时", "boost_premium": "精选列表", "boost_premiumDesc": "在首页以大卡片展示48小时", "active_seller": "活跃卖家", "active_sellerDesc": "徽章 + 15%自然可见度 + 2次置顶（30天）", "extraListings": "额外5个列表位", "extraListingsDesc": "30天内获得5个额外列表位（最多2个包）", "expert_seller": "专家卖家", "expert_sellerDesc": "专家徽章 + 30%可见度 + 5次置顶 + 数据分析（30天）" },
     "pointsNote": "重要说明：", "pointsNote1": "积分是一次性货币——购买后永久扣除。", "pointsNote2": "每个徽章只能同步一次。", "pointsNote3": "积分与信任评分无关。"
   },
   "points": {
@@ -212,7 +212,7 @@
     "maxExtraListings": "最多允许2个额外列表包", "history": "交易记录",
     "noTransactions": "暂无交易记录。同步您的徽章来赚取积分！",
     "monthlyDynamic": "每月活动积分", "nudge": "距离{addon}还差{pts}分！",
-    "addon": { "boost": "置顶推送", "boostDesc": "您的广告48小时内显示在分类最顶部", "boost_premium": "首页推荐", "boost_premiumDesc": "您的广告48小时内在首页突出展示", "vip": "VIP身份", "vipDesc": "VIP徽章，+10%搜索优先级，30天内1次免费置顶", "extra_listings": "+5个广告位", "extra_listingsDesc": "解锁5个额外广告位30天", "protection": "可信赖卖家徽章", "protectionDesc": "展示可信赖卖家徽章，+20%自然可见度30天" },
+    "addon": { "boost": "置顶推送", "boostDesc": "您的广告48小时内显示在分类最顶部", "boost_premium": "首页推荐", "boost_premiumDesc": "您的广告48小时内在首页突出展示", "active_seller": "活跃卖家", "active_sellerDesc": "徽章 + 15%自然可见度 + 2次置顶（30天）", "extra_listings": "+5个广告位", "extra_listingsDesc": "解锁5个额外广告位30天", "expert_seller": "专家卖家", "expert_sellerDesc": "专家徽章 + 30%可见度 + 5次置顶 + 数据分析（30天）" },
     "dynamic": { "completed_deal": "已完成交易", "five_star_review": "收到5★评价", "validated_report": "已验证的欺诈举报" },
     "boostSelectTitle": "置顶推送广告", "boostSelectDesc": "选择要置顶48小时的广告",
     "noActiveListings": "没有可推广的活跃广告",
@@ -223,7 +223,7 @@
     "buyViaWebapp": "要管理您的积分，请继续访问 Re-Bali 网站。您的账户保持同步。",
     "openWebapp": "继续在网页上操作",
     "boostAndRewards": "加速 & 奖励",
-    "pack": { "starter": "小型加速", "starterDesc": "适合尝试第一次置顶", "popular": "最受欢迎", "popularDesc": "最佳性价比——最受欢迎", "premium": "Pro", "premiumDesc": "为资深卖家准备", "mega": "Business", "megaDesc": "最多积分，最多省" },
+    "pack": { "starter": "Starter", "starterDesc": "1次分类置顶", "popular": "Popular", "popularDesc": "1个活跃卖家身份", "pro": "Pro", "proDesc": "1个专家卖家身份", "business": "Business", "businessDesc": "2×专家 + 额外置顶" },
     "packPoints": "{pts} 积分", "packPrice": "Rp {price}", "bestValue": "最佳价值", "comingSoon": "即将推出", "paymentMethods": "通过 Xendit / DOKU 支付"
   },
   "referral": {

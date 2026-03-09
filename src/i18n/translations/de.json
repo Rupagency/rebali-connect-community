@@ -277,12 +277,12 @@
       "boostDesc": "Deine Anzeige erscheint 48 Stunden an erster Stelle in ihrer Kategorie",
       "boost_premium": "Auf der Startseite",
       "boost_premiumDesc": "Deine Anzeige wird 48 Stunden auf der Startseite hervorgehoben",
-      "vip": "VIP-Status",
-      "vipDesc": "VIP-Abzeichen, +10% Suchpriorität, 1 kostenloses Nach-oben-Schieben für 30 Tage",
+      "active_seller": "Aktiver Verkäufer",
+      "active_sellerDesc": "Abzeichen + 15% organische Sichtbarkeit + 2 Boosts inklusive (30 Tage)",
       "extra_listings": "+5 Anzeigenplätze",
       "extra_listingsDesc": "5 zusätzliche Anzeigenplätze für 30 Tage freischalten",
-      "protection": "Vertrauenswürdiger Verkäufer",
-      "protectionDesc": "Vertrauenswürdiger-Verkäufer-Abzeichen und +20% organische Sichtbarkeit für 30 Tage"
+      "expert_seller": "Experten-Verkäufer",
+      "expert_sellerDesc": "Experten-Abzeichen + 30% Sichtbarkeit + 5 Boosts + Statistiken (30 Tage)"
     },
     "dynamic": {
       "completed_deal": "Abgeschlossener Deal",
@@ -299,7 +299,7 @@
     "buyViaWebapp": "Um Ihre Punkte zu verwalten, fahren Sie auf der Re-Bali-Website fort. Ihr Konto bleibt synchronisiert.",
     "openWebapp": "Weiter im Web",
     "boostAndRewards": "Boosts & Belohnungen",
-    "pack": { "starter": "Kleiner Boost", "starterDesc": "Perfekt für den ersten Boost", "popular": "Am beliebtesten", "popularDesc": "Bester Wert — am meisten gekauft", "premium": "Pro", "premiumDesc": "Für Power-Verkäufer", "mega": "Business", "megaDesc": "Maximale Punkte, maximale Ersparnis" },
+    "pack": { "starter": "Starter", "starterDesc": "1 Kategorie-Boost", "popular": "Popular", "popularDesc": "1 Aktiver-Verkäufer-Status", "pro": "Pro", "proDesc": "1 Experten-Verkäufer-Status", "business": "Business", "businessDesc": "2× Experte + Bonus-Boosts" },
     "packPoints": "{pts} Punkte", "packPrice": "Rp {price}", "bestValue": "Bester Wert", "comingSoon": "Demnächst", "paymentMethods": "Zahlung über Xendit / DOKU"
   },
   "referral": {
