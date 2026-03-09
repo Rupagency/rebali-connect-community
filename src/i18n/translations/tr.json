@@ -6,7 +6,7 @@
     "price": "Fiyat", "free": "Ücretsiz", "contact": "İletişim", "report": "Şikayet", "share": "Paylaş",
     "close": "Kapat", "confirm": "Onayla", "or": "veya", "and": "ve", "submit": "Gönder", "required": "Zorunlu", "optional": "İsteğe bağlı", "private": "Bireysel", "pro": "Profesyonel"
   },
-  "nav": { "home": "Ana Sayfa", "browse": "Göz At", "sell": "Sat", "myListings": "İlanlarım", "profile": "Profil", "admin": "Yönetici", "about": "Hakkında", "safety": "Güvenlik İpuçları", "rules": "Kurallar", "vip": "VIP", "searches": "Aramalar", "favorites": "Favoriler", "messages": "Mesajlar", "loginSignup": "Giriş yap" },
+  "nav": { "home": "Ana Sayfa", "browse": "Göz At", "sell": "Yayınla", "myListings": "İlanlarım", "profile": "Profil", "admin": "Yönetici", "about": "Hakkında", "safety": "Güvenlik İpuçları", "rules": "Kurallar", "vip": "VIP", "searches": "Aramalar", "favorites": "Favoriler", "messages": "Mesajlar", "loginSignup": "Giriş yap" },
   "home": {
     "hero": "Bali'de Al & Sat", "heroSub": "Bali'deki gurbetçiler, yerel halk ve işletmeler için güvenilir pazar yeri",
     "searchPlaceholder": "Mobilya, araç, emlak ara...", "categories": "Kategorilere Göz At",
