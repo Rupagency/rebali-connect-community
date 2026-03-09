@@ -269,6 +269,24 @@ export default function PointsShop() {
           <CardDescription>{t('points.shopDesc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Stock boosts indicator */}
+          {(() => {
+            const stockBoosts = addons.filter(a => a.addon_type === 'boost' && !a.listing_id && a.active && new Date(a.expires_at).getTime() > Date.now());
+            if (stockBoosts.length === 0) return null;
+            return (
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3">
+                <Zap className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">{stockBoosts.length} boost{stockBoosts.length > 1 ? 's' : ''} en stock</p>
+                  <p className="text-xs text-muted-foreground">Va dans "Mes annonces" pour les appliquer</p>
+                </div>
+                <Button size="sm" variant="outline" onClick={() => navigate('/my-listings')} className="text-xs">
+                  Mes annonces
+                </Button>
+              </div>
+            );
+          })()}
+
           {ADDON_CONFIG.map(addon => {
             const cost = addonCosts[addon.type] || 0;
             const Icon = addon.icon;

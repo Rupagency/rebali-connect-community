@@ -283,14 +283,14 @@ Deno.serve(async (req) => {
       }
 
       // Create included boosts for active_seller and expert_seller
+      // These boosts expire with the seller status (30 days), not 48h
       const includedBoosts = INCLUDED_BOOSTS[addon_type] || 0;
       if (includedBoosts > 0) {
-        const boostExpires = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
         const boostInserts = Array.from({ length: includedBoosts }, () => ({
           user_id: user.id,
           addon_type: "boost",
           listing_id: null, // To be assigned later when user chooses
-          expires_at: boostExpires,
+          expires_at: expiresAt, // Same expiry as the seller status (30 days)
           extra_slots: 0,
           active: true,
         }));
@@ -299,6 +299,56 @@ Deno.serve(async (req) => {
 
       const { data: updatedPoints } = await supabase.from("user_points").select("*").eq("user_id", user.id).single();
       return new Response(JSON.stringify({ success: true, points: updatedPoints, included_boosts: includedBoosts }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // --- Use a stock boost (assign unassigned boost to a listing) ---
+    if (action === "use_stock_boost") {
+      if (!listing_id) {
+        return new Response(JSON.stringify({ error: "missing_listing_id" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Check for existing active boost on this listing
+      const { data: existingBoost } = await supabase.from("user_addons")
+        .select("id")
+        .eq("listing_id", listing_id)
+        .eq("active", true)
+        .in("addon_type", ["boost", "boost_premium"])
+        .gt("expires_at", new Date().toISOString())
+        .limit(1);
+      if (existingBoost && existingBoost.length > 0) {
+        return new Response(JSON.stringify({ error: "already_boosted" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Find an unassigned stock boost for this user
+      const { data: stockBoost } = await supabase.from("user_addons")
+        .select("id, expires_at")
+        .eq("user_id", user.id)
+        .eq("addon_type", "boost")
+        .eq("active", true)
+        .is("listing_id", null)
+        .gt("expires_at", new Date().toISOString())
+        .order("expires_at", { ascending: true })
+        .limit(1);
+
+      if (!stockBoost || stockBoost.length === 0) {
+        return new Response(JSON.stringify({ error: "no_stock_boosts" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Assign the boost to the listing, reset expiry to 48h from now
+      const newExpiry = new Date(Date.now() + ADDON_DURATIONS["boost"]).toISOString();
+      await supabase.from("user_addons")
+        .update({ listing_id, expires_at: newExpiry })
+        .eq("id", stockBoost[0].id);
+
+      return new Response(JSON.stringify({ success: true, boost_id: stockBoost[0].id }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }

@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPrice, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS } from '@/lib/constants';
-import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2, Clock } from 'lucide-react';
+import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2, Clock, Zap } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useNavigate } from 'react-router-dom';
@@ -95,6 +95,12 @@ export default function MyListings() {
     enabled: !!user,
   });
 
+  // Fetch unassigned stock boosts (from active_seller / expert_seller purchases)
+  const stockBoosts = activeBoosts?.filter(
+    b => b.addon_type === 'boost' && !b.listing_id && b.expires_at && new Date(b.expires_at).getTime() > Date.now()
+  ) || [];
+  const stockBoostCount = stockBoosts.length;
+
   if (!user) { navigate('/auth'); return null; }
 
   const activeListings = listings?.filter((l: any) => l.status === 'active') || [];
@@ -148,6 +154,28 @@ export default function MyListings() {
 
   const selectBoostType = (type: string) => {
     setConfirmBoostType(type);
+  };
+
+  const useStockBoost = async () => {
+    if (!boostListingId) return;
+    setPurchasing(true);
+    const { data, error } = await supabase.functions.invoke('manage-points', {
+      body: { action: 'use_stock_boost', listing_id: boostListingId },
+    });
+    if (error || data?.error) {
+      const msg = data?.error === 'already_boosted'
+        ? 'Cette annonce est déjà boostée'
+        : data?.error === 'no_stock_boosts'
+        ? 'Aucun boost en stock'
+        : t('points.purchaseError');
+      toast({ title: msg, variant: 'destructive' });
+    } else {
+      toast({ title: '🚀 Boost appliqué depuis ton stock !' });
+      await qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      await qc.invalidateQueries({ queryKey: ['my-listings'] });
+    }
+    setPurchasing(false);
+    setBoostDialogOpen(false);
   };
 
   const purchaseBoost = async () => {
@@ -261,6 +289,19 @@ export default function MyListings() {
         {activeListings.length}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}
       </p>
 
+      {/* Stock boosts banner */}
+      {stockBoostCount > 0 && (
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center gap-3">
+          <div className="h-9 w-9 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <Zap className="h-5 w-5 text-blue-500" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold">{stockBoostCount} boost{stockBoostCount > 1 ? 's' : ''} en stock</p>
+            <p className="text-xs text-muted-foreground">Inclus avec ton statut vendeur — clique "Boost" sur une annonce pour l'utiliser</p>
+          </div>
+        </div>
+      )}
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-4 w-full grid grid-cols-3">
           <TabsTrigger value="active" className="text-xs sm:text-sm">{t('myListings.active')} ({activeListings.length})</TabsTrigger>
@@ -293,6 +334,24 @@ export default function MyListings() {
 
           {!confirmBoostType ? (
             <div className="space-y-3">
+              {/* Use stock boost option (if available) */}
+              {stockBoostCount > 0 && (
+                <button
+                  onClick={useStockBoost}
+                  disabled={!!purchasing}
+                  className="w-full p-4 rounded-xl border-2 border-emerald-300 hover:border-emerald-500 bg-emerald-500/5 transition-colors flex items-center gap-3 text-left"
+                >
+                  <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                    <Zap className="h-5 w-5 text-emerald-500" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm">Utiliser un boost en stock</p>
+                    <p className="text-xs text-muted-foreground">Boost 48h gratuit • {stockBoostCount} disponible{stockBoostCount > 1 ? 's' : ''}</p>
+                  </div>
+                  <Badge className="bg-emerald-500 text-white">Gratuit</Badge>
+                </button>
+              )}
+
               <button
                 onClick={() => selectBoostType('boost')}
                 className="w-full p-4 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-colors flex items-center gap-3 text-left"
@@ -304,7 +363,7 @@ export default function MyListings() {
                   <p className="font-semibold text-sm">Boost 48h</p>
                   <p className="text-xs text-muted-foreground">Tête de liste dans ta catégorie</p>
                 </div>
-                <span className="font-bold text-primary">40 pts</span>
+                <span className="font-bold text-primary">50 pts</span>
               </button>
               <button
                 onClick={() => selectBoostType('boost_premium')}
@@ -317,7 +376,7 @@ export default function MyListings() {
                   <p className="font-semibold text-sm">Boost Premium</p>
                   <p className="text-xs text-muted-foreground">Mise en avant sur la page d'accueil</p>
                 </div>
-                <span className="font-bold text-primary">80 pts</span>
+                <span className="font-bold text-primary">100 pts</span>
               </button>
             </div>
           ) : (
@@ -328,7 +387,7 @@ export default function MyListings() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{confirmBoostType === 'boost_premium' ? 'Boost Premium' : 'Boost 48h'}</p>
-                  <p className="text-xs text-muted-foreground">{confirmBoostType === 'boost_premium' ? '80 pts' : '40 pts'}</p>
+                  <p className="text-xs text-muted-foreground">{confirmBoostType === 'boost_premium' ? '100 pts' : '50 pts'}</p>
                 </div>
               </div>
               <p className="text-sm text-center text-muted-foreground">
