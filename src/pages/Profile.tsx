@@ -528,20 +528,24 @@ export default function Profile() {
               <ActiveSellerStatus userId={user.id} isOwner={true} />
               <UserBadges userId={user.id} profile={profile} />
               <TrustIndicator score={profile.trust_score} riskLevel={profile.risk_level as 'low' | 'medium' | 'high'} />
-              <Button variant="outline" size="sm" className="gap-2" onClick={() => {
-                if (isNativePlatform) {
-                  openExternalAuthenticated(`${WEBAPP_URL}/points`);
-                } else {
-                  navigate('/points');
-                }
-              }}>
-                <Coins className="h-4 w-4" />
-                {isNativePlatform ? t('points.boostAndRewards') : t('points.shopTitle')}
-              </Button>
+              {/* Points shop - only for private accounts */}
+              {profile.user_type !== 'business' && (
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => {
+                  if (isNativePlatform) {
+                    openExternalAuthenticated(`${WEBAPP_URL}/points`);
+                  } else {
+                    navigate('/points');
+                  }
+                }}>
+                  <Coins className="h-4 w-4" />
+                  {isNativePlatform ? t('points.boostAndRewards') : t('points.shopTitle')}
+                </Button>
+              )}
+              {/* Pro Dashboard - only for business accounts */}
               {profile.user_type === 'business' && (
                 <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate('/dashboard')}>
                   <BarChart3 className="h-4 w-4" />
-                  {t('dashboard.title')}
+                  {t('pro.proDashboard')}
                 </Button>
               )}
               <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate('/blocked-users')}>
