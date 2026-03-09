@@ -9,6 +9,7 @@ import ListingCard from '@/components/ListingCard';
 import { User, Briefcase, Star, Calendar, Package, ShieldCheck, CheckCircle } from 'lucide-react';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
+import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import BlockUserButton from '@/components/BlockUserButton';
 
 export default function SellerProfile() {
@@ -120,6 +121,7 @@ export default function SellerProfile() {
 
             {/* Badges & Trust */}
             <div className="mt-3 space-y-3 border-t pt-3 w-full">
+              <ActiveSellerStatus userId={id!} showStock={false} />
               <UserBadges userId={id!} profile={seller} />
               <TrustIndicator score={seller.trust_score} riskLevel={seller.risk_level as 'low' | 'medium' | 'high'} />
               <BlockUserButton

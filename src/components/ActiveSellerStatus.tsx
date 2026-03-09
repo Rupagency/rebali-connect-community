@@ -9,9 +9,10 @@ import { Button } from '@/components/ui/button';
 
 interface Props {
   userId: string;
+  showStock?: boolean;
 }
 
-export default function ActiveSellerStatus({ userId }: Props) {
+export default function ActiveSellerStatus({ userId, showStock = true }: Props) {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
@@ -80,7 +81,7 @@ export default function ActiveSellerStatus({ userId }: Props) {
           </div>
         )}
 
-        {stockBoosts.length > 0 && (
+        {showStock && stockBoosts.length > 0 && (
           <div className="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
             <Zap className="h-4 w-4 text-emerald-500 flex-shrink-0" />
             <div className="flex-1">
