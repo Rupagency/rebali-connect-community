@@ -762,13 +762,69 @@ export default function Admin() {
                     <p className="font-medium">{selectedUser.whatsapp || '—'}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Coins className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</p>
-                    <p className="font-medium">{allUserPoints?.find((p: any) => p.user_id === selectedUser.id)?.balance || 0} pts</p>
+                {selectedUser.user_type === 'business' ? (() => {
+                  const userSubs = (proSubscriptions || []).filter((s: any) => s.user_id === selectedUser.id);
+                  const activeSub = userSubs.find((s: any) => s.status === 'active' && new Date(s.expires_at) > new Date());
+                  const getRemainingTime = (expiresAt: string) => {
+                    const diff = new Date(expiresAt).getTime() - Date.now();
+                    if (diff <= 0) return 'Expiré';
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    return days > 0 ? `${days}j ${hours}h` : `${hours}h`;
+                  };
+                  const planLabels: Record<string, string> = { free_pro: 'Pro Gratuit', vendeur_pro: 'Vendeur Pro', agence: 'Agence' };
+                  return (
+                    <>
+                      <div className="col-span-2 p-3 rounded-lg border bg-muted/30 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-primary" />
+                          <span className="text-sm font-semibold">Abonnement Pro</span>
+                        </div>
+                        {activeSub ? (
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm">{planLabels[activeSub.plan_type] || activeSub.plan_type}</span>
+                              <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">Actif</Badge>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              <span>Expire: {new Date(activeSub.expires_at).toLocaleDateString()} ({getRemainingTime(activeSub.expires_at)})</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Boosts: {activeSub.monthly_boosts_used}/{activeSub.monthly_boosts_included} utilisés ce mois
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Prix: {activeSub.price_idr?.toLocaleString()} IDR/mois
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">Aucun abonnement actif</p>
+                        )}
+                        {userSubs.filter((s: any) => s.status !== 'active' || new Date(s.expires_at) <= new Date()).length > 0 && (
+                          <details className="text-xs">
+                            <summary className="cursor-pointer text-muted-foreground">Historique ({userSubs.filter((s: any) => s !== activeSub).length})</summary>
+                            <div className="mt-1 space-y-1">
+                              {userSubs.filter((s: any) => s !== activeSub).slice(0, 5).map((s: any) => (
+                                <div key={s.id} className="flex justify-between text-muted-foreground">
+                                  <span>{planLabels[s.plan_type] || s.plan_type}</span>
+                                  <Badge variant="secondary" className="text-[10px]">{s.status}</Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        )}
+                      </div>
+                    </>
+                  );
+                })() : (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Coins className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</p>
+                      <p className="font-medium">{allUserPoints?.find((p: any) => p.user_id === selectedUser.id)?.balance || 0} pts</p>
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="flex items-center gap-2 text-sm">
                   <Package className="h-4 w-4 text-muted-foreground" />
                   <div>
