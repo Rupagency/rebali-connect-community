@@ -152,7 +152,7 @@ export default function ProSubscription() {
                 <div className="mx-auto h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
                   <TierIcon className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-lg">{t(`pro.${tierInfo.id}`)}</CardTitle>
+                <CardTitle className="text-lg">{tierInfo.id === 'free_pro' ? t('pro.freePro') : tierInfo.id === 'vendeur_pro' ? t('pro.vendeurPro') : t('pro.agence')}</CardTitle>
                 <div className="mt-2">
                   {tierInfo.price === 0 ? (
                     <p className="text-2xl font-bold text-primary">{t('common.free')}</p>
