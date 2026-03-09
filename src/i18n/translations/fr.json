@@ -72,7 +72,7 @@
   
   "notFound": { "title": "Page non trouvée", "description": "La page que vous recherchez n'existe pas.", "backHome": "Retour à l'accueil" },
   "notifications": { "newListing": "Nouvelle annonce !", "listingActive": "Annonce réactivée", "listingSold": "Annonce marquée vendue", "listingArchived": "Annonce archivée", "vipNotify": "Vous serez notifié du lancement VIP !", "alerts": "Alertes", "title": "Notifications", "markAllRead": "Tout marquer lu", "empty": "Aucune notification", "alertLabel": "Alerte", "listing": "Annonce", "enablePush": "Activer les notifications", "pushOn": "Notifications activées", "pushEnabled": "Notifications push activées !", "pushDisabled": "Notifications push désactivées", "pushBlocked": "Notifications bloquées", "pushNewMessage": "Nouveau message", "pushSearchAlert": "Alerte recherche" },
-  "savedSearches": { "title": "Alertes de recherche", "description": "Recevez une notification in-app et WhatsApp quand une annonce correspond à vos mots-clés.", "add": "Ajouter", "placeholder": "Ex : iPhone, scooter, villa...", "empty": "Aucune alerte configurée. Ajoutez un mot-clé ci-dessus.", "added": "Alerte ajoutée !", "deleted": "Alerte supprimée", "tooShort": "Mot-clé trop court (min 2 caractères)", "maxReached": "Maximum {{max}} alertes autorisées", "duplicate": "Ce mot-clé existe déjà", "error": "Erreur", "promoTitle": "Alertes de recherche", "promoDesc": "Recevez des notifications quand une annonce correspond à vos mots-clés. Fonctionnalité réservée aux membres VIP.", "becomeVip": "Devenir VIP" },
+  "savedSearches": { "title": "Alertes de recherche", "description": "Recevez une notification in-app et WhatsApp quand une annonce correspond à vos mots-clés.", "add": "Ajouter", "placeholder": "Ex : iPhone, scooter, villa...", "empty": "Aucune alerte configurée. Ajoutez un mot-clé ci-dessus.", "added": "Alerte ajoutée !", "deleted": "Alerte supprimée", "tooShort": "Mot-clé trop court (min 2 caractères)", "maxReached": "Maximum {{max}} alertes autorisées", "duplicate": "Ce mot-clé existe déjà", "error": "Erreur", "promoTitle": "Alertes de recherche", "promoDesc": "Recevez des notifications quand une annonce correspond à vos mots-clés. Disponible avec le plan Vendeur Pro ou Agence.", "becomeVip": "Devenir VIP", "upgradePro": "Améliorer mon plan Pro" },
   "adminLabels": { "accessDenied": "Accès refusé", "listing": "Annonce", "reporter": "Signaleur", "deleted": "Supprimé", "unknown": "Inconnu" },
   "seller": { "activeListings": "annonces actives", "reviews": "avis", "reviewsTitle": "Avis clients", "leaveReview": "Laisser un avis", "reviewPlaceholder": "Partagez votre expérience avec ce vendeur...", "reviewSubmitted": "Avis envoyé !", "noReviews": "Aucun avis pour le moment", "allListings": "Annonces", "verifiedPurchase": "Acheteur vérifié", "reviewRequiresDeal": "Le vendeur doit confirmer le deal avant que vous puissiez laisser un avis.", "accountTooNew": "Votre compte ou celui du vendeur doit avoir au moins 7 jours pour laisser un avis.", "noExchangeYet": "Une vraie conversation avec des messages des deux côtés est nécessaire.", "alreadyReviewed": "Vous avez déjà laissé un avis pour cette transaction." },
   "security": {
@@ -648,7 +648,8 @@
       "photos": "Photos par annonce",
       "boosts": "Boosts inclus",
       "badge": "Badge vérifié",
-      "analytics": "Statistiques"
+      "analytics": "Statistiques",
+      "searchAlerts": "Alertes de recherche"
     }
   },
   "business": {

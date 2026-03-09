@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import { Check, Crown, Building2, ShieldCheck, Rocket, BarChart3, Package, Image, Lock } from 'lucide-react';
+import { Check, Crown, Building2, ShieldCheck, Rocket, BarChart3, Package, Image, Lock, Bell } from 'lucide-react';
 
 const TIERS = [
   {
@@ -20,6 +20,7 @@ const TIERS = [
       { key: 'boosts', value: '0' },
       { key: 'badge', value: false },
       { key: 'analytics', value: false },
+      { key: 'searchAlerts', value: '0' },
     ],
   },
   {
@@ -31,6 +32,7 @@ const TIERS = [
       { key: 'boosts', value: '5' },
       { key: 'badge', value: 'Pro Vérifié' },
       { key: 'analytics', value: 'basic' },
+      { key: 'searchAlerts', value: '3' },
     ],
   },
   {
@@ -42,6 +44,7 @@ const TIERS = [
       { key: 'boosts', value: '10' },
       { key: 'badge', value: 'Business Certifié' },
       { key: 'analytics', value: 'advanced' },
+      { key: 'searchAlerts', value: '∞' },
     ],
   },
 ];
@@ -93,6 +96,7 @@ export default function ProSubscription() {
       case 'boosts': return Rocket;
       case 'badge': return ShieldCheck;
       case 'analytics': return BarChart3;
+      case 'searchAlerts': return Bell;
       default: return Check;
     }
   };
