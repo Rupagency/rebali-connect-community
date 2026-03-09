@@ -289,6 +289,19 @@ export default function MyListings() {
         {activeListings.length}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}
       </p>
 
+      {/* Stock boosts banner */}
+      {stockBoostCount > 0 && (
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center gap-3">
+          <div className="h-9 w-9 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <Zap className="h-5 w-5 text-blue-500" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold">{stockBoostCount} boost{stockBoostCount > 1 ? 's' : ''} en stock</p>
+            <p className="text-xs text-muted-foreground">Inclus avec ton statut vendeur — clique "Boost" sur une annonce pour l'utiliser</p>
+          </div>
+        </div>
+      )}
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-4 w-full grid grid-cols-3">
           <TabsTrigger value="active" className="text-xs sm:text-sm">{t('myListings.active')} ({activeListings.length})</TabsTrigger>
@@ -321,6 +334,24 @@ export default function MyListings() {
 
           {!confirmBoostType ? (
             <div className="space-y-3">
+              {/* Use stock boost option (if available) */}
+              {stockBoostCount > 0 && (
+                <button
+                  onClick={useStockBoost}
+                  disabled={!!purchasing}
+                  className="w-full p-4 rounded-xl border-2 border-emerald-300 hover:border-emerald-500 bg-emerald-500/5 transition-colors flex items-center gap-3 text-left"
+                >
+                  <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                    <Zap className="h-5 w-5 text-emerald-500" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm">Utiliser un boost en stock</p>
+                    <p className="text-xs text-muted-foreground">Boost 48h gratuit • {stockBoostCount} disponible{stockBoostCount > 1 ? 's' : ''}</p>
+                  </div>
+                  <Badge className="bg-emerald-500 text-white">Gratuit</Badge>
+                </button>
+              )}
+
               <button
                 onClick={() => selectBoostType('boost')}
                 className="w-full p-4 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-colors flex items-center gap-3 text-left"
