@@ -292,6 +292,9 @@ export default function Admin() {
   const [editUserPoints, setEditUserPoints] = useState('');
   const [editUserListingLimit, setEditUserListingLimit] = useState('');
   const [userTypeFilter, setUserTypeFilter] = useState<string>('all');
+  const [editSubPlanType, setEditSubPlanType] = useState('');
+  const [editSubStatus, setEditSubStatus] = useState('');
+  const [editSubDurationMonths, setEditSubDurationMonths] = useState('1');
 
   // Reports query
   const { data: reports } = useQuery({
@@ -383,14 +386,14 @@ export default function Admin() {
     enabled: isAdmin,
   });
 
-  // Pro subscriptions query
+  // Pro subscriptions query (all statuses for admin)
   const { data: proSubscriptions } = useQuery({
     queryKey: ['admin-pro-subscriptions'],
     queryFn: async () => {
       const { data } = await supabase
         .from('pro_subscriptions')
         .select('*')
-        .eq('status', 'active');
+        .order('created_at', { ascending: false });
       return data || [];
     },
     enabled: isAdmin,
@@ -517,6 +520,11 @@ export default function Admin() {
     const userPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
     setEditUserPoints(String(userPts?.balance || 0));
     setEditUserListingLimit(selectedUser.listing_limit_override != null ? String(selectedUser.listing_limit_override) : '');
+    // Init subscription fields for Pro users
+    const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === selectedUser.id && s.status === 'active');
+    setEditSubPlanType(activeSub?.plan_type || 'vendeur_pro');
+    setEditSubStatus(activeSub ? 'active' : 'none');
+    setEditSubDurationMonths('1');
     setEditingUser(true);
   };
 
@@ -531,14 +539,57 @@ export default function Admin() {
       listing_limit_override: listingLimitVal,
     } as any).eq('id', selectedUser.id);
 
-    // Update points if changed
-    const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
-    const newBalance = Math.max(0, parseInt(editUserPoints) || 0);
-    if (newBalance !== (currentPts?.balance || 0)) {
-      await supabase.functions.invoke('manage-points', {
-        body: { action: 'admin_set_balance', target_user_id: selectedUser.id, new_balance: newBalance },
-      });
-      qc.invalidateQueries({ queryKey: ['admin-user-points'] });
+    // Handle points for private users
+    if (selectedUser.user_type !== 'business') {
+      const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
+      const newBalance = Math.max(0, parseInt(editUserPoints) || 0);
+      if (newBalance !== (currentPts?.balance || 0)) {
+        await supabase.functions.invoke('manage-points', {
+          body: { action: 'admin_set_balance', target_user_id: selectedUser.id, new_balance: newBalance },
+        });
+        qc.invalidateQueries({ queryKey: ['admin-user-points'] });
+      }
+    }
+
+    // Handle subscription for Pro users
+    if (selectedUser.user_type === 'business') {
+      const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === selectedUser.id && s.status === 'active');
+      
+      if (editSubStatus === 'none' && activeSub) {
+        // Cancel existing subscription
+        await supabase.from('pro_subscriptions').update({ status: 'cancelled', cancelled_at: new Date().toISOString() }).eq('id', activeSub.id);
+      } else if (editSubStatus === 'active') {
+        const durationMonths = Math.max(1, parseInt(editSubDurationMonths) || 1);
+        const boostsIncluded = editSubPlanType === 'agence' ? 10 : editSubPlanType === 'vendeur_pro' ? 3 : 0;
+        const priceIdr = editSubPlanType === 'agence' ? 249000 : editSubPlanType === 'vendeur_pro' ? 99000 : 0;
+        
+        if (activeSub) {
+          // Update existing subscription
+          const newExpiry = new Date();
+          newExpiry.setMonth(newExpiry.getMonth() + durationMonths);
+          await supabase.from('pro_subscriptions').update({
+            plan_type: editSubPlanType,
+            expires_at: newExpiry.toISOString(),
+            monthly_boosts_included: boostsIncluded,
+            price_idr: priceIdr,
+          }).eq('id', activeSub.id);
+        } else {
+          // Create new subscription
+          const expiresAt = new Date();
+          expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
+          await supabase.from('pro_subscriptions').insert({
+            user_id: selectedUser.id,
+            plan_type: editSubPlanType,
+            status: 'active',
+            started_at: new Date().toISOString(),
+            expires_at: expiresAt.toISOString(),
+            monthly_boosts_included: boostsIncluded,
+            price_idr: priceIdr,
+            payment_method: 'admin',
+          });
+        }
+      }
+      qc.invalidateQueries({ queryKey: ['admin-pro-subscriptions'] });
     }
 
     setSelectedUser((prev: any) => prev ? {
@@ -634,10 +685,47 @@ export default function Admin() {
                   <label className="text-xs text-muted-foreground">{t('profile.whatsapp')}</label>
                   <Input value={editUserWhatsapp} onChange={e => setEditUserWhatsapp(e.target.value)} placeholder="+62..." />
                 </div>
-                <div>
-                  <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
-                  <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
-                </div>
+                {selectedUser.user_type === 'business' ? (
+                  <>
+                    <Separator />
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Abonnement Pro</h4>
+                    <div>
+                      <label className="text-xs text-muted-foreground">Statut</label>
+                      <Select value={editSubStatus} onValueChange={setEditSubStatus}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">Aucun abonnement</SelectItem>
+                          <SelectItem value="active">Actif</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {editSubStatus === 'active' && (
+                      <>
+                        <div>
+                          <label className="text-xs text-muted-foreground">Plan</label>
+                          <Select value={editSubPlanType} onValueChange={setEditSubPlanType}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="free_pro">Pro Gratuit</SelectItem>
+                              <SelectItem value="vendeur_pro">Vendeur Pro (99k/mois)</SelectItem>
+                              <SelectItem value="agence">Agence (249k/mois)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="text-xs text-muted-foreground">Durée (mois)</label>
+                          <Input type="number" min="1" max="12" value={editSubDurationMonths} onChange={e => setEditSubDurationMonths(e.target.value)} />
+                          <p className="text-[10px] text-muted-foreground mt-1">À partir d'aujourd'hui</p>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div>
+                    <label className="text-xs text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</label>
+                    <Input type="number" min="0" value={editUserPoints} onChange={e => setEditUserPoints(e.target.value)} />
+                  </div>
+                )}
                 <div>
                   <label className="text-xs text-muted-foreground">{t('admin.listingLimit') || 'Listing Limit Override'}</label>
                   <Input type="number" min="0" value={editUserListingLimit} onChange={e => setEditUserListingLimit(e.target.value)} placeholder={t('admin.listingLimitPlaceholder') || 'Auto (leave empty)'} />
@@ -674,13 +762,69 @@ export default function Admin() {
                     <p className="font-medium">{selectedUser.whatsapp || '—'}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Coins className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</p>
-                    <p className="font-medium">{allUserPoints?.find((p: any) => p.user_id === selectedUser.id)?.balance || 0} pts</p>
+                {selectedUser.user_type === 'business' ? (() => {
+                  const userSubs = (proSubscriptions || []).filter((s: any) => s.user_id === selectedUser.id);
+                  const activeSub = userSubs.find((s: any) => s.status === 'active' && new Date(s.expires_at) > new Date());
+                  const getRemainingTime = (expiresAt: string) => {
+                    const diff = new Date(expiresAt).getTime() - Date.now();
+                    if (diff <= 0) return 'Expiré';
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    return days > 0 ? `${days}j ${hours}h` : `${hours}h`;
+                  };
+                  const planLabels: Record<string, string> = { free_pro: 'Pro Gratuit', vendeur_pro: 'Vendeur Pro', agence: 'Agence' };
+                  return (
+                    <>
+                      <div className="col-span-2 p-3 rounded-lg border bg-muted/30 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-primary" />
+                          <span className="text-sm font-semibold">Abonnement Pro</span>
+                        </div>
+                        {activeSub ? (
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm">{planLabels[activeSub.plan_type] || activeSub.plan_type}</span>
+                              <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">Actif</Badge>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              <span>Expire: {new Date(activeSub.expires_at).toLocaleDateString()} ({getRemainingTime(activeSub.expires_at)})</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Boosts: {activeSub.monthly_boosts_used}/{activeSub.monthly_boosts_included} utilisés ce mois
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Prix: {activeSub.price_idr?.toLocaleString()} IDR/mois
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">Aucun abonnement actif</p>
+                        )}
+                        {userSubs.filter((s: any) => s.status !== 'active' || new Date(s.expires_at) <= new Date()).length > 0 && (
+                          <details className="text-xs">
+                            <summary className="cursor-pointer text-muted-foreground">Historique ({userSubs.filter((s: any) => s !== activeSub).length})</summary>
+                            <div className="mt-1 space-y-1">
+                              {userSubs.filter((s: any) => s !== activeSub).slice(0, 5).map((s: any) => (
+                                <div key={s.id} className="flex justify-between text-muted-foreground">
+                                  <span>{planLabels[s.plan_type] || s.plan_type}</span>
+                                  <Badge variant="secondary" className="text-[10px]">{s.status}</Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        )}
+                      </div>
+                    </>
+                  );
+                })() : (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Coins className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-muted-foreground">{t('admin.shopPoints') || 'Points Shop'}</p>
+                      <p className="font-medium">{allUserPoints?.find((p: any) => p.user_id === selectedUser.id)?.balance || 0} pts</p>
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="flex items-center gap-2 text-sm">
                   <Package className="h-4 w-4 text-muted-foreground" />
                   <div>
