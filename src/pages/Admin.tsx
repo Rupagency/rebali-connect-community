@@ -386,14 +386,14 @@ export default function Admin() {
     enabled: isAdmin,
   });
 
-  // Pro subscriptions query
+  // Pro subscriptions query (all statuses for admin)
   const { data: proSubscriptions } = useQuery({
     queryKey: ['admin-pro-subscriptions'],
     queryFn: async () => {
       const { data } = await supabase
         .from('pro_subscriptions')
         .select('*')
-        .eq('status', 'active');
+        .order('created_at', { ascending: false });
       return data || [];
     },
     enabled: isAdmin,
