@@ -195,8 +195,8 @@ export default function TrustBadges() {
                 return (
                   <div key={addon.key} className="flex flex-col items-center gap-2 p-4 rounded-lg bg-muted/50 text-center">
                     <Icon className="h-6 w-6 text-primary" />
-                    <p className="text-sm font-semibold">{t(`trustPage.addon.${addon.key}`)}</p>
-                    <p className="text-xs text-muted-foreground">{t(`trustPage.addon.${addon.key}Desc`)}</p>
+                    <p className="text-sm font-semibold">{t(`points.addon.${addon.key}`)}</p>
+                    <p className="text-xs text-muted-foreground">{t(`points.addon.${addon.key}Desc`)}</p>
                     <Badge variant="secondary">{addon.cost} pts</Badge>
                   </div>
                 );
