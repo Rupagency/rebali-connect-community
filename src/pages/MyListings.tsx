@@ -164,13 +164,13 @@ export default function MyListings() {
     });
     if (error || data?.error) {
       const msg = data?.error === 'already_boosted'
-        ? 'Cette annonce est déjà boostée'
+        ? t('points.boost.alreadyBoosted')
         : data?.error === 'no_stock_boosts'
-        ? 'Aucun boost en stock'
+        ? t('points.boost.noStockBoosts')
         : t('points.purchaseError');
       toast({ title: msg, variant: 'destructive' });
     } else {
-      toast({ title: '🚀 Boost appliqué depuis ton stock !' });
+      toast({ title: t('points.boost.stockApplied') });
       await qc.invalidateQueries({ queryKey: ['my-boosts'] });
       await qc.invalidateQueries({ queryKey: ['my-listings'] });
     }
