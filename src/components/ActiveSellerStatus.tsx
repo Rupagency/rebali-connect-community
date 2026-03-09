@@ -9,9 +9,10 @@ import { Button } from '@/components/ui/button';
 
 interface Props {
   userId: string;
+  showStock?: boolean;
 }
 
-export default function ActiveSellerStatus({ userId }: Props) {
+export default function ActiveSellerStatus({ userId, showStock = true }: Props) {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
