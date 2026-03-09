@@ -658,7 +658,7 @@ export default function Admin() {
               ) : (
                 <div className="flex gap-1">
                   <Button size="sm" onClick={saveUserEdits}>
-                    <Save className="h-3 w-3 mr-1" /> {t('admin.saveListing') || 'Save'}
+                    <Save className="h-3 w-3 mr-1" /> {t('common.save')}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => setEditingUser(false)}>
                     <X className="h-3 w-3" />
@@ -1328,7 +1328,7 @@ export default function Admin() {
         <Shield className="h-7 w-7" /> {t('admin.title')}
       </h1>
 
-      {userDetailDialogContent}
+      {userDetailDialogContent}tent}
       <ListingDetailDialog />
 
       <Tabs defaultValue="stats">
