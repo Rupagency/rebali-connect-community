@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { openOrNavigate } from '@/lib/openExternal';
+import { openOrNavigate, openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
+import { isNativePlatform } from '@/capacitor';
 import { toast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, Crown, Building2, ShieldCheck, Rocket, BarChart3, Package, Image, Lock, Bell } from 'lucide-react';
 
 const TIERS = [
