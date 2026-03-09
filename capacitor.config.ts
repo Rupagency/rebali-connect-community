@@ -5,6 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Re-Bali',
   webDir: 'dist',
   server: {
+    url: 'https://1a8d380a-ee50-4c52-a5d9-94d14ab3077f.lovableproject.com?forceHideBadge=true',
+    cleartext: true,
     androidScheme: 'https',
   },
   plugins: {
