@@ -64,6 +64,34 @@ function useFeaturedListings() {
   });
 }
 
+function useHomepageBoostedListings() {
+  return useQuery({
+    queryKey: ['homepage-boosted-listings'],
+    queryFn: async () => {
+      const { data: boosts } = await supabase
+        .from('user_addons')
+        .select('listing_id')
+        .eq('addon_type', 'boost_homepage')
+        .eq('active', true);
+
+      if (!boosts || boosts.length === 0) return [];
+
+      const listingIds = boosts.map(b => b.listing_id).filter(Boolean) as string[];
+      if (listingIds.length === 0) return [];
+
+      const { data } = await supabase
+        .from('listings')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
+        .eq('status', 'active')
+        .in('id', listingIds)
+        .limit(20);
+
+      return data || [];
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+}
+
 function useRecommendedListings(userId: string | undefined) {
   return useQuery({
     queryKey: ['recommended-listings', userId],
@@ -185,6 +213,7 @@ export default function Home() {
   });
 
   const { data: featuredListings, isLoading: featuredLoading } = useFeaturedListings();
+  const { data: homepageBoosted, isLoading: homepageBoostedLoading } = useHomepageBoostedListings();
 
   // Personalized recommendations (only for logged-in users)
   const { data: recommendedListings, isLoading: recoLoading } = useRecommendedListings(user?.id);
@@ -193,7 +222,8 @@ export default function Home() {
   const latestIds = (listings || []).map((l: any) => l.id);
   const featuredIds = (featuredListings || []).map((l: any) => l.id);
   const recoIds = (recommendedListings || []).map((l: any) => l.id);
-  const allIds = [...new Set([...latestIds, ...featuredIds, ...recoIds])];
+  const homepageBoostedIds = (homepageBoosted || []).map((l: any) => l.id);
+  const allIds = [...new Set([...latestIds, ...featuredIds, ...recoIds, ...homepageBoostedIds])];
   const { data: boostsMap } = useListingBoosts(allIds);
   const { data: favCountsMap } = useListingFavCounts(allIds);
 
@@ -414,6 +444,19 @@ export default function Home() {
         </div>
         <ListingMarquee listings={listings || []} isLoading={isLoading} emptyMessage={t('common.noResults')} />
       </section>
+
+      {/* 🚀 Homepage Boosted Listings - Marquee */}
+      {(homepageBoostedLoading || (homepageBoosted && homepageBoosted.length > 0)) && (
+        <section className="container mx-auto px-4 py-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+              <Star className="h-5 w-5 text-amber-500" />
+              {t('home.highlightedListings')}
+            </h2>
+          </div>
+          <ListingMarquee listings={homepageBoosted || []} isLoading={homepageBoostedLoading} emptyMessage="" />
+        </section>
+      )}
 
       {/* 🎯 Personalized Recommendations (logged-in users only) */}
       {user && recommendedListings && recommendedListings.length > 0 && (
