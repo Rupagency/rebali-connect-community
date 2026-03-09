@@ -215,7 +215,7 @@ export default function Auth() {
                     >
                       <Briefcase className="h-6 w-6" />
                       <span className="text-sm font-medium">{t('auth.proAccount')}</span>
-                      <span className="text-xs text-muted-foreground text-center">{t('auth.proDesc')}</span>
+                      <span className="text-xs text-muted-foreground text-center">{t('auth.proDescFull')}</span>
                     </button>
                   </div>
                 </div>
