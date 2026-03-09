@@ -118,7 +118,7 @@ export default function ListingDetail() {
     enabled: !!id,
   });
 
-  const seller = listing?.profiles as any;
+  const seller = sellerProfile as any;
 
   const { data: sellerReviews } = useQuery({
     queryKey: ['seller-reviews', seller?.id],
