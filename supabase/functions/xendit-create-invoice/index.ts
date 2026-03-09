@@ -17,6 +17,8 @@ const POINT_PACKS: Record<string, { points: number; price: number }> = {
 const PRO_PLANS: Record<string, { price: number; label: string; boosts: number }> = {
   vendeur_pro: { price: 99000, label: "Vendeur Pro", boosts: 5 },
   agence: { price: 249000, label: "Agence / Business", boosts: 10 },
+  monthly: { price: 149000, label: "Pro Mensuel", boosts: 5 },
+  annual: { price: 1490000, label: "Pro Annuel", boosts: 5 },
 };
 
 const BOOST_PACKS: Record<string, { quantity: number; price: number }> = {
