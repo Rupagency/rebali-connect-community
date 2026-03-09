@@ -159,8 +159,7 @@ export default function CreateListing() {
 
         const shortSide = Math.min(w, h);
         const fontSize = Math.max(16, Math.round(shortSide / 28));
-        const date = new Date().toLocaleDateString('fr-FR');
-        const text = `Re-Bali • @${username} • ${date}`;
+        const text = `Re-Bali.com • @${username}`;
 
         ctx.font = `bold ${fontSize}px Arial, sans-serif`;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
