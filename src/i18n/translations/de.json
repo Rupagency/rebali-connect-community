@@ -457,5 +457,6 @@
     "trust3Title": "Sofortige Veröffentlichung",
     "trust3Desc": "Deine Anzeige ist in Sekunden online, sichtbar für die gesamte Community.",
     "cta": "Erstelle deine erste Anzeige"
-  }
+  },
+  "sellerStatus": { "active": "Aktiv", "remaining": "Verbleibend", "expired": "Abgelaufen", "daysShort": "T", "boostsInStock": "Boost(s) auf Lager", "boostsDesc": "Verwende sie über Meine Anzeigen", "use": "Nutzen" }
 }

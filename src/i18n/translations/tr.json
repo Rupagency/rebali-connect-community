@@ -555,5 +555,6 @@
     "trust3Title": "Anında yayınlama",
     "trust3Desc": "İlanınız saniyeler içinde yayına girer, tüm topluluk tarafından görülür.",
     "cta": "İlk ilanınızı yayınlayın"
-  }
+  },
+  "sellerStatus": { "active": "Aktif", "remaining": "Kalan süre", "expired": "Süresi doldu", "daysShort": "g", "boostsInStock": "stokta boost", "boostsDesc": "İlanlarım'dan kullanın", "use": "Kullan" }
 }

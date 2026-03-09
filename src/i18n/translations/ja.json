@@ -553,5 +553,6 @@
     "trust3Title": "即時公開",
     "trust3Desc": "リスティングは数秒でライブに。コミュニティ全体に表示されます。",
     "cta": "最初のリスティングを投稿"
-  }
+  },
+  "sellerStatus": { "active": "有効", "remaining": "残り時間", "expired": "期限切れ", "daysShort": "日", "boostsInStock": "ブースト在庫", "boostsDesc": "マイリスティングから使用", "use": "使う" }
 }

@@ -381,5 +381,6 @@
     "trust3Title": "Direct publiceren",
     "trust3Desc": "Je advertentie staat in seconden online, zichtbaar voor de hele community.",
     "cta": "Plaats je eerste advertentie"
-  }
+  },
+  "sellerStatus": { "active": "Actief", "remaining": "Resterend", "expired": "Verlopen", "daysShort": "d", "boostsInStock": "boost(s) op voorraad", "boostsDesc": "Gebruik ze via Mijn advertenties", "use": "Gebruiken" }
 }
