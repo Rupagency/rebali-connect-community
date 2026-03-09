@@ -376,6 +376,17 @@ export default function CreateListing() {
     return null;
   }
 
+  // Pro users must have NPWP verified (is_verified_seller) before selling
+  if (profile?.user_type === 'business' && !profile?.is_verified_seller) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+        <ShieldCheck className="h-12 w-12 text-muted-foreground mx-auto" />
+        <p className="text-lg text-muted-foreground">{t('security.npwpRequiredToSell')}</p>
+        <Button className="mt-4" onClick={() => navigate('/profile')}>{t('security.npwpGoVerify')}</Button>
+      </div>
+    );
+  }
+
   if (!profile?.phone_verified) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">

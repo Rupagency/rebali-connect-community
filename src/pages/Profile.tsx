@@ -166,11 +166,14 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
   const [loadingStatus, setLoadingStatus] = useState(true);
   const selfieInputRef = useRef<HTMLInputElement>(null);
 
+  // Pro users use NPWP verification instead
+  const isPro = profile?.user_type === 'business';
+
   useEffect(() => {
     const fetchStatus = async () => {
       const { data } = await supabase
         .from('id_verifications')
-        .select('status')
+        .select('status, document_type')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(1);
@@ -190,11 +193,15 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
           <div className="flex items-center gap-3">
             <ShieldCheck className="h-6 w-6 text-green-500" />
             <div>
-              <p className="font-semibold text-green-700">{t('security.verifiedSeller')}</p>
-              <p className="text-sm text-muted-foreground">{t('security.verifiedSellerDesc')}</p>
+              <p className="font-semibold text-green-700">
+                {isPro ? t('security.npwpVerified') : t('security.verifiedSeller')}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {isPro ? t('security.npwpVerifiedDesc') : t('security.verifiedSellerDesc')}
+              </p>
             </div>
             <Badge className="ml-auto bg-green-500/10 text-green-600 border-green-500/20">
-              <ShieldCheck className="h-3.5 w-3.5 mr-1" /> {t('security.verifiedSeller')}
+              <ShieldCheck className="h-3.5 w-3.5 mr-1" /> {isPro ? 'NPWP' : t('security.verifiedSeller')}
             </Badge>
           </div>
         </CardContent>
@@ -211,7 +218,9 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
             <Clock className="h-6 w-6 text-amber-500" />
             <div>
               <p className="font-semibold text-amber-700">{t('security.verificationPending')}</p>
-              <p className="text-sm text-muted-foreground">{t('security.verificationPendingDesc')}</p>
+              <p className="text-sm text-muted-foreground">
+                {isPro ? t('security.npwpPendingDesc') : t('security.verificationPendingDesc')}
+              </p>
             </div>
             <Badge className="ml-auto bg-amber-500/10 text-amber-600 border-amber-500/20">
               <Clock className="h-3.5 w-3.5 mr-1" /> {t('admin.pending')}
@@ -222,7 +231,7 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
     );
   }
 
-  const handleSelfieCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) return;
@@ -256,6 +265,68 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
     setSubmitting(false);
   };
 
+  // --- PRO: NPWP verification ---
+  if (isPro) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5" /> {t('security.npwpTitle')}
+          </CardTitle>
+          <CardDescription>{t('security.npwpDesc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {verificationStatus === 'rejected' && (
+            <div className="p-3 rounded-md bg-destructive/10 text-destructive text-sm">
+              {t('security.npwpRejected')}
+            </div>
+          )}
+          <div>
+            <Label>{t('security.npwpUploadLabel')}</Label>
+            <p className="text-xs text-muted-foreground mb-2">{t('security.npwpUploadHint')}</p>
+            {selfiePreview ? (
+              <div className="relative">
+                <img src={selfiePreview} alt="NPWP preview" className="w-full max-w-xs rounded-lg border mx-auto" />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 w-full max-w-xs mx-auto block"
+                  onClick={() => {
+                    setSelfieFile(null);
+                    setSelfiePreview(null);
+                    if (selfieInputRef.current) selfieInputRef.current.value = '';
+                  }}
+                >
+                  {t('security.npwpRetake')}
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                className="w-full py-8 border-dashed flex flex-col items-center gap-2"
+                onClick={() => selfieInputRef.current?.click()}
+              >
+                <Upload className="h-8 w-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">{t('security.npwpChooseFile')}</span>
+              </Button>
+            )}
+            <input
+              ref={selfieInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
+          </div>
+          <Button onClick={handleSubmit} disabled={submitting || !selfieFile} className="w-full">
+            {submitting ? t('common.loading') : t('security.npwpSubmit')}
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // --- PRIVATE: Selfie verification ---
   return (
     <Card>
       <CardHeader>
@@ -299,14 +370,13 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
               <span className="text-sm text-muted-foreground">{t('security.openCamera')}</span>
             </Button>
           )}
-          {/* capture="user" forces front camera, no file import allowed */}
           <input
             ref={selfieInputRef}
             type="file"
             accept="image/*"
             capture="user"
             className="hidden"
-            onChange={handleSelfieCapture}
+            onChange={handleFileSelect}
           />
         </div>
         <Button onClick={handleSubmit} disabled={submitting || !selfieFile} className="w-full">
