@@ -1329,7 +1329,7 @@ export default function Admin() {
       </h1>
 
       {userDetailDialogContent}
-      <ListingDetailDialog />
+      {listingDetailDialogContent}
 
       <Tabs defaultValue="stats">
         <TabsList className="grid w-full grid-cols-7">
