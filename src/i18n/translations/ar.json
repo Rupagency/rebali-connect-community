@@ -257,7 +257,20 @@
     "selfieOnlyDesc": "التقط صورة سيلفي للحصول على شارة بائع موثق",
     "takeSelfie": "التقط سيلفي",
     "selfieInstructions": "التقط صورة واضحة لوجهك باستخدام الكاميرا الأمامية",
-    "openCamera": "فتح الكاميرا"
+    "openCamera": "فتح الكاميرا",
+    "npwpTitle": "التحقق من NPWP",
+    "npwpDesc": "قم بتحميل صورة NPWP (الرقم الضريبي) لتفعيل حسابك الاحترافي. سيتحقق أحد أعضاء الفريق.",
+    "npwpVerified": "تم التحقق من NPWP",
+    "npwpVerifiedDesc": "تم التحقق من NPWP الخاص بك. يمكنك الآن البيع على Re-Bali.",
+    "npwpPendingDesc": "يتم مراجعة NPWP الخاص بك من قبل فريقنا. عادة ما يستغرق 24-48 ساعة.",
+    "npwpRejected": "تم رفض التحقق من NPWP. يرجى تحميل صورة واضحة.",
+    "npwpUploadLabel": "تحميل NPWP",
+    "npwpUploadHint": "التقط صورة واضحة لـ NPWP (حد أقصى 5 ميجابايت)",
+    "npwpRetake": "اختيار صورة أخرى",
+    "npwpChooseFile": "اختيار صورة NPWP",
+    "npwpSubmit": "إرسال NPWP للتحقق",
+    "npwpRequiredToSell": "يجب التحقق من NPWP قبل البيع كمحترف. انتقل إلى ملفك الشخصي.",
+    "npwpGoVerify": "التحقق من NPWP"
   },
   "favorites": { "title": "مفضلاتي", "empty": "لم تحفظ أي مفضلات بعد" },
   "messages": {

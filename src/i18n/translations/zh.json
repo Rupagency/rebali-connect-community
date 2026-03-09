@@ -78,7 +78,20 @@
     "selfieOnlyDesc": "拍一张自拍以获得认证卖家徽章",
     "takeSelfie": "拍自拍",
     "selfieInstructions": "使用前置摄像头拍一张清晰的面部照片",
-    "openCamera": "打开相机"
+    "openCamera": "打开相机",
+    "npwpTitle": "NPWP验证",
+    "npwpDesc": "上传您的NPWP（税务ID）照片以激活Pro账户。工作人员将进行验证。",
+    "npwpVerified": "NPWP已验证",
+    "npwpVerifiedDesc": "您的NPWP已通过验证，现在可以在Re-Bali上销售。",
+    "npwpPendingDesc": "您的NPWP正在审核中，通常需要24-48小时。",
+    "npwpRejected": "您的NPWP验证被拒绝，请上传清晰可读的照片。",
+    "npwpUploadLabel": "上传您的NPWP",
+    "npwpUploadHint": "拍一张清晰的NPWP照片（最大5 MB）",
+    "npwpRetake": "选择其他照片",
+    "npwpChooseFile": "选择NPWP照片",
+    "npwpSubmit": "提交NPWP进行验证",
+    "npwpRequiredToSell": "您必须验证NPWP才能作为Pro销售。请前往个人资料上传。",
+    "npwpGoVerify": "验证我的NPWP"
   },
   "favorites": {
     "title": "我的收藏",

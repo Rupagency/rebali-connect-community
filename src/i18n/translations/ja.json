@@ -255,7 +255,20 @@
     "selfieOnlyDesc": "認証済みセラーバッジを取得するには自撮りしてください",
     "takeSelfie": "自撮りする",
     "selfieInstructions": "フロントカメラで顔の鮮明な写真を撮ってください",
-    "openCamera": "カメラを開く"
+    "openCamera": "カメラを開く",
+    "npwpTitle": "NPWP認証",
+    "npwpDesc": "Proアカウントを有効にするためにNPWP（納税者番号）の写真をアップロードしてください。スタッフが確認します。",
+    "npwpVerified": "NPWP認証済み",
+    "npwpVerifiedDesc": "NPWPが認証されました。Re-Baliで販売を開始できます。",
+    "npwpPendingDesc": "NPWPは審査中です。通常24-48時間かかります。",
+    "npwpRejected": "NPWP認証が却下されました。鮮明な写真をアップロードしてください。",
+    "npwpUploadLabel": "NPWPをアップロード",
+    "npwpUploadHint": "NPWPの鮮明な写真を撮ってください（最大5 MB）",
+    "npwpRetake": "別の写真を選択",
+    "npwpChooseFile": "NPWPの写真を選択",
+    "npwpSubmit": "NPWPを認証に提出",
+    "npwpRequiredToSell": "Proとして販売する前にNPWPを認証する必要があります。プロフィールに移動してください。",
+    "npwpGoVerify": "NPWPを認証する"
   },
   "favorites": { "title": "お気に入り", "empty": "まだお気に入りはありません" },
   "messages": {

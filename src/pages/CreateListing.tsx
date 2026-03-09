@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
 import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
-import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle } from 'lucide-react';
+import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
@@ -374,6 +374,17 @@ export default function CreateListing() {
   if (!user) {
     navigate('/auth');
     return null;
+  }
+
+  // Pro users must have NPWP verified (is_verified_seller) before selling
+  if (profile?.user_type === 'business' && !profile?.is_verified_seller) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center space-y-4">
+        <ShieldCheck className="h-12 w-12 text-muted-foreground mx-auto" />
+        <p className="text-lg text-muted-foreground">{t('security.npwpRequiredToSell')}</p>
+        <Button className="mt-4" onClick={() => navigate('/profile')}>{t('security.npwpGoVerify')}</Button>
+      </div>
+    );
   }
 
   if (!profile?.phone_verified) {

@@ -257,7 +257,20 @@
     "selfieOnlyDesc": "Doğrulanmış Satıcı rozetini almak için selfie çekin",
     "takeSelfie": "Selfie çekin",
     "selfieInstructions": "Ön kamerayla yüzünüzün net bir fotoğrafını çekin",
-    "openCamera": "Kamerayı aç"
+    "openCamera": "Kamerayı aç",
+    "npwpTitle": "NPWP Doğrulama",
+    "npwpDesc": "Pro hesabınızı etkinleştirmek için NPWP (vergi numarası) fotoğrafı yükleyin. Bir ekip üyesi doğrulayacaktır.",
+    "npwpVerified": "NPWP Doğrulandı",
+    "npwpVerifiedDesc": "NPWP'niz doğrulandı. Artık Re-Bali'de satış yapabilirsiniz.",
+    "npwpPendingDesc": "NPWP'niz ekibimiz tarafından inceleniyor. Bu genellikle 24-48 saat sürer.",
+    "npwpRejected": "NPWP doğrulamanız reddedildi. Lütfen okunabilir bir fotoğraf yükleyin.",
+    "npwpUploadLabel": "NPWP'nizi yükleyin",
+    "npwpUploadHint": "NPWP'nizin net bir fotoğrafını çekin (maks 5 MB)",
+    "npwpRetake": "Başka fotoğraf seçin",
+    "npwpChooseFile": "NPWP fotoğrafı seçin",
+    "npwpSubmit": "NPWP'yi doğrulamaya gönder",
+    "npwpRequiredToSell": "Pro olarak satış yapmadan önce NPWP'nizi doğrulamalısınız. Profilinize gidin.",
+    "npwpGoVerify": "NPWP'mi doğrula"
   },
   "favorites": { "title": "Favorilerim", "empty": "Henüz favori kaydetmediniz" },
   "messages": {

@@ -257,7 +257,20 @@
     "selfieOnlyDesc": "सत्यापित विक्रेता बैज पाने के लिए सेल्फी लें",
     "takeSelfie": "सेल्फी लें",
     "selfieInstructions": "फ्रंट कैमरे से अपने चेहरे की स्पष्ट फोटो लें",
-    "openCamera": "कैमरा खोलें"
+    "openCamera": "कैमरा खोलें",
+    "npwpTitle": "NPWP सत्यापन",
+    "npwpDesc": "अपने Pro खाते को सक्रिय करने के लिए NPWP (कर ID) की फोटो अपलोड करें। एक स्टाफ सदस्य इसकी जांच करेगा।",
+    "npwpVerified": "NPWP सत्यापित",
+    "npwpVerifiedDesc": "आपका NPWP सत्यापित हो गया है। अब आप Re-Bali पर बेच सकते हैं।",
+    "npwpPendingDesc": "आपका NPWP हमारी टीम द्वारा समीक्षाधीन है। इसमें आमतौर पर 24-48 घंटे लगते हैं।",
+    "npwpRejected": "आपका NPWP सत्यापन अस्वीकृत हो गया। कृपया स्पष्ट फोटो अपलोड करें।",
+    "npwpUploadLabel": "अपना NPWP अपलोड करें",
+    "npwpUploadHint": "NPWP की स्पष्ट फोटो लें (अधिकतम 5 MB)",
+    "npwpRetake": "दूसरी फोटो चुनें",
+    "npwpChooseFile": "NPWP की फोटो चुनें",
+    "npwpSubmit": "NPWP सत्यापन के लिए भेजें",
+    "npwpRequiredToSell": "Pro के रूप में बेचने से पहले आपको NPWP सत्यापित करना होगा। अपनी प्रोफ़ाइल पर जाएं।",
+    "npwpGoVerify": "मेरा NPWP सत्यापित करें"
   },
   "favorites": { "title": "मेरे पसंदीदा", "empty": "आपने अभी तक कोई पसंदीदा नहीं सहेजा है" },
   "messages": {
