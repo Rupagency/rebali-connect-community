@@ -374,7 +374,7 @@
     "dynamic": { "completedDeal": "Tamamlanan anlaşma", "fiveStarReview": "5★ değerlendirme alındı", "validatedReport": "Doğrulanmış dolandırıcılık raporu" },
     "monthlyCap": "Aylık limit: Aktiviteden 200 puan (her ay sıfırlanır)",
     "pointsHowToSpend": "Neler satın alabilirsiniz",
-    "addon": { "boost": "İlan Öne Çıkarma", "boostDesc": "Bir ilanı 48 saat kategori sonuçlarının başına çıkarın", "boost_premium": "Öne Çıkan İlan", "boost_premiumDesc": "48 saat ana sayfada büyük kartla gösterilir", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extraListings": "Ekstra 5 İlan", "extraListingsDesc": "30 gün boyunca 5 ek ilan yeri (maks 2 paket)", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
+    "addon": { "boost": "İlan Öne Çıkarma", "boostDesc": "Bir ilanı 48 saat kategori sonuçlarının başına çıkarın", "boost_premium": "Öne Çıkan İlan", "boost_premiumDesc": "48 saat ana sayfada büyük kartla gösterilir", "active_seller": "Aktif Satıcı", "active_sellerDesc": "Rozet + %15 organik görünürlük + 2 boost dahil (30 gün)", "extraListings": "+7 İlan Yeri", "extraListingsDesc": "30 gün boyunca 7 ek ilan yeri (maks 2 paket)", "expert_seller": "Uzman Satıcı", "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 5 boost + istatistik (30 gün)" },
     "pointsNote": "Önemli notlar:", "pointsNote1": "Puanlar tek kullanımlıktır — satın alınca kalıcı olarak düşürülür.", "pointsNote2": "Rozet senkronizasyonu her rozet için yalnızca bir kez yapılabilir.", "pointsNote3": "Puanlar güven puanından bağımsızdır."
   },
   "points": {

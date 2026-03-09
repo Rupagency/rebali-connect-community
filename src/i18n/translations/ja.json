@@ -372,7 +372,7 @@
     "dynamic": { "completedDeal": "完了した取引", "fiveStarReview": "5★レビュー受信", "validatedReport": "確認済み詐欺報告" },
     "monthlyCap": "月間上限：活動から200pt（毎月リセット）",
     "pointsHowToSpend": "購入できるもの",
-    "addon": { "boost": "出品ブースト", "boostDesc": "出品を48時間カテゴリ結果のトップに表示", "boost_premium": "注目出品", "boost_premiumDesc": "48時間ホームページに大きなカードで掲載", "active_seller": "アクティブセラー", "active_sellerDesc": "バッジ + 15%オーガニック表示 + 2ブースト付き（30日）", "extraListings": "追加5出品枠", "extraListingsDesc": "30日間5つの追加出品枠（最大2パック）", "expert_seller": "エキスパートセラー", "expert_sellerDesc": "エキスパートバッジ + 30%表示 + 5ブースト + 分析（30日）" },
+    "addon": { "boost": "出品ブースト", "boostDesc": "出品を48時間カテゴリ結果のトップに表示", "boost_premium": "注目出品", "boost_premiumDesc": "48時間ホームページに大きなカードで掲載", "active_seller": "アクティブセラー", "active_sellerDesc": "バッジ + 15%オーガニック表示 + 2ブースト付き（30日）", "extraListings": "+7出品枠", "extraListingsDesc": "30日間7つの追加出品枠（最大2パック）", "expert_seller": "エキスパートセラー", "expert_sellerDesc": "エキスパートバッジ + 30%表示 + 5ブースト + 分析（30日）" },
     "pointsNote": "重要事項：", "pointsNote1": "ポイントは使い切り通貨です — 購入時に永久に差し引かれます。", "pointsNote2": "バッジの同期は各バッジにつき1回のみ可能です。", "pointsNote3": "ポイントは信頼スコアとは独立しています。"
   },
   "points": {
