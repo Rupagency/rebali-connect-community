@@ -9,6 +9,10 @@ export const isNativePlatform = Capacitor.isNativePlatform();
 export async function initCapacitor() {
   if (!isNativePlatform) return;
 
+  // Tag body with platform class for CSS targeting
+  document.body.classList.add('capacitor-native');
+  document.body.classList.add(`capacitor-${Capacitor.getPlatform()}`);
+
   // Status bar styling
   await StatusBar.setStyle({ style: Style.Dark });
   await StatusBar.setOverlaysWebView({ overlay: true });
