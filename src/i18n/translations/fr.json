@@ -637,5 +637,15 @@
       "badge": "Badge vérifié",
       "analytics": "Statistiques"
     }
+  },
+  "business": {
+    "portfolio": "Portfolio",
+    "editPage": "Modifier la page entreprise",
+    "logo": "Logo de l'entreprise",
+    "uploadLogo": "Télécharger le logo",
+    "name": "Nom de l'entreprise",
+    "namePlaceholder": "Le nom de votre entreprise",
+    "description": "Description",
+    "descPlaceholder": "Décrivez votre activité..."
   }
 }
