@@ -431,5 +431,30 @@
     "unblocked": "Benutzer freigegeben",
     "blockedUsersTitle": "Blockierte Benutzer",
     "noBlockedUsers": "Du hast noch niemanden blockiert."
+  },
+  "howItWorks": {
+    "subtitle": "Ob Verkaufen oder Kaufen – einfach, schnell und 100% kostenlos",
+    "step": "Schritt",
+    "sellerTitle": "Verkäufer",
+    "seller1Title": "Erstelle deine Anzeige",
+    "seller1Desc": "Mach Fotos, schreibe eine Beschreibung und setze deinen Preis. Veröffentliche in Minuten, komplett kostenlos.",
+    "seller2Title": "Erhalte Nachrichten",
+    "seller2Desc": "Interessierte Käufer kontaktieren dich direkt über WhatsApp oder den integrierten Messenger.",
+    "seller3Title": "Schließe den Verkauf ab",
+    "seller3Desc": "Triff den Käufer, prüft gemeinsam und schließt die Transaktion sicher ab.",
+    "buyerTitle": "Käufer",
+    "buyer1Title": "Finde was du suchst",
+    "buyer1Desc": "Durchsuche tausende Anzeigen nach Kategorie, Standort oder Stichwort mit unserer intelligenten Suche.",
+    "buyer2Title": "Speichern & vergleichen",
+    "buyer2Desc": "Zu Favoriten hinzufügen, Benachrichtigungen aktivieren und personalisierte Empfehlungen erhalten.",
+    "buyer3Title": "Kontaktiere & kaufe",
+    "buyer3Desc": "Chatte direkt mit dem Verkäufer, verhandle und schließe deinen Kauf persönlich ab.",
+    "trust1Title": "Verifizierte Verkäufer",
+    "trust1Desc": "Identitätsprüfung und Vertrauensbewertung für jeden Verkäufer.",
+    "trust2Title": "100% kostenlos",
+    "trust2Desc": "Keine Gebühren, keine Provisionen. Inseriere und kaufe ohne Grenzen.",
+    "trust3Title": "Sofortige Veröffentlichung",
+    "trust3Desc": "Deine Anzeige ist in Sekunden online, sichtbar für die gesamte Community.",
+    "cta": "Erstelle deine erste Anzeige"
   }
 }
