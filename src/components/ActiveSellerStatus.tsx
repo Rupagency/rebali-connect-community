@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 interface Props {
   userId: string;
   showStock?: boolean;
+  isOwner?: boolean;
 }
 
 export default function ActiveSellerStatus({ userId, showStock = true }: Props) {
