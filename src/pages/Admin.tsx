@@ -131,7 +131,7 @@ function VerifiedSellerCard({ verification, displayName }: { verification: any; 
         <>
           {!showSelfie ? (
             <Button size="sm" variant="outline" onClick={loadSelfie} disabled={loading}>
-              <Eye className="h-3 w-3 mr-1" /> {loading ? '...' : (t('admin.viewSelfie') || 'Voir le selfie vérifié')}
+              <Eye className="h-3 w-3 mr-1" /> {loading ? '...' : t('admin.viewSelfie')}
             </Button>
           ) : (
             selfieUrl && (
@@ -143,7 +143,7 @@ function VerifiedSellerCard({ verification, displayName }: { verification: any; 
         </>
       )}
       {verification?.documents_purged_at && (
-        <p className="text-xs text-muted-foreground italic">{t('admin.documentsPurged') || 'Documents supprimés (rétention 30j)'}</p>
+        <p className="text-xs text-muted-foreground italic">{t('admin.documentsPurged')}</p>
       )}
     </div>
   );
@@ -608,7 +608,7 @@ export default function Admin() {
     } : null);
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setEditingUser(false);
-    toast({ title: t('admin.profileSaved') || 'Profile saved' });
+    toast({ title: t('admin.profileSaved') });
   };
 
   // User detail dialog content — rendered inline (not as a component) to avoid remounting on state changes
@@ -621,8 +621,8 @@ export default function Admin() {
     const userArchivedListings = userListings.filter((l: any) => l.status === 'archived');
 
     return (
-      <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+      <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open && !editingUser) setSelectedUser(null); }}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto" onInteractOutside={(e) => { if (editingUser) e.preventDefault(); }} onEscapeKeyDown={(e) => { if (editingUser) { e.preventDefault(); setEditingUser(false); } }}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -1080,8 +1080,8 @@ export default function Admin() {
     const listingReports = reports?.filter((r: any) => r.listing_id === selectedListing.id) || [];
 
     return (
-      <Dialog open={!!selectedListing} onOpenChange={(open) => { if (!open) { setSelectedListing(null); setEditingListing(false); } }}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+      <Dialog open={!!selectedListing} onOpenChange={(open) => { if (!open && !editingListing) { setSelectedListing(null); setEditingListing(false); } }}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto" onInteractOutside={(e) => { if (editingListing) e.preventDefault(); }} onEscapeKeyDown={(e) => { if (editingListing) { e.preventDefault(); setEditingListing(false); } }}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
