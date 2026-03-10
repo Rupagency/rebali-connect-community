@@ -364,18 +364,8 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Create translation placeholders - set the user's language as the original text
-        const translations = SUPPORTED_LANGUAGES.map(lang => ({
-          listing_id: listing.id,
-          lang: lang.code,
-          title: lang.code === language ? form.title : 'Pending translation',
-          description: lang.code === language ? form.description : 'Pending translation',
-          is_machine: lang.code !== language,
-        }));
-        await supabase.from('listing_translations').insert(translations);
-
-        // Trigger translation in background
-        supabase.functions.invoke('translate-listing', { body: { listing_id: listing.id } });
+        // Trigger translation and wait for a reliable kickoff before redirect
+        await triggerListingTranslation(listing.id);
 
         toast({ title: t('createListing.listingCreated') });
         navigate(`/listing/${listing.id}`);

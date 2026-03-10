@@ -222,6 +222,31 @@ export default function ListingDetail() {
   const description = translation?.description && translation.description !== 'Pending translation' ? translation.description : enTranslation?.description && enTranslation.description !== 'Pending translation' ? enTranslation.description : listing.description_original;
   const isTranslated = translation && translation.title !== 'Pending translation';
 
+  useEffect(() => {
+    if (!id || !listing || language === 'en') return;
+
+    const langTranslation = listing.listing_translations?.find((tr: any) => tr.lang === language);
+    const ready =
+      !!langTranslation?.title &&
+      !!langTranslation?.description &&
+      langTranslation.title !== 'Pending translation' &&
+      langTranslation.description !== 'Pending translation';
+
+    if (ready) {
+      autoTranslateTriggeredRef.current = null;
+      return;
+    }
+
+    const triggerKey = `${id}:${language}`;
+    if (autoTranslateTriggeredRef.current === triggerKey) return;
+
+    autoTranslateTriggeredRef.current = triggerKey;
+    void supabase.functions
+      .invoke('translate-listing', { body: { listing_id: id } })
+      .then(() => refetchListing())
+      .catch((error) => console.error('translate-listing retry failed:', error));
+  }, [id, listing, language, refetchListing]);
+
   const images = (listing.listing_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order);
   const isPro = seller?.user_type === 'business';
 
