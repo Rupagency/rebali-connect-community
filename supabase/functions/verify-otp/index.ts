@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { phone_number, otp_code, user_id } = await req.json();
+    let { phone_number, otp_code, user_id } = await req.json();
     if (!phone_number || !otp_code || !user_id) {
       return new Response(JSON.stringify({ error: "phone_number, otp_code and user_id required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
