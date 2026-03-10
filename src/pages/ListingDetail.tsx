@@ -449,7 +449,7 @@ export default function ListingDetail() {
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 overflow-x-auto max-w-full pb-2">
                 {images.map((img: any, i: number) => (
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
