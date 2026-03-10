@@ -368,9 +368,9 @@ export default function ListingDetail() {
       </div>
 
       <div className="container mx-auto px-4 pb-10">
-        <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+        <div className="grid lg:grid-cols-[1fr_380px] gap-8 min-w-0">
           {/* Left column */}
-          <div>
+          <div className="min-w-0">
             {/* Image gallery */}
             <div className="relative rounded-xl overflow-hidden bg-muted mb-2">
             <div className="aspect-[4/3] relative">
@@ -449,7 +449,7 @@ export default function ListingDetail() {
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 overflow-x-auto max-w-full pb-2">
                 {images.map((img: any, i: number) => (
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
@@ -761,7 +761,7 @@ export default function ListingDetail() {
       </div>
 
       {/* Mobile bottom bar with Drawer */}
-      <div className="lg:hidden fixed bottom-16 left-0 right-0 bg-card border-t border-border px-4 py-3 flex gap-2 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+      <div className="lg:hidden fixed bottom-16 left-0 right-0 box-border max-w-full bg-card border-t border-border px-4 py-3 flex gap-2 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
         <button
           onClick={toggleFavorite}
           className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0"
@@ -769,13 +769,13 @@ export default function ListingDetail() {
           <Heart className={`h-5 w-5 ${isFavorited ? 'text-red-500 fill-red-500' : 'text-foreground'}`} />
         </button>
 
-        <Button className="flex-1 gap-2 rounded-full font-bold text-base h-12" onClick={() => {
+        <Button className="flex-1 min-w-0 overflow-hidden gap-2 rounded-full font-bold text-base h-12" onClick={() => {
               if (!user) { setLoginDialogOpen(true); return; }
               if (user.id === listing.seller_id) return;
               handleSendMessage();
             }}>
-              <MessageCircle className="h-5 w-5" />
-              {t('messages.sendMessage')}
+              <MessageCircle className="h-5 w-5 shrink-0" />
+              <span className="truncate">{t('messages.sendMessage')}</span>
             </Button>
       </div>
 
