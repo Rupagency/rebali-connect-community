@@ -769,13 +769,13 @@ export default function ListingDetail() {
           <Heart className={`h-5 w-5 ${isFavorited ? 'text-red-500 fill-red-500' : 'text-foreground'}`} />
         </button>
 
-        <Button className="flex-1 gap-2 rounded-full font-bold text-base h-12" onClick={() => {
+        <Button className="flex-1 min-w-0 overflow-hidden gap-2 rounded-full font-bold text-base h-12" onClick={() => {
               if (!user) { setLoginDialogOpen(true); return; }
               if (user.id === listing.seller_id) return;
               handleSendMessage();
             }}>
-              <MessageCircle className="h-5 w-5" />
-              {t('messages.sendMessage')}
+              <MessageCircle className="h-5 w-5 shrink-0" />
+              <span className="truncate">{t('messages.sendMessage')}</span>
             </Button>
       </div>
 
