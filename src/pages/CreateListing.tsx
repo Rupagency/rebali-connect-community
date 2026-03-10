@@ -225,6 +225,22 @@ export default function CreateListing() {
     });
   };
 
+  const triggerListingTranslation = async (listingId: string) => {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const { error } = await supabase.functions.invoke('translate-listing', {
+        body: { listing_id: listingId },
+      });
+
+      if (!error) return;
+      if (attempt === 2) {
+        console.error('translate-listing invoke failed:', error);
+        return;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 800));
+    }
+  };
+
   const handlePublish = async () => {
     if (!user || !canPost || loading) return;
     setLoading(true);
