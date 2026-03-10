@@ -65,8 +65,9 @@ export default function ListingDetail() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
-  const { data: listing, isLoading } = useQuery({
-    queryKey: ['listing', id],
+  const autoTranslateTriggeredRef = useRef<string | null>(null);
+  const { data: listing, isLoading, refetch: refetchListing } = useQuery({
+    queryKey: ['listing', id, language],
     queryFn: async () => {
       const { data } = await supabase
         .from('listings')
@@ -76,6 +77,19 @@ export default function ListingDetail() {
       return data;
     },
     enabled: !!id,
+    refetchInterval: (query) => {
+      const currentListing = query.state.data as any;
+      if (!currentListing || language === 'en') return false;
+
+      const langTranslation = currentListing.listing_translations?.find((tr: any) => tr.lang === language);
+      const ready =
+        !!langTranslation?.title &&
+        !!langTranslation?.description &&
+        langTranslation.title !== 'Pending translation' &&
+        langTranslation.description !== 'Pending translation';
+
+      return ready ? false : 4000;
+    },
   });
 
   const { data: sellerProfile } = useQuery({
