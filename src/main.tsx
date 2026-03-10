@@ -27,6 +27,9 @@ try {
 
 // Restore session from deep-link hash tokens BEFORE rendering
 async function restoreSessionAndRender() {
+  // Hydrate native storage cache so Supabase can read persisted session
+  await hydrateCache();
+
   try {
     const hash = window.location.hash;
     if (hash && hash.includes('access_token=') && hash.includes('refresh_token=')) {
