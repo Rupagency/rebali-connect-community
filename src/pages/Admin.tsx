@@ -608,7 +608,7 @@ export default function Admin() {
     } : null);
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setEditingUser(false);
-    toast({ title: t('admin.profileSaved') || 'Profile saved' });
+    toast({ title: t('admin.profileSaved') });
   };
 
   // User detail dialog content — rendered inline (not as a component) to avoid remounting on state changes
