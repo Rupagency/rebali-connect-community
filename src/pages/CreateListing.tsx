@@ -323,8 +323,8 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation in background
-        supabase.functions.invoke('translate-listing', { body: { listing_id: editId } });
+        // Trigger translation and wait for a reliable kickoff before redirect
+        await triggerListingTranslation(editId);
 
         toast({ title: t('listing.updated') });
         navigate(`/listing/${editId}`);
