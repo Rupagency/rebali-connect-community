@@ -131,7 +131,7 @@ function VerifiedSellerCard({ verification, displayName }: { verification: any; 
         <>
           {!showSelfie ? (
             <Button size="sm" variant="outline" onClick={loadSelfie} disabled={loading}>
-              <Eye className="h-3 w-3 mr-1" /> {loading ? '...' : (t('admin.viewSelfie') || 'Voir le selfie vérifié')}
+              <Eye className="h-3 w-3 mr-1" /> {loading ? '...' : t('admin.viewSelfie')}
             </Button>
           ) : (
             selfieUrl && (
