@@ -143,7 +143,7 @@ function VerifiedSellerCard({ verification, displayName }: { verification: any; 
         </>
       )}
       {verification?.documents_purged_at && (
-        <p className="text-xs text-muted-foreground italic">{t('admin.documentsPurged') || 'Documents supprimés (rétention 30j)'}</p>
+        <p className="text-xs text-muted-foreground italic">{t('admin.documentsPurged')}</p>
       )}
     </div>
   );
