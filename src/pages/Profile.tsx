@@ -118,7 +118,12 @@ function WhatsAppVerification({ user, profile, refreshProfile }: { user: any; pr
           <>
             <div>
               <Label>{t('security.phoneNumber')}</Label>
-              <Input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+62812345678" />
+              <Input value={phone} onChange={e => {
+                // Auto-strip leading 0 after country code: +33 06... → +336...
+                let val = e.target.value.replace(/\s/g, '');
+                val = val.replace(/^(\+\d{1,3})0+/, '$1');
+                setPhone(val);
+              }} placeholder="+62812345678" />
               {phone && !isValidPhone && (
                 <p className="text-sm text-destructive mt-1">{t('security.invalidPhoneFormat') || 'Format: +[country code][number]'}</p>
               )}

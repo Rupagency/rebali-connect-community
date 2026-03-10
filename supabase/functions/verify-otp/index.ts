@@ -21,6 +21,9 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Normalize: strip leading 0 after country code (+33 06… → +336…)
+    phone_number = phone_number.replace(/\s/g, '').replace(/^(\+\d{1,3})0+/, '$1');
+
     // Get latest non-expired verification for this user + phone
     const { data: verifications } = await supabase
       .from("phone_verifications")
