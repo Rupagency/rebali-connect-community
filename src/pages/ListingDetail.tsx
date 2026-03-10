@@ -368,9 +368,9 @@ export default function ListingDetail() {
       </div>
 
       <div className="container mx-auto px-4 pb-10">
-        <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+        <div className="grid lg:grid-cols-[1fr_380px] gap-8 min-w-0">
           {/* Left column */}
-          <div>
+          <div className="min-w-0">
             {/* Image gallery */}
             <div className="relative rounded-xl overflow-hidden bg-muted mb-2">
             <div className="aspect-[4/3] relative">
