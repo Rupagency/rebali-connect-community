@@ -14,12 +14,15 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { phone_number, otp_code, user_id } = await req.json();
+    let { phone_number, otp_code, user_id } = await req.json();
     if (!phone_number || !otp_code || !user_id) {
       return new Response(JSON.stringify({ error: "phone_number, otp_code and user_id required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Normalize: strip leading 0 after country code (+33 06… → +336…)
+    phone_number = phone_number.replace(/\s/g, '').replace(/^(\+\d{1,3})0+/, '$1');
 
     // Get latest non-expired verification for this user + phone
     const { data: verifications } = await supabase
