@@ -394,7 +394,7 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
 
 export default function Profile() {
   const { t, language, setLanguage } = useLanguage();
-  const { user, profile, refreshProfile, signOut } = useAuth();
+  const { user, profile, refreshProfile, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
