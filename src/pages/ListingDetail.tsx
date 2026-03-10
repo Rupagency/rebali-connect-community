@@ -213,15 +213,6 @@ export default function ListingDetail() {
     }
   }, [id]);
 
-  if (isLoading) return <div className="container mx-auto px-4 py-8"><div className="animate-pulse h-96 bg-muted rounded-lg" /></div>;
-  if (!listing) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.noResults')}</div>;
-
-  const translation = listing.listing_translations?.find((tr: any) => tr.lang === language);
-  const enTranslation = listing.listing_translations?.find((tr: any) => tr.lang === 'en');
-  const title = translation?.title && translation.title !== 'Pending translation' ? translation.title : enTranslation?.title && enTranslation.title !== 'Pending translation' ? enTranslation.title : listing.title_original;
-  const description = translation?.description && translation.description !== 'Pending translation' ? translation.description : enTranslation?.description && enTranslation.description !== 'Pending translation' ? enTranslation.description : listing.description_original;
-  const isTranslated = translation && translation.title !== 'Pending translation';
-
   useEffect(() => {
     if (!id || !listing || language === 'en') return;
 
@@ -246,6 +237,15 @@ export default function ListingDetail() {
       .then(() => refetchListing())
       .catch((error) => console.error('translate-listing retry failed:', error));
   }, [id, listing, language, refetchListing]);
+
+  if (isLoading) return <div className="container mx-auto px-4 py-8"><div className="animate-pulse h-96 bg-muted rounded-lg" /></div>;
+  if (!listing) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.noResults')}</div>;
+
+  const translation = listing.listing_translations?.find((tr: any) => tr.lang === language);
+  const enTranslation = listing.listing_translations?.find((tr: any) => tr.lang === 'en');
+  const title = translation?.title && translation.title !== 'Pending translation' ? translation.title : enTranslation?.title && enTranslation.title !== 'Pending translation' ? enTranslation.title : listing.title_original;
+  const description = translation?.description && translation.description !== 'Pending translation' ? translation.description : enTranslation?.description && enTranslation.description !== 'Pending translation' ? enTranslation.description : listing.description_original;
+  const isTranslated = translation && translation.title !== 'Pending translation';
 
   const images = (listing.listing_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order);
   const isPro = seller?.user_type === 'business';
