@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./capacitor";
+import { hydrateCache } from "./lib/capacitorStorage";
 import { supabase } from "./integrations/supabase/client";
 import { isInAppBrowser } from "./lib/openExternal";
 
