@@ -310,7 +310,7 @@ export default function ListingDetail() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen overflow-x-hidden">
       <SEOHead
         title={title}
         description={description?.slice(0, 160)}
