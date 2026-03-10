@@ -19,7 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { openExternal } from '@/lib/openExternal';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { formatDistanceToNow } from 'date-fns';
@@ -65,8 +65,9 @@ export default function ListingDetail() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
-  const { data: listing, isLoading } = useQuery({
-    queryKey: ['listing', id],
+  const autoTranslateTriggeredRef = useRef<string | null>(null);
+  const { data: listing, isLoading, refetch: refetchListing } = useQuery({
+    queryKey: ['listing', id, language],
     queryFn: async () => {
       const { data } = await supabase
         .from('listings')
@@ -76,6 +77,19 @@ export default function ListingDetail() {
       return data;
     },
     enabled: !!id,
+    refetchInterval: (query) => {
+      const currentListing = query.state.data as any;
+      if (!currentListing || language === 'en') return false;
+
+      const langTranslation = currentListing.listing_translations?.find((tr: any) => tr.lang === language);
+      const ready =
+        !!langTranslation?.title &&
+        !!langTranslation?.description &&
+        langTranslation.title !== 'Pending translation' &&
+        langTranslation.description !== 'Pending translation';
+
+      return ready ? false : 4000;
+    },
   });
 
   const { data: sellerProfile } = useQuery({
@@ -198,6 +212,31 @@ export default function ListingDetail() {
       });
     }
   }, [id]);
+
+  useEffect(() => {
+    if (!id || !listing || language === 'en') return;
+
+    const langTranslation = listing.listing_translations?.find((tr: any) => tr.lang === language);
+    const ready =
+      !!langTranslation?.title &&
+      !!langTranslation?.description &&
+      langTranslation.title !== 'Pending translation' &&
+      langTranslation.description !== 'Pending translation';
+
+    if (ready) {
+      autoTranslateTriggeredRef.current = null;
+      return;
+    }
+
+    const triggerKey = `${id}:${language}`;
+    if (autoTranslateTriggeredRef.current === triggerKey) return;
+
+    autoTranslateTriggeredRef.current = triggerKey;
+    void supabase.functions
+      .invoke('translate-listing', { body: { listing_id: id } })
+      .then(() => refetchListing())
+      .catch((error) => console.error('translate-listing retry failed:', error));
+  }, [id, listing, language, refetchListing]);
 
   if (isLoading) return <div className="container mx-auto px-4 py-8"><div className="animate-pulse h-96 bg-muted rounded-lg" /></div>;
   if (!listing) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.noResults')}</div>;

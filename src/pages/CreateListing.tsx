@@ -11,7 +11,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
-import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -226,6 +225,22 @@ export default function CreateListing() {
     });
   };
 
+  const triggerListingTranslation = async (listingId: string) => {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const { error } = await supabase.functions.invoke('translate-listing', {
+        body: { listing_id: listingId },
+      });
+
+      if (!error) return;
+      if (attempt === 2) {
+        console.error('translate-listing invoke failed:', error);
+        return;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 800));
+    }
+  };
+
   const handlePublish = async () => {
     if (!user || !canPost || loading) return;
     setLoading(true);
@@ -308,8 +323,8 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation in background
-        supabase.functions.invoke('translate-listing', { body: { listing_id: editId } });
+        // Trigger translation and wait for a reliable kickoff before redirect
+        await triggerListingTranslation(editId);
 
         toast({ title: t('listing.updated') });
         navigate(`/listing/${editId}`);
@@ -349,18 +364,8 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Create translation placeholders - set the user's language as the original text
-        const translations = SUPPORTED_LANGUAGES.map(lang => ({
-          listing_id: listing.id,
-          lang: lang.code,
-          title: lang.code === language ? form.title : 'Pending translation',
-          description: lang.code === language ? form.description : 'Pending translation',
-          is_machine: lang.code !== language,
-        }));
-        await supabase.from('listing_translations').insert(translations);
-
-        // Trigger translation in background
-        supabase.functions.invoke('translate-listing', { body: { listing_id: listing.id } });
+        // Trigger translation and wait for a reliable kickoff before redirect
+        await triggerListingTranslation(listing.id);
 
         toast({ title: t('createListing.listingCreated') });
         navigate(`/listing/${listing.id}`);
