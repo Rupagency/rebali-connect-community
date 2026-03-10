@@ -621,8 +621,8 @@ export default function Admin() {
     const userArchivedListings = userListings.filter((l: any) => l.status === 'archived');
 
     return (
-      <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+      <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open && !editingUser) setSelectedUser(null); }}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto" onInteractOutside={(e) => { if (editingUser) e.preventDefault(); }} onEscapeKeyDown={(e) => { if (editingUser) { e.preventDefault(); setEditingUser(false); } }}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
