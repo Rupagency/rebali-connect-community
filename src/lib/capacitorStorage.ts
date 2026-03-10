@@ -11,9 +11,27 @@ const isNative = Capacitor.isNativePlatform();
 // In-memory cache so synchronous getItem() works after initial hydration
 const cache = new Map<string, string>();
 
-/** Hydrate the in-memory cache from native storage on startup */
+/** Hydrate the in-memory cache from native storage on startup.
+ *  Also migrates any existing session from localStorage → Preferences (one-time). */
 export async function hydrateCache(): Promise<void> {
   if (!isNative) return;
+
+  // One-time migration: copy auth keys from localStorage to Preferences
+  const migrated = localStorage.getItem('__sb_prefs_migrated');
+  if (!migrated) {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sb-')) {
+        const value = localStorage.getItem(key);
+        if (value) {
+          await Preferences.set({ key, value });
+        }
+      }
+    }
+    localStorage.setItem('__sb_prefs_migrated', '1');
+  }
+
+  // Hydrate in-memory cache from Preferences
   const { keys } = await Preferences.keys();
   const sbKeys = keys.filter(k => k.startsWith('sb-'));
   await Promise.all(
