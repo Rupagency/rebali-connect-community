@@ -117,11 +117,10 @@ export default function Auth() {
           // Silently fail - referral is best-effort
         }
       }
-      // If session exists, user was auto-logged in (no email confirmation required)
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      // Use signUpData.session directly — never call getSession() here
+      if (signUpData?.session) {
         toast({ title: t('auth.signupSuccess') });
-        navigate('/');
+        // Redirect handled by useEffect watching `user`
       } else {
         // Email confirmation required
         toast({ title: t('auth.magicLinkSent') });

@@ -80,6 +80,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
       setLoading(false);
+    }).catch((err) => {
+      console.error('[Auth] getSession error:', err);
+      if (mounted) setLoading(false);
     });
 
     // 2. Listen for auth changes — NO Supabase queries here!
