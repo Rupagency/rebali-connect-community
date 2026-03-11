@@ -279,14 +279,11 @@ export default function Messages() {
 
   const handleBuyerConfirm = async () => {
     if (!activeConvId || !user) return;
-    await supabase.from('conversations').update({
-      buyer_confirmed: true,
-      buyer_confirmed_at: new Date().toISOString(),
-    } as any).eq('id', activeConvId);
-    await supabase.from('messages').insert({
-      conversation_id: activeConvId, sender_id: user.id,
-      content: `✅ ${t('messages.buyerConfirmDeal')}`, from_role: 'system',
-    });
+    const { error } = await supabase.rpc('confirm_deal', { _conversation_id: activeConvId });
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      return;
+    }
     queryClient.invalidateQueries({ queryKey: ['conversations'] });
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     toast({ title: t('messages.buyerConfirmDeal') });
@@ -530,36 +527,18 @@ export default function Messages() {
                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                            <AlertDialogAction
                              className="bg-green-600 text-white hover:bg-green-700"
-                             onClick={async () => {
-                               try {
-                                 await supabase.from('conversations').update({
-                                   deal_closed: true, deal_closed_at: new Date().toISOString(), deal_closed_by: user.id,
-                                 } as any).eq('id', activeConvId!);
-                                 await supabase.from('listings').update({ status: 'sold' as any }).eq('id', activeConv.listing_id);
-                                 const { data: otherConvs } = await supabase
-                                   .from('conversations').select('id')
-                                   .eq('listing_id', activeConv.listing_id).neq('id', activeConvId!);
-                                 if (otherConvs && otherConvs.length > 0) {
-                                   for (const oc of otherConvs) {
-                                     await supabase.from('conversations').update({ relay_status: 'closed' }).eq('id', oc.id);
-                                     await supabase.from('messages').insert({
-                                       conversation_id: oc.id, sender_id: user.id,
-                                       content: t('messages.productSold'), from_role: 'system',
-                                     });
-                                   }
-                                 }
-                                 await supabase.from('messages').insert({
-                                   conversation_id: activeConvId!, sender_id: user.id,
-                                   content: `🤝 ${t('messages.dealClosed')}`, from_role: 'system',
-                                 });
-                                 queryClient.invalidateQueries({ queryKey: ['conversations'] });
-                                 queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
-                                 queryClient.invalidateQueries({ queryKey: ['last-messages'] });
-                                 toast({ title: t('messages.dealClosedSuccess') });
-                               } catch (err) {
-                                 toast({ title: 'Error', variant: 'destructive' });
-                               }
-                             }}
+                              onClick={async () => {
+                                try {
+                                  const { error } = await supabase.rpc('close_deal', { _conversation_id: activeConvId! });
+                                  if (error) throw error;
+                                  queryClient.invalidateQueries({ queryKey: ['conversations'] });
+                                  queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+                                  queryClient.invalidateQueries({ queryKey: ['last-messages'] });
+                                  toast({ title: t('messages.dealClosedSuccess') });
+                                } catch (err) {
+                                  toast({ title: 'Error', variant: 'destructive' });
+                                }
+                              }}
                            >
                              {t('common.confirm')}
                            </AlertDialogAction>
