@@ -1,9 +1,8 @@
-/* rebuild-trigger-v3 */
+/* rebuild-trigger-v2 */
 import { useState } from 'react';
 import SEOHead from '@/components/SEOHead';
-import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,7 +20,6 @@ export default function Auth() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, loading: authLoading } = useAuth();
   const defaultTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
 
   const [email, setEmail] = useState('');
@@ -33,9 +31,6 @@ export default function Auth() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [legalDialog, setLegalDialog] = useState<'terms' | 'privacy' | null>(null);
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
-
-  // Redirect if already logged in
-  if (!authLoading && user) return <Navigate to="/" replace />;
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
@@ -67,16 +62,15 @@ export default function Auth() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-      setLoading(false);
-    } else {
-      // Log device best-effort; navigation is handled by <Navigate> guard
-      if (data?.user) logDevice(data.user.id);
-      // Don't setLoading(false) here — AuthContext will handle it via onAuthStateChange
-      // The <Navigate to="/"> guard at line 38 will redirect once user+profile are ready
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    else {
+      // Get user ID from session and log device
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) logDevice(session.user.id);
+      navigate('/');
     }
+    setLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
