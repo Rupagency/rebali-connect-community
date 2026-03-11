@@ -79,7 +79,7 @@ export default function SavedSearches() {
             className="gap-2"
             onClick={() => isPro
               ? (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/pro-subscription`) : window.location.href = '/pro-subscription')
-              : (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/points`) : window.location.href = '/points')
+              : (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/trust-badges`) : window.location.href = '/trust-badges')
             }
           >
             <Crown className="h-4 w-4" />
