@@ -24,9 +24,6 @@ export default function Auth() {
   const { user, loading: authLoading } = useAuth();
   const defaultTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
 
-  // Redirect if already logged in
-  if (!authLoading && user) return <Navigate to="/" replace />;
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +33,9 @@ export default function Auth() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [legalDialog, setLegalDialog] = useState<'terms' | 'privacy' | null>(null);
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
+
+  // Redirect if already logged in
+  if (!authLoading && user) return <Navigate to="/" replace />;
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
