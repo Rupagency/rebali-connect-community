@@ -41,26 +41,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // 1. Restore session first, await profile before clearing loading
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // 2. Listen for subsequent changes (don't await inside callback per Supabase docs)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          await fetchProfile(session.user.id);
+          fetchProfile(session.user.id);
         } else {
           setProfile(null);
           setIsAdmin(false);
         }
-        setLoading(false);
       }
     );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      setLoading(false);
-    });
 
     return () => subscription.unsubscribe();
   }, []);
