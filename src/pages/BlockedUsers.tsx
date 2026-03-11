@@ -32,7 +32,11 @@ export default function BlockedUsers() {
     enabled: blockedIds.length > 0,
   });
 
-  if (!user) { navigate('/auth'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+  }, [user, navigate]);
+
+  if (!user) return null;
 
   const handleUnblock = async (userId: string) => {
     setUnblocking(userId);

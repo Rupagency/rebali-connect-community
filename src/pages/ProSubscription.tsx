@@ -66,8 +66,12 @@ export default function ProSubscription() {
     }
   }, []);
 
-  if (!user) { navigate('/auth'); return null; }
-  if (!isPro) { navigate('/profile'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+    else if (!isPro) navigate('/profile', { replace: true });
+  }, [user, isPro, navigate]);
+
+  if (!user || !isPro) return null;
 
   const handleSubscribe = async (planType: string) => {
     if (planType === 'free_pro') return; // Free, no action

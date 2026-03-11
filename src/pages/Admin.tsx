@@ -426,7 +426,11 @@ export default function Admin() {
     enabled: isAdmin,
   });
 
-  if (!user) { navigate('/auth'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+  }, [user, navigate]);
+
+  if (!user) return null;
   if (!isAdmin) return (
     <div className="container mx-auto px-4 py-20 text-center">
       <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />

@@ -266,7 +266,11 @@ export default function SellerDashboard() {
     return { totalViews, totalFavs, totalWaClicks, totalConvos, activeCount, soldCount };
   }, [listings, statsMap]);
 
-  if (!user) { navigate('/auth'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+  }, [user, navigate]);
+
+  if (!user) return null;
 
   // Not a business account
   if (!isPro) {
