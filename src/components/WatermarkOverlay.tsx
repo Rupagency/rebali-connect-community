@@ -15,11 +15,11 @@ export default function WatermarkOverlay() {
           gap: '24px 48px',
         }}
       >
-        {Array.from({ length: 60 }).map((_, i) => (
+        {Array.from({ length: 40 }).map((_, i) => (
           <span
             key={i}
-            className="text-white/20 text-[13px] font-bold whitespace-nowrap"
-            style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
+            className="text-white/10 text-[11px] font-semibold whitespace-nowrap"
+            style={{ textShadow: '0 1px 1px rgba(0,0,0,0.15)' }}
           >
             Re-Bali.com
           </span>
