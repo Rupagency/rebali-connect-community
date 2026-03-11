@@ -145,7 +145,7 @@ export default function SellerProfile() {
             <div className="mt-3 space-y-3 border-t pt-3 w-full">
               <ActiveSellerStatus userId={id!} showStock={false} />
               <UserBadges userId={id!} profile={seller} />
-              <TrustIndicator score={seller.trust_score} riskLevel={seller.risk_level as 'low' | 'medium' | 'high'} />
+              <TrustIndicator score={(seller as any).trust_score ?? 50} riskLevel={((seller as any).risk_level as 'low' | 'medium' | 'high') ?? 'low'} />
               <BlockUserButton
                 targetUserId={id!}
                 targetDisplayName={seller.display_name || undefined}

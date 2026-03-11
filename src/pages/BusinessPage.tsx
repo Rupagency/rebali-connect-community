@@ -135,7 +135,7 @@ export default function BusinessPage() {
 
           <div className="mt-4 pt-4 border-t space-y-3">
             <UserBadges userId={id!} profile={seller} />
-            <TrustIndicator score={seller.trust_score} riskLevel={seller.risk_level as 'low' | 'medium' | 'high'} />
+            <TrustIndicator score={(seller as any).trust_score ?? 50} riskLevel={((seller as any).risk_level as 'low' | 'medium' | 'high') ?? 'low'} />
           </div>
         </CardContent>
       </Card>
