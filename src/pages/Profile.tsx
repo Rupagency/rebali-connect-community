@@ -415,6 +415,10 @@ export default function Profile() {
   const [reviews, setReviews] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!authLoading && !user) navigate('/auth', { replace: true });
+  }, [authLoading, user, navigate]);
+
+  useEffect(() => {
     if (profile) {
       setForm({
         display_name: profile.display_name || '',
