@@ -64,6 +64,40 @@ serve(async (req) => {
     const userId = claimsData.claims.sub as string;
     const userEmail = claimsData.claims.email as string;
 
+    // Rate limiting: max 5 invoices per hour, 20 per day
+    const supabaseAdmin = createClient(
+      supabaseUrl,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: hourlyInvoices } = await supabaseAdmin
+      .from("payment_invoices")
+      .select("id")
+      .eq("user_id", userId)
+      .gte("created_at", oneHourAgo);
+
+    if (hourlyInvoices && hourlyInvoices.length >= 5) {
+      return new Response(JSON.stringify({ error: "rate_limited", message: "Maximum 5 invoices per hour" }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: dailyInvoices } = await supabaseAdmin
+      .from("payment_invoices")
+      .select("id")
+      .eq("user_id", userId)
+      .gte("created_at", oneDayAgo);
+
+    if (dailyInvoices && dailyInvoices.length >= 20) {
+      return new Response(JSON.stringify({ error: "daily_limit_reached", message: "Maximum 20 invoices per day" }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const body = await req.json();
     const { type, pack_id, plan_type } = body;
 
@@ -149,11 +183,7 @@ serve(async (req) => {
       throw new Error(`Xendit API error [${xenditResponse.status}]: ${JSON.stringify(xenditData)}`);
     }
 
-    // Save invoice to database using service role
-    const supabaseAdmin = createClient(
-      supabaseUrl,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    // Save invoice to database using service role (reuse admin client from rate limiting)
 
     const { error: insertError } = await supabaseAdmin
       .from("payment_invoices")
