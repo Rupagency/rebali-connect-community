@@ -83,7 +83,7 @@ export default function SavedSearches() {
             }
           >
             <Crown className="h-4 w-4" />
-            {isPro ? t('savedSearches.upgradePro') : t('savedSearches.becomeVip')}
+            {isPro ? t('savedSearches.upgradePro') : t('savedSearches.unlockAlerts')}
           </Button>
         </CardContent>
       </Card>
