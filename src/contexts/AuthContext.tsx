@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -20,24 +20,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const initialSessionHandled = useRef(false);
 
   const fetchProfile = async (userId: string) => {
-    console.log('[AuthContext] fetchProfile called for:', userId);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
-    console.log('[AuthContext] profile result:', { data: !!data, error });
     setProfile(data);
 
-    const { data: roles, error: rolesError } = await supabase
+    const { data: roles } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', userId);
-    console.log('[AuthContext] roles result:', { roles, rolesError });
     setIsAdmin(roles?.some(r => r.role === 'admin') || false);
-    console.log('[AuthContext] isAdmin set to:', roles?.some(r => r.role === 'admin') || false);
   };
 
   const refreshProfile = async () => {
@@ -45,34 +42,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // 1. Restore session first, await profile before clearing loading
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchProfile(session.user.id);
-      }
-      setLoading(false);
-    });
-
-    // 2. Listen for subsequent changes (don't await inside callback per Supabase docs)
+    // 1. Register listener FIRST (per Supabase docs)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+
         if (session?.user) {
-          fetchProfile(session.user.id);
+          // Use setTimeout to avoid async inside callback (Supabase recommendation)
+          setTimeout(() => {
+            fetchProfile(session.user.id).then(() => {
+              if (!initialSessionHandled.current) {
+                initialSessionHandled.current = true;
+                setLoading(false);
+              }
+            });
+          }, 0);
         } else {
           setProfile(null);
           setIsAdmin(false);
+          if (!initialSessionHandled.current) {
+            initialSessionHandled.current = true;
+            setLoading(false);
+          }
         }
       }
     );
+
+    // 2. Then get session — the listener above will handle the INITIAL_SESSION event
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      // If listener hasn't fired yet (edge case), handle it here
+      if (!initialSessionHandled.current) {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchProfile(session.user.id).then(() => {
+            if (!initialSessionHandled.current) {
+              initialSessionHandled.current = true;
+              setLoading(false);
+            }
+          });
+        } else {
+          initialSessionHandled.current = true;
+          setLoading(false);
+        }
+      }
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {
+    // Clear state immediately to prevent render-time navigate loops
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setIsAdmin(false);
     await supabase.auth.signOut();
   };
 
@@ -86,8 +111,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    // During HMR reloads the provider may momentarily be absent – return
-    // safe defaults instead of crashing with a white screen.
     return {
       user: null,
       session: null,

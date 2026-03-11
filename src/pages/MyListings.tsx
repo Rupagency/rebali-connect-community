@@ -101,7 +101,11 @@ export default function MyListings() {
   ) || [];
   const stockBoostCount = stockBoosts.length;
 
-  if (!user) { navigate('/auth'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+  }, [user, navigate]);
+
+  if (!user) return null;
 
   const activeListings = listings?.filter((l: any) => l.status === 'active') || [];
   const soldListings = listings?.filter((l: any) => l.status === 'sold') || [];

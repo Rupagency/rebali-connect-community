@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Ban, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BlockedUsers() {
   const { t } = useLanguage();
@@ -32,7 +32,11 @@ export default function BlockedUsers() {
     enabled: blockedIds.length > 0,
   });
 
-  if (!user) { navigate('/auth'); return null; }
+  useEffect(() => {
+    if (!user) navigate('/auth', { replace: true });
+  }, [user, navigate]);
+
+  if (!user) return null;
 
   const handleUnblock = async (userId: string) => {
     setUnblocking(userId);
