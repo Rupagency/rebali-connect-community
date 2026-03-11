@@ -21,22 +21,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Fetch profile — standalone, never called inside onAuthStateChange
+  // Fetch profile with timeout — standalone, never called inside onAuthStateChange
   const fetchProfile = useCallback(async (userId: string) => {
     try {
       console.log('[Auth] fetchProfile for:', userId);
-      const { data, error } = await supabase
+
+      // Race against a timeout to prevent infinite blocking
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('fetchProfile timeout (8s)')), 8000)
+      );
+
+      const profilePromise = supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
+
+      const { data, error } = await Promise.race([profilePromise, timeout]);
       console.log('[Auth] profile result:', { data: !!data, error: error?.message });
       setProfile(data ?? null);
 
-      const { data: roles } = await supabase
+      const rolesPromise = supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId);
+
+      const { data: roles } = await Promise.race([rolesPromise, timeout]);
       console.log('[Auth] roles:', roles);
       setIsAdmin(roles?.some(r => r.role === 'admin') || false);
     } catch (err: any) {
