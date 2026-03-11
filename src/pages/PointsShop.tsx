@@ -78,7 +78,9 @@ export default function PointsShop() {
         body: { type: 'points', pack_id: packId },
       });
       if (error || data?.error) {
-        toast({ title: data?.error || 'Payment error', variant: 'destructive' });
+        const errKey = data?.error === 'hourly_limit' ? 'paymentHourlyLimit'
+          : data?.error === 'daily_limit' ? 'paymentDailyLimit' : null;
+        toast({ title: errKey ? t(`security.${errKey}`) : (data?.error || 'Payment error'), variant: 'destructive' });
       } else if (data?.invoice_url) {
         // Use anchor click trick to force navigation in in-app browsers
         const a = document.createElement('a');
