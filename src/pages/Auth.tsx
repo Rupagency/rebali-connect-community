@@ -20,8 +20,14 @@ import { LegalDialog } from '@/components/LegalDialog';
 export default function Auth() {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && user) navigate('/', { replace: true });
+  }, [authLoading, user, navigate]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
