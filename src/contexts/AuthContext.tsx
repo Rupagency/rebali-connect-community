@@ -61,9 +61,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, fetchProfile]);
 
   // Separate effect: when user changes, fetch profile
+  // Use setTimeout to defer execution AFTER Supabase's internal auth lock is released
   useEffect(() => {
     if (user) {
-      fetchProfile(user.id);
+      const timer = setTimeout(() => fetchProfile(user.id), 100);
+      return () => clearTimeout(timer);
     } else {
       setProfile(null);
       setIsAdmin(false);
