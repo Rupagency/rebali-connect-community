@@ -23,17 +23,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const initialSessionHandled = useRef(false);
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
+    console.log('[Auth] fetchProfile for:', userId);
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
+    console.log('[Auth] profile result:', { data: !!data, error: error?.message });
     setProfile(data);
 
-    const { data: roles } = await supabase
+    const { data: roles, error: rolesErr } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', userId);
+    console.log('[Auth] roles result:', { roles, error: rolesErr?.message });
     setIsAdmin(roles?.some(r => r.role === 'admin') || false);
   };
 
