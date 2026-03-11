@@ -30,19 +30,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
 
-      const [profileResult, rolesResult] = await Promise.all([
+      const [profileResult, rolesResult] = await Promise.allSettled([
         supabase
           .from('profiles')
           .select('*')
           .eq('id', userId)
-          .single()
-          .abortSignal(controller.signal),
+          .single(),
         supabase
           .from('user_roles')
           .select('role')
-          .eq('user_id', userId)
-          .abortSignal(controller.signal),
+          .eq('user_id', userId),
       ]);
+
+      const profileData = profileResult.status === 'fulfilled' ? profileResult.value : null;
+      const rolesData = rolesResult.status === 'fulfilled' ? rolesResult.value : null;
 
       clearTimeout(timeout);
 
