@@ -20,20 +20,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const mountedRef = useRef(true);
   const initializedRef = useRef(false);
 
   const fetchProfile = useCallback(async (userId: string) => {
-    const [profileRes, rolesRes] = await Promise.all([
-      supabase.from('profiles').select('*').eq('id', userId).single(),
-      supabase.from('user_roles').select('role').eq('user_id', userId),
-    ]);
+    try {
+      const [profileRes, rolesRes] = await Promise.all([
+        supabase.from('profiles').select('*').eq('id', userId).single(),
+        supabase.from('user_roles').select('role').eq('user_id', userId),
+      ]);
 
-    if (profileRes.error) {
-      console.error('Profile fetch error:', profileRes.error.message);
+      if (!mountedRef.current) return;
+
+      if (profileRes.error) {
+        console.error('Profile fetch error:', profileRes.error.message);
+      }
+
+      setProfile(profileRes.data ?? null);
+      setIsAdmin(rolesRes.data?.some(r => r.role === 'admin') || false);
+    } catch (err) {
+      console.error('Profile fetch exception:', err);
+      if (mountedRef.current) {
+        setProfile(null);
+        setIsAdmin(false);
+      }
     }
-
-    setProfile(profileRes.data ?? null);
-    setIsAdmin(rolesRes.data?.some(r => r.role === 'admin') || false);
   }, []);
 
   const refreshProfile = useCallback(async () => {
@@ -41,13 +52,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, fetchProfile]);
 
   useEffect(() => {
-    let mounted = true;
+    mountedRef.current = true;
 
-    // 1. Restore session first (single source of truth for initial load)
+    // 1. Set up listener FIRST (Supabase best practice)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        if (!mountedRef.current) return;
+
+        // Skip INITIAL_SESSION — restoreSession handles it
+        if (!initializedRef.current) return;
+
+        // Update session + user synchronously (no async here!)
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+
+        if (newSession?.user) {
+          // CRITICAL: Defer fetchProfile out of onAuthStateChange callback
+          // to avoid Supabase client deadlock (client waits for callback
+          // to finish before processing new requests)
+          setLoading(true);
+          const uid = newSession.user.id;
+          setTimeout(() => {
+            if (!mountedRef.current) return;
+            fetchProfile(uid).finally(() => {
+              if (mountedRef.current) setLoading(false);
+            });
+          }, 0);
+        } else {
+          setProfile(null);
+          setIsAdmin(false);
+        }
+      }
+    );
+
+    // 2. Restore session
     const restoreSession = async () => {
       try {
         const { data: { session: s } } = await supabase.auth.getSession();
-        if (!mounted) return;
+        if (!mountedRef.current) return;
 
         setSession(s);
         setUser(s?.user ?? null);
@@ -57,49 +99,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (e) {
         console.error('Session restore error:', e);
-        if (mounted) {
+        if (mountedRef.current) {
           setSession(null);
           setUser(null);
           setProfile(null);
           setIsAdmin(false);
         }
       } finally {
-        if (mounted) {
+        if (mountedRef.current) {
           setLoading(false);
           initializedRef.current = true;
         }
       }
     };
 
-    // 2. Listen for auth changes (sign-in, sign-out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        if (!mounted) return;
-
-        // Skip the INITIAL_SESSION event — restoreSession handles it
-        if (!initializedRef.current) return;
-
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-
-        if (newSession?.user) {
-          // Set loading=true so pages show spinner while profile loads
-          setLoading(true);
-          fetchProfile(newSession.user.id).finally(() => {
-            if (mounted) setLoading(false);
-          });
-        } else {
-          setProfile(null);
-          setIsAdmin(false);
-          // Don't set loading — already false
-        }
-      }
-    );
-
     restoreSession();
 
     return () => {
-      mounted = false;
+      mountedRef.current = false;
       subscription.unsubscribe();
     };
   }, [fetchProfile]);
