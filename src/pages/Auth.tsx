@@ -26,6 +26,7 @@ export default function Auth() {
 
   // Redirect if already logged in
   useEffect(() => {
+    console.log('[Auth page] redirect check:', { authLoading, user: !!user });
     if (!authLoading && user) navigate('/', { replace: true });
   }, [authLoading, user, navigate]);
 
@@ -74,9 +75,10 @@ export default function Auth() {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
       setLoading(false);
     } else {
-      // logDevice fire-and-forget; redirect handled by useEffect watching `user`
+      // logDevice fire-and-forget
       if (data?.user) logDevice(data.user.id);
-      // setLoading(false) will happen when AuthContext picks up the session
+      // Navigate immediately — don't wait for useEffect
+      navigate('/', { replace: true });
     }
   };
 
