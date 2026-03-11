@@ -47,11 +47,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       clearTimeout(timeout);
 
-      console.log('[Auth] profile result:', { hasData: !!profileResult.data, error: profileResult.error?.message });
-      console.log('[Auth] roles result:', { roles: rolesResult.data, error: rolesResult.error?.message });
+      console.log('[Auth] profile result:', { hasData: !!profileData?.data, error: profileData?.error?.message });
+      console.log('[Auth] roles result:', { roles: rolesData?.data, error: rolesData?.error?.message });
 
-      setProfile(profileResult.data ?? null);
-      setIsAdmin(rolesResult.data?.some(r => r.role === 'admin') || false);
+      setProfile(profileData?.data ?? null);
+      setIsAdmin(rolesData?.data?.some(r => r.role === 'admin') || false);
     } catch (err: any) {
       console.error('[Auth] fetchProfile error:', err?.message || err);
       setProfile(null);
