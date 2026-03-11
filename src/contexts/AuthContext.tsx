@@ -26,26 +26,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('[Auth] fetchProfile for:', userId);
       
-      // Use AbortController with timeout to prevent hanging
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      // Use Promise.race with timeout to prevent hanging queries
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('fetchProfile timeout')), 8000)
+      );
 
-      const [profileResult, rolesResult] = await Promise.allSettled([
-        supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', userId)
-          .single(),
-        supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', userId),
-      ]);
+      const fetchData = async () => {
+        const [profileResult, rolesResult] = await Promise.allSettled([
+          supabase.from('profiles').select('*').eq('id', userId).single(),
+          supabase.from('user_roles').select('role').eq('user_id', userId),
+        ]);
+        return { profileResult, rolesResult };
+      };
+
+      const { profileResult, rolesResult } = await Promise.race([fetchData(), timeoutPromise]);
 
       const profileData = profileResult.status === 'fulfilled' ? profileResult.value : null;
       const rolesData = rolesResult.status === 'fulfilled' ? rolesResult.value : null;
-
-      clearTimeout(timeout);
 
       console.log('[Auth] profile result:', { hasData: !!profileData?.data, error: profileData?.error?.message });
       console.log('[Auth] roles result:', { roles: rolesData?.data, error: rolesData?.error?.message });
