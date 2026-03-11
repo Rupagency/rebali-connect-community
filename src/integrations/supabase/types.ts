@@ -1337,6 +1337,8 @@ export type Database = {
           title_original: string
         }[]
       }
+      close_deal: { Args: { _conversation_id: string }; Returns: undefined }
+      confirm_deal: { Args: { _conversation_id: string }; Returns: undefined }
       get_active_boosts: {
         Args: { _listing_ids: string[] }
         Returns: {
