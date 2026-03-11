@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Ban, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BlockedUsers() {
   const { t } = useLanguage();
