@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'; // v2
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'; // v3
 import { getTranslation, detectBrowserLanguage, type LanguageCode } from '@/i18n';
 import { supabase } from '@/integrations/supabase/client';
 
