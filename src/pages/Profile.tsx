@@ -461,7 +461,7 @@ export default function Profile() {
     );
   }
 
-  if (!user) { navigate('/auth'); return null; }
+  if (!user) return <Navigate to="/auth" replace />;
 
   if (!profile) {
     return (
