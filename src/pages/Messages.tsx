@@ -538,8 +538,7 @@ export default function Messages() {
                                 } catch (err) {
                                   toast({ title: 'Error', variant: 'destructive' });
                                 }
-                               }
-                             }}
+                              }}
                            >
                              {t('common.confirm')}
                            </AlertDialogAction>
