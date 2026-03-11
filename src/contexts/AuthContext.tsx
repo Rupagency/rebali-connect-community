@@ -20,35 +20,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const fetchingRef = useRef(false);
+  const initializedRef = useRef(false);
 
   const fetchProfile = useCallback(async (userId: string) => {
-    // Prevent concurrent fetches
-    if (fetchingRef.current) return;
-    fetchingRef.current = true;
-    
     try {
       console.log('[Auth] fetchProfile for:', userId);
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      console.log('[Auth] profile result:', { hasData: !!data, error: error?.message });
-      setProfile(data ?? null);
+      
+      // Use Promise.race with timeout to prevent hanging queries
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('fetchProfile timeout')), 8000)
+      );
 
-      const { data: roles, error: rolesErr } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId);
-      console.log('[Auth] roles result:', { roles, error: rolesErr?.message });
-      setIsAdmin(roles?.some(r => r.role === 'admin') || false);
-    } catch (err) {
-      console.error('[Auth] fetchProfile error:', err);
+      const fetchData = async () => {
+        const [profileResult, rolesResult] = await Promise.allSettled([
+          supabase.from('profiles').select('*').eq('id', userId).single(),
+          supabase.from('user_roles').select('role').eq('user_id', userId),
+        ]);
+        return { profileResult, rolesResult };
+      };
+
+      const { profileResult, rolesResult } = await Promise.race([fetchData(), timeoutPromise]);
+
+      const profileData = profileResult.status === 'fulfilled' ? profileResult.value : null;
+      const rolesData = rolesResult.status === 'fulfilled' ? rolesResult.value : null;
+
+      console.log('[Auth] profile result:', { hasData: !!profileData?.data, error: profileData?.error?.message });
+      console.log('[Auth] roles result:', { roles: rolesData?.data, error: rolesData?.error?.message });
+
+      setProfile(profileData?.data ?? null);
+      setIsAdmin(rolesData?.data?.some(r => r.role === 'admin') || false);
+    } catch (err: any) {
+      console.error('[Auth] fetchProfile error:', err?.message || err);
       setProfile(null);
       setIsAdmin(false);
-    } finally {
-      fetchingRef.current = false;
     }
   }, []);
 
@@ -68,19 +72,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
-          // Defer to avoid blocking the auth callback
-          fetchProfile(newSession.user.id).finally(() => {
-            if (mounted) setLoading(false);
-          });
+          // Skip if getSession already handled the initial load
+          if (initializedRef.current) {
+            fetchProfile(newSession.user.id);
+          }
         } else {
           setProfile(null);
           setIsAdmin(false);
-          setLoading(false);
+          if (initializedRef.current) {
+            setLoading(false);
+          }
         }
       }
     );
 
-    // 2. Then get session as fallback
+    // 2. Then get session — this is the primary initialization path
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       if (!mounted) return;
       console.log('[Auth] getSession:', currentSession ? 'has session' : 'no session');
@@ -88,12 +94,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentSession?.user ?? null);
 
       if (currentSession?.user) {
-        await fetchProfile(currentSession.user.id).finally(() => {
-          if (mounted) setLoading(false);
-        });
-      } else {
-        if (mounted) setLoading(false);
+        await fetchProfile(currentSession.user.id);
       }
+
+      // Mark as initialized and unlock UI
+      initializedRef.current = true;
+      if (mounted) setLoading(false);
+    }).catch((err) => {
+      console.error('[Auth] getSession error:', err);
+      initializedRef.current = true;
+      if (mounted) setLoading(false);
     });
 
     return () => {
@@ -103,7 +113,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [fetchProfile]);
 
   const signOut = useCallback(async () => {
-    // Clear state immediately
     setUser(null);
     setSession(null);
     setProfile(null);

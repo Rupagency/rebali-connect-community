@@ -1,5 +1,6 @@
 /* rebuild-trigger-v2 */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import SEOHead from '@/components/SEOHead';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -19,8 +20,14 @@ import { LegalDialog } from '@/components/LegalDialog';
 export default function Auth() {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && user) navigate('/', { replace: true });
+  }, [authLoading, user, navigate]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
