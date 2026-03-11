@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -20,19 +20,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const initializedRef = useRef(false);
 
   const fetchProfile = useCallback(async (userId: string) => {
-    try {
-      const [profileRes, rolesRes] = await Promise.all([
-        supabase.from('profiles').select('*').eq('id', userId).single(),
-        supabase.from('user_roles').select('role').eq('user_id', userId),
-      ]);
-      setProfile(profileRes.data);
-      setIsAdmin(rolesRes.data?.some(r => r.role === 'admin') || false);
-    } catch {
-      setProfile(null);
-      setIsAdmin(false);
+    const [profileRes, rolesRes] = await Promise.all([
+      supabase.from('profiles').select('*').eq('id', userId).single(),
+      supabase.from('user_roles').select('role').eq('user_id', userId),
+    ]);
+
+    if (profileRes.error) {
+      console.error('Profile fetch error:', profileRes.error.message);
     }
+
+    setProfile(profileRes.data ?? null);
+    setIsAdmin(rolesRes.data?.some(r => r.role === 'admin') || false);
   }, []);
 
   const refreshProfile = useCallback(async () => {
@@ -42,43 +43,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // 1. Set up listener FIRST (per Supabase best practices)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        if (!mounted) return;
-
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-
-        if (newSession?.user) {
-          // Use setTimeout to avoid deadlock with Supabase auth internals
-          setTimeout(async () => {
-            if (!mounted) return;
-            await fetchProfile(newSession.user.id);
-            if (mounted) setLoading(false);
-          }, 0);
-        } else {
-          setProfile(null);
-          setIsAdmin(false);
-          setLoading(false);
-        }
-      }
-    );
-
-    // 2. Then restore existing session
+    // 1. Restore session first (single source of truth for initial load)
     const restoreSession = async () => {
       try {
-        const { data: { session: existingSession } } = await supabase.auth.getSession();
+        const { data: { session: s } } = await supabase.auth.getSession();
         if (!mounted) return;
 
-        setSession(existingSession);
-        setUser(existingSession?.user ?? null);
+        setSession(s);
+        setUser(s?.user ?? null);
 
-        if (existingSession?.user) {
-          await fetchProfile(existingSession.user.id);
+        if (s?.user) {
+          await fetchProfile(s.user.id);
         }
-      } catch {
-        // Session restore failed — clear state
+      } catch (e) {
+        console.error('Session restore error:', e);
         if (mounted) {
           setSession(null);
           setUser(null);
@@ -86,9 +64,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setIsAdmin(false);
         }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+          initializedRef.current = true;
+        }
       }
     };
+
+    // 2. Listen for auth changes (sign-in, sign-out, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        if (!mounted) return;
+
+        // Skip the INITIAL_SESSION event — restoreSession handles it
+        if (!initializedRef.current) return;
+
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+
+        if (newSession?.user) {
+          // Set loading=true so pages show spinner while profile loads
+          setLoading(true);
+          fetchProfile(newSession.user.id).finally(() => {
+            if (mounted) setLoading(false);
+          });
+        } else {
+          setProfile(null);
+          setIsAdmin(false);
+          // Don't set loading — already false
+        }
+      }
+    );
 
     restoreSession();
 
