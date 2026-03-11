@@ -67,15 +67,16 @@ export default function Auth() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else {
-      // Get user ID from session and log device
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) logDevice(session.user.id);
-      navigate('/');
+    const { error, data } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      setLoading(false);
+    } else {
+      // Log device best-effort; navigation is handled by <Navigate> guard
+      if (data?.user) logDevice(data.user.id);
+      // Don't setLoading(false) here — AuthContext will handle it via onAuthStateChange
+      // The <Navigate to="/"> guard at line 38 will redirect once user+profile are ready
     }
-    setLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
