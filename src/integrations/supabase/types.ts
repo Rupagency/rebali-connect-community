@@ -1299,8 +1299,6 @@ export type Database = {
           id: string | null
           is_verified_seller: boolean | null
           phone_verified: boolean | null
-          risk_level: Database["public"]["Enums"]["risk_level"] | null
-          trust_score: number | null
           user_type: Database["public"]["Enums"]["user_type"] | null
         }
         Insert: {
@@ -1310,8 +1308,6 @@ export type Database = {
           id?: string | null
           is_verified_seller?: boolean | null
           phone_verified?: boolean | null
-          risk_level?: Database["public"]["Enums"]["risk_level"] | null
-          trust_score?: number | null
           user_type?: Database["public"]["Enums"]["user_type"] | null
         }
         Update: {
@@ -1321,8 +1317,6 @@ export type Database = {
           id?: string | null
           is_verified_seller?: boolean | null
           phone_verified?: boolean | null
-          risk_level?: Database["public"]["Enums"]["risk_level"] | null
-          trust_score?: number | null
           user_type?: Database["public"]["Enums"]["user_type"] | null
         }
         Relationships: []
