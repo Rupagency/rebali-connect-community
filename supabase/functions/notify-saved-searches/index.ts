@@ -98,16 +98,36 @@ Deno.serve(async (req) => {
 
       if (existing && existing.length > 0) continue;
 
-      const { data: vipAddon } = await supabase
-        .from("user_addons")
-        .select("id")
-        .eq("user_id", search.user_id)
-        .eq("addon_type", "vip")
-        .eq("active", true)
-        .gt("expires_at", new Date().toISOString())
-        .limit(1);
+      // Check if user has access: Pro (vendeur_pro/agence) OR private with active_seller/expert_seller status
+      const { data: userProfile } = await supabase
+        .from("profiles")
+        .select("user_type")
+        .eq("id", search.user_id)
+        .single();
 
-      if (!vipAddon || vipAddon.length === 0) continue;
+      if (userProfile?.user_type === "business") {
+        // Pro users: check subscription tier
+        const { data: proSub } = await supabase
+          .from("pro_subscriptions")
+          .select("plan_type")
+          .eq("user_id", search.user_id)
+          .eq("status", "active")
+          .gt("expires_at", new Date().toISOString())
+          .limit(1);
+        const plan = proSub?.[0]?.plan_type;
+        if (plan !== "vendeur_pro" && plan !== "agence") continue;
+      } else {
+        // Private users: need active_seller or expert_seller status
+        const { data: statusAddon } = await supabase
+          .from("user_addons")
+          .select("id")
+          .eq("user_id", search.user_id)
+          .in("addon_type", ["active_seller", "expert_seller"])
+          .eq("active", true)
+          .gt("expires_at", new Date().toISOString())
+          .limit(1);
+        if (!statusAddon || statusAddon.length === 0) continue;
+      }
 
       // Create in-app notification
       await supabase.from("search_notifications").insert({

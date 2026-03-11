@@ -22,26 +22,27 @@ export default function SavedSearches() {
   const [adding, setAdding] = useState(false);
   const { isPro, tier } = useProStatus();
 
-  // Check VIP status (legacy)
-  const { data: hasVip } = useQuery({
-    queryKey: ['user-vip', user?.id],
+  // Check Vendeur Actif / Expert status (private users)
+  const { data: hasSellerStatus } = useQuery({
+    queryKey: ['user-seller-status', user?.id],
     queryFn: async () => {
       const { data } = await supabase
         .from('user_addons')
-        .select('id')
+        .select('addon_type')
         .eq('user_id', user!.id)
-        .eq('addon_type', 'vip')
+        .in('addon_type', ['active_seller', 'expert_seller'])
         .eq('active', true)
         .gt('expires_at', new Date().toISOString())
         .limit(1);
       return data && data.length > 0;
     },
-    enabled: !!user,
+    enabled: !!user && !isPro,
   });
 
   // Pro tiers: vendeur_pro = 3 searches, agence = unlimited
+  // Private users: need Vendeur Actif or Expert status
   const hasProAccess = tier === 'vendeur_pro' || tier === 'agence';
-  const hasAccess = hasVip || hasProAccess;
+  const hasAccess = hasSellerStatus || hasProAccess;
   const maxSearches = tier === 'agence' ? 999 : 3;
   const maxLabel = tier === 'agence' ? '∞' : '3';
 
@@ -78,11 +79,11 @@ export default function SavedSearches() {
             className="gap-2"
             onClick={() => isPro
               ? (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/pro-subscription`) : window.location.href = '/pro-subscription')
-              : (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/points`) : window.location.href = '/points')
+              : (isNativePlatform ? openExternalAuthenticated(`${WEBAPP_URL}/trust-badges`) : window.location.href = '/trust-badges')
             }
           >
             <Crown className="h-4 w-4" />
-            {isPro ? t('savedSearches.upgradePro') : t('savedSearches.becomeVip')}
+            {isPro ? t('savedSearches.upgradePro') : t('savedSearches.unlockAlerts')}
           </Button>
         </CardContent>
       </Card>
