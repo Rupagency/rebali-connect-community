@@ -18,8 +18,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 /**
- * Fetch from Supabase REST API directly using fetch(), bypassing the
- * JS client's internal _getSession() lock that causes deadlocks.
+ * Direct REST call bypassing the Supabase client to avoid internal deadlocks.
  */
 async function supabaseRest(path: string, accessToken: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -39,33 +38,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const sessionRef = useRef<Session | null>(null);
-
-  // Keep ref in sync
-  useEffect(() => { sessionRef.current = session; }, [session]);
+  const accessTokenRef = useRef<string | null>(null);
 
   // Fetch profile using raw fetch to avoid Supabase client deadlock
-  const fetchProfile = useCallback(async (userId: string) => {
-    const token = sessionRef.current?.access_token;
-    if (!token) {
-      console.warn('[Auth] fetchProfile: no access token available');
-      setProfile(null);
-      setIsAdmin(false);
-      return;
-    }
-
+  const fetchProfile = useCallback(async (userId: string, token: string) => {
     try {
       console.log('[Auth] fetchProfile for:', userId);
-
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 8000);
 
       const [profileData, rolesData] = await Promise.all([
         supabaseRest(`profiles?id=eq.${userId}&select=*&limit=1`, token),
         supabaseRest(`user_roles?user_id=eq.${userId}&select=role`, token),
       ]);
-
-      clearTimeout(timer);
 
       const prof = profileData?.[0] ?? null;
       console.log('[Auth] profile result:', { data: !!prof });
@@ -81,56 +64,63 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const refreshProfile = useCallback(async () => {
-    if (user) await fetchProfile(user.id);
+    const token = accessTokenRef.current;
+    if (user && token) await fetchProfile(user.id, token);
   }, [user, fetchProfile]);
-
-  // When user/session changes, fetch profile (deferred to escape auth lock)
-  useEffect(() => {
-    if (user && session?.access_token) {
-      const timer = setTimeout(() => fetchProfile(user.id), 50);
-      return () => clearTimeout(timer);
-    } else if (!user) {
-      setProfile(null);
-      setIsAdmin(false);
-    }
-  }, [user?.id, session?.access_token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     let mounted = true;
 
-    // 1. Restore session from storage
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      if (!mounted) return;
-      console.log('[Auth] getSession:', s ? s.user.id : 'null');
-      setSession(s);
-      setUser(s?.user ?? null);
-      setLoading(false);
-    }).catch((err) => {
-      console.error('[Auth] getSession error:', err);
-      if (mounted) setLoading(false);
-    });
-
-    // 2. Listen for auth changes — NO Supabase queries here!
+    // Use onAuthStateChange as THE SOLE source of truth.
+    // Supabase v2 fires INITIAL_SESSION first (restores from storage),
+    // then SIGNED_IN/SIGNED_OUT/TOKEN_REFRESHED for subsequent changes.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
+      (event, newSession) => {
         if (!mounted) return;
-        console.log('[Auth] authChange:', _event);
+        console.log('[Auth] authChange:', event, newSession?.user?.id ?? 'null');
+
         setSession(newSession);
         setUser(newSession?.user ?? null);
+        accessTokenRef.current = newSession?.access_token ?? null;
+
+        // Always mark loading as done after any auth event
+        setLoading(false);
+
+        // Fetch profile in background (deferred to escape auth lock)
+        if (newSession?.user && newSession.access_token) {
+          const uid = newSession.user.id;
+          const token = newSession.access_token;
+          setTimeout(() => {
+            if (mounted) fetchProfile(uid, token);
+          }, 0);
+        } else {
+          setProfile(null);
+          setIsAdmin(false);
+        }
       }
     );
+
+    // Safety: if onAuthStateChange never fires (shouldn't happen), unlock after 5s
+    const safetyTimer = setTimeout(() => {
+      if (mounted) {
+        console.warn('[Auth] safety timeout — forcing loading=false');
+        setLoading(false);
+      }
+    }, 5000);
 
     return () => {
       mounted = false;
       subscription.unsubscribe();
+      clearTimeout(safetyTimer);
     };
-  }, []);
+  }, [fetchProfile]);
 
   const signOut = useCallback(async () => {
     setUser(null);
     setSession(null);
     setProfile(null);
     setIsAdmin(false);
+    accessTokenRef.current = null;
     await supabase.auth.signOut();
   }, []);
 
