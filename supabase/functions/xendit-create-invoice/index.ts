@@ -183,11 +183,7 @@ serve(async (req) => {
       throw new Error(`Xendit API error [${xenditResponse.status}]: ${JSON.stringify(xenditData)}`);
     }
 
-    // Save invoice to database using service role
-    const supabaseAdmin = createClient(
-      supabaseUrl,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    // Save invoice to database using service role (reuse admin client from rate limiting)
 
     const { error: insertError } = await supabaseAdmin
       .from("payment_invoices")
