@@ -453,25 +453,7 @@ export default function Profile() {
     fetchStats();
   }, [user]);
 
-  if (authLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  useEffect(() => {
-    if (!authLoading && !user) navigate('/auth', { replace: true });
-  }, [authLoading, user, navigate]);
-
-  if (!user) return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
-
-  if (!profile) {
+  if (authLoading || !user || !profile) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
