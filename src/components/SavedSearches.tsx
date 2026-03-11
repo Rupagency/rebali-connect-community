@@ -22,26 +22,27 @@ export default function SavedSearches() {
   const [adding, setAdding] = useState(false);
   const { isPro, tier } = useProStatus();
 
-  // Check VIP status (legacy)
-  const { data: hasVip } = useQuery({
-    queryKey: ['user-vip', user?.id],
+  // Check Vendeur Actif / Expert status (private users)
+  const { data: hasSellerStatus } = useQuery({
+    queryKey: ['user-seller-status', user?.id],
     queryFn: async () => {
       const { data } = await supabase
         .from('user_addons')
-        .select('id')
+        .select('addon_type')
         .eq('user_id', user!.id)
-        .eq('addon_type', 'vip')
+        .in('addon_type', ['active_seller', 'expert_seller'])
         .eq('active', true)
         .gt('expires_at', new Date().toISOString())
         .limit(1);
       return data && data.length > 0;
     },
-    enabled: !!user,
+    enabled: !!user && !isPro,
   });
 
   // Pro tiers: vendeur_pro = 3 searches, agence = unlimited
+  // Private users: need Vendeur Actif or Expert status
   const hasProAccess = tier === 'vendeur_pro' || tier === 'agence';
-  const hasAccess = hasVip || hasProAccess;
+  const hasAccess = hasSellerStatus || hasProAccess;
   const maxSearches = tier === 'agence' ? 999 : 3;
   const maxLabel = tier === 'agence' ? '∞' : '3';
 
