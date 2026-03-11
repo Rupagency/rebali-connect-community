@@ -26,6 +26,7 @@ export default function Auth() {
 
   // Redirect if already logged in
   useEffect(() => {
+    console.log('[Auth page] redirect check:', { authLoading, user: !!user });
     if (!authLoading && user) navigate('/', { replace: true });
   }, [authLoading, user, navigate]);
 
