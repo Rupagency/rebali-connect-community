@@ -70,6 +70,8 @@ function WhatsAppVerification({ user, profile, refreshProfile }: { user: any; pr
       if (error) throw error;
       if (data?.error) {
         const errorKey = data.error === 'rate_limited' ? 'rateLimited'
+          : data.error === 'daily_limit_reached' ? 'dailyLimitReached'
+          : data.error === 'phone_daily_limit' ? 'phoneDailyLimit'
           : data.error === 'phone_already_used' ? 'phoneAlreadyUsed'
           : data.error === 'phone_banned' ? 'phoneBanned' : 'codeError';
         toast({ title: t(`security.${errorKey}`), variant: 'destructive' });

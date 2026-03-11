@@ -81,7 +81,9 @@ export default function ProSubscription() {
         body: { type: 'pro_subscription', plan_type: planType },
       });
       if (error || data?.error) {
-        toast({ title: data?.error || 'Payment error', variant: 'destructive' });
+        const errKey = data?.error === 'hourly_limit' ? 'paymentHourlyLimit'
+          : data?.error === 'daily_limit' ? 'paymentDailyLimit' : null;
+        toast({ title: errKey ? t(`security.${errKey}`) : (data?.error || 'Payment error'), variant: 'destructive' });
       } else if (data?.invoice_url) {
         await openOrNavigate(data.invoice_url);
       }
