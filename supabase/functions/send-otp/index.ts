@@ -72,6 +72,33 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Check daily limit: max 10 OTP requests per day per user
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: dailyRecent } = await supabase
+      .from("phone_verifications")
+      .select("id")
+      .eq("user_id", user_id)
+      .gte("created_at", oneDayAgo);
+
+    if (dailyRecent && dailyRecent.length >= 10) {
+      return new Response(JSON.stringify({ error: "daily_limit_reached" }), {
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Check daily limit per phone number: max 5 OTP per day per number
+    const { data: phoneDaily } = await supabase
+      .from("phone_verifications")
+      .select("id")
+      .eq("phone_number", phone_number)
+      .gte("created_at", oneDayAgo);
+
+    if (phoneDaily && phoneDaily.length >= 5) {
+      return new Response(JSON.stringify({ error: "phone_daily_limit" }), {
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Generate 6-digit OTP
     const otp = String(Math.floor(100000 + Math.random() * 900000));
 
