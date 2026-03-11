@@ -8,6 +8,15 @@ const corsHeaders = {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Restrict to service-role callers only
+  const authHeader = req.headers.get("Authorization");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!authHeader || authHeader !== `Bearer ${serviceKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -53,7 +62,6 @@ Deno.serve(async (req) => {
       console.log(`Expired ${expiredSubs.length} Pro subscriptions`);
 
       for (const sub of expiredSubs) {
-        // Calculate the user's free limit (5 base + extra_listings addons)
         const { data: extraSlots } = await supabase
           .from("user_addons")
           .select("extra_slots")
@@ -66,7 +74,6 @@ Deno.serve(async (req) => {
           0
         );
 
-        // Check account age for limit
         const { data: profile } = await supabase
           .from("profiles")
           .select("created_at")
@@ -79,7 +86,6 @@ Deno.serve(async (req) => {
         const baseLimit = accountAge < 7 * 24 * 60 * 60 * 1000 ? 3 : 5;
         const freeLimit = baseLimit + bonusSlots;
 
-        // Get all active listings for this user, oldest first
         const { data: activeListings } = await supabase
           .from("listings")
           .select("id")
@@ -88,7 +94,6 @@ Deno.serve(async (req) => {
           .order("created_at", { ascending: true });
 
         if (activeListings && activeListings.length > freeLimit) {
-          // Archive excess listings (keep the newest ones up to freeLimit)
           const toArchive = activeListings.slice(0, activeListings.length - freeLimit);
           const archiveIds = toArchive.map((l: any) => l.id);
 
