@@ -22,18 +22,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
+    console.log('[AuthContext] fetchProfile called for:', userId);
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
+    console.log('[AuthContext] profile result:', { data: !!data, error });
     setProfile(data);
 
-    const { data: roles } = await supabase
+    const { data: roles, error: rolesError } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', userId);
+    console.log('[AuthContext] roles result:', { roles, rolesError });
     setIsAdmin(roles?.some(r => r.role === 'admin') || false);
+    console.log('[AuthContext] isAdmin set to:', roles?.some(r => r.role === 'admin') || false);
   };
 
   const refreshProfile = async () => {
