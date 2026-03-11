@@ -1,8 +1,9 @@
-/* rebuild-trigger-v2 */
+/* rebuild-trigger-v3 */
 import { useState } from 'react';
 import SEOHead from '@/components/SEOHead';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +21,7 @@ export default function Auth() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
   const defaultTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
 
   const [email, setEmail] = useState('');
@@ -31,6 +33,9 @@ export default function Auth() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [legalDialog, setLegalDialog] = useState<'terms' | 'privacy' | null>(null);
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
+
+  // Redirect if already logged in
+  if (!authLoading && user) return <Navigate to="/" replace />;
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
