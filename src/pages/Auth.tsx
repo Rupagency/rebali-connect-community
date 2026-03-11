@@ -1,8 +1,9 @@
-/* rebuild-trigger-v2 */
+/* rebuild-trigger-v3 */
 import { useState } from 'react';
 import SEOHead from '@/components/SEOHead';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
