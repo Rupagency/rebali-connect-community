@@ -69,15 +69,15 @@ export default function Auth() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else {
-      // Get user ID from session and log device
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) logDevice(session.user.id);
-      navigate('/');
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      setLoading(false);
+    } else {
+      // logDevice fire-and-forget; redirect handled by useEffect watching `user`
+      if (data?.user) logDevice(data.user.id);
+      // setLoading(false) will happen when AuthContext picks up the session
     }
-    setLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -117,11 +117,10 @@ export default function Auth() {
           // Silently fail - referral is best-effort
         }
       }
-      // If session exists, user was auto-logged in (no email confirmation required)
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      // Use signUpData.session directly — never call getSession() here
+      if (signUpData?.session) {
         toast({ title: t('auth.signupSuccess') });
-        navigate('/');
+        // Redirect handled by useEffect watching `user`
       } else {
         // Email confirmation required
         toast({ title: t('auth.magicLinkSent') });
