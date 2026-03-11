@@ -9,20 +9,46 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
+    // Validate JWT and extract user_id from token
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
     );
 
-    const { device_hash, user_agent, user_id } = await req.json();
-    if (!device_hash || !user_id) {
-      return new Response(JSON.stringify({ error: "device_hash and user_id required" }), {
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Invalid token" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Use the authenticated user_id from JWT, NOT from request body
+    const user_id = claimsData.claims.sub as string;
+
+    const { device_hash, user_agent } = await req.json();
+    if (!device_hash) {
+      return new Response(JSON.stringify({ error: "device_hash required" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
+    // Use service role client for DB operations
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
     // Check if device is banned
-    const { data: banned } = await supabase
+    const { data: banned } = await supabaseAdmin
       .from("banned_devices")
       .select("id")
       .eq("device_hash", device_hash)
@@ -61,11 +87,9 @@ Deno.serve(async (req) => {
       try {
         const ipRes = await fetch(`https://ipinfo.io/${ip}?token=${IPINFO_TOKEN}`);
         const ipData = await ipRes.json();
-        // ipinfo privacy detection
         if (ipData.privacy) {
           isVpn = ipData.privacy.vpn || ipData.privacy.proxy || ipData.privacy.hosting || false;
         }
-        // Also check if org suggests datacenter
         if (ipData.org && /hosting|datacenter|cloud|vpn/i.test(ipData.org)) {
           isVpn = true;
         }
@@ -75,7 +99,7 @@ Deno.serve(async (req) => {
     }
 
     // Store device info
-    await supabase.from("user_devices").insert({
+    await supabaseAdmin.from("user_devices").insert({
       user_id,
       device_hash,
       ip_address: ip,
@@ -87,7 +111,7 @@ Deno.serve(async (req) => {
 
     // Check for multi-account: same IP created 2+ accounts in 24h
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const { data: sameIpDevices } = await supabase
+    const { data: sameIpDevices } = await supabaseAdmin
       .from("user_devices")
       .select("user_id")
       .eq("ip_address", ip)
@@ -99,7 +123,7 @@ Deno.serve(async (req) => {
     // Flag risk if VPN or multi-account
     if (isVpn || multiAccount) {
       const riskLevel = isVpn && multiAccount ? "high" : "medium";
-      await supabase
+      await supabaseAdmin
         .from("profiles")
         .update({ risk_level: riskLevel })
         .eq("id", user_id);
