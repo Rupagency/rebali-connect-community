@@ -4,7 +4,7 @@
     "save": "Kaydet", "cancel": "İptal", "delete": "Sil", "edit": "Düzenle", "back": "Geri", "next": "İleri",
     "publish": "Yayınla", "loading": "Yükleniyor...", "noResults": "Sonuç bulunamadı", "viewAll": "Tümünü gör",
     "price": "Fiyat", "free": "Ücretsiz", "contact": "İletişim", "report": "Şikayet", "share": "Paylaş",
-    "close": "Kapat", "confirm": "Onayla", "or": "veya", "and": "ve", "submit": "Gönder", "required": "Zorunlu", "optional": "İsteğe bağlı", "private": "Bireysel", "pro": "Profesyonel"
+    "close": "Kapat", "confirm": "Onayla", "or": "veya", "and": "ve", "submit": "Gönder", "required": "Zorunlu", "optional": "İsteğe bağlı", "private": "Bireysel", "pro": "Profesyonel", "sponsored": "Sponsorlu"
   },
   "nav": { "home": "Ana Sayfa", "browse": "Göz At", "sell": "Yayınla", "myListings": "İlanlarım", "profile": "Profil", "admin": "Yönetici", "about": "Hakkında", "safety": "Güvenlik İpuçları", "rules": "Kurallar", "vip": "VIP", "searches": "Aramalar", "favorites": "Favoriler", "messages": "Mesajlar", "loginSignup": "Giriş yap" },
   "home": {

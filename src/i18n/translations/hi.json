@@ -4,7 +4,7 @@
     "save": "सहेजें", "cancel": "रद्द करें", "delete": "हटाएं", "edit": "संपादित करें", "back": "वापस", "next": "अगला",
     "publish": "प्रकाशित करें", "loading": "लोड हो रहा है...", "noResults": "कोई परिणाम नहीं मिला", "viewAll": "सभी देखें",
     "price": "मूल्य", "free": "मुफ़्त", "contact": "संपर्क", "report": "रिपोर्ट", "share": "शेयर",
-    "close": "बंद करें", "confirm": "पुष्टि करें", "or": "या", "and": "और", "submit": "सबमिट करें", "required": "आवश्यक", "optional": "वैकल्पिक", "private": "व्यक्तिगत", "pro": "पेशेवर"
+    "close": "बंद करें", "confirm": "पुष्टि करें", "or": "या", "and": "और", "submit": "सबमिट करें", "required": "आवश्यक", "optional": "वैकल्पिक", "private": "व्यक्तिगत", "pro": "पेशेवर", "sponsored": "प्रायोजित"
   },
   "nav": { "home": "होम", "browse": "ब्राउज़ करें", "sell": "प्रकाशित करें", "myListings": "मेरे विज्ञापन", "profile": "प्रोफ़ाइल", "admin": "व्यवस्थापक", "about": "हमारे बारे में", "safety": "सुरक्षा सुझाव", "rules": "नियम", "vip": "VIP", "searches": "खोज", "favorites": "पसंदीदा", "messages": "संदेश", "loginSignup": "लॉग इन" },
   "home": {

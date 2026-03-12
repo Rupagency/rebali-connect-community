@@ -1,4 +1,5 @@
 {
+  "common": { "sponsored": "مُموَّل" },
   "nav": { "home": "الرئيسية", "browse": "تصفح", "sell": "نشر", "myListings": "إعلاناتي", "profile": "الملف الشخصي", "admin": "الإدارة", "about": "حول", "safety": "نصائح الأمان", "rules": "القواعد", "vip": "VIP", "searches": "عمليات البحث", "favorites": "المفضلة", "messages": "الرسائل", "loginSignup": "تسجيل الدخول" },
   "search": {
     "placeholder": "ابحث عن أي شيء...",
