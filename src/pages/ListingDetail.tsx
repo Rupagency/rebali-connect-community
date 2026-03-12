@@ -415,7 +415,7 @@ export default function ListingDetail() {
             <div className="aspect-[4/3] relative">
                 <img
                   src={images.length > 0
-                    ? supabase.storage.from('listings').getPublicUrl(images[currentImage]?.storage_path).data.publicUrl
+                    ? supabase.storage.from('listings').getPublicUrl(images[currentImage]?.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl
                     : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg'}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -423,6 +423,16 @@ export default function ListingDetail() {
                   height={600}
                   fetchPriority={currentImage === 0 ? 'high' : undefined}
                   decoding={currentImage === 0 ? 'sync' : 'async'}
+                  onError={(e) => {
+                    // Fallback to original if _wm version doesn't exist (old listings)
+                    const target = e.target as HTMLImageElement;
+                    const originalUrl = images[currentImage]?.storage_path
+                      ? supabase.storage.from('listings').getPublicUrl(images[currentImage].storage_path).data.publicUrl
+                      : '';
+                    if (originalUrl && target.src !== originalUrl) {
+                      target.src = originalUrl;
+                    }
+                  }}
                 />
                 <WatermarkOverlay />
               </div>
@@ -492,7 +502,16 @@ export default function ListingDetail() {
                 {images.map((img: any, i: number) => (
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
-                    <img src={supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={supabase.storage.from('listings').getPublicUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        const fallback = supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl;
+                        if (target.src !== fallback) target.src = fallback;
+                      }}
+                    />
                   </button>
                 ))}
               </div>
