@@ -132,6 +132,7 @@ export default function MemberOnboarding() {
             </Button>
           </div>
         </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -129,6 +129,7 @@ export default function VisitorOnboarding() {
             </Button>
           </div>
         </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
