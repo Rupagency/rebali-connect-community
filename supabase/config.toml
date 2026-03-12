@@ -71,3 +71,6 @@ verify_jwt = false
 
 [functions.send-otp]
 verify_jwt = false
+
+[functions.migrate-wm-images]
+verify_jwt = false
