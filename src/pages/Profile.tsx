@@ -65,7 +65,7 @@ function WhatsAppVerification({ user, profile, refreshProfile }: { user: any; pr
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('send-otp', {
-        body: { phone_number: phone, user_id: user.id, lang: language },
+        body: { phone_number: phone, lang: language },
       });
       if (error) throw error;
       if (data?.error) {
