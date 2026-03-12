@@ -48,6 +48,11 @@ Deno.serve(async (req) => {
       });
     }
 
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
     // Normalize: strip leading 0 after country code (+33 06… → +336…)
     phone_number = phone_number.replace(/\s/g, '').replace(/^(\+\d{1,3})0+/, '$1');
 
