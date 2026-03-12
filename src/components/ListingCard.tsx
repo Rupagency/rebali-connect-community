@@ -102,6 +102,12 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
               )}
             </div>
           )}
+          {listing._isSponsored && (
+            <Badge className="absolute bottom-2 right-2 bg-amber-500/90 text-white text-[10px] gap-1 font-bold shadow">
+              <Megaphone className="h-3 w-3" />
+              {t('common.sponsored')}
+            </Badge>
+          )}
           <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
             {isPro ? (
               <Badge className="bg-primary text-primary-foreground text-[10px] gap-1 font-bold shadow">
