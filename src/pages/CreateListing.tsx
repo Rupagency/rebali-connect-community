@@ -308,13 +308,31 @@ export default function CreateListing() {
         // (re-watermarking layers a second watermark on top, causing visual inconsistency)
         const username = profile?.display_name || 'user';
 
-        // Upload new images with hash
+        // Upload new images: original (for thumbnails) + watermarked (for detail page)
         const startIndex = existingImageUrls.length;
         for (let i = 0; i < photos.length; i++) {
           const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
+          const originalBlob = await new Promise<Blob>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const img = new Image();
+              img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img, 0, 0);
+                canvas.toBlob((blob) => resolve(blob || new Blob()), 'image/jpeg', 0.9);
+              };
+              img.src = reader.result as string;
+            };
+            reader.readAsDataURL(photos[i]);
+          });
           const path = `${user.id}/${editId}/${startIndex + i}.jpg`;
-          await supabase.storage.from('listings').upload(path, watermarked);
+          const wmPath = `${user.id}/${editId}/${startIndex + i}_wm.jpg`;
+          await supabase.storage.from('listings').upload(path, originalBlob);
+          await supabase.storage.from('listings').upload(wmPath, watermarked);
           await supabase.from('listing_images').insert({
             listing_id: editId,
             storage_path: path,
