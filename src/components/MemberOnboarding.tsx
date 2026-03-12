@@ -71,7 +71,8 @@ export default function MemberOnboarding() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none relative">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none">
+        <div className="relative">
         {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
 
