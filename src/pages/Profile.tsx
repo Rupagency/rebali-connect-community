@@ -731,6 +731,25 @@ export default function Profile() {
         </CardContent>
       </Card>
 
+      {/* Replay Onboarding */}
+      <Card>
+        <CardContent className="p-4">
+          <Button
+            variant="outline"
+            className="w-full gap-2"
+            onClick={() => {
+              localStorage.removeItem('rebali-visitor-onboarding-done');
+              localStorage.removeItem('rebali-member-onboarding-done');
+              toast({ title: t('profile.onboardingReset') });
+              window.location.reload();
+            }}
+          >
+            <RotateCcw className="h-4 w-4" />
+            {t('profile.replayOnboarding')}
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Saved Search Alerts (VIP) */}
       <SavedSearches />
 
