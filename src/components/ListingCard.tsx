@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home } from 'lucide-react';
+import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
@@ -29,6 +29,7 @@ interface ListingCardProps {
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
     favorites?: { count: number }[];
+    _isSponsored?: boolean;
   };
   boostTypes?: string[];
   favCount?: number;
@@ -100,6 +101,12 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
                 </Badge>
               )}
             </div>
+          )}
+          {listing._isSponsored && (
+            <Badge className="absolute bottom-2 right-2 bg-amber-500/90 text-white text-[10px] gap-1 font-bold shadow">
+              <Megaphone className="h-3 w-3" />
+              {t('common.sponsored')}
+            </Badge>
           )}
           <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
             {isPro ? (
