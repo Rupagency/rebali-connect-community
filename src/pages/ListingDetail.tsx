@@ -502,7 +502,16 @@ export default function ListingDetail() {
                 {images.map((img: any, i: number) => (
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
-                    <img src={supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={supabase.storage.from('listings').getPublicUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        const fallback = supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl;
+                        if (target.src !== fallback) target.src = fallback;
+                      }}
+                    />
                   </button>
                 ))}
               </div>
