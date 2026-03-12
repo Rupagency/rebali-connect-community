@@ -1120,21 +1120,43 @@
   "onboarding": {
     "skip": "Überspringen",
     "getStarted": "Los geht's!",
-    "welcome": {
-      "title": "Willkommen bei Re-Bali! 🌴",
-      "desc": "Der vertrauenswürdige Marktplatz für Expats, Einheimische und Unternehmen auf Bali."
+    "visitor": {
+      "welcome": {
+        "title": "Willkommen bei Re-Bali! 🌴",
+        "desc": "Der vertrauenswürdige Marktplatz für Expats, Einheimische und Unternehmen auf Bali."
+      },
+      "discover": {
+        "title": "Durchsuchen & Finden 🔍",
+        "desc": "Entdecken Sie Kategorien wie Fahrzeuge, Immobilien, Elektronik und mehr."
+      },
+      "trust": {
+        "title": "Sicher & Vertrauenswürdig 🛡️",
+        "desc": "Verifizierte Verkäufer, Vertrauenswerte und Community-Moderation."
+      },
+      "join": {
+        "title": "Der Community beitreten ❤️",
+        "desc": "Erstellen Sie Ihr kostenloses Konto, um Favoriten zu speichern und Anzeigen zu veröffentlichen!"
+      },
+      "createAccount": "Konto erstellen"
     },
-    "publish": {
-      "title": "In Sekunden veröffentlichen 📸",
-      "desc": "Foto machen, Preis festlegen und sofort veröffentlichen. 100% kostenlos!"
-    },
-    "connect": {
-      "title": "Chatten & Handeln 💬",
-      "desc": "Käufer kontaktieren Sie per In-App-Chat oder WhatsApp. Verhandeln und sicher abschließen."
-    },
-    "profile": {
-      "title": "Reputation aufbauen ⭐",
-      "desc": "Telefon verifizieren, Vertrauens-Badges sammeln und im Ranking aufsteigen."
+    "member": {
+      "setupProfile": {
+        "title": "Profil vervollständigen 👤",
+        "desc": "Fügen Sie einen Namen und Avatar hinzu, um Vertrauen aufzubauen."
+      },
+      "verifyPhone": {
+        "title": "WhatsApp verifizieren 📱",
+        "desc": "Verknüpfen Sie Ihre WhatsApp-Nummer für Nachrichten und Vertrauens-Badges."
+      },
+      "firstListing": {
+        "title": "Erste Anzeige aufgeben 📸",
+        "desc": "Foto machen, Preis festlegen und sofort veröffentlichen — 100% kostenlos!"
+      },
+      "startChatting": {
+        "title": "Kaufen & Verkaufen 💬",
+        "desc": "Durchsuchen, Favoriten speichern und Verkäufer kontaktieren. Los geht's!"
+      },
+      "goToProfile": "Zu meinem Profil"
     }
   }
 }

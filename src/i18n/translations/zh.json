@@ -1118,21 +1118,43 @@
   "onboarding": {
     "skip": "跳过",
     "getStarted": "开始吧！",
-    "welcome": {
-      "title": "欢迎来到 Re-Bali！🌴",
-      "desc": "巴厘岛外籍人士、本地人和企业的信赖市场。"
+    "visitor": {
+      "welcome": {
+        "title": "欢迎来到 Re-Bali！🌴",
+        "desc": "巴厘岛外籍人士、本地人和企业的信赖市场。"
+      },
+      "discover": {
+        "title": "浏览和搜索 🔍",
+        "desc": "探索车辆、房产、电子产品等类别。"
+      },
+      "trust": {
+        "title": "安全可信 🛡️",
+        "desc": "经过验证的卖家、信任评分和社区审核。"
+      },
+      "join": {
+        "title": "加入社区 ❤️",
+        "desc": "创建免费账户，收藏商品并发布广告！"
+      },
+      "createAccount": "创建账户"
     },
-    "publish": {
-      "title": "几秒钟即可发布 📸",
-      "desc": "拍照、定价，您的广告立即上线。100%免费！"
-    },
-    "connect": {
-      "title": "聊天并成交 💬",
-      "desc": "买家通过应用内聊天或WhatsApp联系您。安全协商并完成交易。"
-    },
-    "profile": {
-      "title": "建立您的声誉 ⭐",
-      "desc": "验证手机、获得信任徽章、收集评价并提升排名。"
+    "member": {
+      "setupProfile": {
+        "title": "完善您的资料 👤",
+        "desc": "添加名称和头像以建立信任。"
+      },
+      "verifyPhone": {
+        "title": "验证WhatsApp 📱",
+        "desc": "关联WhatsApp号码以解锁消息和信任徽章。"
+      },
+      "firstListing": {
+        "title": "发布第一条广告 📸",
+        "desc": "拍照、定价，即刻发布 — 100%免费！"
+      },
+      "startChatting": {
+        "title": "开始买卖 💬",
+        "desc": "浏览广告、收藏、联系卖家。"
+      },
+      "goToProfile": "前往我的资料"
     }
   }
 }

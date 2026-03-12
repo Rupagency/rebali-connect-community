@@ -1168,21 +1168,43 @@
   "onboarding": {
     "skip": "Atla",
     "getStarted": "Başla!",
-    "welcome": {
-      "title": "Re-Bali'ye Hoş Geldiniz! 🌴",
-      "desc": "Bali'deki gurbetçiler, yerel halk ve işletmeler için güvenilir pazar yeri."
+    "visitor": {
+      "welcome": {
+        "title": "Re-Bali'ye Hoş Geldiniz! 🌴",
+        "desc": "Bali'deki gurbetçiler, yerel halk ve işletmeler için güvenilir pazar yeri."
+      },
+      "discover": {
+        "title": "Göz Atın & Arayın 🔍",
+        "desc": "Araçlar, emlak, elektronik ve daha fazla kategoriyi keşfedin."
+      },
+      "trust": {
+        "title": "Güvenli & Güvenilir 🛡️",
+        "desc": "Doğrulanmış satıcılar, güven puanları ve topluluk moderasyonu."
+      },
+      "join": {
+        "title": "Topluluğa Katılın ❤️",
+        "desc": "Ücretsiz hesap oluşturun, favorileri kaydedin ve ilan yayınlayın!"
+      },
+      "createAccount": "Hesap Oluştur"
     },
-    "publish": {
-      "title": "Saniyeler İçinde Yayınla 📸",
-      "desc": "Fotoğraf çekin, fiyat belirleyin ve anında yayınlayın. %100 ücretsiz!"
-    },
-    "connect": {
-      "title": "Sohbet Et ve Anlaş 💬",
-      "desc": "Alıcılar uygulama içi sohbet veya WhatsApp ile iletişime geçer. Güvenle pazarlık yapın."
-    },
-    "profile": {
-      "title": "İtibarınızı Oluşturun ⭐",
-      "desc": "Telefonunuzu doğrulayın, güven rozetleri kazanın ve sıralamada yükselim."
+    "member": {
+      "setupProfile": {
+        "title": "Profilinizi Tamamlayın 👤",
+        "desc": "Güven oluşturmak için bir isim ve avatar ekleyin."
+      },
+      "verifyPhone": {
+        "title": "WhatsApp'ı Doğrulayın 📱",
+        "desc": "Mesajlaşma ve güven rozetleri için WhatsApp numaranızı bağlayın."
+      },
+      "firstListing": {
+        "title": "İlk İlanınızı Verin 📸",
+        "desc": "Fotoğraf çekin, fiyat belirleyin ve anında yayınlayın — %100 ücretsiz!"
+      },
+      "startChatting": {
+        "title": "Alım Satıma Başlayın 💬",
+        "desc": "İlanları gözden geçirin, favorileri kaydedin ve satıcılarla iletişime geçin."
+      },
+      "goToProfile": "Profilime Git"
     }
   }
 }
