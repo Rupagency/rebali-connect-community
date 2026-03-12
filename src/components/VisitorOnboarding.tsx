@@ -6,6 +6,7 @@ import { Sparkles, Search, Shield, Heart } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ConfettiEffect from '@/components/ConfettiEffect';
 
 const VISITOR_ONBOARDING_KEY = 'rebali-visitor-onboarding-done';
 
@@ -28,6 +29,7 @@ export default function VisitorOnboarding() {
   const [direction, setDirection] = useState(1);
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const isLast = step === steps.length - 1;
 
   useEffect(() => {
     const done = localStorage.getItem(VISITOR_ONBOARDING_KEY);
@@ -63,11 +65,11 @@ export default function VisitorOnboarding() {
   const currentStep = steps[step];
   const Icon = currentStep.icon;
   const progress = ((step + 1) / steps.length) * 100;
-  const isLast = step === steps.length - 1;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none relative">
+        {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
 
         <div className="p-6 pt-4 flex flex-col items-center text-center gap-4 min-h-[320px]">

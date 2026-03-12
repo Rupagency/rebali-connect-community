@@ -7,6 +7,7 @@ import { Camera, MessageCircle, UserCircle, Phone } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ConfettiEffect from '@/components/ConfettiEffect';
 
 const MEMBER_ONBOARDING_KEY = 'rebali-member-onboarding-done';
 
@@ -30,6 +31,7 @@ export default function MemberOnboarding() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const isLast = step === steps.length - 1;
 
   useEffect(() => {
     if (!user) return;
@@ -66,11 +68,11 @@ export default function MemberOnboarding() {
   const currentStep = steps[step];
   const Icon = currentStep.icon;
   const progress = ((step + 1) / steps.length) * 100;
-  const isLast = step === steps.length - 1;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none relative">
+        {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
 
         <div className="p-6 pt-4 flex flex-col items-center text-center gap-4 min-h-[320px]">
