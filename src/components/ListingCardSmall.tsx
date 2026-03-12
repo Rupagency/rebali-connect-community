@@ -94,6 +94,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               Sponsorisé
             </Badge>
           )}
+        </div>
         <CardContent className="p-2">
           <h3 className="font-semibold text-xs line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
             {title}
