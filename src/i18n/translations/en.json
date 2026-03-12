@@ -847,5 +847,13 @@
     "namePlaceholder": "Your company name",
     "description": "Description",
     "descPlaceholder": "Describe your business..."
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "getStarted": "Get Started!",
+    "welcome": { "title": "Welcome to Re-Bali! 🌴", "desc": "The trusted marketplace for expats, locals and businesses in Bali. Buy, sell and connect with your community." },
+    "publish": { "title": "Publish in Seconds 📸", "desc": "Take a photo, set your price and category, and your listing goes live instantly. It's 100% free!" },
+    "connect": { "title": "Chat & Deal 💬", "desc": "Buyers contact you via in-app messaging or WhatsApp. Negotiate, agree, and close the deal safely." },
+    "profile": { "title": "Build Your Reputation ⭐", "desc": "Verify your phone, earn trust badges, collect reviews and climb the leaderboard. Your profile is your brand!" }
   }
 }

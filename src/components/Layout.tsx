@@ -4,6 +4,7 @@ import Footer from './Footer';
 import NewListingNotification from './NewListingNotification';
 import BottomNav from './BottomNav';
 import PwaInstallButton from './PwaInstallButton';
+import OnboardingWalkthrough from './OnboardingWalkthrough';
 
 export default function Layout() {
   return (
@@ -16,6 +17,7 @@ export default function Layout() {
       <BottomNav />
       <PwaInstallButton />
       <NewListingNotification />
+      <OnboardingWalkthrough />
     </div>
   );
 }

@@ -534,5 +534,13 @@
     "cta": "Pasang iklan pertama Anda"
   },
   "sellerStatus": { "active": "Aktif", "remaining": "Sisa waktu", "expired": "Kedaluwarsa", "daysShort": "h", "boostsInStock": "boost tersedia", "boostsDesc": "Gunakan dari Iklan Saya", "use": "Gunakan" },
-  "business": { "portfolio": "Portofolio", "editPage": "Edit Halaman Bisnis", "logo": "Logo Perusahaan", "uploadLogo": "Unggah logo", "name": "Nama Perusahaan", "namePlaceholder": "Nama perusahaan Anda", "description": "Deskripsi", "descPlaceholder": "Deskripsikan bisnis Anda..." }
+  "business": { "portfolio": "Portofolio", "editPage": "Edit Halaman Bisnis", "logo": "Logo Perusahaan", "uploadLogo": "Unggah logo", "name": "Nama Perusahaan", "namePlaceholder": "Nama perusahaan Anda", "description": "Deskripsi", "descPlaceholder": "Deskripsikan bisnis Anda..." },
+  "onboarding": {
+    "skip": "Lewati",
+    "getStarted": "Mulai!",
+    "welcome": { "title": "Selamat Datang di Re-Bali! 🌴", "desc": "Marketplace terpercaya untuk ekspat, warga lokal, dan bisnis di Bali. Jual, beli, dan terhubung dengan komunitas Anda." },
+    "publish": { "title": "Pasang Iklan dalam Hitungan Detik 📸", "desc": "Foto, tentukan harga dan kategori, dan iklan Anda langsung tayang. 100% gratis!" },
+    "connect": { "title": "Chat & Transaksi 💬", "desc": "Pembeli menghubungi Anda via pesan dalam aplikasi atau WhatsApp. Negosiasi, sepakati, dan selesaikan dengan aman." },
+    "profile": { "title": "Bangun Reputasi Anda ⭐", "desc": "Verifikasi telepon, dapatkan lencana kepercayaan, kumpulkan ulasan dan naiki peringkat. Profil Anda adalah brand Anda!" }
+  }
 }

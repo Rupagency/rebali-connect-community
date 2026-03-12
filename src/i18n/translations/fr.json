@@ -660,5 +660,13 @@
     "namePlaceholder": "Le nom de votre entreprise",
     "description": "Description",
     "descPlaceholder": "Décrivez votre activité..."
+  },
+  "onboarding": {
+    "skip": "Passer",
+    "getStarted": "C'est parti !",
+    "welcome": { "title": "Bienvenue sur Re-Bali ! 🌴", "desc": "La marketplace de confiance pour les expats, locaux et entreprises à Bali. Achetez, vendez et connectez-vous avec votre communauté." },
+    "publish": { "title": "Publiez en quelques secondes 📸", "desc": "Prenez une photo, fixez votre prix et catégorie, et votre annonce est en ligne instantanément. C'est 100% gratuit !" },
+    "connect": { "title": "Discutez & Concluez 💬", "desc": "Les acheteurs vous contactent via la messagerie intégrée ou WhatsApp. Négociez, acceptez et concluez en toute sécurité." },
+    "profile": { "title": "Construisez votre réputation ⭐", "desc": "Vérifiez votre téléphone, gagnez des badges de confiance, collectez des avis et grimpez dans le classement. Votre profil, c'est votre marque !" }
   }
 }
