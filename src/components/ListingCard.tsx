@@ -29,6 +29,7 @@ interface ListingCardProps {
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
     favorites?: { count: number }[];
+    _isSponsored?: boolean;
   };
   boostTypes?: string[];
   favCount?: number;
