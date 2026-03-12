@@ -65,7 +65,7 @@ function WhatsAppVerification({ user, profile, refreshProfile }: { user: any; pr
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('send-otp', {
-        body: { phone_number: phone, user_id: user.id, lang: language },
+        body: { phone_number: phone, lang: language },
       });
       if (error) throw error;
       if (data?.error) {
@@ -90,7 +90,7 @@ function WhatsAppVerification({ user, profile, refreshProfile }: { user: any; pr
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('verify-otp', {
-        body: { phone_number: phone, otp_code: otpValue, user_id: user.id },
+        body: { phone_number: phone, otp_code: otpValue },
       });
       if (error) throw error;
       if (data?.error) {
