@@ -316,6 +316,8 @@
     "statsTotalViews": "Vues totales",
     "statsAvgRating": "Note moyenne",
     "changePassword": "Changer le mot de passe",
+    "replayOnboarding": "Relancer le tutoriel d'accueil",
+    "onboardingReset": "Le tutoriel va se relancer !",
     "passwordResetSent": "Email de réinitialisation envoyé !",
     "deleteAccount": "Supprimer mon compte",
     "deleteAccountTitle": "Supprimer votre compte ?",

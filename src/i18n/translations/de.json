@@ -299,6 +299,8 @@
     "statsTotalViews": "Gesamtaufrufe",
     "statsAvgRating": "Durchschnittsbewertung",
     "changePassword": "Passwort ändern",
+    "replayOnboarding": "Onboarding-Tutorial erneut abspielen",
+    "onboardingReset": "Das Onboarding wird jetzt erneut abgespielt!",
     "passwordResetSent": "Passwort-Reset-E-Mail gesendet!",
     "deleteAccount": "Mein Konto löschen",
     "deleteAccountTitle": "Konto löschen?",

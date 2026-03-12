@@ -311,6 +311,8 @@
     "statsTotalViews": "Toplam görüntülenme",
     "statsAvgRating": "Ort. puan",
     "changePassword": "Şifre değiştir",
+    "replayOnboarding": "Tanıtım turunu tekrar oynat",
+    "onboardingReset": "Tanıtım turu şimdi tekrar oynatılacak!",
     "passwordResetSent": "Şifre sıfırlama e-postası gönderildi!",
     "deleteAccount": "Hesabımı sil",
     "deleteAccountTitle": "Hesabınızı silmek istiyor musunuz?",
