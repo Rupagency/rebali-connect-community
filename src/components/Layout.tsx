@@ -4,9 +4,13 @@ import Footer from './Footer';
 import NewListingNotification from './NewListingNotification';
 import BottomNav from './BottomNav';
 import PwaInstallButton from './PwaInstallButton';
-import OnboardingWalkthrough from './OnboardingWalkthrough';
+import VisitorOnboarding from './VisitorOnboarding';
+import MemberOnboarding from './MemberOnboarding';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Layout() {
+  const { user, loading } = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -17,7 +21,8 @@ export default function Layout() {
       <BottomNav />
       <PwaInstallButton />
       <NewListingNotification />
-      <OnboardingWalkthrough />
+      {!loading && !user && <VisitorOnboarding />}
+      {!loading && user && <MemberOnboarding />}
     </div>
   );
 }

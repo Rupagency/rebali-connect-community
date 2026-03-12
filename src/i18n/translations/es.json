@@ -1118,21 +1118,43 @@
   "onboarding": {
     "skip": "Omitir",
     "getStarted": "¡Empezar!",
-    "welcome": {
-      "title": "¡Bienvenido a Re-Bali! 🌴",
-      "desc": "El marketplace de confianza para expats, locales y negocios en Bali."
+    "visitor": {
+      "welcome": {
+        "title": "¡Bienvenido a Re-Bali! 🌴",
+        "desc": "El marketplace de confianza para expats, locales y negocios en Bali."
+      },
+      "discover": {
+        "title": "Explora y Busca 🔍",
+        "desc": "Explora categorías como vehículos, inmuebles, electrónica y más."
+      },
+      "trust": {
+        "title": "Seguro y Confiable 🛡️",
+        "desc": "Vendedores verificados, puntuaciones de confianza y moderación comunitaria."
+      },
+      "join": {
+        "title": "Únete a la comunidad ❤️",
+        "desc": "¡Crea tu cuenta gratis para guardar favoritos y publicar anuncios!"
+      },
+      "createAccount": "Crear cuenta"
     },
-    "publish": {
-      "title": "Publica en segundos 📸",
-      "desc": "Toma una foto, fija tu precio y tu anuncio estará en línea al instante. ¡100% gratis!"
-    },
-    "connect": {
-      "title": "Chatea y Cierra 💬",
-      "desc": "Los compradores te contactan por chat o WhatsApp. Negocia y cierra de forma segura."
-    },
-    "profile": {
-      "title": "Construye tu reputación ⭐",
-      "desc": "Verifica tu teléfono, gana insignias de confianza y sube en el ranking."
+    "member": {
+      "setupProfile": {
+        "title": "Completa tu perfil 👤",
+        "desc": "Añade un nombre y avatar para generar confianza."
+      },
+      "verifyPhone": {
+        "title": "Verifica tu WhatsApp 📱",
+        "desc": "Vincula tu número de WhatsApp para mensajería e insignias de confianza."
+      },
+      "firstListing": {
+        "title": "Publica tu primer anuncio 📸",
+        "desc": "Toma una foto, fija tu precio y publica al instante — ¡100% gratis!"
+      },
+      "startChatting": {
+        "title": "Compra y Vende 💬",
+        "desc": "Explora anuncios, guarda favoritos y contacta vendedores."
+      },
+      "goToProfile": "Ir a mi perfil"
     }
   }
 }

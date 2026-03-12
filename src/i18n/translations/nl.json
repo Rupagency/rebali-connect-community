@@ -536,21 +536,43 @@
   "onboarding": {
     "skip": "Overslaan",
     "getStarted": "Aan de slag!",
-    "welcome": {
-      "title": "Welkom bij Re-Bali! 🌴",
-      "desc": "De betrouwbare marktplaats voor expats, locals en bedrijven op Bali."
+    "visitor": {
+      "welcome": {
+        "title": "Welkom bij Re-Bali! 🌴",
+        "desc": "De betrouwbare marktplaats voor expats, locals en bedrijven op Bali."
+      },
+      "discover": {
+        "title": "Bekijk & Zoek 🔍",
+        "desc": "Ontdek categorieën zoals voertuigen, vastgoed, elektronica en meer."
+      },
+      "trust": {
+        "title": "Veilig & Betrouwbaar 🛡️",
+        "desc": "Geverifieerde verkopers, vertrouwensscores en communitymoderatie."
+      },
+      "join": {
+        "title": "Word lid ❤️",
+        "desc": "Maak een gratis account aan om favorieten te bewaren en advertenties te plaatsen!"
+      },
+      "createAccount": "Account aanmaken"
     },
-    "publish": {
-      "title": "Publiceer in seconden 📸",
-      "desc": "Maak een foto, stel je prijs in en je advertentie staat direct online. 100% gratis!"
-    },
-    "connect": {
-      "title": "Chat & Deal 💬",
-      "desc": "Kopers nemen contact op via in-app chat of WhatsApp. Onderhandel en sluit veilig af."
-    },
-    "profile": {
-      "title": "Bouw je reputatie ⭐",
-      "desc": "Verifieer je telefoon, verdien vertrouwensbadges en stijg in de ranglijst."
+    "member": {
+      "setupProfile": {
+        "title": "Profiel voltooien 👤",
+        "desc": "Voeg een naam en avatar toe om vertrouwen op te bouwen."
+      },
+      "verifyPhone": {
+        "title": "WhatsApp verifiëren 📱",
+        "desc": "Koppel je WhatsApp-nummer voor berichten en vertrouwensbadges."
+      },
+      "firstListing": {
+        "title": "Eerste advertentie plaatsen 📸",
+        "desc": "Maak een foto, stel je prijs in en publiceer direct — 100% gratis!"
+      },
+      "startChatting": {
+        "title": "Begin met kopen & verkopen 💬",
+        "desc": "Bekijk advertenties, bewaar favorieten en neem contact op met verkopers."
+      },
+      "goToProfile": "Naar mijn profiel"
     }
   }
 }
