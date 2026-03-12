@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Rocket, Star, Home, ShieldCheck } from 'lucide-react';
+import { MapPin, Briefcase, Rocket, Star, Home, ShieldCheck, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -23,6 +23,7 @@ interface ListingCardSmallProps {
     listing_images?: { storage_path: string }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
+    _isSponsored?: boolean;
   };
   boostTypes?: string[];
 }
@@ -85,6 +86,12 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
           {listing.listing_type === 'rent' && (
             <Badge className="absolute bottom-1.5 left-1.5 bg-violet-600 text-white text-[9px] gap-0.5 px-1 py-0 font-bold shadow">
               <Home className="h-2.5 w-2.5" />
+            </Badge>
+          )}
+          {listing._isSponsored && (
+            <Badge className="absolute bottom-1.5 right-1.5 bg-amber-500/90 text-white text-[8px] gap-0.5 px-1 py-0 font-bold shadow">
+              <Megaphone className="h-2 w-2" />
+              Sponsorisé
             </Badge>
           )}
         </div>

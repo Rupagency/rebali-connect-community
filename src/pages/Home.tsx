@@ -554,7 +554,7 @@ function CategoryRow({ category, featuredListings }: { category: string; feature
     for (let i = 0; i < listings.length; i++) {
       result.push(listings[i]);
       if ((i + 1) % 5 === 0 && boostIdx < shuffled.length) {
-        result.push(shuffled[boostIdx]);
+        result.push({ ...shuffled[boostIdx], _isSponsored: true });
         boostIdx++;
       }
     }
