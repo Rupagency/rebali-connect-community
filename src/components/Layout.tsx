@@ -17,6 +17,7 @@ export default function Layout() {
       <BottomNav />
       <PwaInstallButton />
       <NewListingNotification />
+      <OnboardingWalkthrough />
     </div>
   );
 }
