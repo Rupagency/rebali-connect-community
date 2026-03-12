@@ -297,6 +297,8 @@
     "statsTotalViews": "Vistas totales",
     "statsAvgRating": "Valoración media",
     "changePassword": "Cambiar contraseña",
+    "replayOnboarding": "Repetir tutorial de bienvenida",
+    "onboardingReset": "¡El tutorial se repetirá ahora!",
     "passwordResetSent": "¡Email de restablecimiento enviado!",
     "deleteAccount": "Eliminar mi cuenta",
     "deleteAccountTitle": "¿Eliminar tu cuenta?",

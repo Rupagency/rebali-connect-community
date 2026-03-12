@@ -297,6 +297,8 @@
     "statsTotalViews": "Total dilihat",
     "statsAvgRating": "Rating rata-rata",
     "changePassword": "Ubah kata sandi",
+    "replayOnboarding": "Putar ulang tutorial",
+    "onboardingReset": "Tutorial akan diputar ulang!",
     "passwordResetSent": "Email reset kata sandi terkirim!",
     "deleteAccount": "Hapus akun saya",
     "deleteAccountTitle": "Hapus akun Anda?",

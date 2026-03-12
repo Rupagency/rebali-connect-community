@@ -19,7 +19,7 @@ import { SUPPORTED_LANGUAGES } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload, LogOut, Coins, FileText, ShieldAlert, Ban } from 'lucide-react';
+import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload, LogOut, Coins, FileText, ShieldAlert, Ban, RotateCcw } from 'lucide-react';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
@@ -728,6 +728,25 @@ export default function Profile() {
         </CardHeader>
         <CardContent>
           <PushNotificationToggle />
+        </CardContent>
+      </Card>
+
+      {/* Replay Onboarding */}
+      <Card>
+        <CardContent className="p-4">
+          <Button
+            variant="outline"
+            className="w-full gap-2"
+            onClick={() => {
+              localStorage.removeItem('rebali-visitor-onboarding-done');
+              localStorage.removeItem('rebali-member-onboarding-done');
+              toast({ title: t('profile.onboardingReset') });
+              window.location.reload();
+            }}
+          >
+            <RotateCcw className="h-4 w-4" />
+            {t('profile.replayOnboarding')}
+          </Button>
         </CardContent>
       </Card>
 

@@ -297,6 +297,8 @@
     "statsTotalViews": "总浏览量",
     "statsAvgRating": "平均评分",
     "changePassword": "更改密码",
+    "replayOnboarding": "重新播放引导教程",
+    "onboardingReset": "引导教程将重新播放！",
     "passwordResetSent": "密码重置邮件已发送！",
     "deleteAccount": "删除我的账户",
     "deleteAccountTitle": "删除您的账户？",

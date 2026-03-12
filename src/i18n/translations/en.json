@@ -315,6 +315,8 @@
     "statsTotalViews": "Total views",
     "statsAvgRating": "Avg. rating",
     "changePassword": "Change password",
+    "replayOnboarding": "Replay onboarding tutorial",
+    "onboardingReset": "Onboarding will replay now!",
     "passwordResetSent": "Password reset email sent!",
     "deleteAccount": "Delete my account",
     "deleteAccountTitle": "Delete your account?",

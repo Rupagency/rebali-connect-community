@@ -311,6 +311,8 @@
     "statsTotalViews": "कुल दृश्य",
     "statsAvgRating": "औसत रेटिंग",
     "changePassword": "पासवर्ड बदलें",
+    "replayOnboarding": "ऑनबोर्डिंग ट्यूटोरियल दोबारा चलाएं",
+    "onboardingReset": "ऑनबोर्डिंग अब दोबारा चलेगा!",
     "passwordResetSent": "पासवर्ड रीसेट ईमेल भेजा गया!",
     "deleteAccount": "मेरा खाता हटाएं",
     "deleteAccountTitle": "अपना खाता हटाएं?",
