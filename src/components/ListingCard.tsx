@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home } from 'lucide-react';
+import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';

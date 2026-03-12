@@ -91,7 +91,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
           {listing._isSponsored && (
             <Badge className="absolute bottom-1.5 right-1.5 bg-amber-500/90 text-white text-[8px] gap-0.5 px-1 py-0 font-bold shadow">
               <Megaphone className="h-2 w-2" />
-              Sponsorisé
+              {t('common.sponsored')}
             </Badge>
           )}
         </div>
