@@ -537,7 +537,7 @@ function CategoryRow({ category, featuredListings }: { category: string; feature
     if (!featuredListings || featuredListings.length === 0) return listings;
 
     const categoryIds = new Set(listings.map((l: any) => l.id));
-    const eligible = featuredListings.filter((f: any) => !categoryIds.has(f.id));
+    const eligible = featuredListings.filter((f: any) => !categoryIds.has(f.id) && f.category === category);
     // Stable shuffle using seed
     const seed = seedRef.current;
     const shuffled = [...eligible].sort((a, b) => {
