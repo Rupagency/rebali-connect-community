@@ -88,7 +88,12 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
               <Home className="h-2.5 w-2.5" />
             </Badge>
           )}
-        </div>
+          {listing._isSponsored && (
+            <Badge className="absolute bottom-1.5 right-1.5 bg-amber-500/90 text-white text-[8px] gap-0.5 px-1 py-0 font-bold shadow">
+              <Megaphone className="h-2 w-2" />
+              Sponsorisé
+            </Badge>
+          )}
         <CardContent className="p-2">
           <h3 className="font-semibold text-xs line-clamp-1 mb-0.5 group-hover:text-primary transition-colors">
             {title}
