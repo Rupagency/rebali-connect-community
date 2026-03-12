@@ -531,13 +531,15 @@ function CategoryRow({ category, featuredListings }: { category: string; feature
   // Use a stable ref for randomization to avoid re-shuffling on every render
   const seedRef = useRef(Math.random());
 
-  // Inject 1-2 featured listings into the category marquee (stable order)
+  // Inject 1 featured listing every 5 regular listings (random pick, stable order)
   const mergedListings = useMemo(() => {
     if (!listings || listings.length === 0) return [];
     if (!featuredListings || featuredListings.length === 0) return listings;
 
     const categoryIds = new Set(listings.map((l: any) => l.id));
     const eligible = featuredListings.filter((f: any) => !categoryIds.has(f.id));
+    if (eligible.length === 0) return listings;
+
     // Stable shuffle using seed
     const seed = seedRef.current;
     const shuffled = [...eligible].sort((a, b) => {
@@ -545,15 +547,17 @@ function CategoryRow({ category, featuredListings }: { category: string; feature
       const hb = (b.id.charCodeAt(0) * seed) % 1;
       return ha - hb;
     });
-    const toInject = shuffled.slice(0, Math.min(2, shuffled.length));
 
-    if (toInject.length === 0) return listings;
-
-    const result = [...listings];
-    toInject.forEach((item: any, idx: number) => {
-      const pos = Math.min(Math.floor((seed * (idx + 1) * 7) % (result.length + 1)), result.length);
-      result.splice(pos, 0, item);
-    });
+    // Insert one featured ad every 5 listings
+    const result: any[] = [];
+    let boostIdx = 0;
+    for (let i = 0; i < listings.length; i++) {
+      result.push(listings[i]);
+      if ((i + 1) % 5 === 0 && boostIdx < shuffled.length) {
+        result.push(shuffled[boostIdx]);
+        boostIdx++;
+      }
+    }
     return result;
   }, [listings, featuredListings]);
 
