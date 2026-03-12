@@ -23,6 +23,7 @@ interface ListingCardSmallProps {
     listing_images?: { storage_path: string }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
+    _isSponsored?: boolean;
   };
   boostTypes?: string[];
 }
