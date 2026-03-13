@@ -537,7 +537,11 @@
     "markAllRead": "Marcar todo como leído",
     "empty": "Sin notificaciones",
     "alertLabel": "Alerta",
-    "listing": "Anuncio"
+    "listing": "Anuncio",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "Alertas de búsqueda",

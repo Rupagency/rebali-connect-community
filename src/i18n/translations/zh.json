@@ -537,7 +537,11 @@
     "markAllRead": "全部标为已读",
     "empty": "暂无通知",
     "alertLabel": "提醒",
-    "listing": "广告"
+    "listing": "广告",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "搜索提醒",

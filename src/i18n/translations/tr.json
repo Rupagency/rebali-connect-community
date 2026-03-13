@@ -577,7 +577,11 @@
     "markAllRead": "Tümünü okundu işaretle",
     "empty": "Bildirim yok",
     "alertLabel": "Uyarı",
-    "listing": "İlan"
+    "listing": "İlan",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "Arama Uyarıları",

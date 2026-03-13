@@ -668,5 +668,11 @@
   },
   "footer": {
     "faq": "FAQ"
+  },
+  "notifications": {
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   }
 }

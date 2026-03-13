@@ -539,7 +539,11 @@
     "markAllRead": "Alle als gelesen markieren",
     "empty": "Keine Benachrichtigungen",
     "alertLabel": "Alarm",
-    "listing": "Anzeige"
+    "listing": "Anzeige",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "Suchalarme",

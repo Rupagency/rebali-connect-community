@@ -583,7 +583,11 @@
     "pushDisabled": "Push notifications disabled",
     "pushBlocked": "Notifications blocked",
     "pushNewMessage": "New message",
-    "pushSearchAlert": "Search alert"
+    "pushSearchAlert": "Search alert",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "Search Alerts",

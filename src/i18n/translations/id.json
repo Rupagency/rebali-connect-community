@@ -537,7 +537,11 @@
     "markAllRead": "Tandai semua dibaca",
     "empty": "Tidak ada notifikasi",
     "alertLabel": "Peringatan",
-    "listing": "Iklan"
+    "listing": "Iklan",
+    "unreadMessages": "Pesan belum dibaca",
+    "newMessages": "pesan baru",
+    "deal": "Transaksi",
+    "dealCompleted": "Transaksi selesai ✅"
   },
   "savedSearches": {
     "title": "Peringatan Pencarian",

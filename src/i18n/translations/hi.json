@@ -577,7 +577,11 @@
     "markAllRead": "सभी पढ़ा हुआ चिह्नित करें",
     "empty": "कोई सूचना नहीं",
     "alertLabel": "अलर्ट",
-    "listing": "विज्ञापन"
+    "listing": "विज्ञापन",
+    "unreadMessages": "Unread messages",
+    "newMessages": "new messages",
+    "deal": "Deal",
+    "dealCompleted": "Deal completed ✅"
   },
   "savedSearches": {
     "title": "खोज अलर्ट",

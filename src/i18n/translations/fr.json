@@ -589,7 +589,11 @@
     "pushDisabled": "Notifications push désactivées",
     "pushBlocked": "Notifications bloquées",
     "pushNewMessage": "Nouveau message",
-    "pushSearchAlert": "Alerte recherche"
+    "pushSearchAlert": "Alerte recherche",
+    "unreadMessages": "Messages non lus",
+    "newMessages": "nouveaux messages",
+    "deal": "Transaction",
+    "dealCompleted": "Transaction conclue ✅"
   },
   "savedSearches": {
     "title": "Alertes de recherche",
