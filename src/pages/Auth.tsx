@@ -122,6 +122,8 @@ export default function Auth() {
       // Use signUpData.session directly — never call getSession() here
       if (signUpData?.session) {
         toast({ title: t('auth.signupSuccess') });
+        // Track signup event
+        import('@/lib/analytics').then(({ trackEvent }) => trackEvent('signup', { user_type: userType })).catch(() => {});
         // Redirect handled by useEffect watching `user`
       } else {
         // Email confirmation required

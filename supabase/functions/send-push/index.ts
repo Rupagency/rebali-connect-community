@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
       vapidPrivate
     );
 
-    const { user_id, title, body, url, tag } = await req.json();
+    const { user_id, title, body, url, tag, data: notifData } = await req.json();
 
     if (!user_id || !title) {
       return new Response(JSON.stringify({ error: "Missing user_id or title" }), {
@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const payload = JSON.stringify({
+    const webPayload = JSON.stringify({
       title,
       body: body || "",
       url: url || "/",
@@ -71,17 +71,49 @@ Deno.serve(async (req) => {
     const staleIds: string[] = [];
 
     for (const sub of subscriptions) {
+      // Check if this is a native push token (iOS/Android)
+      if (sub.endpoint.startsWith("native://")) {
+        // Extract platform and token
+        const parts = sub.endpoint.replace("native://", "").split("/");
+        const platform = parts[0]; // 'ios' or 'android'
+        const deviceToken = parts.slice(1).join("/");
+
+        if (platform === "android") {
+          // Send via FCM HTTP v1 API
+          try {
+            const fcmResponse = await sendFCM(deviceToken, title, body || "", notifData || {});
+            if (fcmResponse) sent++;
+          } catch (err) {
+            console.error(`FCM push failed for token ${deviceToken.slice(0, 20)}...:`, err);
+            // If token is invalid, mark as stale
+            if ((err as any)?.status === 404 || (err as any)?.status === 410) {
+              staleIds.push(sub.id);
+            }
+          }
+        } else if (platform === "ios") {
+          // For iOS, FCM also handles APNS tokens if using Firebase
+          // If using direct APNS, you'd need APNS auth key
+          try {
+            const fcmResponse = await sendFCM(deviceToken, title, body || "", notifData || {});
+            if (fcmResponse) sent++;
+          } catch (err) {
+            console.error(`APNS push failed:`, err);
+          }
+        }
+        continue;
+      }
+
+      // Web Push (standard)
       const pushSub = {
         endpoint: sub.endpoint,
         keys: { p256dh: sub.p256dh, auth: sub.auth },
       };
 
       try {
-        await webpush.sendNotification(pushSub, payload);
+        await webpush.sendNotification(pushSub, webPayload);
         sent++;
       } catch (err: any) {
         console.error(`Push failed for ${sub.endpoint}:`, err?.statusCode || err);
-        // 404 or 410 = subscription expired, clean up
         if (err?.statusCode === 404 || err?.statusCode === 410) {
           staleIds.push(sub.id);
         }
@@ -110,3 +142,42 @@ Deno.serve(async (req) => {
     });
   }
 });
+
+/**
+ * Send push notification via Firebase Cloud Messaging (FCM) HTTP API.
+ * Requires FCM_SERVER_KEY secret to be set.
+ * Falls back silently if FCM_SERVER_KEY is not configured.
+ */
+async function sendFCM(
+  deviceToken: string,
+  title: string,
+  body: string,
+  data: Record<string, string> = {}
+): Promise<boolean> {
+  const fcmKey = Deno.env.get("FCM_SERVER_KEY");
+  if (!fcmKey) {
+    console.warn("[send-push] FCM_SERVER_KEY not set, skipping native push");
+    return false;
+  }
+
+  const response = await fetch("https://fcm.googleapis.com/fcm/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `key=${fcmKey}`,
+    },
+    body: JSON.stringify({
+      to: deviceToken,
+      notification: { title, body, sound: "default" },
+      data: { ...data, click_action: "FLUTTER_NOTIFICATION_CLICK" },
+    }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error(`FCM error ${response.status}:`, text);
+    throw { status: response.status, message: text };
+  }
+
+  return true;
+}
