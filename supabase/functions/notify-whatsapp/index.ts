@@ -179,6 +179,8 @@ ${tmpl.reply}: ${convLink}`;
           body: message_preview ? message_preview.substring(0, 100) : listingTitle,
           url: `/messages?conv=${conversation_id}`,
           tag: `msg-${conversation_id}`,
+          channel: "rebali_messages",
+          data: { type: "message", conversation_id },
         }),
       });
     } catch (pushErr) {
