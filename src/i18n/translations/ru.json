@@ -240,5 +240,18 @@
     "newMessages": "new messages",
     "deal": "Deal",
     "dealCompleted": "Deal completed ✅"
+  },
+  "comingSoon": {
+    "tagline": "The trusted marketplace for Bali is almost here",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "emailPlaceholder": "Enter your email",
+    "joinWaitlist": "Join the Waitlist",
+    "confirmed": "You're on the list! We'll notify you at launch.",
+    "alreadyRegistered": "You're already registered!",
+    "success": "Welcome to the waitlist!",
+    "disclaimer": "We'll only email you when we launch. No spam, ever."
   }
 }

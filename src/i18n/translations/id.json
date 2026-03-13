@@ -1203,5 +1203,18 @@
       },
       "goToProfile": "Ke Profil Saya"
     }
+  },
+  "comingSoon": {
+    "tagline": "Marketplace terpercaya untuk Bali segera hadir",
+    "days": "Hari",
+    "hours": "Jam",
+    "minutes": "Menit",
+    "seconds": "Detik",
+    "emailPlaceholder": "Masukkan email Anda",
+    "joinWaitlist": "Bergabung Waitlist",
+    "confirmed": "Anda terdaftar! Kami akan memberi tahu saat peluncuran.",
+    "alreadyRegistered": "Anda sudah terdaftar!",
+    "success": "Selamat datang di waitlist!",
+    "disclaimer": "Kami hanya akan mengirim email saat peluncuran. Tanpa spam."
   }
 }

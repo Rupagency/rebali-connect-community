@@ -1399,5 +1399,18 @@
         "a": "Contactez notre support via la page Contact. Nous traiterons votre demande et supprimerons vos données sous 30 jours."
       }
     }
+  },
+  "comingSoon": {
+    "tagline": "La marketplace de confiance pour Bali arrive bientôt",
+    "days": "Jours",
+    "hours": "Heures",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "emailPlaceholder": "Votre email",
+    "joinWaitlist": "Rejoindre la liste d'attente",
+    "confirmed": "Vous êtes inscrit ! On vous prévient au lancement.",
+    "alreadyRegistered": "Vous êtes déjà inscrit !",
+    "success": "Bienvenue sur la liste d'attente !",
+    "disclaimer": "On vous envoie un seul email au lancement. Pas de spam."
   }
 }
