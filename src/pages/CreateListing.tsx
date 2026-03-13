@@ -141,8 +141,17 @@ export default function CreateListing() {
   const SUSPICIOUS_PATTERNS = [
     /wa\.me\//i, /t\.me\//i, /bit\.ly\//i, /tinyurl\.com/i,
     /https?:\/\/[^\s]+/i, /telegram/i, /whatsapp\.com/i, /signal\.me/i,
-    /(\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,5}/,
   ];
+
+  // Phone detection: match phone-like patterns but exclude Indonesian prices (e.g. 28.000.000)
+  const PHONE_PATTERN = /(\+?\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]\d{3,4}[\s-]\d{3,5}/;
+  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/;
+
+  const looksLikePhone = (text: string): boolean => {
+    // Remove Indonesian-format prices before checking for phone numbers
+    const cleaned = text.replace(INDONESIAN_PRICE_PATTERN, '');
+    return PHONE_PATTERN.test(cleaned);
+  };
 
   const checkContent = (text: string): boolean => {
     return SUSPICIOUS_PATTERNS.some(p => p.test(text));
