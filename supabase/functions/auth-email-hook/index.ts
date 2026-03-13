@@ -161,13 +161,10 @@ Deno.serve(async (req) => {
         emailContent = recoveryEmail(confirmUrl || `${SITE_URL}/reset-password`);
         break;
       case "magiclink":
-        emailContent = magicLinkEmail(confirmUrl);
-        break;
       case "email_change":
-        emailContent = emailChangeEmail(confirmUrl);
-        break;
       case "invite":
-        emailContent = inviteEmail(confirmUrl);
+        // Not used — fall through to default (signup template as fallback)
+        emailContent = signupEmail(confirmUrl);
         break;
       case "reauthentication":
         emailContent = reauthEmail(token || "000000");

@@ -168,9 +168,8 @@ export default function Auth() {
                   <PasswordInput value={password} onChange={e => setPassword(e.target.value)} required />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>{t('common.login')}</Button>
-                <div className="flex justify-between text-sm">
+                <div className="text-sm text-center">
                   <button type="button" onClick={handleForgotPassword} className="text-primary hover:underline">{t('auth.forgotPassword')}</button>
-                  <button type="button" onClick={handleMagicLink} className="text-primary hover:underline">{t('auth.magicLink')}</button>
                 </div>
               </form>
             </CardContent>
