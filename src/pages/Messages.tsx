@@ -290,6 +290,7 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['conversations'] });
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     toast({ title: t('messages.buyerConfirmDeal') });
+    import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, role: 'buyer_confirmed' })).catch(() => {});
   };
 
   const handleSubmitRating = async () => {

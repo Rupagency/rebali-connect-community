@@ -403,6 +403,7 @@ export default function CreateListing() {
         await triggerListingTranslation(listing.id);
 
         toast({ title: t('createListing.listingCreated') });
+        import('@/lib/analytics').then(({ trackEvent }) => trackEvent('listing_created', { listing_id: listing.id, category: form.category })).catch(() => {});
         navigate(`/listing/${listing.id}`);
       }
     } catch (err: any) {
