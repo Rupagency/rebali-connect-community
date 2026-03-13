@@ -1,8 +1,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
+  ApplicationServer,
   importVapidKeys,
-  buildPushMessage,
-  type PushSubscription as WebPushSubscription,
+  PushMessageError,
+  type PushSubscription as WebPushSub,
 } from "jsr:@negrel/webpush@0.5.0";
 
 const corsHeaders = {
@@ -10,6 +11,37 @@ const corsHeaders = {
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+// Lazily cached ApplicationServer
+let _appServer: ApplicationServer | null = null;
+
+async function getAppServer(): Promise<ApplicationServer> {
+  if (_appServer) return _appServer;
+
+  const vapidPublic = Deno.env.get("VAPID_PUBLIC_KEY")!;
+  const vapidPrivate = Deno.env.get("VAPID_PRIVATE_KEY")!;
+
+  // Convert raw base64url VAPID keys to JWK for @negrel/webpush
+  const pubBytes = base64urlDecode(vapidPublic);
+  const privBytes = base64urlDecode(vapidPrivate);
+
+  // P-256 uncompressed public key: 0x04 || x (32 bytes) || y (32 bytes)
+  const x = base64urlEncode(pubBytes.slice(1, 33));
+  const y = base64urlEncode(pubBytes.slice(33, 65));
+  const d = base64urlEncode(privBytes);
+
+  const vapidKeys = await importVapidKeys({
+    publicKey: { kty: "EC", crv: "P-256", x, y, ext: true, key_ops: [] },
+    privateKey: { kty: "EC", crv: "P-256", x, y, d, ext: true, key_ops: ["sign"] },
+  });
+
+  _appServer = await ApplicationServer.new({
+    contactInformation: "mailto:contact@re-bali.com",
+    vapidKeys,
+  });
+
+  return _appServer;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -20,7 +52,6 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Authenticate: only allow calls with the service role key
     const authHeader = req.headers.get("Authorization");
     if (!authHeader || authHeader !== `Bearer ${serviceKey}`) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -30,7 +61,6 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, serviceKey);
-
     const { user_id, title, body, url, tag, data: notifData } = await req.json();
 
     if (!user_id || !title) {
@@ -40,7 +70,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Get all push subscriptions for this user
     const { data: subscriptions } = await supabase
       .from("push_subscriptions")
       .select("id, endpoint, p256dh, auth")
@@ -65,37 +94,40 @@ Deno.serve(async (req) => {
     const staleIds: string[] = [];
 
     for (const sub of subscriptions) {
-      // Check if this is a native push token (iOS/Android)
+      // Native push (iOS/Android via FCM)
       if (sub.endpoint.startsWith("native://")) {
         const parts = sub.endpoint.replace("native://", "").split("/");
         const platform = parts[0];
         const deviceToken = parts.slice(1).join("/");
 
         try {
-          const fcmResult = await sendFCM(deviceToken, title, body || "", notifData || {});
-          if (fcmResult) sent++;
+          const ok = await sendFCM(deviceToken, title, body || "", notifData || {});
+          if (ok) sent++;
         } catch (err: any) {
-          console.error(`Native push failed for ${platform}:`, err);
-          if (err?.status === 404 || err?.status === 410) {
-            staleIds.push(sub.id);
-          }
+          console.error(`Native push failed (${platform}):`, err);
+          if (err?.status === 404 || err?.status === 410) staleIds.push(sub.id);
         }
         continue;
       }
 
-      // Web Push
+      // Web Push via @negrel/webpush
       try {
-        await sendWebPush(sub, webPayload);
+        const appServer = await getAppServer();
+        const pushSub: WebPushSub = {
+          endpoint: sub.endpoint,
+          keys: { p256dh: sub.p256dh, auth: sub.auth },
+        };
+        const subscriber = appServer.subscribe(pushSub);
+        await subscriber.pushTextMessage(webPayload, {});
         sent++;
       } catch (err: any) {
-        console.error(`Web push failed for ${sub.endpoint}:`, err?.statusCode || err);
-        if (err?.statusCode === 404 || err?.statusCode === 410) {
+        console.error(`Web push failed for ${sub.endpoint}:`, err);
+        if (err instanceof PushMessageError && err.isGone()) {
           staleIds.push(sub.id);
         }
       }
     }
 
-    // Clean up stale subscriptions
     if (staleIds.length > 0) {
       await supabase.from("push_subscriptions").delete().in("id", staleIds);
       console.log(`Cleaned ${staleIds.length} stale push subscriptions`);
@@ -115,180 +147,108 @@ Deno.serve(async (req) => {
   }
 });
 
-// ─── Web Push (VAPID + ECE) ─────────────────────────────────────
+// ─── Helpers ────────────────────────────────────────────────────
 
-async function sendWebPush(
-  sub: { endpoint: string; p256dh: string; auth: string },
-  payload: string
-) {
-  const vapidPublic = Deno.env.get("VAPID_PUBLIC_KEY")!;
-  const vapidPrivate = Deno.env.get("VAPID_PRIVATE_KEY")!;
-
-  // Import VAPID keys from base64url raw format to CryptoKey
-  const vapidKeys = await importVapidKeys({
-    publicKey: base64urlToArrayBuffer(vapidPublic),
-    privateKey: base64urlToArrayBuffer(vapidPrivate),
-  });
-
-  const subscription: WebPushSubscription = {
-    endpoint: sub.endpoint,
-    keys: {
-      p256dh: sub.p256dh,
-      auth: sub.auth,
-    },
-  };
-
-  const { headers, body, endpoint } = await buildPushMessage(
-    vapidKeys,
-    subscription,
-    "mailto:contact@re-bali.com",
-    new TextEncoder().encode(payload)
-  );
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers,
-    body,
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    const error: any = new Error(`Web push failed: ${response.status} ${text}`);
-    error.statusCode = response.status;
-    throw error;
-  }
-  await response.text(); // consume body
+function base64urlDecode(str: string): Uint8Array {
+  const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  const pad = b64.length % 4 === 0 ? "" : "=".repeat(4 - (b64.length % 4));
+  const binary = atob(b64 + pad);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
 }
 
-function base64urlToArrayBuffer(base64url: string): ArrayBuffer {
-  const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
-  const pad = base64.length % 4 === 0 ? "" : "=".repeat(4 - (base64.length % 4));
-  const binary = atob(base64 + pad);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return bytes.buffer;
+function base64urlEncode(bytes: Uint8Array): string {
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 // ─── FCM v1 (native iOS/Android) ───────────────────────────────
 
-async function getAccessToken(serviceAccount: any): Promise<string> {
+async function getAccessToken(sa: any): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  const header = { alg: "RS256", typ: "JWT" };
-  const payload = {
-    iss: serviceAccount.client_email,
-    sub: serviceAccount.client_email,
+  const enc = (o: any) =>
+    btoa(JSON.stringify(o)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  const unsigned = `${enc({ alg: "RS256", typ: "JWT" })}.${enc({
+    iss: sa.client_email,
+    sub: sa.client_email,
     aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
     scope: "https://www.googleapis.com/auth/firebase.messaging",
-  };
+  })}`;
 
-  const enc = (obj: any) =>
-    btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-
-  const unsignedToken = `${enc(header)}.${enc(payload)}`;
-
-  const pemBody = serviceAccount.private_key
+  const pemBody = sa.private_key
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
     .replace(/\n/g, "");
   const binaryKey = Uint8Array.from(atob(pemBody), (c) => c.charCodeAt(0));
 
-  const cryptoKey = await crypto.subtle.importKey(
-    "pkcs8",
-    binaryKey,
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-    false,
-    ["sign"]
+  const key = await crypto.subtle.importKey(
+    "pkcs8", binaryKey,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]
   );
 
-  const signature = await crypto.subtle.sign(
-    "RSASSA-PKCS1-v1_5",
-    cryptoKey,
-    new TextEncoder().encode(unsignedToken)
+  const sig = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(unsigned)
   );
 
-  const sig = btoa(String.fromCharCode(...new Uint8Array(signature)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  const jwt = `${unsigned}.${btoa(String.fromCharCode(...new Uint8Array(sig)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")}`;
 
-  const jwt = `${unsignedToken}.${sig}`;
-
-  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+  const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
   });
 
-  if (!tokenRes.ok) {
-    const errText = await tokenRes.text();
-    throw new Error(`Failed to get access token: ${errText}`);
-  }
-
-  const tokenData = await tokenRes.json();
-  return tokenData.access_token;
+  if (!res.ok) throw new Error(`Access token error: ${await res.text()}`);
+  return (await res.json()).access_token;
 }
 
-let cachedToken: { token: string; expiresAt: number } | null = null;
+let cachedToken: { token: string; exp: number } | null = null;
 
-async function getCachedAccessToken(serviceAccount: any): Promise<string> {
-  const now = Date.now();
-  if (cachedToken && cachedToken.expiresAt > now + 60_000) {
-    return cachedToken.token;
-  }
-  const token = await getAccessToken(serviceAccount);
-  cachedToken = { token, expiresAt: now + 3500_000 };
+async function getCachedAccessToken(sa: any): Promise<string> {
+  if (cachedToken && cachedToken.exp > Date.now() + 60_000) return cachedToken.token;
+  const token = await getAccessToken(sa);
+  cachedToken = { token, exp: Date.now() + 3500_000 };
   return token;
 }
 
 async function sendFCM(
-  deviceToken: string,
-  title: string,
-  body: string,
+  deviceToken: string, title: string, body: string,
   data: Record<string, string> = {}
 ): Promise<boolean> {
   const raw = Deno.env.get("FCM_SERVICE_ACCOUNT");
-  if (!raw) {
-    console.warn("[send-push] FCM_SERVICE_ACCOUNT not set, skipping native push");
-    return false;
-  }
+  if (!raw) { console.warn("[send-push] FCM_SERVICE_ACCOUNT not set"); return false; }
 
-  const serviceAccount = JSON.parse(raw);
-  const accessToken = await getCachedAccessToken(serviceAccount);
-  const projectId = serviceAccount.project_id;
+  const sa = JSON.parse(raw);
+  const accessToken = await getCachedAccessToken(sa);
 
-  const response = await fetch(
-    `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
+  const res = await fetch(
+    `https://fcm.googleapis.com/v1/projects/${sa.project_id}/messages:send`,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify({
         message: {
           token: deviceToken,
           notification: { title, body },
           data,
-          android: {
-            notification: { sound: "default", channel_id: "default" },
-          },
-          apns: {
-            payload: { aps: { sound: "default", badge: 1 } },
-          },
+          android: { notification: { sound: "default", channel_id: "default" } },
+          apns: { payload: { aps: { sound: "default", badge: 1 } } },
         },
       }),
     }
   );
 
-  if (!response.ok) {
-    const text = await response.text();
-    console.error(`FCM v1 error ${response.status}:`, text);
-    throw { status: response.status, message: text };
+  if (!res.ok) {
+    const text = await res.text();
+    console.error(`FCM error ${res.status}:`, text);
+    throw { status: res.status, message: text };
   }
-  await response.text();
+  await res.text();
   return true;
 }
