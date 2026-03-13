@@ -293,7 +293,7 @@ export default function MyListings() {
       </div>
 
       <p className="text-sm text-muted-foreground mb-4">
-        {activeListings.length}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}
+        {activeListings.length}/{effectiveLimit === 9999 ? '∞' : effectiveLimit} {t('myListings.activeCount')}
       </p>
 
       {/* Stock boosts banner */}
