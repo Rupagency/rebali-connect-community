@@ -16,6 +16,7 @@ import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTria
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
+import { useProStatus } from '@/hooks/useProStatus';
 
 const STEPS = ['stepCategory', 'stepDetails', 'stepPhotos', 'stepPreview'] as const;
 
