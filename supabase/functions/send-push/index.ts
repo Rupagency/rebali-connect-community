@@ -219,7 +219,8 @@ async function getCachedAccessToken(sa: any): Promise<string> {
 
 async function sendFCM(
   deviceToken: string, title: string, body: string,
-  data: Record<string, string> = {}
+  data: Record<string, string> = {},
+  channel?: string,
 ): Promise<boolean> {
   const raw = Deno.env.get("FCM_SERVICE_ACCOUNT");
   if (!raw) { console.warn("[send-push] FCM_SERVICE_ACCOUNT not set"); return false; }
