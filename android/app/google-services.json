@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "537746089626",
+    "project_id": "re-bali",
+    "storage_bucket": "re-bali.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537746089626:android:9558417f129f3e299be123",
+        "android_client_info": {
+          "package_name": "com.rebali.community"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWHjsybtUE4EQPCtEMuOo8tEiUmyvjV_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
