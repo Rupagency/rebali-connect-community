@@ -589,7 +589,11 @@
     "pushDisabled": "Notifications push désactivées",
     "pushBlocked": "Notifications bloquées",
     "pushNewMessage": "Nouveau message",
-    "pushSearchAlert": "Alerte recherche"
+    "pushSearchAlert": "Alerte recherche",
+    "unreadMessages": "Messages non lus",
+    "newMessages": "nouveaux messages",
+    "deal": "Transaction",
+    "dealCompleted": "Transaction conclue ✅"
   },
   "savedSearches": {
     "title": "Alertes de recherche",
@@ -1122,7 +1126,8 @@
     "privacy": "Politique de confidentialité",
     "contact": "Contacter le support",
     "copyright": "Tous droits réservés.",
-    "trustBadgesPoints": "Confiance, Badges & Points"
+    "trustBadgesPoints": "Confiance, Badges & Points",
+    "faq": "FAQ"
   },
   "block": {
     "blockUser": "Bloquer cet utilisateur",
@@ -1303,5 +1308,109 @@
       },
       "goToProfile": "Aller à mon profil"
     }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce que vous devez savoir sur la marketplace Re-Bali",
+    "howItWorks": {
+      "title": "Fonctionnement",
+      "q1": {
+        "q": "Qu'est-ce que Re-Bali ?",
+        "a": "Re-Bali est une marketplace de confiance pour acheter et vendre des biens et services à Bali, Indonésie. Toutes les transactions passent par notre chat sécurisé intégré."
+      },
+      "q2": {
+        "q": "Comment publier une annonce ?",
+        "a": "Inscrivez-vous, cliquez sur 'Publier', remplissez les détails, ajoutez des photos, et votre annonce est en ligne après vérification. Vous pouvez publier 3 à 5 annonces selon l'ancienneté de votre compte."
+      },
+      "q3": {
+        "q": "Comment les acheteurs me contactent ?",
+        "a": "Les acheteurs envoient des messages via notre chat intégré. Votre numéro personnel reste privé tant que vous ne le partagez pas."
+      },
+      "q4": {
+        "q": "Comment se conclut une transaction ?",
+        "a": "Quand vous vous mettez d'accord sur un prix, le vendeur ferme le deal et l'acheteur confirme. Les deux parties peuvent ensuite laisser des avis."
+      },
+      "q5": {
+        "q": "Re-Bali est-il gratuit ?",
+        "a": "Oui ! Publier des annonces et discuter est gratuit. Des fonctionnalités premium optionnelles sont disponibles avec des points ou en IDR."
+      }
+    },
+    "safety": {
+      "title": "Sécurité & Confiance",
+      "q1": {
+        "q": "Comment fonctionne le score de confiance ?",
+        "a": "Votre score de confiance est calculé à partir de l'ancienneté du compte, des deals conclus, des avis positifs et de votre statut de vérification."
+      },
+      "q2": {
+        "q": "Comment les arnaques sont-elles prévenues ?",
+        "a": "Nous utilisons la modération de contenu, la détection d'images dupliquées, la vérification téléphonique et le signalement automatique des comptes suspects."
+      },
+      "q3": {
+        "q": "Puis-je bloquer un utilisateur ?",
+        "a": "Oui. Visitez son profil et appuyez sur 'Bloquer'. Ses annonces et messages seront masqués."
+      },
+      "q4": {
+        "q": "Comment signaler une annonce suspecte ?",
+        "a": "Appuyez sur 'Signaler' sur n'importe quelle annonce. Choisissez un motif et nous l'examinerons sous 24 heures."
+      }
+    },
+    "payments": {
+      "title": "Paiements & Points",
+      "q1": {
+        "q": "Comment fonctionnent les paiements ?",
+        "a": "Re-Bali ne traite pas les paiements entre acheteurs et vendeurs. Vous arrangez le paiement directement (espèces, virement, etc.)."
+      },
+      "q2": {
+        "q": "Que sont les points ?",
+        "a": "Les points sont gagnés en concluant des deals, recevant des avis et obtenant des badges. Dépensez-les en boosts, VIP et emplacements supplémentaires."
+      },
+      "q3": {
+        "q": "Peut-on acheter des points ?",
+        "a": "Oui ! Des packs de points sont disponibles en IDR via notre système de paiement sécurisé Xendit."
+      }
+    },
+    "verification": {
+      "title": "Vérification",
+      "q1": {
+        "q": "Comment vérifier mon WhatsApp ?",
+        "a": "Allez dans votre Profil, entrez votre numéro WhatsApp et nous enverrons un code de vérification. Une fois vérifié, vous gagnez le badge et 20 points."
+      },
+      "q2": {
+        "q": "Comment fonctionne la vérification d'identité ?",
+        "a": "Envoyez une pièce d'identité (KTP, passeport ou permis) et un selfie. Notre équipe examine sous 48 heures. Vous gagnez le badge et 40 points."
+      },
+      "q3": {
+        "q": "Mes données personnelles sont-elles en sécurité ?",
+        "a": "Oui. Les documents sont chiffrés, purgés automatiquement après examen et jamais partagés avec d'autres utilisateurs."
+      }
+    },
+    "account": {
+      "title": "Mon compte",
+      "q1": {
+        "q": "Comment changer mon nom ou avatar ?",
+        "a": "Allez dans Profil, appuyez sur Modifier, et mettez à jour votre nom d'affichage ou photo."
+      },
+      "q2": {
+        "q": "Quelle différence entre Particulier et Pro ?",
+        "a": "Les comptes Particuliers ont 3-5 annonces. Les comptes Pro ont plus d'annonces, des analytics, une page business et un support prioritaire."
+      },
+      "q3": {
+        "q": "Comment supprimer mon compte ?",
+        "a": "Contactez notre support via la page Contact. Nous traiterons votre demande et supprimerons vos données sous 30 jours."
+      }
+    }
+  },
+  "comingSoon": {
+    "tagline": "La marketplace de confiance pour Bali arrive bientôt",
+    "days": "Jours",
+    "hours": "Heures",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "emailPlaceholder": "Votre email",
+    "joinWaitlist": "Rejoindre la liste d'attente",
+    "confirmed": "Vous êtes inscrit ! On vous prévient au lancement.",
+    "alreadyRegistered": "Vous êtes déjà inscrit !",
+    "success": "Bienvenue sur la liste d'attente !",
+    "disclaimer": "On vous envoie un seul email au lancement. Pas de spam."
   }
 }
