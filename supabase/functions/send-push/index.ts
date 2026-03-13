@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, serviceKey);
-    const { user_id, title, body, url, tag, data: notifData } = await req.json();
+    const { user_id, title, body, url, tag, data: notifData, channel } = await req.json();
 
     if (!user_id || !title) {
       return new Response(JSON.stringify({ error: "Missing user_id or title" }), {
@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
         const deviceToken = parts.slice(1).join("/");
 
         try {
-          const ok = await sendFCM(deviceToken, title, body || "", notifData || {});
+          const ok = await sendFCM(deviceToken, title, body || "", notifData || {}, channel);
           if (ok) sent++;
         } catch (err: any) {
           console.error(`Native push failed (${platform}):`, err);
@@ -219,7 +219,8 @@ async function getCachedAccessToken(sa: any): Promise<string> {
 
 async function sendFCM(
   deviceToken: string, title: string, body: string,
-  data: Record<string, string> = {}
+  data: Record<string, string> = {},
+  channel?: string,
 ): Promise<boolean> {
   const raw = Deno.env.get("FCM_SERVICE_ACCOUNT");
   if (!raw) { console.warn("[send-push] FCM_SERVICE_ACCOUNT not set"); return false; }
@@ -237,7 +238,12 @@ async function sendFCM(
           token: deviceToken,
           notification: { title, body },
           data,
-          android: { notification: { sound: "default", channel_id: "default" } },
+          android: {
+            notification: {
+              sound: channel === "rebali_messages" ? "notif_message" : "default",
+              channel_id: channel || "rebali_default",
+            },
+          },
           apns: { payload: { aps: { sound: "default", badge: 1 } } },
         },
       }),
