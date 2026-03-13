@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, serviceKey);
-    const { user_id, title, body, url, tag, data: notifData } = await req.json();
+    const { user_id, title, body, url, tag, data: notifData, channel } = await req.json();
 
     if (!user_id || !title) {
       return new Response(JSON.stringify({ error: "Missing user_id or title" }), {
