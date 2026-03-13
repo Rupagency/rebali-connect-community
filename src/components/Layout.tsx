@@ -7,9 +7,11 @@ import PwaInstallButton from './PwaInstallButton';
 import VisitorOnboarding from './VisitorOnboarding';
 import MemberOnboarding from './MemberOnboarding';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNativePushNotifications } from '@/hooks/useNativePushNotifications';
 
 export default function Layout() {
   const { user, loading } = useAuth();
+  useNativePushNotifications();
 
   return (
     <div className="min-h-screen flex flex-col">
