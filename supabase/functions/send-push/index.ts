@@ -238,7 +238,12 @@ async function sendFCM(
           token: deviceToken,
           notification: { title, body },
           data,
-          android: { notification: { sound: "default", channel_id: "default" } },
+          android: {
+            notification: {
+              sound: channel === "rebali_messages" ? "notif_message" : "default",
+              channel_id: channel || "rebali_default",
+            },
+          },
           apns: { payload: { aps: { sound: "default", badge: 1 } } },
         },
       }),
