@@ -100,42 +100,6 @@ function recoveryEmail(resetUrl: string): { subject: string; html: string } {
   };
 }
 
-function magicLinkEmail(loginUrl: string): { subject: string; html: string } {
-  return {
-    subject: `🔗 Your ${SITE_NAME} login link`,
-    html: wrapHtml("Login link", [
-      makeText("Click the button below to securely log in to your Re-Bali account — no password needed:"),
-      makeButton(loginUrl, "Log in to Re-Bali"),
-      makeText("This link expires in 5 minutes and can only be used once. If you didn't request this, you can ignore this email."),
-      makeFallback(loginUrl),
-    ].join("")),
-  };
-}
-
-function emailChangeEmail(confirmUrl: string): { subject: string; html: string } {
-  return {
-    subject: `📧 Confirm your new email on ${SITE_NAME}`,
-    html: wrapHtml("Confirm your new email", [
-      makeText("You requested to change the email address associated with your Re-Bali account."),
-      makeText("Click the button below to confirm this change:"),
-      makeButton(confirmUrl, "Confirm new email"),
-      makeText("If you didn't request this change, please contact our support immediately."),
-      makeFallback(confirmUrl),
-    ].join("")),
-  };
-}
-
-function inviteEmail(confirmUrl: string): { subject: string; html: string } {
-  return {
-    subject: `🌴 You're invited to join ${SITE_NAME}!`,
-    html: wrapHtml("You're invited!", [
-      makeText("You've been invited to join Re-Bali — the trusted marketplace for buying and selling in Bali."),
-      makeText("Click the button below to accept the invitation and create your account:"),
-      makeButton(confirmUrl, "Accept invitation"),
-      makeFallback(confirmUrl),
-    ].join("")),
-  };
-}
 
 function reauthEmail(token: string): { subject: string; html: string } {
   return {
@@ -197,13 +161,10 @@ Deno.serve(async (req) => {
         emailContent = recoveryEmail(confirmUrl || `${SITE_URL}/reset-password`);
         break;
       case "magiclink":
-        emailContent = magicLinkEmail(confirmUrl);
-        break;
       case "email_change":
-        emailContent = emailChangeEmail(confirmUrl);
-        break;
       case "invite":
-        emailContent = inviteEmail(confirmUrl);
+        // Not used — fall through to default (signup template as fallback)
+        emailContent = signupEmail(confirmUrl);
         break;
       case "reauthentication":
         emailContent = reauthEmail(token || "000000");
