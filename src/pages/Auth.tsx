@@ -133,18 +133,6 @@ export default function Auth() {
     setLoading(false);
   };
 
-  const handleMagicLink = async () => {
-    if (!email) { toast({ title: t('auth.emailRequired'), variant: 'destructive' }); return; }
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else {
-      toast({ title: t('auth.magicLinkSent') });
-      // Device will be logged on next login via auth state change
-    }
-    setLoading(false);
-  };
-
   const handleForgotPassword = async () => {
     if (!email) { toast({ title: t('auth.emailRequired'), variant: 'destructive' }); return; }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
