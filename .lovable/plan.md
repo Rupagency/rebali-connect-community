@@ -1,211 +1,107 @@
 
 
-# Re-Bali Economy V2 -- Complete Overhaul
+## Analyse de l'existant et plan d'action
 
-This plan restructures the trust score, badges, points economy, and shop to match the Indonesia-optimized strategy you described. It's a large but systematic update across 4 layers: database, edge functions, frontend components, and i18n.
+### Ce qui existe deja
 
----
-
-## Summary of Changes
-
-### 1. Trust Score -- New Formula
-
-**Current** formula uses arbitrary weights (1pt/day, 5pts/listing, etc.) with thresholds at 10/30.
-
-**New** formula:
-
-| Factor | Gain | Max |
-|--------|------|-----|
-| Account age | 0.5 pt/day | +20 |
-| Active listings | 3 pts/listing | +15 |
-| Completed deals | 5 pts/deal | +20 |
-| Positive reviews (4+) | 3 pts each | +20 |
-| WhatsApp verified | +10 | +10 |
-| Identity verified | +15 | +15 |
-
-| Penalty | Points |
+| Feature | Statut |
 |---------|--------|
-| Unresolved report | -10 |
-| Fake listing detected (3 scam reports) | -20 |
-| VPN/proxy abuse | -10 |
-| Multi-device abuse | -15 |
+| **Partage social** | Boutons WhatsApp + Facebook + Copier lien deja presents sur ListingDetail |
+| **OG dynamique** | Edge function `og-listing` operationnelle avec detection de bots |
+| **Rate limiting** | Implemente sur OTP (3/15min), Xendit (5/h, 20/j), OTP daily limits |
+| **NotificationBell** | Existe mais ne montre que les `search_notifications` (alertes de recherche) |
+| **Push notifications** | Infrastructure PWA en place (VAPID, service worker, edge function) |
 
-**New thresholds**: 70-100 = "Safe", 40-69 = "Standard", 0-39 = "Risky"
+### Ce qui manque reellement
 
-Public-facing labels change from "low/medium/high risk" to "Safe / Standard / Risky" (more positive framing). The exact numeric score stays internal (not shown publicly), only the label is displayed.
+1. **Emails transactionnels** — Reporte a plus tard (config Resend)
+2. **Analytics / evenements** — Aucun tracking de retention
+3. **Centre de notifications enrichi** — Le bell ne montre que les recherches sauvegardees, pas les messages, deals, badges
+4. **Landing page / Waitlist** — Rien n'existe
+5. **Page FAQ** — Rien n'existe
 
-### 2. Badges -- New Generation
-
-**Keep existing**: newMember, activeMember, veteran, elder, whatsappVerified, identityVerified
-
-**Remove**: firstSeller, activeSeller, communicator, superCommunicator, wellRated, topSeller
-
-**Add new badges**:
-
-| Badge | Icon | Condition |
-|-------|------|-----------|
-| safeSeller | ShieldCheck | Trust score >= 70 |
-| trustedPro | Medal | Trust score >= 85 AND >= 10 completed deals |
-| firstDeal | Handshake | 1 completed deal |
-| fiveDeals | Target | 5 completed deals |
-| twentyDeals | Flame | 20 completed deals |
-| fiftyDeals | Trophy | 50 completed deals |
-
-This requires counting completed deals (conversations where `deal_closed = true AND buyer_confirmed = true`).
-
-### 3. Points -- New Economy
-
-**Badge point values (one-time sync)**:
-
-| Badge | Points |
-|-------|--------|
-| WhatsApp Verified | 20 |
-| Identity Verified | 40 |
-| First Listing (newMember equivalent, keep firstSeller internally for points only) | 10 |
-| First Deal | 20 |
-| 5 Deals | 30 |
-| 20 Deals | 50 |
-| Safe Seller | 25 |
-| Trusted Pro | 60 |
-
-**Dynamic earning** (new concept -- points earned automatically on events):
-
-| Action | Points |
-|--------|--------|
-| Completed deal (both confirmed) | 5 pts |
-| 5-star review received | 3 pts |
-| Validated report against scammer | 10 pts |
-
-Monthly cap: 150 pts from dynamic earnings (anti-farming).
-
-This requires a new tracking mechanism in the `manage-points` edge function and a `monthly_dynamic_earned` counter.
-
-### 4. Shop -- 5 Products
-
-| Product | Cost | Duration | Effect |
-|---------|------|----------|--------|
-| Boost 48h | 40 pts | 48h | Top of category results, "Boosted" badge on card |
-| Boost Premium (Homepage) | 80 pts | 48h | Featured on homepage section, larger card, "Featured" badge |
-| VIP 30j | 120 pts | 30 days | VIP badge, +10% search priority, 1 free Boost included |
-| Extra 5 Listings | 90 pts | 30 days | +5 listing slots (max 2 packs) |
-| Protection Boost | 150 pts | 30 days | "Priority Seller" badge, +20% organic visibility |
-
-### 5. Gamification UX
-
-- Show "You are X pts away from [next product]" nudge in the shop
-- "Complete 1 more deal to earn 5 pts" suggestion
+### Plan d'implementation (par priorite de lancement)
 
 ---
 
-## Technical Implementation Plan
+### 1. Page FAQ multilingue
 
-### Step 1: Database Migration
+- Creer `src/pages/FAQ.tsx` avec un composant Accordion (Radix)
+- Sections : Fonctionnement, Securite, Paiements, Verification, Compte
+- Ajouter les traductions dans les 12 fichiers i18n
+- Ajouter la route `/faq` dans App.tsx et un lien dans le Footer
 
-Add a `monthly_dynamic_earned` column to `user_points` to track the monthly cap:
+### 2. Centre de notifications in-app enrichi
 
+Actuellement le `NotificationBell` ne query que `search_notifications`. Il faut l'enrichir pour inclure :
+- **Messages non lus** : query `messages` via `conversations` (deja un RPC `get_total_unread_messages`)
+- **Deals conclus** : query `conversations` ou `deal_closed = true AND buyer_confirmed = true`
+- **Badges gagnes** : query `user_addons` recents
+
+Approche : modifier `NotificationBell.tsx` pour combiner plusieurs sources en une liste unifiee triee par date, avec des icones distinctes par type (MessageCircle, Handshake, Award).
+
+### 3. Analytics / tracking evenements
+
+Creer une table `analytics_events` pour tracker les evenements cles :
+- `signup`, `listing_created`, `deal_closed`, `message_sent`, `search`
+- Colonnes : `id`, `event_type`, `user_id`, `metadata (jsonb)`, `created_at`
+- Ajouter un helper `trackEvent()` cote client
+- Ajouter un widget dashboard dans la page Admin avec des compteurs par jour (Recharts)
+
+Migration SQL :
 ```sql
-ALTER TABLE public.user_points 
-  ADD COLUMN IF NOT EXISTS monthly_dynamic_earned integer NOT NULL DEFAULT 0,
-  ADD COLUMN IF NOT EXISTS month_reset text NOT NULL DEFAULT to_char(now(), 'YYYY-MM');
+CREATE TABLE public.analytics_events (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_type text NOT NULL,
+  user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
+  metadata jsonb DEFAULT '{}',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins can view analytics" ON public.analytics_events
+  FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Authenticated can insert events" ON public.analytics_events
+  FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid());
+CREATE INDEX idx_analytics_event_type ON public.analytics_events(event_type, created_at);
 ```
 
-Update the `check_listing_limit` function to account for `extra_listings` addons (check `user_addons` for active `extra_listings` and add `extra_slots` to the max).
+### 4. Landing page "Coming Soon" / Waitlist
 
-### Step 2: Update `calculate-trust-score` Edge Function
+- Creer `src/pages/ComingSoon.tsx` avec :
+  - Compteur a rebours (date du 1er avril)
+  - Champ email pour inscription waitlist
+  - Teaser visuel avec le branding Re-Bali
+- Table `waitlist` : `id`, `email`, `created_at`
+- Route `/coming-soon` optionnellement utilisable comme page d'accueil temporaire
 
-- Change formula weights to match new table above
-- Count completed deals via `conversations` where `deal_closed = true AND buyer_confirmed = true` and user is either buyer or seller
-- Change thresholds: `>= 70` = low risk (Safe), `>= 40` = medium, `< 40` = high (Risky)
-- Add "fake listing" penalty: count listings archived due to 3+ scam reports
+### 5. Partage social — deja fait
 
-### Step 3: Update `manage-points` Edge Function
+Les boutons WhatsApp, Facebook et Copier le lien sont deja presents sur `ListingDetail.tsx`. Pas d'action necessaire. L'OG dynamique est aussi en place via `og-listing`.
 
-Major rewrite:
+### 6. Rate limiting — deja en place
 
-- **New badge list** with updated point values matching the new badges
-- **`sync_badges`**: Update badge detection logic to include deal-based badges (query `conversations` for completed deals count) and trust-score-based badges (safeSeller, trustedPro)
-- **`award_dynamic`** new action: Called after deal completion, 5-star review, or validated report. Checks monthly cap before awarding.
-- **New shop products**: Update `ADDON_COSTS` and `ADDON_DURATIONS` for 5 products: `boost` (40), `boost_premium` (80), `vip` (120), `extra_listings` (90), `protection` (150)
-- **Admin actions**: Keep `admin_get_all_points` and `admin_set_balance` as-is
-
-### Step 4: Update `UserBadges.tsx`
-
-- Replace badge definitions with new set (keep age/verification badges, add deal + trust badges)
-- Add `completedDeals` and `trustScore` to `BadgeContext`
-- Query completed deals count from `conversations`
-- Query user's trust score from `profiles`
-
-### Step 5: Update `TrustIndicator.tsx`
-
-- Change labels from "Low risk / Medium risk / High risk" to "Safe / Standard / Risky"
-- Adjust color thresholds: green >= 70, amber >= 40, red < 40
-
-### Step 6: Update `TrustBadges.tsx` (Explanation Page)
-
-- Update `TRUST_FACTORS` with new weights
-- Update `BADGE_LIST` with new badges
-- Update `POINTS_BADGES` with new values
-- Add new shop products (5 instead of 3)
-- Add "Dynamic Earning" section explaining deal/review/report rewards + monthly cap
-- Update penalty descriptions
-
-### Step 7: Update `PointsShop.tsx`
-
-- Add 2 new products (boost_premium, protection) to `ADDON_CONFIG`
-- Add gamification nudge: "You are X pts away from [cheapest affordable addon]"
-- Boost Premium needs a listing selector dialog too (like regular boost)
-- Show monthly dynamic points status (X/150 earned this month)
-
-### Step 8: Update `ListingCard.tsx`
-
-- Show "Boosted" badge on boosted listings (query `user_addons` for active boost on that listing_id)
-- Show "Featured" badge for premium boosted listings
-
-### Step 9: Update `Home.tsx`
-
-- Add "Featured Listings" section showing listings with active `boost_premium` addon
-
-### Step 10: Update `Browse.tsx`
-
-- Sort boosted listings higher in results (query active boosts and sort accordingly)
-
-### Step 11: Update `check_listing_limit` DB Function
-
-- Account for active `extra_listings` addons: query `user_addons` for active `extra_listings` and add `extra_slots` to `max_listings`
-
-### Step 12: i18n Updates (All 12 Languages)
-
-Update all translation files with:
-- New badge names and descriptions (safeSeller, trustedPro, firstDeal, fiveDeals, twentyDeals, fiftyDeals)
-- New trust level labels (Safe / Standard / Risky)
-- New shop product names and descriptions (boost_premium, protection)
-- Dynamic earning explanations
-- Gamification nudge texts
-- Remove old badge translations (communicator, superCommunicator, etc.) or keep for backward compat
+Le rate limiting est deja implemente sur les fonctions critiques (OTP, paiements). Pour les messages, la validation de contenu (`check_message_content` trigger) et le compteur de messages par conversation servent de protection anti-spam.
 
 ---
 
-## Files to Create/Modify
+### Ordre d'implementation suggere
 
-| File | Action |
-|------|--------|
-| `supabase/migrations/...` | New migration for `monthly_dynamic_earned` column + update `check_listing_limit` function |
-| `supabase/functions/calculate-trust-score/index.ts` | Rewrite with new formula |
-| `supabase/functions/manage-points/index.ts` | Major update: new badges, new shop items, dynamic earning |
-| `src/components/UserBadges.tsx` | New badge definitions + deal/trust queries |
-| `src/components/TrustIndicator.tsx` | New thresholds + labels |
-| `src/pages/TrustBadges.tsx` | Full content update for new system |
-| `src/pages/PointsShop.tsx` | 5 products + gamification nudge + dynamic earnings display |
-| `src/components/ListingCard.tsx` | Boosted/Featured badges |
-| `src/pages/Home.tsx` | Featured Listings section |
-| `src/pages/Browse.tsx` | Boost priority in sort |
-| All 12 `src/i18n/translations/*.json` | New keys for badges, shop, trust labels |
+1. Page FAQ (rapide, fort impact UX)
+2. Centre de notifications enrichi (retention)
+3. Analytics events (mesure du lancement)
+4. Landing page Coming Soon (buzz pre-lancement)
 
----
+### Fichiers a creer/modifier
 
-## What is NOT Included (Future Phases)
-
-- **IAP / Point Pack Purchases with IDR**: Requires payment gateway integration (Midtrans, Xendit, etc.). This will be a separate project phase.
-- **Points-to-Cash Conversion**: Pro-only feature for later.
-- **PRO Seller SaaS Plan**: Direct IDR subscription -- separate monetization layer.
+| Action | Fichier |
+|--------|---------|
+| Creer | `src/pages/FAQ.tsx` |
+| Creer | `src/pages/ComingSoon.tsx` |
+| Modifier | `src/components/NotificationBell.tsx` |
+| Modifier | `src/App.tsx` (routes) |
+| Modifier | `src/components/Footer.tsx` (lien FAQ) |
+| Modifier | `src/pages/Admin.tsx` (widget analytics) |
+| Creer | `src/lib/analytics.ts` (helper trackEvent) |
+| Modifier | 12 fichiers i18n (traductions FAQ) |
+| Migration | Table `analytics_events` + table `waitlist` |
 
