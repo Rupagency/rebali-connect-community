@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
         const deviceToken = parts.slice(1).join("/");
 
         try {
-          const ok = await sendFCM(deviceToken, title, body || "", notifData || {});
+          const ok = await sendFCM(deviceToken, title, body || "", notifData || {}, channel);
           if (ok) sent++;
         } catch (err: any) {
           console.error(`Native push failed (${platform}):`, err);
