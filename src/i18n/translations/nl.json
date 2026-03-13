@@ -574,5 +574,99 @@
       },
       "goToProfile": "Naar mijn profiel"
     }
+  },
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "subtitle": "Alles over de Re-Bali marktplaats",
+    "howItWorks": {
+      "title": "How It Works",
+      "q1": {
+        "q": "What is Re-Bali?",
+        "a": "Re-Bali is a trusted marketplace for buying and selling goods and services in Bali, Indonesia. All transactions happen through our secure in-app chat system."
+      },
+      "q2": {
+        "q": "How do I post a listing?",
+        "a": "Sign up, click 'Publish', fill in your item details, upload photos, and your listing goes live after a quick review. You can post up to 3-5 listings depending on your account age."
+      },
+      "q3": {
+        "q": "How do buyers contact me?",
+        "a": "Buyers send messages through our built-in chat. Your personal phone number stays private until you decide to share it."
+      },
+      "q4": {
+        "q": "How are deals completed?",
+        "a": "When you agree on a price, the seller closes the deal, and the buyer confirms. Both parties can then leave reviews. Payments happen directly between buyer and seller."
+      },
+      "q5": {
+        "q": "Is Re-Bali free to use?",
+        "a": "Yes! Posting listings and messaging is free. Optional premium features like boosts and VIP status can be purchased with points or IDR."
+      }
+    },
+    "safety": {
+      "title": "Safety & Trust",
+      "q1": {
+        "q": "How does the trust score work?",
+        "a": "Your trust score is calculated from account age, completed deals, positive reviews, and verification status. Higher scores unlock badges like 'Safe Seller' and 'Trusted Pro'."
+      },
+      "q2": {
+        "q": "How are scams prevented?",
+        "a": "We use content moderation, image duplicate detection, phone verification, identity verification, and automatic flagging of suspicious accounts. Listings with 3+ scam reports are auto-archived."
+      },
+      "q3": {
+        "q": "Can I block a user?",
+        "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden from you. You can unblock anytime from your Blocked Users page."
+      },
+      "q4": {
+        "q": "How do I report a suspicious listing?",
+        "a": "Tap the 'Report' button on any listing. Choose a reason (scam, prohibited, spam, etc.) and we'll review it within 24 hours."
+      }
+    },
+    "payments": {
+      "title": "Payments & Points",
+      "q1": {
+        "q": "How do payments work?",
+        "a": "Re-Bali does not process payments between buyers and sellers. You arrange payment directly (cash, bank transfer, etc.). We provide the secure communication channel."
+      },
+      "q2": {
+        "q": "What are points?",
+        "a": "Points are earned by completing deals, getting reviews, and earning badges. Spend them on boosts, VIP status, and extra listing slots in the Points Shop."
+      },
+      "q3": {
+        "q": "Can I buy points with real money?",
+        "a": "Yes! Point packs are available for purchase in IDR through our secure payment system powered by Xendit."
+      }
+    },
+    "verification": {
+      "title": "Verification",
+      "q1": {
+        "q": "How do I verify my WhatsApp?",
+        "a": "Go to your Profile, enter your WhatsApp number, and we'll send a verification code via WhatsApp. Once verified, you earn the WhatsApp Verified badge and 20 points."
+      },
+      "q2": {
+        "q": "How does identity verification work?",
+        "a": "Upload a government-issued ID (KTP, passport, or driving license) and a selfie. Our team reviews it within 48 hours. You earn the Identity Verified badge and 40 points."
+      },
+      "q3": {
+        "q": "Is my personal data safe?",
+        "a": "Yes. Verification documents are encrypted at rest, automatically purged after review, and never shared with other users. Only our admin team can access them during verification."
+      }
+    },
+    "account": {
+      "title": "My Account",
+      "q1": {
+        "q": "How do I change my display name or avatar?",
+        "a": "Go to Profile, tap Edit, and update your display name or upload a new avatar photo."
+      },
+      "q2": {
+        "q": "What's the difference between Private and Business accounts?",
+        "a": "Private accounts are for individuals (3-5 listings). Business (Pro) accounts get more listings, analytics, a business page, and priority support."
+      },
+      "q3": {
+        "q": "How do I delete my account?",
+        "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
+      }
+    }
+  },
+  "footer": {
+    "faq": "FAQ"
   }
 }
