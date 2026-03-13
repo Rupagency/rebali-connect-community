@@ -16,6 +16,7 @@ import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTria
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
+import { useProStatus } from '@/hooks/useProStatus';
 
 const STEPS = ['stepCategory', 'stepDetails', 'stepPhotos', 'stepPreview'] as const;
 
@@ -66,7 +67,10 @@ export default function CreateListing() {
     enabled: !!user,
   });
 
-  const canPost = isEditMode || (activeCount || 0) < MAX_ACTIVE_LISTINGS;
+  // Dynamic listing limit based on user type and subscription
+  const { listingLimit: proListingLimit, isPro } = useProStatus();
+  const effectiveLimit = isPro ? proListingLimit : MAX_ACTIVE_LISTINGS;
+  const canPost = isEditMode || (activeCount || 0) < effectiveLimit;
 
   // Load existing listing for edit mode
   useEffect(() => {
@@ -141,11 +145,20 @@ export default function CreateListing() {
   const SUSPICIOUS_PATTERNS = [
     /wa\.me\//i, /t\.me\//i, /bit\.ly\//i, /tinyurl\.com/i,
     /https?:\/\/[^\s]+/i, /telegram/i, /whatsapp\.com/i, /signal\.me/i,
-    /(\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,5}/,
   ];
 
+  // Phone detection: match phone-like patterns but exclude Indonesian prices (e.g. 28.000.000)
+  const PHONE_PATTERN = /(\+?\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]\d{3,4}[\s-]\d{3,5}/;
+  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/;
+
+  const looksLikePhone = (text: string): boolean => {
+    // Remove Indonesian-format prices before checking for phone numbers
+    const cleaned = text.replace(INDONESIAN_PRICE_PATTERN, '');
+    return PHONE_PATTERN.test(cleaned);
+  };
+
   const checkContent = (text: string): boolean => {
-    return SUSPICIOUS_PATTERNS.some(p => p.test(text));
+    return SUSPICIOUS_PATTERNS.some(p => p.test(text)) || looksLikePhone(text);
   };
 
   // Watermark function — diagonal repeating pattern for uniform coverage
@@ -441,7 +454,7 @@ export default function CreateListing() {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <p className="text-lg text-muted-foreground">{t('createListing.limitReached')}</p>
-        <p className="text-sm text-muted-foreground mt-2">{activeCount}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}</p>
+        <p className="text-sm text-muted-foreground mt-2">{activeCount}/{effectiveLimit === 9999 ? '∞' : effectiveLimit} {t('myListings.activeCount')}</p>
         <Button className="mt-4" onClick={() => navigate('/my-listings')}>{t('nav.myListings')}</Button>
       </div>
     );

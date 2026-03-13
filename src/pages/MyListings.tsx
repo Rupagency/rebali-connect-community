@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPrice, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS } from '@/lib/constants';
+import { useProStatus } from '@/hooks/useProStatus';
 import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2, Clock, Zap } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -54,6 +55,8 @@ export default function MyListings() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { listingLimit: proListingLimit, isPro } = useProStatus();
+  const effectiveLimit = isPro ? proListingLimit : MAX_ACTIVE_LISTINGS;
   const qc = useQueryClient();
   const [boostDialogOpen, setBoostDialogOpen] = useState(false);
   const [boostListingId, setBoostListingId] = useState<string | null>(null);
@@ -290,7 +293,7 @@ export default function MyListings() {
       </div>
 
       <p className="text-sm text-muted-foreground mb-4">
-        {activeListings.length}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}
+        {activeListings.length}/{effectiveLimit === 9999 ? '∞' : effectiveLimit} {t('myListings.activeCount')}
       </p>
 
       {/* Stock boosts banner */}
