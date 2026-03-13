@@ -70,32 +70,34 @@ async function sendSmtp(options: {
   // DATA
   await send("DATA");
 
-  // Build email with MIME
-  const boundary = "----=_Part_" + crypto.randomUUID().replace(/-/g, "");
-  const fromHeader = fromName ? `"${fromName}" <${from}>` : from;
+  const fromHeader = fromName ? `=?UTF-8?B?${btoa(unescape(encodeURIComponent(fromName)))}?= <${from}>` : from;
   const toHeader = recipients.join(", ");
+  const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
 
-  const messageLines = [
+  // Encode HTML as base64 split into 76-char lines (RFC 2045)
+  const rawB64 = btoa(unescape(encodeURIComponent(html)));
+  const b64Lines: string[] = [];
+  for (let i = 0; i < rawB64.length; i += 76) {
+    b64Lines.push(rawB64.substring(i, i + 76));
+  }
+
+  const message = [
     `From: ${fromHeader}`,
     `To: ${toHeader}`,
-    replyTo ? `Reply-To: ${replyTo}` : "",
-    `Subject: =?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`,
+    ...(replyTo ? [`Reply-To: ${replyTo}`] : []),
+    `Subject: ${encodedSubject}`,
     `MIME-Version: 1.0`,
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+    `Content-Type: text/html; charset=UTF-8`,
+    `Content-Transfer-Encoding: base64`,
     `Date: ${new Date().toUTCString()}`,
     `Message-ID: <${crypto.randomUUID()}@${host}>`,
     "",
-    `--${boundary}`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
+    ...b64Lines,
     "",
-    btoa(unescape(encodeURIComponent(html))),
-    "",
-    `--${boundary}--`,
     ".",
-  ].filter(Boolean);
+  ].join("\r\n");
 
-  await conn.write(encoder.encode(messageLines.join("\r\n") + "\r\n"));
+  await conn.write(encoder.encode(message + "\r\n"));
 
   const dataResp = await readLine();
   if (!dataResp.startsWith("250")) {
