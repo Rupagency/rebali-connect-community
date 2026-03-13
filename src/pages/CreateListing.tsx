@@ -154,7 +154,7 @@ export default function CreateListing() {
   };
 
   const checkContent = (text: string): boolean => {
-    return SUSPICIOUS_PATTERNS.some(p => p.test(text));
+    return SUSPICIOUS_PATTERNS.some(p => p.test(text)) || looksLikePhone(text);
   };
 
   // Watermark function — diagonal repeating pattern for uniform coverage
