@@ -19,7 +19,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { openExternal } from '@/lib/openExternal';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { isNativePlatform } from '@/capacitor';
 import { toast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { formatDistanceToNow } from 'date-fns';
