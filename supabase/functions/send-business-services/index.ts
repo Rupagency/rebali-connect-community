@@ -4,7 +4,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const TO_EMAIL = "contact@re-bali.com";
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -41,10 +40,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    if (!RESEND_API_KEY) {
-      throw new Error("RESEND_API_KEY is not configured");
-    }
-
     const body = await req.json();
     const {
       user_type, full_name, email, whatsapp, message, services,
@@ -119,32 +114,36 @@ Deno.serve(async (req) => {
       </div>
     `;
 
-    const res = await fetch("https://api.resend.com/emails", {
+    // Call send-smtp function
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    const smtpRes = await fetch(`${supabaseUrl}/functions/v1/send-smtp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${serviceKey}`,
       },
       body: JSON.stringify({
-        from: "Re-Bali Business <noreply@re-bali.com>",
-        to: [TO_EMAIL],
+        to: TO_EMAIL,
         reply_to: email,
         subject: `[Business Services] ${typeLabel} — ${full_name} — ${serviceList}`,
         html: htmlBody,
+        from_name: "Re-Bali Business",
       }),
     });
 
-    const data = await res.json();
+    const data = await smtpRes.json();
 
-    if (!res.ok) {
-      console.error("Resend error:", data);
+    if (!smtpRes.ok) {
+      console.error("SMTP send error:", data);
       return new Response(JSON.stringify({ error: "Failed to send email" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(JSON.stringify({ success: true, id: data.id }), {
+    return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {

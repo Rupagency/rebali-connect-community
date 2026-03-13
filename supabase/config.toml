@@ -74,3 +74,6 @@ verify_jwt = false
 
 [functions.migrate-wm-images]
 verify_jwt = false
+
+[functions.send-smtp]
+verify_jwt = false
