@@ -127,7 +127,7 @@ export default function Auth() {
         // Redirect handled by useEffect watching `user`
       } else {
         // Email confirmation required
-        toast({ title: t('auth.magicLinkSent') });
+        toast({ title: t('auth.confirmEmailSent') });
       }
     }
     setLoading(false);
