@@ -144,9 +144,86 @@ Deno.serve(async (req) => {
 });
 
 /**
- * Send push notification via Firebase Cloud Messaging (FCM) HTTP API.
- * Requires FCM_SERVER_KEY secret to be set.
- * Falls back silently if FCM_SERVER_KEY is not configured.
+ * Get an OAuth2 access token from the Firebase service account.
+ * Uses the JWT grant flow to exchange service account credentials for a short-lived token.
+ */
+async function getAccessToken(serviceAccount: any): Promise<string> {
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: "RS256", typ: "JWT" };
+  const payload = {
+    iss: serviceAccount.client_email,
+    sub: serviceAccount.client_email,
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now,
+    exp: now + 3600,
+    scope: "https://www.googleapis.com/auth/firebase.messaging",
+  };
+
+  const enc = (obj: any) =>
+    btoa(JSON.stringify(obj)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  const unsignedToken = `${enc(header)}.${enc(payload)}`;
+
+  // Import the RSA private key
+  const pemBody = serviceAccount.private_key
+    .replace("-----BEGIN PRIVATE KEY-----", "")
+    .replace("-----END PRIVATE KEY-----", "")
+    .replace(/\n/g, "");
+  const binaryKey = Uint8Array.from(atob(pemBody), (c) => c.charCodeAt(0));
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "pkcs8",
+    binaryKey,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    cryptoKey,
+    new TextEncoder().encode(unsignedToken)
+  );
+
+  const sig = btoa(String.fromCharCode(...new Uint8Array(signature)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const jwt = `${unsignedToken}.${sig}`;
+
+  // Exchange JWT for access token
+  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
+  });
+
+  if (!tokenRes.ok) {
+    const errText = await tokenRes.text();
+    throw new Error(`Failed to get access token: ${errText}`);
+  }
+
+  const tokenData = await tokenRes.json();
+  return tokenData.access_token;
+}
+
+// Cache access token in memory
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
+async function getCachedAccessToken(serviceAccount: any): Promise<string> {
+  const now = Date.now();
+  if (cachedToken && cachedToken.expiresAt > now + 60_000) {
+    return cachedToken.token;
+  }
+  const token = await getAccessToken(serviceAccount);
+  cachedToken = { token, expiresAt: now + 3500_000 }; // ~58 min
+  return token;
+}
+
+/**
+ * Send push notification via Firebase Cloud Messaging v1 API.
+ * Uses service account credentials for OAuth2 authentication.
  */
 async function sendFCM(
   deviceToken: string,
@@ -154,28 +231,43 @@ async function sendFCM(
   body: string,
   data: Record<string, string> = {}
 ): Promise<boolean> {
-  const fcmKey = Deno.env.get("FCM_SERVER_KEY");
-  if (!fcmKey) {
-    console.warn("[send-push] FCM_SERVER_KEY not set, skipping native push");
+  const raw = Deno.env.get("FCM_SERVICE_ACCOUNT");
+  if (!raw) {
+    console.warn("[send-push] FCM_SERVICE_ACCOUNT not set, skipping native push");
     return false;
   }
 
-  const response = await fetch("https://fcm.googleapis.com/fcm/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `key=${fcmKey}`,
-    },
-    body: JSON.stringify({
-      to: deviceToken,
-      notification: { title, body, sound: "default" },
-      data: { ...data, click_action: "FLUTTER_NOTIFICATION_CLICK" },
-    }),
-  });
+  const serviceAccount = JSON.parse(raw);
+  const accessToken = await getCachedAccessToken(serviceAccount);
+  const projectId = serviceAccount.project_id;
+
+  const response = await fetch(
+    `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        message: {
+          token: deviceToken,
+          notification: { title, body },
+          data: data,
+          android: {
+            notification: { sound: "default", channel_id: "default" },
+          },
+          apns: {
+            payload: { aps: { sound: "default", badge: 1 } },
+          },
+        },
+      }),
+    }
+  );
 
   if (!response.ok) {
     const text = await response.text();
-    console.error(`FCM error ${response.status}:`, text);
+    console.error(`FCM v1 error ${response.status}:`, text);
     throw { status: response.status, message: text };
   }
 
