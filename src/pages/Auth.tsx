@@ -127,7 +127,7 @@ export default function Auth() {
         // Redirect handled by useEffect watching `user`
       } else {
         // Email confirmation required
-        toast({ title: t('auth.magicLinkSent') });
+        toast({ title: t('auth.confirmEmailSent') });
       }
     }
     setLoading(false);
@@ -139,7 +139,7 @@ export default function Auth() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else toast({ title: t('auth.magicLinkSent') });
+    else toast({ title: t('auth.passwordResetSent'), description: t('auth.checkSpam') });
   };
 
   return (
