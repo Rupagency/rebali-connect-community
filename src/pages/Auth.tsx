@@ -139,7 +139,7 @@ export default function Auth() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    else toast({ title: t('auth.magicLinkSent') });
+    else toast({ title: t('auth.passwordResetSent'), description: t('auth.checkSpam') });
   };
 
   return (
