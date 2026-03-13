@@ -19,7 +19,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { openExternal } from '@/lib/openExternal';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { isNativePlatform } from '@/capacitor';
 import { toast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { formatDistanceToNow } from 'date-fns';
@@ -438,6 +439,29 @@ export default function ListingDetail() {
               </div>
               {/* Share & Fav floating buttons */}
               <div className="absolute top-3 right-3 flex gap-2">
+                {isNativePlatform ? (
+                  <button
+                    className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md"
+                    onClick={async () => {
+                      try {
+                        const { Share } = await import('@capacitor/share');
+                        const shareUrl = `https://re-bali.com/listing/${id}`;
+                        const title = listing?.title_original || 'Re-Bali';
+                        const price = listing?.price ? formatPrice(listing.price, listing.currency) : '';
+                        await Share.share({
+                          title,
+                          text: `${title} - ${price}`,
+                          url: shareUrl,
+                          dialogTitle: t('share.shareThis') || 'Share',
+                        });
+                      } catch (e) {
+                        // User cancelled or error
+                      }
+                    }}
+                  >
+                    <Share2 className="h-5 w-5 text-foreground" />
+                  </button>
+                ) : (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md">
@@ -458,9 +482,7 @@ export default function ListingDetail() {
                             const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
                             if (isMobile) {
-                              // Deep link opens Facebook app's share composer with OG preview
                               window.location.href = `fb://share/?link=${encodeURIComponent(ogUrl)}`;
-                              // Fallback to web if app not installed
                               setTimeout(() => {
                               openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`);
                               }, 1200);
@@ -481,6 +503,7 @@ export default function ListingDetail() {
                     })()}
                   </DropdownMenuContent>
                 </DropdownMenu>
+                )}
                 <button
                   onClick={toggleFavorite}
                   className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md"
