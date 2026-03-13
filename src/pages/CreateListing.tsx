@@ -454,7 +454,7 @@ export default function CreateListing() {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <p className="text-lg text-muted-foreground">{t('createListing.limitReached')}</p>
-        <p className="text-sm text-muted-foreground mt-2">{activeCount}/{MAX_ACTIVE_LISTINGS} {t('myListings.activeCount')}</p>
+        <p className="text-sm text-muted-foreground mt-2">{activeCount}/{effectiveLimit === 9999 ? '∞' : effectiveLimit} {t('myListings.activeCount')}</p>
         <Button className="mt-4" onClick={() => navigate('/my-listings')}>{t('nav.myListings')}</Button>
       </div>
     );
