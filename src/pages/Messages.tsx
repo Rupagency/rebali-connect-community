@@ -555,7 +555,8 @@ export default function Messages() {
                                  queryClient.invalidateQueries({ queryKey: ['conversations'] });
                                  queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
                                  queryClient.invalidateQueries({ queryKey: ['last-messages'] });
-                                 toast({ title: t('messages.dealClosedSuccess') });
+                                  toast({ title: t('messages.dealClosedSuccess') });
+                                  import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, listing_id: activeConv.listing_id })).catch(() => {});
                                } catch (err) {
                                  toast({ title: 'Error', variant: 'destructive' });
                                }
