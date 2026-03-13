@@ -66,7 +66,10 @@ export default function CreateListing() {
     enabled: !!user,
   });
 
-  const canPost = isEditMode || (activeCount || 0) < MAX_ACTIVE_LISTINGS;
+  // Dynamic listing limit based on user type and subscription
+  const { listingLimit: proListingLimit, isPro } = useProStatus();
+  const effectiveLimit = isPro ? proListingLimit : MAX_ACTIVE_LISTINGS;
+  const canPost = isEditMode || (activeCount || 0) < effectiveLimit;
 
   // Load existing listing for edit mode
   useEffect(() => {
