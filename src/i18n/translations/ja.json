@@ -253,5 +253,10 @@
     "alreadyRegistered": "You're already registered!",
     "success": "Welcome to the waitlist!",
     "disclaimer": "We'll only email you when we launch. No spam, ever."
+  },
+  "auth": {
+    "passwordResetSent": "パスワードリセットメールを送信しました！",
+    "confirmEmailSent": "メールを確認してアカウントを認証してください！",
+    "checkSpam": "メールが届かない場合は、迷惑メールフォルダも確認してください。"
   }
 }

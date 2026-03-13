@@ -320,5 +320,10 @@
     "alreadyRegistered": "You're already registered!",
     "success": "Welcome to the waitlist!",
     "disclaimer": "We'll only email you when we launch. No spam, ever."
+  },
+  "auth": {
+    "passwordResetSent": "تم إرسال بريد إعادة تعيين كلمة المرور!",
+    "confirmEmailSent": "تحقق من بريدك الإلكتروني لتأكيد حسابك!",
+    "checkSpam": "لا تنسَ التحقق من مجلد الرسائل غير المرغوب فيها إذا لم تجد البريد."
   }
 }

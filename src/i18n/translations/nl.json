@@ -210,7 +210,10 @@
     "verificationEmailResent": "Verificatie e-mail opnieuw verstuurd",
     "socialLoginTitle": "Inloggen met",
     "socialLoginFailed": "Er is een fout opgetreden bij het inloggen met {provider}",
-    "continueWith": "Doorgaan met {provider}"
+    "continueWith": "Doorgaan met {provider}",
+    "passwordResetSent": "E-mail voor wachtwoord reset verzonden!",
+    "confirmEmailSent": "Controleer je e-mail om je account te bevestigen!",
+    "checkSpam": "Vergeet niet je spammap te controleren als je de e-mail niet ziet."
   },
   "profile": {
     "title": "Profiel",
