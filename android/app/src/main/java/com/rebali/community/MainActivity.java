@@ -1,4 +1,4 @@
-package com.rebali.app;
+package com.rebali.community;
 
 import com.getcapacitor.BridgeActivity;
 
