@@ -1,13 +1,15 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  importVapidKeys,
+  buildPushMessage,
+  type PushSubscription as WebPushSubscription,
+} from "jsr:@negrel/webpush@0.5.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
-
-// Web Push implementation using web-push library
-import webpush from "https://esm.sh/web-push@3.6.7";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -27,15 +29,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const vapidPublic = Deno.env.get("VAPID_PUBLIC_KEY")!;
-    const vapidPrivate = Deno.env.get("VAPID_PRIVATE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
-
-    webpush.setVapidDetails(
-      "mailto:contact@re-bali.com",
-      vapidPublic,
-      vapidPrivate
-    );
 
     const { user_id, title, body, url, tag, data: notifData } = await req.json();
 
@@ -73,47 +67,28 @@ Deno.serve(async (req) => {
     for (const sub of subscriptions) {
       // Check if this is a native push token (iOS/Android)
       if (sub.endpoint.startsWith("native://")) {
-        // Extract platform and token
         const parts = sub.endpoint.replace("native://", "").split("/");
-        const platform = parts[0]; // 'ios' or 'android'
+        const platform = parts[0];
         const deviceToken = parts.slice(1).join("/");
 
-        if (platform === "android") {
-          // Send via FCM HTTP v1 API
-          try {
-            const fcmResponse = await sendFCM(deviceToken, title, body || "", notifData || {});
-            if (fcmResponse) sent++;
-          } catch (err) {
-            console.error(`FCM push failed for token ${deviceToken.slice(0, 20)}...:`, err);
-            // If token is invalid, mark as stale
-            if ((err as any)?.status === 404 || (err as any)?.status === 410) {
-              staleIds.push(sub.id);
-            }
-          }
-        } else if (platform === "ios") {
-          // For iOS, FCM also handles APNS tokens if using Firebase
-          // If using direct APNS, you'd need APNS auth key
-          try {
-            const fcmResponse = await sendFCM(deviceToken, title, body || "", notifData || {});
-            if (fcmResponse) sent++;
-          } catch (err) {
-            console.error(`APNS push failed:`, err);
+        try {
+          const fcmResult = await sendFCM(deviceToken, title, body || "", notifData || {});
+          if (fcmResult) sent++;
+        } catch (err: any) {
+          console.error(`Native push failed for ${platform}:`, err);
+          if (err?.status === 404 || err?.status === 410) {
+            staleIds.push(sub.id);
           }
         }
         continue;
       }
 
-      // Web Push (standard)
-      const pushSub = {
-        endpoint: sub.endpoint,
-        keys: { p256dh: sub.p256dh, auth: sub.auth },
-      };
-
+      // Web Push
       try {
-        await webpush.sendNotification(pushSub, webPayload);
+        await sendWebPush(sub, webPayload);
         sent++;
       } catch (err: any) {
-        console.error(`Push failed for ${sub.endpoint}:`, err?.statusCode || err);
+        console.error(`Web push failed for ${sub.endpoint}:`, err?.statusCode || err);
         if (err?.statusCode === 404 || err?.statusCode === 410) {
           staleIds.push(sub.id);
         }
@@ -122,10 +97,7 @@ Deno.serve(async (req) => {
 
     // Clean up stale subscriptions
     if (staleIds.length > 0) {
-      await supabase
-        .from("push_subscriptions")
-        .delete()
-        .in("id", staleIds);
+      await supabase.from("push_subscriptions").delete().in("id", staleIds);
       console.log(`Cleaned ${staleIds.length} stale push subscriptions`);
     }
 
@@ -143,10 +115,64 @@ Deno.serve(async (req) => {
   }
 });
 
-/**
- * Get an OAuth2 access token from the Firebase service account.
- * Uses the JWT grant flow to exchange service account credentials for a short-lived token.
- */
+// ─── Web Push (VAPID + ECE) ─────────────────────────────────────
+
+async function sendWebPush(
+  sub: { endpoint: string; p256dh: string; auth: string },
+  payload: string
+) {
+  const vapidPublic = Deno.env.get("VAPID_PUBLIC_KEY")!;
+  const vapidPrivate = Deno.env.get("VAPID_PRIVATE_KEY")!;
+
+  // Import VAPID keys from base64url raw format to CryptoKey
+  const vapidKeys = await importVapidKeys({
+    publicKey: base64urlToArrayBuffer(vapidPublic),
+    privateKey: base64urlToArrayBuffer(vapidPrivate),
+  });
+
+  const subscription: WebPushSubscription = {
+    endpoint: sub.endpoint,
+    keys: {
+      p256dh: sub.p256dh,
+      auth: sub.auth,
+    },
+  };
+
+  const { headers, body, endpoint } = await buildPushMessage(
+    vapidKeys,
+    subscription,
+    "mailto:contact@re-bali.com",
+    new TextEncoder().encode(payload)
+  );
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers,
+    body,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    const error: any = new Error(`Web push failed: ${response.status} ${text}`);
+    error.statusCode = response.status;
+    throw error;
+  }
+  await response.text(); // consume body
+}
+
+function base64urlToArrayBuffer(base64url: string): ArrayBuffer {
+  const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
+  const pad = base64.length % 4 === 0 ? "" : "=".repeat(4 - (base64.length % 4));
+  const binary = atob(base64 + pad);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
+// ─── FCM v1 (native iOS/Android) ───────────────────────────────
+
 async function getAccessToken(serviceAccount: any): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
@@ -164,7 +190,6 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
 
   const unsignedToken = `${enc(header)}.${enc(payload)}`;
 
-  // Import the RSA private key
   const pemBody = serviceAccount.private_key
     .replace("-----BEGIN PRIVATE KEY-----", "")
     .replace("-----END PRIVATE KEY-----", "")
@@ -192,7 +217,6 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
 
   const jwt = `${unsignedToken}.${sig}`;
 
-  // Exchange JWT for access token
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -208,7 +232,6 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
   return tokenData.access_token;
 }
 
-// Cache access token in memory
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
 async function getCachedAccessToken(serviceAccount: any): Promise<string> {
@@ -217,14 +240,10 @@ async function getCachedAccessToken(serviceAccount: any): Promise<string> {
     return cachedToken.token;
   }
   const token = await getAccessToken(serviceAccount);
-  cachedToken = { token, expiresAt: now + 3500_000 }; // ~58 min
+  cachedToken = { token, expiresAt: now + 3500_000 };
   return token;
 }
 
-/**
- * Send push notification via Firebase Cloud Messaging v1 API.
- * Uses service account credentials for OAuth2 authentication.
- */
 async function sendFCM(
   deviceToken: string,
   title: string,
@@ -253,7 +272,7 @@ async function sendFCM(
         message: {
           token: deviceToken,
           notification: { title, body },
-          data: data,
+          data,
           android: {
             notification: { sound: "default", channel_id: "default" },
           },
@@ -270,6 +289,6 @@ async function sendFCM(
     console.error(`FCM v1 error ${response.status}:`, text);
     throw { status: response.status, message: text };
   }
-
+  await response.text();
   return true;
 }
