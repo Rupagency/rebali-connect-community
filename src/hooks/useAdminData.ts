@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 /**
  * Shared admin data queries.
- * These hooks are ONLY used inside AdminLayout children,
- * which already gates on isAdmin — no need for `enabled: isAdmin` here.
- * Removing it fixes the race condition where isAdmin is false during first render.
+ * Queries are enabled only when user session is available to prevent
+ * RLS-blocked empty results from being cached.
  */
 
 export function useAdminProfiles() {
