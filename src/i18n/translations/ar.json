@@ -325,5 +325,22 @@
     "passwordResetSent": "تم إرسال بريد إعادة تعيين كلمة المرور!",
     "confirmEmailSent": "تحقق من بريدك الإلكتروني لتأكيد حسابك!",
     "checkSpam": "لا تنسَ التحقق من مجلد الرسائل غير المرغوب فيها إذا لم تجد البريد."
+  },
+  "adminLabels": {
+    "accessDenied": "تم رفض الوصول",
+    "listing": "إعلان",
+    "reporter": "مُبلِّغ",
+    "deleted": "محذوف",
+    "unknown": "غير معروف",
+    "administration": "الإدارة",
+    "dashboard": "لوحة التحكم",
+    "searchAnalytics": "عمليات البحث",
+    "reports": "البلاغات",
+    "users": "المستخدمون",
+    "listings": "الإعلانات",
+    "security": "الأمان",
+    "waRelay": "WA ريلاي",
+    "statistics": "الإحصائيات",
+    "logs": "السجلات"
   }
 }

@@ -33,15 +33,15 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { title: 'Dashboard', url: '/admin', icon: BarChart3, end: true },
-  { title: 'Recherches', url: '/admin/search-analytics', icon: TrendingUp },
-  { title: 'Signalements', url: '/admin/reports', icon: AlertTriangle, badgeKey: 'reports' },
-  { title: 'Utilisateurs', url: '/admin/users', icon: Users },
-  { title: 'Annonces', url: '/admin/listings', icon: FileText },
-  { title: 'Sécurité', url: '/admin/security', icon: Fingerprint, badgeKey: 'verifications' },
-  { title: 'WA Relay', url: '/admin/wa-relay', icon: MessageCircle },
-  { title: 'Statistiques', url: '/admin/stats', icon: PieChart },
-  { title: 'Logs', url: '/admin/logs', icon: ScrollText },
+  { titleKey: 'adminLabels.dashboard', url: '/admin', icon: BarChart3, end: true },
+  { titleKey: 'adminLabels.searchAnalytics', url: '/admin/search-analytics', icon: TrendingUp },
+  { titleKey: 'adminLabels.reports', url: '/admin/reports', icon: AlertTriangle, badgeKey: 'reports' },
+  { titleKey: 'adminLabels.users', url: '/admin/users', icon: Users },
+  { titleKey: 'adminLabels.listings', url: '/admin/listings', icon: FileText },
+  { titleKey: 'adminLabels.security', url: '/admin/security', icon: Fingerprint, badgeKey: 'verifications' },
+  { titleKey: 'adminLabels.waRelay', url: '/admin/wa-relay', icon: MessageCircle },
+  { titleKey: 'adminLabels.statistics', url: '/admin/stats', icon: PieChart },
+  { titleKey: 'adminLabels.logs', url: '/admin/logs', icon: ScrollText },
 ];
 
 function AdminSidebar() {

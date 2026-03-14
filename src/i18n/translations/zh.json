@@ -568,7 +568,17 @@
     "listing": "列表",
     "reporter": "举报者",
     "deleted": "已删除",
-    "unknown": "未知"
+    "unknown": "未知",
+    "administration": "管理",
+    "dashboard": "仪表板",
+    "searchAnalytics": "搜索",
+    "reports": "举报",
+    "users": "用户",
+    "listings": "列表",
+    "security": "安全",
+    "waRelay": "WA 中继",
+    "statistics": "统计",
+    "logs": "日志"
   },
   "seller": {
     "activeListings": "活跃列表",

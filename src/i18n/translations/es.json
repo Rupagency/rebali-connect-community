@@ -568,7 +568,17 @@
     "listing": "Anuncio",
     "reporter": "Reportero",
     "deleted": "Eliminado",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "administration": "Administración",
+    "dashboard": "Panel",
+    "searchAnalytics": "Búsquedas",
+    "reports": "Reportes",
+    "users": "Usuarios",
+    "listings": "Anuncios",
+    "security": "Seguridad",
+    "waRelay": "WA Relay",
+    "statistics": "Estadísticas",
+    "logs": "Registros"
   },
   "seller": {
     "activeListings": "anuncios activos",

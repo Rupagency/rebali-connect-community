@@ -614,7 +614,17 @@
     "listing": "Listing",
     "reporter": "Reporter",
     "deleted": "Deleted",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "administration": "Administration",
+    "dashboard": "Dashboard",
+    "searchAnalytics": "Searches",
+    "reports": "Reports",
+    "users": "Users",
+    "listings": "Listings",
+    "security": "Security",
+    "waRelay": "WA Relay",
+    "statistics": "Statistics",
+    "logs": "Logs"
   },
   "seller": {
     "activeListings": "active listings",

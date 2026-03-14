@@ -258,5 +258,22 @@
     "passwordResetSent": "Письмо для сброса пароля отправлено!",
     "confirmEmailSent": "Проверьте почту, чтобы подтвердить аккаунт!",
     "checkSpam": "Не забудьте проверить папку «Спам», если не видите письмо."
+  },
+  "adminLabels": {
+    "accessDenied": "Доступ запрещён",
+    "listing": "Объявление",
+    "reporter": "Заявитель",
+    "deleted": "Удалено",
+    "unknown": "Неизвестно",
+    "administration": "Администрирование",
+    "dashboard": "Панель",
+    "searchAnalytics": "Поиски",
+    "reports": "Жалобы",
+    "users": "Пользователи",
+    "listings": "Объявления",
+    "security": "Безопасность",
+    "waRelay": "WA Реле",
+    "statistics": "Статистика",
+    "logs": "Журналы"
   }
 }

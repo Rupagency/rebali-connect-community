@@ -258,5 +258,22 @@
     "passwordResetSent": "パスワードリセットメールを送信しました！",
     "confirmEmailSent": "メールを確認してアカウントを認証してください！",
     "checkSpam": "メールが届かない場合は、迷惑メールフォルダも確認してください。"
+  },
+  "adminLabels": {
+    "accessDenied": "アクセスが拒否されました",
+    "listing": "リスティング",
+    "reporter": "報告者",
+    "deleted": "削除済み",
+    "unknown": "不明",
+    "administration": "管理",
+    "dashboard": "ダッシュボード",
+    "searchAnalytics": "検索",
+    "reports": "報告",
+    "users": "ユーザー",
+    "listings": "リスティング",
+    "security": "セキュリティ",
+    "waRelay": "WA リレー",
+    "statistics": "統計",
+    "logs": "ログ"
   }
 }

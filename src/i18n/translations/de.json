@@ -570,7 +570,17 @@
     "listing": "Anzeige",
     "reporter": "Melder",
     "deleted": "Gelöscht",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "administration": "Verwaltung",
+    "dashboard": "Dashboard",
+    "searchAnalytics": "Suchen",
+    "reports": "Meldungen",
+    "users": "Benutzer",
+    "listings": "Anzeigen",
+    "security": "Sicherheit",
+    "waRelay": "WA Relay",
+    "statistics": "Statistiken",
+    "logs": "Protokolle"
   },
   "seller": {
     "activeListings": "aktive Anzeigen",
