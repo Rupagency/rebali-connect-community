@@ -28,6 +28,7 @@ const AdminSecurity = lazy(() => import("./pages/admin/AdminSecurity"));
 const AdminWARelay = lazy(() => import("./pages/admin/AdminWARelay"));
 const AdminSearchAnalytics = lazy(() => import("./components/admin/SearchAnalytics"));
 const AdminLogs = lazy(() => import("./pages/admin/AdminLogs"));
+const AdminStats = lazy(() => import("./pages/admin/AdminStats"));
 const About = lazy(() => import("./pages/About"));
 const Safety = lazy(() => import("./pages/Safety"));
 const Rules = lazy(() => import("./pages/Rules"));
