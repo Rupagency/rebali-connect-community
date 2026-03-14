@@ -28,21 +28,52 @@ const FACTOR_LABELS: Record<string, { label: string; icon: any }> = {
 export default function UserDetailDialog({ userId, profile, onClose }: UserDetailDialogProps) {
   const [trustData, setTrustData] = useState<any>(null);
   const [listings, setListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!userId) return;
-    setLoading(true);
-    setTrustData(null);
-    setListings([]);
+    if (!userId) {
+      setLoading(false);
+      setTrustData(null);
+      setListings([]);
+      return;
+    }
 
-    Promise.all([
-      supabase.from('trust_scores').select('*').eq('user_id', userId).maybeSingle(),
-      supabase.from('listings').select('id, title_original, status, price, currency, category, created_at, views_count').eq('seller_id', userId).order('created_at', { ascending: false }).limit(20),
-    ]).then(([trustRes, listingsRes]) => {
-      setTrustData(trustRes.data);
-      setListings(listingsRes.data || []);
-    }).catch(() => {}).finally(() => setLoading(false));
+    let cancelled = false;
+
+    const loadUserDetails = async () => {
+      setLoading(true);
+      setTrustData(null);
+      setListings([]);
+
+      try {
+        const [trustRes, listingsRes] = await Promise.all([
+          supabase.from('trust_scores').select('*').eq('user_id', userId).limit(1),
+          supabase.from('listings').select('id, title_original, status, price, currency, category, created_at, views_count').eq('seller_id', userId).order('created_at', { ascending: false }).limit(20),
+        ]);
+
+        if (cancelled) return;
+
+        if (trustRes.error) console.error('Failed to load trust score details:', trustRes.error);
+        if (listingsRes.error) console.error('Failed to load user listings:', listingsRes.error);
+
+        setTrustData((trustRes.data as any[] | null)?.[0] ?? null);
+        setListings(listingsRes.data || []);
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to load user details dialog data:', error);
+          setTrustData(null);
+          setListings([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    void loadUserDetails();
+
+    return () => {
+      cancelled = true;
+    };
   }, [userId]);
 
   if (!userId || !profile) return null;
