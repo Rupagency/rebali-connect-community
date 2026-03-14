@@ -152,10 +152,12 @@ export default function AdminSecurity() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const { logAction } = useAdminLog();
-  const { data: profiles } = useAdminProfiles();
-  const { data: idVerifications, refetch: refetchVerifications } = useAdminIdVerifications();
+  const { data: profiles, isLoading: loadingProfiles } = useAdminProfiles();
+  const { data: idVerifications, isLoading: loadingVerifications, refetch: refetchVerifications } = useAdminIdVerifications();
   const { data: allDevices } = useAdminDevices();
   const { data: bannedDevices } = useAdminBannedDevices();
+
+  const dataLoading = loadingProfiles || loadingVerifications;
   const [recalculating, setRecalculating] = useState(false);
   const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -210,6 +212,14 @@ export default function AdminSecurity() {
     });
     return Object.entries(hashToUsers).filter(([, users]) => users.size > 1);
   })();
+
+  if (dataLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
