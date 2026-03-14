@@ -19,7 +19,15 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const CreateListing = lazy(() => import("./pages/CreateListing"));
 const MyListings = lazy(() => import("./pages/MyListings"));
 const Profile = lazy(() => import("./pages/Profile"));
-const Admin = lazy(() => import("./pages/Admin"));
+const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminReports = lazy(() => import("./pages/admin/AdminReports"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminListings = lazy(() => import("./pages/admin/AdminListings"));
+const AdminSecurity = lazy(() => import("./pages/admin/AdminSecurity"));
+const AdminWARelay = lazy(() => import("./pages/admin/AdminWARelay"));
+const AdminSearchAnalytics = lazy(() => import("./components/admin/SearchAnalytics"));
+const AdminLogs = lazy(() => import("./pages/admin/AdminLogs"));
 const About = lazy(() => import("./pages/About"));
 const Safety = lazy(() => import("./pages/Safety"));
 const Rules = lazy(() => import("./pages/Rules"));
@@ -83,7 +91,16 @@ const App = () => {
                   <Route path="/create" element={<CreateListing />} />
                   <Route path="/my-listings" element={<MyListings />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="reports" element={<AdminReports />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="listings" element={<AdminListings />} />
+                    <Route path="security" element={<AdminSecurity />} />
+                    <Route path="wa-relay" element={<AdminWARelay />} />
+                    <Route path="search-analytics" element={<AdminSearchAnalytics />} />
+                    <Route path="logs" element={<AdminLogs />} />
+                  </Route>
                   <Route path="/about" element={<About />} />
                   <Route path="/safety" element={<Safety />} />
                   <Route path="/rules" element={<Rules />} />

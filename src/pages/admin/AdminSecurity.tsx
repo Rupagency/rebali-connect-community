@@ -1,0 +1,218 @@
+import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAdminProfiles, useAdminIdVerifications, useAdminDevices, useAdminBannedDevices } from '@/hooks/useAdminData';
+import { useAdminLog } from '@/hooks/useAdminLog';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { toast } from '@/hooks/use-toast';
+import {
+  ShieldAlert, AlertTriangle, ShieldCheck, FileCheck, Fingerprint, Wifi, Ban,
+  Eye, X, CheckCircle, Clock
+} from 'lucide-react';
+
+function VerificationCard({ verification, profileName, onApprove, onReject }: {
+  verification: any; profileName: string; onApprove: () => Promise<void>; onReject: () => Promise<void>;
+}) {
+  const { t } = useLanguage();
+  const [docUrl, setDocUrl] = useState<string | null>(null);
+  const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [showImages, setShowImages] = useState(false);
+
+  const loadDecryptedImages = async () => {
+    setLoadingImages(true);
+    try {
+      const [docRes, selfieRes] = await Promise.all([
+        supabase.functions.invoke('decrypt-document', { body: { storage_path: verification.document_path } }),
+        supabase.functions.invoke('decrypt-document', { body: { storage_path: verification.selfie_path } }),
+      ]);
+      if (docRes.data instanceof Blob) setDocUrl(URL.createObjectURL(docRes.data));
+      if (selfieRes.data instanceof Blob) setSelfieUrl(URL.createObjectURL(selfieRes.data));
+    } catch (err) { console.error('Failed to decrypt images:', err); }
+    setLoadingImages(false);
+    setShowImages(true);
+  };
+
+  return (
+    <div className="p-3 rounded-md border space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="font-medium">{profileName}</p>
+          <p className="text-xs text-muted-foreground">{verification.document_type} — {new Date(verification.created_at).toLocaleDateString()}</p>
+        </div>
+        <div className="flex gap-2">
+          {!showImages && (
+            <Button size="sm" variant="outline" onClick={loadDecryptedImages} disabled={loadingImages}>
+              <Eye className="h-3 w-3 mr-1" /> {loadingImages ? '...' : t('admin.viewDocuments') || 'View'}
+            </Button>
+          )}
+          <Button size="sm" onClick={onApprove}><CheckCircle className="h-3 w-3 mr-1" /> {t('security.approve')}</Button>
+          <Button size="sm" variant="destructive" onClick={onReject}><X className="h-3 w-3 mr-1" /> {t('security.reject')}</Button>
+        </div>
+      </div>
+      {showImages && (
+        <div className="grid grid-cols-2 gap-3">
+          {docUrl && <img src={docUrl} alt="Document" className="rounded-md border max-h-48 object-contain w-full" />}
+          {selfieUrl && <img src={selfieUrl} alt="Selfie" className="rounded-md border max-h-48 object-contain w-full" />}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function AdminSecurity() {
+  const { t } = useLanguage();
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const { logAction } = useAdminLog();
+  const { data: profiles } = useAdminProfiles();
+  const { data: idVerifications, refetch: refetchVerifications } = useAdminIdVerifications();
+  const { data: allDevices } = useAdminDevices();
+  const { data: bannedDevices } = useAdminBannedDevices();
+
+  const approveVerification = async (v: any) => {
+    await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
+    await supabase.from('profiles').update({ is_verified_seller: true }).eq('id', v.user_id);
+    await supabase.functions.invoke('calculate-trust-score', { body: { user_id: v.user_id } });
+    const prof = profiles?.find((p: any) => p.id === v.user_id);
+    if (prof?.user_type === 'business') await supabase.functions.invoke('notify-npwp-approved', { body: { user_id: v.user_id } });
+    await logAction('approve_verification', 'verification', v.id, { user_id: v.user_id });
+    refetchVerifications();
+    qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+    toast({ title: t('security.approve') });
+  };
+
+  const rejectVerification = async (v: any) => {
+    await supabase.from('id_verifications').update({ status: 'rejected' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
+    await logAction('reject_verification', 'verification', v.id, { user_id: v.user_id });
+    refetchVerifications();
+    toast({ title: t('security.reject') });
+  };
+
+  // Shared device detection
+  const sharedHashes = (() => {
+    const hashToUsers: Record<string, Set<string>> = {};
+    (allDevices || []).forEach((d: any) => {
+      if (!hashToUsers[d.device_hash]) hashToUsers[d.device_hash] = new Set();
+      hashToUsers[d.device_hash].add(d.user_id);
+    });
+    return Object.entries(hashToUsers).filter(([, users]) => users.size > 1);
+  })();
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.securityTab')}</h2>
+
+      {/* Security Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card><CardContent className="p-4 text-center"><ShieldAlert className="h-6 w-6 text-destructive mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'high').length || 0}</p><p className="text-xs text-muted-foreground">High Risk</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-6 w-6 text-amber-500 mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'medium').length || 0}</p><p className="text-xs text-muted-foreground">Medium Risk</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><ShieldCheck className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.phone_verified).length || 0}</p><p className="text-xs text-muted-foreground">{t('security.whatsappVerified')}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><FileCheck className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{idVerifications?.filter((v: any) => v.status === 'pending').length || 0}</p><p className="text-xs text-muted-foreground">{t('security.pendingVerifications')}</p></CardContent></Card>
+      </div>
+
+      {/* Trust Scores */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.trustScore')}</h3>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('admin.colName')}</TableHead>
+                  <TableHead>{t('security.trustScore')}</TableHead>
+                  <TableHead>{t('security.riskLevel')}</TableHead>
+                  <TableHead>WhatsApp</TableHead>
+                  <TableHead>Verified</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {(profiles || []).sort((a: any, b: any) => (a.trust_score ?? 50) - (b.trust_score ?? 50)).slice(0, 50).map((p: any) => (
+                  <TableRow key={p.id}>
+                    <TableCell className="font-medium">{p.display_name || '?'}</TableCell>
+                    <TableCell><span className={`font-bold ${p.trust_score < 30 ? 'text-destructive' : p.trust_score < 60 ? 'text-amber-500' : 'text-primary'}`}>{p.trust_score ?? 50}</span></TableCell>
+                    <TableCell><Badge variant={p.risk_level === 'high' ? 'destructive' : p.risk_level === 'medium' ? 'outline' : 'secondary'}>{p.risk_level}</Badge></TableCell>
+                    <TableCell>{p.phone_verified ? '✅' : '—'}</TableCell>
+                    <TableCell>{p.is_verified_seller ? '✅' : '—'}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Pending Verifications */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><FileCheck className="h-5 w-5" /> {t('security.pendingVerifications')}</h3>
+          {(!idVerifications || idVerifications.filter((v: any) => v.status === 'pending').length === 0) ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">{t('common.noResults')}</p>
+          ) : (
+            <div className="space-y-3">
+              {idVerifications.filter((v: any) => v.status === 'pending').map((v: any) => {
+                const vProfile = profiles?.find((p: any) => p.id === v.user_id);
+                return <VerificationCard key={v.id} verification={v} profileName={vProfile?.display_name || v.user_id.slice(0, 8)} onApprove={() => approveVerification(v)} onReject={() => rejectVerification(v)} />;
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Shared Devices */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Wifi className="h-5 w-5" /> {t('security.linkedAccounts')}</h3>
+          {sharedHashes.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">{t('common.noResults')}</p>
+          ) : (
+            <div className="space-y-3">
+              {sharedHashes.map(([hash, userIds]) => (
+                <div key={hash} className="p-3 rounded-md border border-destructive/30 bg-destructive/5">
+                  <p className="text-xs font-mono text-muted-foreground mb-2">Device: {hash.slice(0, 16)}...</p>
+                  <div className="flex flex-wrap gap-2">
+                    {Array.from(userIds).map(uid => {
+                      const p = profiles?.find((pr: any) => pr.id === uid);
+                      return <Badge key={uid} variant="outline">{p?.display_name || uid.slice(0, 8)}</Badge>;
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Banned Devices */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Ban className="h-5 w-5" /> {t('security.banDevice')}</h3>
+          {(!bannedDevices || bannedDevices.length === 0) ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">{t('common.noResults')}</p>
+          ) : (
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader><TableRow><TableHead>Type</TableHead><TableHead>Value</TableHead><TableHead>Reason</TableHead><TableHead>Date</TableHead></TableRow></TableHeader>
+                <TableBody>
+                  {bannedDevices.map((bd: any) => (
+                    <TableRow key={bd.id}>
+                      <TableCell>{bd.device_hash ? 'Device' : 'Phone'}</TableCell>
+                      <TableCell className="font-mono text-xs">{bd.device_hash?.slice(0, 16) || bd.phone_number || '—'}</TableCell>
+                      <TableCell className="text-sm">{bd.reason}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground">{new Date(bd.created_at).toLocaleDateString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
