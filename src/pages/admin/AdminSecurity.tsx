@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import UserDetailDialog from '@/components/admin/UserDetailDialog';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
