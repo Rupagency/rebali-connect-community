@@ -156,6 +156,11 @@ export default function AdminListings() {
             <SelectItem value="draft">{t('myListings.draft')}</SelectItem>
           </SelectContent>
         </Select>
+        {sellerFilter && (
+          <Badge variant="secondary" className="gap-1 cursor-pointer" onClick={() => setSellerFilter(null)}>
+            <User className="h-3 w-3" /> {sellerProfile?.display_name || sellerFilter.slice(0, 8)} <X className="h-3 w-3" />
+          </Badge>
+        )}
       </div>
 
       <div className="rounded-md border">
