@@ -57,6 +57,7 @@ export default function AdminUsers() {
   }) || [];
 
   const getUserListings = (userId: string) => allListings?.filter((l: any) => l.seller_id === userId) || [];
+  const getActiveListingCount = (userId: string) => allListings?.filter((l: any) => l.seller_id === userId && l.status === 'active').length || 0;
   const getUserReports = (userId: string) => reports?.filter((r: any) => r.listings?.seller_id === userId) || [];
 
   const getMaxListings = (userId: string) => {
@@ -244,7 +245,7 @@ export default function AdminUsers() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="text-sm">{getUserListings(p.id).length}</TableCell>
+                <TableCell className="text-sm">{getActiveListingCount(p.id)} / {getMaxListings(p.id) >= 9999 ? '∞' : getMaxListings(p.id)}</TableCell>
                 <TableCell>
                   <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); setSelectedUser(p); }}>
                     <Eye className="h-3 w-3" />
