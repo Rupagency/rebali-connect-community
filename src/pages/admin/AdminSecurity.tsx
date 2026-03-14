@@ -26,26 +26,63 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
   const [showImages, setShowImages] = useState(false);
   const [reviewed, setReviewed] = useState(false);
 
-  const decryptWithTimeout = async (storagePath: string, timeoutMs = 15000): Promise<Blob> => {
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Le déchiffrement a expiré, réessayez.')), timeoutMs)
-    );
+  const decryptWithTimeout = async (storagePath: string, timeoutMs = 20000): Promise<Blob> => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-    const invokePromise = supabase.functions.invoke('decrypt-document', {
-      body: { storage_path: storagePath },
-    }) as Promise<any>;
+    try {
+      const { data, error } = await supabase.functions.invoke('decrypt-document', {
+        body: { storage_path: storagePath },
+      });
 
-    const res = await Promise.race([invokePromise, timeoutPromise]);
+      clearTimeout(timer);
 
-    if (res?.error) {
-      throw new Error(res.error.message || 'Erreur lors du déchiffrement');
+      if (error) {
+        throw new Error(error.message || 'Erreur lors du déchiffrement');
+      }
+
+      // supabase-js v2 returns data as Blob when Content-Type is image/*
+      // But if the function returned JSON error, data will be an object
+      if (data instanceof Blob && data.size > 0) {
+        return data;
+      }
+
+      // If data is not a Blob, try to read it as error
+      if (data && typeof data === 'object' && 'error' in data) {
+        throw new Error((data as any).error);
+      }
+
+      // Fallback: fetch directly with auth header
+      const session = (await supabase.auth.getSession()).data.session;
+      if (!session) throw new Error('Session expirée');
+
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/decrypt-document`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ storage_path: storagePath }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timer);
+
+      if (!res.ok) {
+        const errBody = await res.text();
+        throw new Error(`Erreur ${res.status}: ${errBody}`);
+      }
+
+      return await res.blob();
+    } catch (err: any) {
+      clearTimeout(timer);
+      if (err.name === 'AbortError') {
+        throw new Error('Le déchiffrement a expiré, réessayez.');
+      }
+      throw err;
     }
-
-    if (!(res?.data instanceof Blob)) {
-      throw new Error('Réponse de déchiffrement invalide');
-    }
-
-    return res.data;
   };
 
   const loadDecryptedImages = async () => {
