@@ -35,40 +35,40 @@ Deno.serve(async (req) => {
 
     const factors: Record<string, number> = {};
 
-    // Account age: 0.5 pt/day, max 20
-    const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24));
-    factors.account_age = Math.min(Math.floor(ageDays * 0.5), 20);
+    // WhatsApp verified: +50 (baseline)
+    factors.whatsapp_verified = profile.phone_verified ? 50 : 0;
 
-    // Active listings: 3 pts/listing, max 15
+    // Account age: 0.5 pt/day, max 10
+    const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    factors.account_age = Math.min(Math.floor(ageDays * 0.5), 10);
+
+    // Active listings: 2 pts/listing, max 10
     const { count: activeCount } = await supabase
       .from("listings")
       .select("*", { count: "exact", head: true })
       .eq("seller_id", user_id)
       .eq("status", "active");
-    factors.active_listings = Math.min((activeCount || 0) * 3, 15);
+    factors.active_listings = Math.min((activeCount || 0) * 2, 10);
 
-    // Completed deals: 5 pts/deal, max 20
+    // Completed deals: 3 pts/deal, max 15
     const { count: dealCount } = await supabase
       .from("conversations")
       .select("*", { count: "exact", head: true })
       .or(`buyer_id.eq.${user_id},seller_id.eq.${user_id}`)
       .eq("deal_closed", true)
       .eq("buyer_confirmed", true);
-    factors.completed_deals = Math.min((dealCount || 0) * 5, 20);
+    factors.completed_deals = Math.min((dealCount || 0) * 3, 15);
 
-    // Positive reviews (>= 4 stars): 3 pts each, max 20
+    // Positive reviews (>= 4 stars): 2 pts each, max 10
     const { data: goodReviews } = await supabase
       .from("reviews")
       .select("id")
       .eq("seller_id", user_id)
       .gte("rating", 4);
-    factors.positive_reviews = Math.min((goodReviews?.length || 0) * 3, 20);
+    factors.positive_reviews = Math.min((goodReviews?.length || 0) * 2, 10);
 
-    // WhatsApp verified: +10
-    factors.whatsapp_verified = profile.phone_verified ? 10 : 0;
-
-    // ID verified: +15
-    factors.id_verified = profile.is_verified_seller ? 15 : 0;
+    // ID verified: +5
+    factors.id_verified = profile.is_verified_seller ? 5 : 0;
 
     // --- Penalties ---
 
