@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminLog } from '@/hooks/useAdminLog';
@@ -7,15 +8,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from '@/hooks/use-toast';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Loader2 } from 'lucide-react';
 
 export default function AdminWARelay() {
   const { t } = useLanguage();
+  const { session, isAdmin } = useAuth();
   const qc = useQueryClient();
   const { logAction } = useAdminLog();
+  const ready = !!session && isAdmin;
 
-  const { data: relayConversations } = useQuery({
+  const { data: relayConversations, isLoading: loadingConvs } = useQuery({
     queryKey: ['admin-relay-conversations'],
+    enabled: ready,
     queryFn: async () => {
       const { data } = await supabase
         .from('conversations')
@@ -26,8 +30,9 @@ export default function AdminWARelay() {
     },
   });
 
-  const { data: riskEvents } = useQuery({
+  const { data: riskEvents, isLoading: loadingRisk } = useQuery({
     queryKey: ['admin-risk-events'],
+    enabled: ready,
     queryFn: async () => {
       const { data } = await supabase.from('risk_events').select('*').order('created_at', { ascending: false }).limit(50);
       return data || [];
@@ -41,6 +46,14 @@ export default function AdminWARelay() {
     qc.invalidateQueries({ queryKey: ['admin-relay-conversations'] });
     toast({ title: newStatus === 'blocked' ? t('admin.blockConversation') : t('admin.unblockConversation') });
   };
+
+  if (loadingConvs || loadingRisk) {
+    return (
+      <div className="flex items-center justify-center min-h-[30vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
