@@ -47,6 +47,7 @@ const navItems = [
 function AdminSidebar() {
   const location = useLocation();
   const { state } = useSidebar();
+  const { t } = useLanguage();
   const collapsed = state === 'collapsed';
 
   // Badge counts
