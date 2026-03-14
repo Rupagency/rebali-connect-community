@@ -8,9 +8,16 @@ import { useAuth } from '@/contexts/AuthContext';
  * RLS-blocked empty results from being cached.
  */
 
+function useSessionReady() {
+  const { session, isAdmin } = useAuth();
+  return !!session && isAdmin;
+}
+
 export function useAdminProfiles() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-profiles'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
@@ -24,8 +31,10 @@ export function useAdminProfiles() {
 }
 
 export function useAdminListings() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-listings'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('listings')
@@ -39,8 +48,10 @@ export function useAdminListings() {
 }
 
 export function useAdminReports() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-reports'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('reports')
@@ -54,8 +65,10 @@ export function useAdminReports() {
 }
 
 export function useAdminIdVerifications() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-id-verifications'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('id_verifications')
@@ -69,8 +82,10 @@ export function useAdminIdVerifications() {
 }
 
 export function useAdminProSubscriptions() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-pro-subscriptions'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('pro_subscriptions')
@@ -84,8 +99,10 @@ export function useAdminProSubscriptions() {
 }
 
 export function useAdminUserPoints() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-user-points'],
+    enabled: ready,
     queryFn: async () => {
       const { data } = await supabase.functions.invoke('manage-points', {
         body: { action: 'admin_get_all_points' },
@@ -97,8 +114,10 @@ export function useAdminUserPoints() {
 }
 
 export function useAdminUserAddons() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-user-addons'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('user_addons')
@@ -113,8 +132,10 @@ export function useAdminUserAddons() {
 }
 
 export function useAdminDevices() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-devices'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('user_devices')
@@ -128,8 +149,10 @@ export function useAdminDevices() {
 }
 
 export function useAdminBannedDevices() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-banned-devices'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('banned_devices')
@@ -143,8 +166,10 @@ export function useAdminBannedDevices() {
 }
 
 export function useAdminAnalyticsEvents() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-analytics-events'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('analytics_events')
@@ -159,8 +184,10 @@ export function useAdminAnalyticsEvents() {
 }
 
 export function useAdminLogs() {
+  const ready = useSessionReady();
   return useQuery({
     queryKey: ['admin-logs'],
+    enabled: ready,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('admin_logs')
