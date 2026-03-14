@@ -29,6 +29,7 @@ import {
   MessageCircle,
   ScrollText,
   Shield,
+  PieChart,
 } from 'lucide-react';
 
 const navItems = [
