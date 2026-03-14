@@ -106,7 +106,7 @@ export default function ListingDetail() {
     enabled: !!listing?.seller_id,
   });
 
-  const { data: favCount } = useQuery({
+  const { data: favCount, refetch: refetchFavCount } = useQuery({
     queryKey: ['fav-count', id],
     queryFn: async () => {
       const { count } = await supabase
