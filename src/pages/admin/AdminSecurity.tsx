@@ -113,6 +113,7 @@ export default function AdminSecurity() {
   const { data: bannedDevices } = useAdminBannedDevices();
   const [recalculating, setRecalculating] = useState(false);
   const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const recalculateAll = async () => {
     if (!profiles?.length) return;
