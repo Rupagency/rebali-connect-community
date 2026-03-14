@@ -202,7 +202,7 @@ export default function AdminSecurity() {
               </TableHeader>
               <TableBody>
                 {(profiles || []).sort((a: any, b: any) => (a.trust_score ?? 50) - (b.trust_score ?? 50)).slice(0, 50).map((p: any) => (
-                  <TableRow key={p.id}>
+                  <TableRow key={p.id} className="cursor-pointer hover:bg-muted/50" onClick={() => setSelectedUserId(p.id)}>
                     <TableCell className="font-medium">{p.display_name || '?'}</TableCell>
                     <TableCell><span className={`font-bold ${p.trust_score < 30 ? 'text-destructive' : p.trust_score < 60 ? 'text-amber-500' : 'text-primary'}`}>{p.trust_score ?? 50}</span></TableCell>
                     <TableCell><Badge variant={p.risk_level === 'high' ? 'destructive' : p.risk_level === 'medium' ? 'outline' : 'secondary'}>{p.risk_level}</Badge></TableCell>
