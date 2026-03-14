@@ -188,6 +188,7 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
 export default function AdminSecurity() {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const qc = useQueryClient();
   const { logAction } = useAdminLog();
   const { data: profiles, isLoading: loadingProfiles } = useAdminProfiles();
@@ -199,6 +200,16 @@ export default function AdminSecurity() {
   const [recalculating, setRecalculating] = useState(false);
   const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
+  // Auto-open user from URL param
+  useEffect(() => {
+    const uid = searchParams.get('user_id');
+    if (uid && profiles?.length) {
+      setSelectedUserId(uid);
+      searchParams.delete('user_id');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, profiles]);
 
   const recalculateAll = async () => {
     if (!profiles?.length) return;
