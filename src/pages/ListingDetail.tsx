@@ -270,6 +270,7 @@ export default function ListingDetail() {
       await supabase.from('favorites').insert({ listing_id: id!, user_id: user.id });
     }
     refetchFav();
+    refetchFavCount();
   };
 
   const handleReport = async () => {
