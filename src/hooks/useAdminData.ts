@@ -29,7 +29,7 @@ export function useAdminListings() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('listings')
-        .select('*, profiles:seller_id(display_name)')
+        .select('*')
         .order('created_at', { ascending: false });
       if (error) console.error('[Admin] listings error:', error.message);
       return data || [];

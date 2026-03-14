@@ -62,15 +62,27 @@ export default function AdminUsers() {
   const getMaxListings = (userId: string) => {
     const profile = profiles?.find((p: any) => p.id === userId);
     if (!profile) return 5;
+
+    const extraSlots = (allUserAddons || [])
+      .filter((a: any) => a.user_id === userId && a.active)
+      .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+
     if (profile.listing_limit_override != null) {
-      const extraSlots = (allUserAddons || []).filter((a: any) => a.user_id === userId && a.active).reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
       return profile.listing_limit_override + extraSlots;
     }
+
+    if (profile.user_type === 'business') {
+      const activeSub = (proSubscriptions || []).find(
+        (s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date()
+      );
+
+      if (activeSub?.plan_type === 'agence') return 9999;
+      if (activeSub?.plan_type === 'vendeur_pro') return 20;
+      return 5; // free_pro / no active sub
+    }
+
     const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / 86400000);
-    let base = ageDays < 7 ? 3 : 5;
-    const isPro = (proSubscriptions || []).some((s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date());
-    if (isPro) base = 50;
-    const extraSlots = (allUserAddons || []).filter((a: any) => a.user_id === userId && a.active).reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+    const base = ageDays < 7 ? 3 : 5;
     return base + extraSlots;
   };
 
