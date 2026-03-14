@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAdminReports } from '@/hooks/useAdminData';
+import { useAdminReports, useAdminListings, useAdminProfiles } from '@/hooks/useAdminData';
 import { useAdminLog } from '@/hooks/useAdminLog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,11 +16,16 @@ export default function AdminReports() {
   const { t } = useLanguage();
   const qc = useQueryClient();
   const { data: reports } = useAdminReports();
+  const { data: allListings } = useAdminListings();
+  const { data: profiles } = useAdminProfiles();
   const { logAction } = useAdminLog();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const pendingReports = reports?.filter((r: any) => !r.resolved) || [];
   const resolvedReports = reports?.filter((r: any) => r.resolved) || [];
+
+  const getListingForReport = (report: any) => allListings?.find((l: any) => l.id === report.listing_id);
+  const getReporterName = (report: any) => profiles?.find((p: any) => p.id === report.reporter_id)?.display_name || t('adminLabels.unknown');
 
   const toggleSelect = (id: string) => {
     setSelectedIds(prev => {
@@ -68,52 +73,55 @@ export default function AdminReports() {
     toast({ title: t('admin.banUser') });
   };
 
-  const renderReport = (report: any, showActions: boolean) => (
-    <Card key={report.id}>
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          {showActions && (
-            <Checkbox
-              checked={selectedIds.has(report.id)}
-              onCheckedChange={() => toggleSelect(report.id)}
-              className="mt-1"
-            />
-          )}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <Badge variant="destructive">{t(`report.${report.reason}`)}</Badge>
-              {report.resolved && <Badge variant="secondary">{t('admin.resolved')}</Badge>}
+  const renderReport = (report: any, showActions: boolean) => {
+    const listing = getListingForReport(report);
+    return (
+      <Card key={report.id}>
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            {showActions && (
+              <Checkbox
+                checked={selectedIds.has(report.id)}
+                onCheckedChange={() => toggleSelect(report.id)}
+                className="mt-1"
+              />
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <Badge variant="destructive">{t(`report.${report.reason}`)}</Badge>
+                {report.resolved && <Badge variant="secondary">{t('admin.resolved')}</Badge>}
+              </div>
+              <p className="text-sm font-medium mb-1 truncate">
+                {t('adminLabels.listing')}: {listing?.title_original || t('adminLabels.deleted')}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {t('adminLabels.reporter')}: {getReporterName(report)}
+              </p>
+              {report.details && <p className="text-sm mt-2 text-muted-foreground">{report.details}</p>}
+              <p className="text-xs text-muted-foreground mt-1">{new Date(report.created_at).toLocaleDateString()}</p>
             </div>
-            <p className="text-sm font-medium mb-1 truncate">
-              {t('adminLabels.listing')}: {report.listings?.title_original || t('adminLabels.deleted')}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t('adminLabels.reporter')}: {(report.profiles as any)?.display_name || t('adminLabels.unknown')}
-            </p>
-            {report.details && <p className="text-sm mt-2 text-muted-foreground">{report.details}</p>}
-            <p className="text-xs text-muted-foreground mt-1">{new Date(report.created_at).toLocaleDateString()}</p>
+            {showActions && (
+              <div className="flex flex-col gap-1 shrink-0">
+                <Button size="sm" onClick={() => resolveReport(report.id)}>
+                  <CheckCircle className="h-3 w-3 mr-1" /> {t('admin.resolve')}
+                </Button>
+                {listing && (
+                  <Button size="sm" variant="destructive" onClick={() => archiveListing(listing.id)}>
+                    <Archive className="h-3 w-3 mr-1" /> {t('admin.archiveListing')}
+                  </Button>
+                )}
+                {listing?.seller_id && (
+                  <Button size="sm" variant="outline" onClick={() => banUser(listing.seller_id)}>
+                    <Ban className="h-3 w-3 mr-1" /> {t('admin.banUser')}
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
-          {showActions && (
-            <div className="flex flex-col gap-1 shrink-0">
-              <Button size="sm" onClick={() => resolveReport(report.id)}>
-                <CheckCircle className="h-3 w-3 mr-1" /> {t('admin.resolve')}
-              </Button>
-              {report.listings && (
-                <Button size="sm" variant="destructive" onClick={() => archiveListing(report.listings.id)}>
-                  <Archive className="h-3 w-3 mr-1" /> {t('admin.archiveListing')}
-                </Button>
-              )}
-              {report.listings?.seller_id && (
-                <Button size="sm" variant="outline" onClick={() => banUser(report.listings.seller_id)}>
-                  <Ban className="h-3 w-3 mr-1" /> {t('admin.banUser')}
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="space-y-4">

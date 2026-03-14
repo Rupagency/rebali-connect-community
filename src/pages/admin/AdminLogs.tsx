@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useAdminProfiles } from '@/hooks/useAdminData';
+import { useAdminProfiles, useAdminLogs } from '@/hooks/useAdminData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -31,17 +29,7 @@ const actionLabels: Record<string, { label: string; variant: 'default' | 'destru
 export default function AdminLogs() {
   const { data: profiles } = useAdminProfiles();
 
-  const { data: logs, isLoading } = useQuery({
-    queryKey: ['admin-logs'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('admin_logs' as any)
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(200);
-      return (data || []) as any[];
-    },
-  });
+  const { data: logs, isLoading } = useAdminLogs();
 
   const getAdminName = (adminId: string) => {
     const profile = profiles?.find((p: any) => p.id === adminId);
