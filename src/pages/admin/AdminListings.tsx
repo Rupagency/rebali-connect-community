@@ -225,7 +225,7 @@ export default function AdminListings() {
             <div className="flex flex-wrap gap-2">
               <Badge variant={selectedListing.status === 'active' ? 'default' : 'secondary'}>{t(`myListings.${selectedListing.status}`)}</Badge>
               <Badge variant="outline">{t(`categories.${selectedListing.category}`)}</Badge>
-              <Badge variant="outline">{t(`condition.${selectedListing.condition}`)}</Badge>
+              <Badge variant="outline">{t(`conditions.${selectedListing.condition}`)}</Badge>
             </div>
 
             <Separator />
@@ -257,6 +257,11 @@ export default function AdminListings() {
                 <div><h4 className="text-sm font-semibold text-muted-foreground uppercase mb-2">Description</h4><p className="text-sm whitespace-pre-wrap max-h-[150px] overflow-y-auto border rounded-md p-3 bg-muted/30">{selectedListing.description_original}</p></div>
                 <Separator />
                 <div className="flex gap-2 flex-wrap">
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={`/listing/${selectedListing.id}`} target="_blank" rel="noopener noreferrer">
+                      <Eye className="h-4 w-4 mr-1" /> Voir l'annonce
+                    </a>
+                  </Button>
                   <Button variant="outline" size="sm" onClick={startEditListing}><Pencil className="h-4 w-4 mr-1" /> {t('common.edit')}</Button>
                   {selectedListing.status !== 'archived' && <Button variant="outline" size="sm" onClick={() => { archiveListing(selectedListing.id); setSelectedListing((prev: any) => prev ? { ...prev, status: 'archived' } : null); }}><Archive className="h-4 w-4 mr-1" /> {t('admin.archiveListing')}</Button>}
                   {selectedListing.status !== 'active' && selectedListing.status !== 'sold' && (
