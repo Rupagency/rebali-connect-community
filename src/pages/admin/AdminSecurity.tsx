@@ -208,7 +208,7 @@ export default function AdminSecurity() {
                     <TableCell><Badge variant={p.risk_level === 'high' ? 'destructive' : p.risk_level === 'medium' ? 'outline' : 'secondary'}>{p.risk_level}</Badge></TableCell>
                     <TableCell>{p.phone_verified ? '✅' : '—'}</TableCell>
                     <TableCell>{p.is_verified_seller ? '✅' : '—'}</TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <Button size="sm" variant="ghost" onClick={() => recalculateSingle(p.id)} disabled={recalcSingleId === p.id}>
                         {recalcSingleId === p.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
                       </Button>
