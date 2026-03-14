@@ -213,6 +213,14 @@ export default function AdminSecurity() {
     return Object.entries(hashToUsers).filter(([, users]) => users.size > 1);
   })();
 
+  if (dataLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.securityTab')}</h2>
