@@ -210,8 +210,9 @@ export default function ListingDetail() {
     sessionStorage.setItem(key, '1');
     supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
       if (error) console.error('increment_views error:', error);
+      else refetchListing();
     });
-  }, [id]);
+  }, [id, refetchListing]);
 
   useEffect(() => {
     if (!id || !listing || language === 'en') return;
