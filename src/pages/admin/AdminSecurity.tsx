@@ -287,6 +287,12 @@ export default function AdminSecurity() {
           )}
         </CardContent>
       </Card>
+
+      <UserDetailDialog
+        userId={selectedUserId}
+        profile={profiles?.find((p: any) => p.id === selectedUserId)}
+        onClose={() => setSelectedUserId(null)}
+      />
     </div>
   );
 }
