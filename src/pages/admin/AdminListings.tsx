@@ -36,13 +36,11 @@ export default function AdminListings() {
   const [editingListing, setEditingListing] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-  // Read URL params on mount
   useEffect(() => {
     const status = searchParams.get('status');
     const sellerId = searchParams.get('seller_id');
     if (status && status !== 'all') setStatusFilter(status);
     if (sellerId) setSellerFilter(sellerId);
-    // Clean URL params after reading
     if (status || sellerId) setSearchParams({}, { replace: true });
   }, []);
 
@@ -88,7 +86,7 @@ export default function AdminListings() {
     await logAction('bulk_archive_listings', 'listing', undefined, { count: selectedIds.size });
     qc.invalidateQueries({ queryKey: ['admin-listings'] });
     setSelectedIds(new Set());
-    toast({ title: `${selectedIds.size} annonces archivées` });
+    toast({ title: `${selectedIds.size} ${t('adminPage.archiveCount')}` });
   };
 
   const bulkDelete = async () => {
@@ -99,7 +97,7 @@ export default function AdminListings() {
     await logAction('bulk_delete_listings', 'listing', undefined, { count: selectedIds.size });
     qc.invalidateQueries({ queryKey: ['admin-listings'] });
     setSelectedIds(new Set());
-    toast({ title: `${selectedIds.size} annonces supprimées` });
+    toast({ title: `${selectedIds.size} ${t('adminPage.deleteCount')}` });
   };
 
   const startEditListing = () => {
@@ -134,10 +132,10 @@ export default function AdminListings() {
         {selectedIds.size > 0 && (
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={bulkArchive}>
-              <Archive className="h-3 w-3 mr-1" /> Archiver {selectedIds.size}
+              <Archive className="h-3 w-3 mr-1" /> {t('adminPage.archiveCount')} ({selectedIds.size})
             </Button>
             <Button variant="destructive" size="sm" onClick={bulkDelete}>
-              <Trash2 className="h-3 w-3 mr-1" /> Supprimer {selectedIds.size}
+              <Trash2 className="h-3 w-3 mr-1" /> {t('adminPage.deleteCount')} ({selectedIds.size})
             </Button>
           </div>
         )}
@@ -208,7 +206,6 @@ export default function AdminListings() {
         </Table>
       </div>
 
-      {/* Listing detail dialog */}
       {selectedListing && (
         <Dialog open={!!selectedListing} onOpenChange={(open) => { if (!open && !editingListing) { setSelectedListing(null); setEditingListing(false); } }}>
           <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85vh] overflow-y-auto overflow-x-hidden" onInteractOutside={(e) => { if (editingListing) e.preventDefault(); }}>
@@ -249,9 +246,9 @@ export default function AdminListings() {
               <>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 text-sm"><DollarSign className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">{t('admin.colPrice')}</p><p className="font-medium">{selectedListing.price > 0 ? `${selectedListing.currency} ${selectedListing.price.toLocaleString()}` : t('common.free')}</p></div></div>
-                  <div className="flex items-center gap-2 text-sm"><MapPin className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">Location</p><p className="font-medium">{selectedListing.location_area}</p></div></div>
-                  <div className="flex items-center gap-2 text-sm"><BarChart2 className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">Vues</p><p className="font-medium">{selectedListing.views_count}</p></div></div>
-                  <div className="flex items-center gap-2 text-sm"><Calendar className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">Créé le</p><p className="font-medium">{new Date(selectedListing.created_at).toLocaleDateString()}</p></div></div>
+                  <div className="flex items-center gap-2 text-sm"><MapPin className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">{t('adminPage.location')}</p><p className="font-medium">{selectedListing.location_area}</p></div></div>
+                  <div className="flex items-center gap-2 text-sm"><BarChart2 className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">{t('adminPage.totalViews')}</p><p className="font-medium">{selectedListing.views_count}</p></div></div>
+                  <div className="flex items-center gap-2 text-sm"><Calendar className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">{t('adminPage.createdOn')}</p><p className="font-medium">{new Date(selectedListing.created_at).toLocaleDateString()}</p></div></div>
                 </div>
                 <Separator />
                 <div className="min-w-0"><h4 className="text-sm font-semibold text-muted-foreground uppercase mb-2">Description</h4><p className="text-sm whitespace-pre-wrap break-words max-h-[150px] overflow-y-auto overflow-x-hidden border rounded-md p-3 bg-muted/30">{selectedListing.description_original}</p></div>
@@ -259,7 +256,7 @@ export default function AdminListings() {
                 <div className="flex gap-2 flex-wrap">
                   <Button variant="outline" size="sm" asChild>
                     <a href={`/listing/${selectedListing.id}`} target="_blank" rel="noopener noreferrer">
-                      <Eye className="h-4 w-4 mr-1" /> Voir l'annonce
+                      <Eye className="h-4 w-4 mr-1" /> {t('adminLabels.viewListing')}
                     </a>
                   </Button>
                   <Button variant="outline" size="sm" onClick={startEditListing}><Pencil className="h-4 w-4 mr-1" /> {t('common.edit')}</Button>

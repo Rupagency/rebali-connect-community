@@ -6,7 +6,7 @@ import {
   Users, FileText, AlertTriangle, Ban, TrendingUp, DollarSign,
   ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package
 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useMemo } from 'react';
 
 function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'default' }: {
@@ -48,9 +48,8 @@ export default function AdminDashboard() {
   const businessUsers = profiles?.filter((p: any) => p.user_type === 'business') || [];
   const activeSubs = proSubs?.filter((s: any) => s.status === 'active' && new Date(s.expires_at) > new Date()) || [];
 
-  // Growth analytics from analytics_events
   const analytics = useMemo(() => {
-    if (!events?.length) return { signups7d: 0, signups30d: 0, listingsCreated7d: 0, dealsCompleted7d: 0, dailySignups: [], dailyListings: [] };
+    if (!events?.length) return { signups7d: 0, signups30d: 0, listingsCreated7d: 0, dealsCompleted7d: 0, dailySignups: [] };
 
     const now = Date.now();
     const d7 = now - 7 * 86400000;
@@ -60,7 +59,6 @@ export default function AdminDashboard() {
     const listingEvents = events.filter((e: any) => e.event_type === 'listing_created');
     const dealEvents = events.filter((e: any) => e.event_type === 'deal_closed');
 
-    // Daily signups for last 14 days
     const days14: Record<string, { signups: number; listings: number }> = {};
     for (let i = 13; i >= 0; i--) {
       const d = new Date(now - i * 86400000);
@@ -84,10 +82,8 @@ export default function AdminDashboard() {
     };
   }, [events]);
 
-  // Monthly revenue estimate from active subscriptions
   const monthlyRevenue = activeSubs.reduce((sum: number, s: any) => sum + (s.price_idr || 0), 0);
 
-  // New users this week vs previous
   const usersThisWeek = profiles?.filter((p: any) => {
     const d = new Date(p.created_at).getTime();
     return d > Date.now() - 7 * 86400000;
@@ -102,27 +98,26 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       {/* Primary KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <KPICard icon={Users} label="Utilisateurs" value={profiles?.length || 0} trend={userGrowthPct} trendLabel="vs sem. précédente" />
-        <KPICard icon={FileText} label="Annonces actives" value={activeListings.length} />
-        <KPICard icon={AlertTriangle} label="Signalements" value={pendingReports.length} variant="destructive" />
-        <KPICard icon={Ban} label="Bannis" value={bannedUsers.length} variant="destructive" />
-        <KPICard icon={DollarSign} label="Revenus/mois" value={`${(monthlyRevenue / 1000).toFixed(0)}k IDR`} variant="success" />
+        <KPICard icon={Users} label={t('admin.users')} value={profiles?.length || 0} trend={userGrowthPct} trendLabel={t('adminPage.vsPrevWeek')} />
+        <KPICard icon={FileText} label={t('adminPage.activeLabel')} value={activeListings.length} />
+        <KPICard icon={AlertTriangle} label={t('admin.reports')} value={pendingReports.length} variant="destructive" />
+        <KPICard icon={Ban} label={t('admin.banned')} value={bannedUsers.length} variant="destructive" />
+        <KPICard icon={DollarSign} label={t('adminPage.monthlyRevenue')} value={`${(monthlyRevenue / 1000).toFixed(0)}k IDR`} variant="success" />
       </div>
 
       {/* Secondary KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPICard icon={UserPlus} label="Inscriptions (7j)" value={analytics.signups7d} />
-        <KPICard icon={Package} label="Annonces créées (7j)" value={analytics.listingsCreated7d} />
-        <KPICard icon={ShieldCheck} label="Deals confirmés (7j)" value={analytics.dealsCompleted7d} variant="success" />
-        <KPICard icon={TrendingUp} label="Abonnements Pro actifs" value={activeSubs.length} variant="success" />
+        <KPICard icon={UserPlus} label={t('adminPage.signups7d')} value={analytics.signups7d} />
+        <KPICard icon={Package} label={t('adminPage.listingsCreated7d')} value={analytics.listingsCreated7d} />
+        <KPICard icon={ShieldCheck} label={t('adminPage.dealsConfirmed7d')} value={analytics.dealsCompleted7d} variant="success" />
+        <KPICard icon={TrendingUp} label={t('adminPage.activeProSubs')} value={activeSubs.length} variant="success" />
       </div>
 
       {/* Charts */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Signups & Listings chart */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Inscriptions & Annonces (14 jours)</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminPage.signupsAndListings')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[280px]">
@@ -139,27 +134,26 @@ export default function AdminDashboard() {
                       fontSize: '12px',
                     }}
                   />
-                  <Area type="monotone" dataKey="signups" stroke="hsl(var(--primary))" fill="hsl(var(--primary) / 0.15)" strokeWidth={2} name="Inscriptions" />
-                  <Area type="monotone" dataKey="listings" stroke="hsl(var(--chart-2, 150 60% 50%))" fill="hsl(var(--chart-2, 150 60% 50%) / 0.15)" strokeWidth={2} name="Annonces" />
+                  <Area type="monotone" dataKey="signups" stroke="hsl(var(--primary))" fill="hsl(var(--primary) / 0.15)" strokeWidth={2} name={t('adminPage.signupsTab')} />
+                  <Area type="monotone" dataKey="listings" stroke="hsl(var(--chart-2, 150 60% 50%))" fill="hsl(var(--chart-2, 150 60% 50%) / 0.15)" strokeWidth={2} name={t('adminPage.listingsTab')} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
 
-        {/* User types breakdown */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Répartition utilisateurs</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminPage.userBreakdown')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4 pt-4">
               {[
-                { label: 'Particuliers', count: (profiles?.length || 0) - businessUsers.length, color: 'bg-primary' },
-                { label: 'Business / Pro', count: businessUsers.length, color: 'bg-emerald-500' },
-                { label: 'Vendeurs vérifiés', count: profiles?.filter((p: any) => p.is_verified_seller).length || 0, color: 'bg-blue-500' },
-                { label: 'Téléphone vérifié', count: profiles?.filter((p: any) => p.phone_verified).length || 0, color: 'bg-amber-500' },
-                { label: 'Bannis', count: bannedUsers.length, color: 'bg-destructive' },
+                { label: t('adminPage.privateUsers'), count: (profiles?.length || 0) - businessUsers.length, color: 'bg-primary' },
+                { label: t('adminPage.businessPro'), count: businessUsers.length, color: 'bg-emerald-500' },
+                { label: t('adminPage.verifiedSellers'), count: profiles?.filter((p: any) => p.is_verified_seller).length || 0, color: 'bg-blue-500' },
+                { label: t('adminPage.phoneVerifiedLabel'), count: profiles?.filter((p: any) => p.phone_verified).length || 0, color: 'bg-amber-500' },
+                { label: t('admin.banned'), count: bannedUsers.length, color: 'bg-destructive' },
               ].map(item => {
                 const total = profiles?.length || 1;
                 const pct = Math.round((item.count / total) * 100);
@@ -183,10 +177,10 @@ export default function AdminDashboard() {
       {/* Listings breakdown */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total annonces', value: allListings?.length || 0 },
-          { label: 'Actives', value: activeListings.length },
-          { label: 'Vendues', value: allListings?.filter((l: any) => l.status === 'sold').length || 0 },
-          { label: 'Archivées', value: allListings?.filter((l: any) => l.status === 'archived').length || 0 },
+          { label: t('admin.totalListings'), value: allListings?.length || 0 },
+          { label: t('adminPage.activeLabel'), value: activeListings.length },
+          { label: t('adminPage.sold'), value: allListings?.filter((l: any) => l.status === 'sold').length || 0 },
+          { label: t('myListings.archived'), value: allListings?.filter((l: any) => l.status === 'archived').length || 0 },
         ].map(item => (
           <Card key={item.label}>
             <CardContent className="p-4 text-center">

@@ -1,35 +1,36 @@
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAdminProfiles, useAdminLogs } from '@/hooks/useAdminData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollText, User, Clock } from 'lucide-react';
 
-const actionLabels: Record<string, { label: string; variant: 'default' | 'destructive' | 'outline' | 'secondary' }> = {
-  ban_user: { label: 'Bannir', variant: 'destructive' },
-  unban_user: { label: 'Débannir', variant: 'default' },
-  bulk_ban_users: { label: 'Ban en masse', variant: 'destructive' },
-  archive_listing: { label: 'Archiver', variant: 'outline' },
-  delete_listing: { label: 'Supprimer', variant: 'destructive' },
-  bulk_archive_listings: { label: 'Archivage en masse', variant: 'outline' },
-  bulk_delete_listings: { label: 'Suppression en masse', variant: 'destructive' },
-  edit_listing: { label: 'Modifier annonce', variant: 'secondary' },
-  reactivate_listing: { label: 'Réactiver', variant: 'default' },
-  edit_user: { label: 'Modifier utilisateur', variant: 'secondary' },
-  resolve_report: { label: 'Résoudre signalement', variant: 'default' },
-  bulk_resolve_reports: { label: 'Résolution en masse', variant: 'default' },
-  approve_verification: { label: 'Approuver vérification', variant: 'default' },
-  reject_verification: { label: 'Rejeter vérification', variant: 'destructive' },
-  block_conversation: { label: 'Bloquer conversation', variant: 'destructive' },
-  unblock_conversation: { label: 'Débloquer conversation', variant: 'default' },
-  create_subscription: { label: 'Créer abonnement', variant: 'default' },
-  update_subscription: { label: 'Modifier abonnement', variant: 'secondary' },
-  cancel_subscription: { label: 'Annuler abonnement', variant: 'destructive' },
-};
-
 export default function AdminLogs() {
+  const { t } = useLanguage();
   const { data: profiles } = useAdminProfiles();
-
   const { data: logs, isLoading } = useAdminLogs();
+
+  const actionLabels: Record<string, { label: string; variant: 'default' | 'destructive' | 'outline' | 'secondary' }> = {
+    ban_user: { label: t('adminPage.actionBan'), variant: 'destructive' },
+    unban_user: { label: t('adminPage.actionUnban'), variant: 'default' },
+    bulk_ban_users: { label: t('adminPage.actionBulkBan'), variant: 'destructive' },
+    archive_listing: { label: t('adminPage.actionArchive'), variant: 'outline' },
+    delete_listing: { label: t('adminPage.actionDelete'), variant: 'destructive' },
+    bulk_archive_listings: { label: t('adminPage.actionBulkArchive'), variant: 'outline' },
+    bulk_delete_listings: { label: t('adminPage.actionBulkDelete'), variant: 'destructive' },
+    edit_listing: { label: t('adminPage.actionEditListing'), variant: 'secondary' },
+    reactivate_listing: { label: t('adminPage.actionReactivate'), variant: 'default' },
+    edit_user: { label: t('adminPage.actionEditUser'), variant: 'secondary' },
+    resolve_report: { label: t('adminPage.actionResolveReport'), variant: 'default' },
+    bulk_resolve_reports: { label: t('adminPage.actionBulkResolve'), variant: 'default' },
+    approve_verification: { label: t('adminPage.actionApproveVerif'), variant: 'default' },
+    reject_verification: { label: t('adminPage.actionRejectVerif'), variant: 'destructive' },
+    block_conversation: { label: t('adminPage.actionBlockConv'), variant: 'destructive' },
+    unblock_conversation: { label: t('adminPage.actionUnblockConv'), variant: 'default' },
+    create_subscription: { label: t('adminPage.actionCreateSub'), variant: 'default' },
+    update_subscription: { label: t('adminPage.actionUpdateSub'), variant: 'secondary' },
+    cancel_subscription: { label: t('adminPage.actionCancelSub'), variant: 'destructive' },
+  };
 
   const getAdminName = (adminId: string) => {
     const profile = profiles?.find((p: any) => p.id === adminId);
@@ -39,7 +40,7 @@ export default function AdminLogs() {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold flex items-center gap-2">
-        <ScrollText className="h-5 w-5" /> Journal d'activité admin
+        <ScrollText className="h-5 w-5" /> {t('adminPage.activityLog')}
       </h2>
 
       <Card>
@@ -51,20 +52,20 @@ export default function AdminLogs() {
           ) : !logs || logs.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <ScrollText className="h-10 w-10 mx-auto mb-3 opacity-40" />
-              <p>Aucune activité enregistrée</p>
-              <p className="text-xs mt-1">Les actions admin seront tracées ici automatiquement</p>
+              <p>{t('adminPage.noActivity')}</p>
+              <p className="text-xs mt-1">{t('adminPage.actionsTrackedAuto')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Admin</TableHead>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Cible</TableHead>
-                    <TableHead>Détails</TableHead>
+                    <TableHead>{t('adminPage.colDate')}</TableHead>
+                    <TableHead>{t('adminPage.colAdmin')}</TableHead>
+                    <TableHead>{t('adminPage.colAction')}</TableHead>
+                    <TableHead>{t('adminPage.colType')}</TableHead>
+                    <TableHead>{t('adminPage.colTarget')}</TableHead>
+                    <TableHead>{t('adminPage.colDetails')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
