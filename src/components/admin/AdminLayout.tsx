@@ -83,7 +83,7 @@ function AdminSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
+    <Sidebar collapsible="icon" className="border-r !sticky !top-16 !h-[calc(100vh-4rem)]">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
