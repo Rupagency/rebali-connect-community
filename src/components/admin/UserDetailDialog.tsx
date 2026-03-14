@@ -57,6 +57,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
     <Dialog open={!!userId} onOpenChange={() => onClose()}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
+          <DialogDescription className="sr-only">Détails du profil utilisateur</DialogDescription>
           <DialogTitle className="flex items-center gap-3">
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" />
