@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     factors.positive_reviews = Math.min((goodReviews?.length || 0) * 2, 10);
 
     // ID verified: +5
-    factors.id_verified = profile.is_verified_seller ? 5 : 0;
+    factors.id_verified = profile.is_verified_seller ? 30 : 0;
 
     // --- Penalties ---
 
