@@ -28,11 +28,23 @@ export default function AdminListings() {
   const { data: profiles } = useAdminProfiles();
   const { data: reports } = useAdminReports();
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [listingSearch, setListingSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sellerFilter, setSellerFilter] = useState<string | null>(null);
   const [selectedListing, setSelectedListing] = useState<any>(null);
   const [editingListing, setEditingListing] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  // Read URL params on mount
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const sellerId = searchParams.get('seller_id');
+    if (status && status !== 'all') setStatusFilter(status);
+    if (sellerId) setSellerFilter(sellerId);
+    // Clean URL params after reading
+    if (status || sellerId) setSearchParams({}, { replace: true });
+  }, []);
 
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
