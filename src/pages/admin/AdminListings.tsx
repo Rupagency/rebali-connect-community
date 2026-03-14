@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,11 +28,23 @@ export default function AdminListings() {
   const { data: profiles } = useAdminProfiles();
   const { data: reports } = useAdminReports();
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [listingSearch, setListingSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sellerFilter, setSellerFilter] = useState<string | null>(null);
   const [selectedListing, setSelectedListing] = useState<any>(null);
   const [editingListing, setEditingListing] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  // Read URL params on mount
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const sellerId = searchParams.get('seller_id');
+    if (status && status !== 'all') setStatusFilter(status);
+    if (sellerId) setSellerFilter(sellerId);
+    // Clean URL params after reading
+    if (status || sellerId) setSearchParams({}, { replace: true });
+  }, []);
 
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
@@ -40,10 +53,13 @@ export default function AdminListings() {
 
   const categories: string[] = Object.keys(CATEGORY_TREE);
 
+  const sellerProfile = sellerFilter ? profiles?.find((p: any) => p.id === sellerFilter) : null;
+
   const filteredListings = allListings?.filter((l: any) => {
     const matchesSearch = !listingSearch || l.title_original?.toLowerCase().includes(listingSearch.toLowerCase());
     const matchesStatus = statusFilter === 'all' || l.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesSeller = !sellerFilter || l.seller_id === sellerFilter;
+    return matchesSearch && matchesStatus && matchesSeller;
   }) || [];
 
   const toggleSelect = (id: string) => {
@@ -140,6 +156,11 @@ export default function AdminListings() {
             <SelectItem value="draft">{t('myListings.draft')}</SelectItem>
           </SelectContent>
         </Select>
+        {sellerFilter && (
+          <Badge variant="secondary" className="gap-1 cursor-pointer" onClick={() => setSellerFilter(null)}>
+            <User className="h-3 w-3" /> {sellerProfile?.display_name || sellerFilter.slice(0, 8)} <X className="h-3 w-3" />
+          </Badge>
+        )}
       </div>
 
       <div className="rounded-md border">

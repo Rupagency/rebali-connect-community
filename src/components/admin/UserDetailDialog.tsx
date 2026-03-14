@@ -168,7 +168,13 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
               ) : (
                 <div className="space-y-1.5 max-h-60 overflow-y-auto">
                   {listings.map(l => (
-                    <div key={l.id} className="flex items-center justify-between py-2 px-3 rounded-md border text-sm">
+                    <a
+                      key={l.id}
+                      href={`/listing/${l.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between py-2 px-3 rounded-md border text-sm hover:border-primary/50 hover:bg-muted/50 transition-colors cursor-pointer"
+                    >
                       <div className="min-w-0 flex-1">
                         <p className="font-medium truncate">{l.title_original}</p>
                         <p className="text-xs text-muted-foreground">{l.category} · {new Date(l.created_at).toLocaleDateString()}</p>
@@ -179,7 +185,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
                           {l.status}
                         </Badge>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               )}
