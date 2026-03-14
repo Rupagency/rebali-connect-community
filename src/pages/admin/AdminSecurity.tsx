@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { toast } from '@/hooks/use-toast';
 import {
   ShieldAlert, AlertTriangle, ShieldCheck, FileCheck, Fingerprint, Wifi, Ban,
-  Eye, X, CheckCircle, Clock
+  Eye, X, CheckCircle, RefreshCw, Loader2
 } from 'lucide-react';
 
 function VerificationCard({ verification, profileName, onApprove, onReject }: {
@@ -23,6 +23,7 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
   const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
   const [loadingImages, setLoadingImages] = useState(false);
   const [showImages, setShowImages] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
 
   const loadDecryptedImages = async () => {
     setLoadingImages(true);
@@ -33,33 +34,68 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
       ]);
       if (docRes.data instanceof Blob) setDocUrl(URL.createObjectURL(docRes.data));
       if (selfieRes.data instanceof Blob) setSelfieUrl(URL.createObjectURL(selfieRes.data));
+      setReviewed(true);
     } catch (err) { console.error('Failed to decrypt images:', err); }
     setLoadingImages(false);
     setShowImages(true);
   };
 
   return (
-    <div className="p-3 rounded-md border space-y-3">
+    <div className="p-4 rounded-lg border space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <p className="font-medium">{profileName}</p>
           <p className="text-xs text-muted-foreground">{verification.document_type} — {new Date(verification.created_at).toLocaleDateString()}</p>
         </div>
-        <div className="flex gap-2">
-          {!showImages && (
-            <Button size="sm" variant="outline" onClick={loadDecryptedImages} disabled={loadingImages}>
-              <Eye className="h-3 w-3 mr-1" /> {loadingImages ? '...' : t('admin.viewDocuments') || 'View'}
-            </Button>
-          )}
-          <Button size="sm" onClick={onApprove}><CheckCircle className="h-3 w-3 mr-1" /> {t('security.approve')}</Button>
-          <Button size="sm" variant="destructive" onClick={onReject}><X className="h-3 w-3 mr-1" /> {t('security.reject')}</Button>
-        </div>
       </div>
-      {showImages && (
-        <div className="grid grid-cols-2 gap-3">
-          {docUrl && <img src={docUrl} alt="Document" className="rounded-md border max-h-48 object-contain w-full" />}
-          {selfieUrl && <img src={selfieUrl} alt="Selfie" className="rounded-md border max-h-48 object-contain w-full" />}
+
+      {/* Documents section - must view before deciding */}
+      {!showImages ? (
+        <div className="flex flex-col items-center gap-2 py-4 bg-muted/30 rounded-md border border-dashed">
+          <Eye className="h-6 w-6 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground text-center">
+            Vous devez examiner les documents avant de pouvoir approuver ou rejeter
+          </p>
+          <Button onClick={loadDecryptedImages} disabled={loadingImages} variant="outline">
+            {loadingImages ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
+            {loadingImages ? 'Déchiffrement...' : 'Voir les documents'}
+          </Button>
         </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-3">
+            {docUrl ? (
+              <div>
+                <p className="text-xs font-medium mb-1 text-muted-foreground">Document</p>
+                <img src={docUrl} alt="Document" className="rounded-md border max-h-64 object-contain w-full cursor-pointer" onClick={() => window.open(docUrl, '_blank')} />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-32 bg-muted rounded-md border">
+                <p className="text-xs text-muted-foreground">Impossible de charger le document</p>
+              </div>
+            )}
+            {selfieUrl ? (
+              <div>
+                <p className="text-xs font-medium mb-1 text-muted-foreground">Selfie</p>
+                <img src={selfieUrl} alt="Selfie" className="rounded-md border max-h-64 object-contain w-full cursor-pointer" onClick={() => window.open(selfieUrl, '_blank')} />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-32 bg-muted rounded-md border">
+                <p className="text-xs text-muted-foreground">Impossible de charger le selfie</p>
+              </div>
+            )}
+          </div>
+
+          {/* Action buttons - only shown after viewing documents */}
+          <div className="flex gap-2 justify-end pt-2 border-t">
+            <Button size="sm" onClick={onApprove} disabled={!reviewed}>
+              <CheckCircle className="h-4 w-4 mr-1" /> {t('security.approve')}
+            </Button>
+            <Button size="sm" variant="destructive" onClick={onReject} disabled={!reviewed}>
+              <X className="h-4 w-4 mr-1" /> {t('security.reject')}
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );
@@ -74,6 +110,30 @@ export default function AdminSecurity() {
   const { data: idVerifications, refetch: refetchVerifications } = useAdminIdVerifications();
   const { data: allDevices } = useAdminDevices();
   const { data: bannedDevices } = useAdminBannedDevices();
+  const [recalculating, setRecalculating] = useState(false);
+  const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
+
+  const recalculateAll = async () => {
+    if (!profiles?.length) return;
+    setRecalculating(true);
+    let done = 0;
+    for (const p of profiles) {
+      await supabase.functions.invoke('calculate-trust-score', { body: { user_id: p.id } });
+      done++;
+      if (done % 10 === 0) console.log(`[Trust] ${done}/${profiles.length} recalculated`);
+    }
+    await qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+    setRecalculating(false);
+    toast({ title: `${done} scores recalculés` });
+  };
+
+  const recalculateSingle = async (userId: string) => {
+    setRecalcSingleId(userId);
+    await supabase.functions.invoke('calculate-trust-score', { body: { user_id: userId } });
+    await qc.invalidateQueries({ queryKey: ['admin-profiles'] });
+    setRecalcSingleId(null);
+    toast({ title: 'Score recalculé' });
+  };
 
   const approveVerification = async (v: any) => {
     await supabase.from('id_verifications').update({ status: 'approved' as any, reviewed_by: user!.id, reviewed_at: new Date().toISOString() }).eq('id', v.id);
@@ -119,7 +179,13 @@ export default function AdminSecurity() {
       {/* Trust Scores */}
       <Card>
         <CardContent className="p-4">
-          <h3 className="font-bold mb-3 flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.trustScore')}</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.trustScore')}</h3>
+            <Button size="sm" variant="outline" onClick={recalculateAll} disabled={recalculating}>
+              {recalculating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <RefreshCw className="h-4 w-4 mr-1" />}
+              {recalculating ? 'Calcul en cours...' : 'Recalculer tous les scores'}
+            </Button>
+          </div>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -129,6 +195,7 @@ export default function AdminSecurity() {
                   <TableHead>{t('security.riskLevel')}</TableHead>
                   <TableHead>WhatsApp</TableHead>
                   <TableHead>Verified</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -139,6 +206,11 @@ export default function AdminSecurity() {
                     <TableCell><Badge variant={p.risk_level === 'high' ? 'destructive' : p.risk_level === 'medium' ? 'outline' : 'secondary'}>{p.risk_level}</Badge></TableCell>
                     <TableCell>{p.phone_verified ? '✅' : '—'}</TableCell>
                     <TableCell>{p.is_verified_seller ? '✅' : '—'}</TableCell>
+                    <TableCell>
+                      <Button size="sm" variant="ghost" onClick={() => recalculateSingle(p.id)} disabled={recalcSingleId === p.id}>
+                        {recalcSingleId === p.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -154,7 +226,7 @@ export default function AdminSecurity() {
           {(!idVerifications || idVerifications.filter((v: any) => v.status === 'pending').length === 0) ? (
             <p className="text-sm text-muted-foreground py-4 text-center">{t('common.noResults')}</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {idVerifications.filter((v: any) => v.status === 'pending').map((v: any) => {
                 const vProfile = profiles?.find((p: any) => p.id === v.user_id);
                 return <VerificationCard key={v.id} verification={v} profileName={vProfile?.display_name || v.user_id.slice(0, 8)} onApprove={() => approveVerification(v)} onReject={() => rejectVerification(v)} />;
