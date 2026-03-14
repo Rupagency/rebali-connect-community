@@ -53,10 +53,13 @@ export default function AdminListings() {
 
   const categories: string[] = Object.keys(CATEGORY_TREE);
 
+  const sellerProfile = sellerFilter ? profiles?.find((p: any) => p.id === sellerFilter) : null;
+
   const filteredListings = allListings?.filter((l: any) => {
     const matchesSearch = !listingSearch || l.title_original?.toLowerCase().includes(listingSearch.toLowerCase());
     const matchesStatus = statusFilter === 'all' || l.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesSeller = !sellerFilter || l.seller_id === sellerFilter;
+    return matchesSearch && matchesStatus && matchesSeller;
   }) || [];
 
   const toggleSelect = (id: string) => {
