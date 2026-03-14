@@ -365,11 +365,25 @@ export default function AdminUsers() {
               <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userListings')}</h4>
               <div className="grid grid-cols-4 gap-2">
                 {[
-                  { label: t('admin.totalListings'), value: getUserListings(selectedUser.id).length },
-                  { label: t('myListings.active'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'active').length },
-                  { label: t('myListings.sold'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'sold').length },
-                  { label: t('myListings.archived'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'archived').length },
-                ].map(s => <Card key={s.label}><CardContent className="p-3 text-center"><p className="text-lg font-bold">{s.value}</p><p className="text-[10px] text-muted-foreground">{s.label}</p></CardContent></Card>)}
+                  { label: t('admin.totalListings'), value: getUserListings(selectedUser.id).length, status: 'all' },
+                  { label: t('myListings.active'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'active').length, status: 'active' },
+                  { label: t('myListings.sold'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'sold').length, status: 'sold' },
+                  { label: t('myListings.archived'), value: getUserListings(selectedUser.id).filter((l: any) => l.status === 'archived').length, status: 'archived' },
+                ].map(s => (
+                  <Card
+                    key={s.label}
+                    className="cursor-pointer hover:border-primary/50 transition-colors"
+                    onClick={() => {
+                      setSelectedUser(null);
+                      navigate(`/admin/listings?seller_id=${selectedUser.id}${s.status !== 'all' ? `&status=${s.status}` : ''}`);
+                    }}
+                  >
+                    <CardContent className="p-3 text-center">
+                      <p className="text-lg font-bold">{s.value}</p>
+                      <p className="text-[10px] text-muted-foreground">{s.label}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
 
