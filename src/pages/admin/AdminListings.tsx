@@ -254,7 +254,7 @@ export default function AdminListings() {
                   <div className="flex items-center gap-2 text-sm"><Calendar className="h-4 w-4 text-muted-foreground" /><div><p className="text-muted-foreground">Créé le</p><p className="font-medium">{new Date(selectedListing.created_at).toLocaleDateString()}</p></div></div>
                 </div>
                 <Separator />
-                <div><h4 className="text-sm font-semibold text-muted-foreground uppercase mb-2">Description</h4><p className="text-sm whitespace-pre-wrap max-h-[150px] overflow-y-auto border rounded-md p-3 bg-muted/30">{selectedListing.description_original}</p></div>
+                <div className="min-w-0"><h4 className="text-sm font-semibold text-muted-foreground uppercase mb-2">Description</h4><p className="text-sm whitespace-pre-wrap break-words max-h-[150px] overflow-y-auto overflow-x-hidden border rounded-md p-3 bg-muted/30">{selectedListing.description_original}</p></div>
                 <Separator />
                 <div className="flex gap-2 flex-wrap">
                   <Button variant="outline" size="sm" asChild>
