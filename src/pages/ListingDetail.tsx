@@ -109,11 +109,8 @@ export default function ListingDetail() {
   const { data: favCount, refetch: refetchFavCount } = useQuery({
     queryKey: ['fav-count', id],
     queryFn: async () => {
-      const { count } = await supabase
-        .from('favorites')
-        .select('*', { count: 'exact', head: true })
-        .eq('listing_id', id!);
-      return count || 0;
+      const { data } = await supabase.rpc('get_favorites_count', { _listing_id: id! });
+      return data || 0;
     },
     enabled: !!id,
   });
