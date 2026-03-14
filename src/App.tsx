@@ -91,7 +91,16 @@ const App = () => {
                   <Route path="/create" element={<CreateListing />} />
                   <Route path="/my-listings" element={<MyListings />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="reports" element={<AdminReports />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="listings" element={<AdminListings />} />
+                    <Route path="security" element={<AdminSecurity />} />
+                    <Route path="wa-relay" element={<AdminWARelay />} />
+                    <Route path="search-analytics" element={<AdminSearchAnalytics />} />
+                    <Route path="logs" element={<AdminLogs />} />
+                  </Route>
                   <Route path="/about" element={<About />} />
                   <Route path="/safety" element={<Safety />} />
                   <Route path="/rules" element={<Rules />} />
