@@ -10,7 +10,7 @@ import ListingMarquee from '@/components/ListingMarquee';
 import AnimatedHeroText from '@/components/AnimatedHeroText';
 import { Plus, ArrowRight, Star, SlidersHorizontal, X, Sparkles } from 'lucide-react';
 import CategoryMarquee from '@/components/CategoryMarquee';
-import HowItWorks from '@/components/HowItWorks';
+
 import { CATEGORY_ICONS, CATEGORIES, CONDITIONS, LOCATIONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
