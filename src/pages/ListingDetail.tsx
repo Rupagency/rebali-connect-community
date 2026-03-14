@@ -106,7 +106,7 @@ export default function ListingDetail() {
     enabled: !!listing?.seller_id,
   });
 
-  const { data: favCount } = useQuery({
+  const { data: favCount, refetch: refetchFavCount } = useQuery({
     queryKey: ['fav-count', id],
     queryFn: async () => {
       const { count } = await supabase
@@ -207,11 +207,13 @@ export default function ListingDetail() {
   });
 
   useEffect(() => {
-    if (id) {
-      supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
-        if (error) console.error('increment_views error:', error);
-      });
-    }
+    if (!id) return;
+    const key = `viewed_${id}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
+      if (error) console.error('increment_views error:', error);
+    });
   }, [id]);
 
   useEffect(() => {
@@ -268,6 +270,7 @@ export default function ListingDetail() {
       await supabase.from('favorites').insert({ listing_id: id!, user_id: user.id });
     }
     refetchFav();
+    refetchFavCount();
   };
 
   const handleReport = async () => {
