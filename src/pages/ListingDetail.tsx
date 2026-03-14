@@ -109,11 +109,8 @@ export default function ListingDetail() {
   const { data: favCount, refetch: refetchFavCount } = useQuery({
     queryKey: ['fav-count', id],
     queryFn: async () => {
-      const { count } = await supabase
-        .from('favorites')
-        .select('*', { count: 'exact', head: true })
-        .eq('listing_id', id!);
-      return count || 0;
+      const { data } = await supabase.rpc('get_favorites_count', { _listing_id: id! });
+      return data || 0;
     },
     enabled: !!id,
   });
@@ -213,8 +210,9 @@ export default function ListingDetail() {
     sessionStorage.setItem(key, '1');
     supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
       if (error) console.error('increment_views error:', error);
+      else refetchListing();
     });
-  }, [id]);
+  }, [id, refetchListing]);
 
   useEffect(() => {
     if (!id || !listing || language === 'en') return;
