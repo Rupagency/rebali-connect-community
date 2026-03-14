@@ -26,19 +26,64 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
   const [showImages, setShowImages] = useState(false);
   const [reviewed, setReviewed] = useState(false);
 
+  const decryptWithTimeout = async (storagePath: string, timeoutMs = 15000): Promise<Blob> => {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Le déchiffrement a expiré, réessayez.')), timeoutMs)
+    );
+
+    const invokePromise = supabase.functions.invoke('decrypt-document', {
+      body: { storage_path: storagePath },
+    }) as Promise<any>;
+
+    const res = await Promise.race([invokePromise, timeoutPromise]);
+
+    if (res?.error) {
+      throw new Error(res.error.message || 'Erreur lors du déchiffrement');
+    }
+
+    if (!(res?.data instanceof Blob)) {
+      throw new Error('Réponse de déchiffrement invalide');
+    }
+
+    return res.data;
+  };
+
   const loadDecryptedImages = async () => {
+    if (loadingImages) return;
+
     setLoadingImages(true);
     try {
-      const [docRes, selfieRes] = await Promise.all([
-        supabase.functions.invoke('decrypt-document', { body: { storage_path: verification.document_path } }),
-        supabase.functions.invoke('decrypt-document', { body: { storage_path: verification.selfie_path } }),
-      ]);
-      if (docRes.data instanceof Blob) setDocUrl(URL.createObjectURL(docRes.data));
-      if (selfieRes.data instanceof Blob) setSelfieUrl(URL.createObjectURL(selfieRes.data));
+      const uniquePaths = Array.from(
+        new Set([verification.document_path, verification.selfie_path].filter(Boolean))
+      ) as string[];
+
+      const blobByPath = new Map<string, Blob>();
+      await Promise.all(
+        uniquePaths.map(async (path) => {
+          const blob = await decryptWithTimeout(path);
+          blobByPath.set(path, blob);
+        })
+      );
+
+      const docBlob = verification.document_path ? blobByPath.get(verification.document_path) : null;
+      const selfieBlob = verification.selfie_path ? blobByPath.get(verification.selfie_path) : null;
+
+      setDocUrl(docBlob ? URL.createObjectURL(docBlob) : null);
+      setSelfieUrl(selfieBlob ? URL.createObjectURL(selfieBlob) : null);
       setReviewed(true);
-    } catch (err) { console.error('Failed to decrypt images:', err); }
-    setLoadingImages(false);
-    setShowImages(true);
+      setShowImages(true);
+    } catch (err: any) {
+      console.error('Failed to decrypt images:', err);
+      toast({
+        title: 'Erreur de déchiffrement',
+        description: err?.message || 'Impossible de charger les documents.',
+        variant: 'destructive',
+      });
+      setReviewed(false);
+      setShowImages(true);
+    } finally {
+      setLoadingImages(false);
+    }
   };
 
   return (
