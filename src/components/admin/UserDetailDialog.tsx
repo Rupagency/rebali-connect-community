@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -26,55 +26,38 @@ const FACTOR_LABELS: Record<string, { label: string; icon: any }> = {
 };
 
 export default function UserDetailDialog({ userId, profile, onClose }: UserDetailDialogProps) {
-  const [trustData, setTrustData] = useState<any>(null);
-  const [listings, setListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { data, isLoading } = useQuery({
+    queryKey: ['admin-user-detail-dialog', userId],
+    enabled: !!userId,
+    staleTime: 30_000,
+    queryFn: async () => {
+      const [trustRes, listingsRes] = await Promise.all([
+        supabase.from('trust_scores').select('*').eq('user_id', userId!).maybeSingle(),
+        supabase
+          .from('listings')
+          .select('id, title_original, status, price, currency, category, created_at, views_count')
+          .eq('seller_id', userId!)
+          .order('created_at', { ascending: false })
+          .limit(20),
+      ]);
 
-  useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      setTrustData(null);
-      setListings([]);
-      return;
-    }
-
-    let cancelled = false;
-
-    const loadUserDetails = async () => {
-      setLoading(true);
-      setTrustData(null);
-      setListings([]);
-
-      try {
-        const [trustRes, listingsRes] = await Promise.all([
-          supabase.from('trust_scores').select('*').eq('user_id', userId).limit(1),
-          supabase.from('listings').select('id, title_original, status, price, currency, category, created_at, views_count').eq('seller_id', userId).order('created_at', { ascending: false }).limit(20),
-        ]);
-
-        if (cancelled) return;
-
-        if (trustRes.error) console.error('Failed to load trust score details:', trustRes.error);
-        if (listingsRes.error) console.error('Failed to load user listings:', listingsRes.error);
-
-        setTrustData((trustRes.data as any[] | null)?.[0] ?? null);
-        setListings(listingsRes.data || []);
-      } catch (error) {
-        if (!cancelled) {
-          console.error('Failed to load user details dialog data:', error);
-          setTrustData(null);
-          setListings([]);
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
+      if (trustRes.error) {
+        console.error('Failed to load trust score details:', trustRes.error);
       }
-    };
+      if (listingsRes.error) {
+        console.error('Failed to load user listings:', listingsRes.error);
+      }
 
-    void loadUserDetails();
+      return {
+        trustData: trustRes.data ?? null,
+        listings: listingsRes.data || [],
+      };
+    },
+  });
 
-    return () => {
-      cancelled = true;
-    };
-  }, [userId]);
+  const trustData = data?.trustData ?? null;
+  const listings = data?.listings ?? [];
+  const loading = !!userId && isLoading;
 
   if (!userId || !profile) return null;
 
