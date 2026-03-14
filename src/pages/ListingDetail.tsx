@@ -207,11 +207,13 @@ export default function ListingDetail() {
   });
 
   useEffect(() => {
-    if (id) {
-      supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
-        if (error) console.error('increment_views error:', error);
-      });
-    }
+    if (!id) return;
+    const key = `viewed_${id}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    supabase.rpc('increment_views', { _listing_id: id }).then(({ error }) => {
+      if (error) console.error('increment_views error:', error);
+    });
   }, [id]);
 
   useEffect(() => {
