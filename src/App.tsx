@@ -101,6 +101,7 @@ const App = () => {
                     <Route path="wa-relay" element={<AdminWARelay />} />
                     <Route path="search-analytics" element={<AdminSearchAnalytics />} />
                     <Route path="logs" element={<AdminLogs />} />
+                    <Route path="stats" element={<AdminStats />} />
                   </Route>
                   <Route path="/about" element={<About />} />
                   <Route path="/safety" element={<Safety />} />

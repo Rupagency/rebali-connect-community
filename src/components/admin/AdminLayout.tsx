@@ -40,6 +40,7 @@ const navItems = [
   { title: 'Annonces', url: '/admin/listings', icon: FileText },
   { title: 'Sécurité', url: '/admin/security', icon: Fingerprint, badgeKey: 'verifications' },
   { title: 'WA Relay', url: '/admin/wa-relay', icon: MessageCircle },
+  { title: 'Statistiques', url: '/admin/stats', icon: PieChart },
   { title: 'Logs', url: '/admin/logs', icon: ScrollText },
 ];
 
