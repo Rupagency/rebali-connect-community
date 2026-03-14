@@ -360,6 +360,33 @@ export default function AdminUsers() {
 
             <Separator />
 
+            {/* Trust Score */}
+            <div
+              className="flex items-center justify-between p-3 rounded-lg border bg-muted/30 cursor-pointer hover:border-primary/50 transition-colors"
+              onClick={() => {
+                setSelectedUser(null);
+                navigate(`/admin/security?user_id=${selectedUser.id}`);
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <ShieldCheck className={`h-5 w-5 ${selectedUser.trust_score >= 70 ? 'text-green-600' : selectedUser.trust_score >= 40 ? 'text-amber-500' : 'text-destructive'}`} />
+                <div>
+                  <p className="text-sm font-semibold">Trust Score</p>
+                  <p className="text-xs text-muted-foreground">Cliquer pour voir les détails →</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`text-2xl font-bold ${selectedUser.trust_score >= 70 ? 'text-green-600' : selectedUser.trust_score >= 40 ? 'text-amber-500' : 'text-destructive'}`}>
+                  {selectedUser.trust_score ?? 50}
+                </span>
+                <Badge variant={selectedUser.risk_level === 'high' ? 'destructive' : selectedUser.risk_level === 'medium' ? 'outline' : 'secondary'}>
+                  {selectedUser.risk_level || 'low'}
+                </Badge>
+              </div>
+            </div>
+
+            <Separator />
+
             {/* Listings summary */}
             <div className="space-y-3">
               <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userListings')}</h4>
