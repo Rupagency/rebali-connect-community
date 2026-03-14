@@ -512,8 +512,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* How it works */}
-      <HowItWorks />
 
       {/* Category: Immobilier (with featured injection) */}
       <CategoryRow category="immobilier" featuredListings={featuredListings} />
