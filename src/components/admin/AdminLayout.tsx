@@ -89,7 +89,7 @@ function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
-            {!collapsed && <span>Administration</span>}
+            {!collapsed && <span>{t('adminLabels.administration')}</span>}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
