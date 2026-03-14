@@ -105,7 +105,7 @@ function AdminSidebar() {
                       <item.icon className="h-4 w-4 shrink-0" />
                       {!collapsed && (
                         <span className="flex-1 flex items-center justify-between">
-                          <span>{item.title}</span>
+                          <span>{t(item.titleKey)}</span>
                           {item.badgeKey && badgeCounts[item.badgeKey] > 0 && (
                             <Badge variant="destructive" className="text-[10px] h-5 min-w-5 flex items-center justify-center">
                               {badgeCounts[item.badgeKey]}
