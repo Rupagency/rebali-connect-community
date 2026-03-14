@@ -24,6 +24,7 @@ import {
 export default function AdminUsers() {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { logAction } = useAdminLog();
   const { data: profiles } = useAdminProfiles();
