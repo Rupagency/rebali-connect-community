@@ -608,7 +608,17 @@
     "listing": "विज्ञापन",
     "reporter": "रिपोर्टर",
     "deleted": "हटाया गया",
-    "unknown": "अज्ञात"
+    "unknown": "अज्ञात",
+    "administration": "प्रशासन",
+    "dashboard": "डैशबोर्ड",
+    "searchAnalytics": "खोजें",
+    "reports": "रिपोर्ट",
+    "users": "उपयोगकर्ता",
+    "listings": "विज्ञापन",
+    "security": "सुरक्षा",
+    "waRelay": "WA रिले",
+    "statistics": "आँकड़े",
+    "logs": "लॉग"
   },
   "seller": {
     "activeListings": "सक्रिय विज्ञापन",

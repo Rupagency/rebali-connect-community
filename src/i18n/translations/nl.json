@@ -690,5 +690,22 @@
     "alreadyRegistered": "You're already registered!",
     "success": "Welcome to the waitlist!",
     "disclaimer": "We'll only email you when we launch. No spam, ever."
+  },
+  "adminLabels": {
+    "accessDenied": "Toegang geweigerd",
+    "listing": "Advertentie",
+    "reporter": "Melder",
+    "deleted": "Verwijderd",
+    "unknown": "Onbekend",
+    "administration": "Beheer",
+    "dashboard": "Dashboard",
+    "searchAnalytics": "Zoekopdrachten",
+    "reports": "Meldingen",
+    "users": "Gebruikers",
+    "listings": "Advertenties",
+    "security": "Beveiliging",
+    "waRelay": "WA Relay",
+    "statistics": "Statistieken",
+    "logs": "Logboeken"
   }
 }

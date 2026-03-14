@@ -568,7 +568,17 @@
     "listing": "Iklan",
     "reporter": "Pelapor",
     "deleted": "Dihapus",
-    "unknown": "Tidak dikenal"
+    "unknown": "Tidak dikenal",
+    "administration": "Administrasi",
+    "dashboard": "Dasbor",
+    "searchAnalytics": "Pencarian",
+    "reports": "Laporan",
+    "users": "Pengguna",
+    "listings": "Iklan",
+    "security": "Keamanan",
+    "waRelay": "WA Relay",
+    "statistics": "Statistik",
+    "logs": "Log"
   },
   "seller": {
     "activeListings": "iklan aktif",

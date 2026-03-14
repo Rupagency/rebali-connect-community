@@ -608,7 +608,17 @@
     "listing": "İlan",
     "reporter": "Şikayet eden",
     "deleted": "Silindi",
-    "unknown": "Bilinmiyor"
+    "unknown": "Bilinmiyor",
+    "administration": "Yönetim",
+    "dashboard": "Pano",
+    "searchAnalytics": "Aramalar",
+    "reports": "Şikayetler",
+    "users": "Kullanıcılar",
+    "listings": "İlanlar",
+    "security": "Güvenlik",
+    "waRelay": "WA Relay",
+    "statistics": "İstatistikler",
+    "logs": "Kayıtlar"
   },
   "seller": {
     "activeListings": "aktif ilan",

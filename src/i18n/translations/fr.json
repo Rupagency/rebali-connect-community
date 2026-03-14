@@ -620,7 +620,17 @@
     "listing": "Annonce",
     "reporter": "Signaleur",
     "deleted": "Supprimé",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "administration": "Administration",
+    "dashboard": "Tableau de bord",
+    "searchAnalytics": "Recherches",
+    "reports": "Signalements",
+    "users": "Utilisateurs",
+    "listings": "Annonces",
+    "security": "Sécurité",
+    "waRelay": "WA Relay",
+    "statistics": "Statistiques",
+    "logs": "Journaux"
   },
   "seller": {
     "activeListings": "annonces actives",

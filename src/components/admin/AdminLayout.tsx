@@ -33,20 +33,21 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { title: 'Dashboard', url: '/admin', icon: BarChart3, end: true },
-  { title: 'Recherches', url: '/admin/search-analytics', icon: TrendingUp },
-  { title: 'Signalements', url: '/admin/reports', icon: AlertTriangle, badgeKey: 'reports' },
-  { title: 'Utilisateurs', url: '/admin/users', icon: Users },
-  { title: 'Annonces', url: '/admin/listings', icon: FileText },
-  { title: 'Sécurité', url: '/admin/security', icon: Fingerprint, badgeKey: 'verifications' },
-  { title: 'WA Relay', url: '/admin/wa-relay', icon: MessageCircle },
-  { title: 'Statistiques', url: '/admin/stats', icon: PieChart },
-  { title: 'Logs', url: '/admin/logs', icon: ScrollText },
+  { titleKey: 'adminLabels.dashboard', url: '/admin', icon: BarChart3, end: true },
+  { titleKey: 'adminLabels.searchAnalytics', url: '/admin/search-analytics', icon: TrendingUp },
+  { titleKey: 'adminLabels.reports', url: '/admin/reports', icon: AlertTriangle, badgeKey: 'reports' },
+  { titleKey: 'adminLabels.users', url: '/admin/users', icon: Users },
+  { titleKey: 'adminLabels.listings', url: '/admin/listings', icon: FileText },
+  { titleKey: 'adminLabels.security', url: '/admin/security', icon: Fingerprint, badgeKey: 'verifications' },
+  { titleKey: 'adminLabels.waRelay', url: '/admin/wa-relay', icon: MessageCircle },
+  { titleKey: 'adminLabels.statistics', url: '/admin/stats', icon: PieChart },
+  { titleKey: 'adminLabels.logs', url: '/admin/logs', icon: ScrollText },
 ];
 
 function AdminSidebar() {
   const location = useLocation();
   const { state } = useSidebar();
+  const { t } = useLanguage();
   const collapsed = state === 'collapsed';
 
   // Badge counts
@@ -88,7 +89,7 @@ function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
-            {!collapsed && <span>Administration</span>}
+            {!collapsed && <span>{t('adminLabels.administration')}</span>}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -104,7 +105,7 @@ function AdminSidebar() {
                       <item.icon className="h-4 w-4 shrink-0" />
                       {!collapsed && (
                         <span className="flex-1 flex items-center justify-between">
-                          <span>{item.title}</span>
+                          <span>{t(item.titleKey)}</span>
                           {item.badgeKey && badgeCounts[item.badgeKey] > 0 && (
                             <Badge variant="destructive" className="text-[10px] h-5 min-w-5 flex items-center justify-center">
                               {badgeCounts[item.badgeKey]}
@@ -156,7 +157,7 @@ export default function AdminLayout() {
           <header className="h-12 flex items-center border-b px-4 gap-3 sticky top-16 z-10 bg-background">
             <SidebarTrigger />
             <h1 className="text-lg font-bold flex items-center gap-2">
-              <Shield className="h-5 w-5" /> Administration
+              <Shield className="h-5 w-5" /> {t('adminLabels.administration')}
             </h1>
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
