@@ -69,7 +69,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
 
   return (
     <Dialog open={!!userId} onOpenChange={() => onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogDescription className="sr-only">Détails du profil utilisateur</DialogDescription>
           <DialogTitle className="flex items-center gap-3">
