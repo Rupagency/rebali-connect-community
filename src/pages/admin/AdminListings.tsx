@@ -211,7 +211,7 @@ export default function AdminListings() {
       {/* Listing detail dialog */}
       {selectedListing && (
         <Dialog open={!!selectedListing} onOpenChange={(open) => { if (!open && !editingListing) { setSelectedListing(null); setEditingListing(false); } }}>
-          <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto" onInteractOutside={(e) => { if (editingListing) e.preventDefault(); }}>
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85vh] overflow-y-auto overflow-x-hidden" onInteractOutside={(e) => { if (editingListing) e.preventDefault(); }}>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center"><Package className="h-5 w-5 text-primary" /></div>
