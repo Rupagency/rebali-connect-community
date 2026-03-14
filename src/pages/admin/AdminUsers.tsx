@@ -57,6 +57,7 @@ export default function AdminUsers() {
   }) || [];
 
   const getUserListings = (userId: string) => allListings?.filter((l: any) => l.seller_id === userId) || [];
+  const getActiveListingCount = (userId: string) => allListings?.filter((l: any) => l.seller_id === userId && l.status === 'active').length || 0;
   const getUserReports = (userId: string) => reports?.filter((r: any) => r.listings?.seller_id === userId) || [];
 
   const getMaxListings = (userId: string) => {
