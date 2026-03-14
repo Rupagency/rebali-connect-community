@@ -172,7 +172,7 @@ export default function AdminListings() {
                   <Checkbox checked={selectedIds.has(l.id)} onCheckedChange={() => toggleSelect(l.id)} />
                 </TableCell>
                 <TableCell className="font-medium max-w-[200px] truncate">{l.title_original}</TableCell>
-                <TableCell className="text-sm">{(l.profiles as any)?.display_name || t('adminLabels.unknown')}</TableCell>
+                <TableCell className="text-sm">{profiles?.find((p: any) => p.id === l.seller_id)?.display_name || t('adminLabels.unknown')}</TableCell>
                 <TableCell><Badge variant="outline">{t(`categories.${l.category}`)}</Badge></TableCell>
                 <TableCell className="text-sm">{l.price > 0 ? `${l.currency} ${l.price.toLocaleString()}` : t('common.free')}</TableCell>
                 <TableCell><Badge variant={l.status === 'active' ? 'default' : 'secondary'}>{t(`myListings.${l.status}`)}</Badge></TableCell>
