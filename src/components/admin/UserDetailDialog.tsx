@@ -33,15 +33,16 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
+    setTrustData(null);
+    setListings([]);
 
     Promise.all([
-      supabase.from('trust_scores').select('*').eq('user_id', userId).single(),
+      supabase.from('trust_scores').select('*').eq('user_id', userId).maybeSingle(),
       supabase.from('listings').select('id, title_original, status, price, currency, category, created_at, views_count').eq('seller_id', userId).order('created_at', { ascending: false }).limit(20),
     ]).then(([trustRes, listingsRes]) => {
       setTrustData(trustRes.data);
       setListings(listingsRes.data || []);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, [userId]);
 
   if (!userId || !profile) return null;
