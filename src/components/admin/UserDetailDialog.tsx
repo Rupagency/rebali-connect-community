@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -33,15 +33,16 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
+    setTrustData(null);
+    setListings([]);
 
     Promise.all([
-      supabase.from('trust_scores').select('*').eq('user_id', userId).single(),
+      supabase.from('trust_scores').select('*').eq('user_id', userId).maybeSingle(),
       supabase.from('listings').select('id, title_original, status, price, currency, category, created_at, views_count').eq('seller_id', userId).order('created_at', { ascending: false }).limit(20),
     ]).then(([trustRes, listingsRes]) => {
       setTrustData(trustRes.data);
       setListings(listingsRes.data || []);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, [userId]);
 
   if (!userId || !profile) return null;
@@ -56,6 +57,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
     <Dialog open={!!userId} onOpenChange={() => onClose()}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
+          <DialogDescription className="sr-only">Détails du profil utilisateur</DialogDescription>
           <DialogTitle className="flex items-center gap-3">
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" />
