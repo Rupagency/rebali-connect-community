@@ -157,7 +157,7 @@ export default function AdminLayout() {
           <header className="h-12 flex items-center border-b px-4 gap-3 sticky top-16 z-10 bg-background">
             <SidebarTrigger />
             <h1 className="text-lg font-bold flex items-center gap-2">
-              <Shield className="h-5 w-5" /> Administration
+              <Shield className="h-5 w-5" /> {t('adminLabels.administration')}
             </h1>
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
