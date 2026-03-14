@@ -83,7 +83,7 @@ function AdminSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
+    <Sidebar collapsible="icon" className="border-r !sticky !top-16 !h-[calc(100vh-4rem)]">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
@@ -150,10 +150,8 @@ export default function AdminLayout() {
 
   return (
     <SidebarProvider>
-      <div className="flex w-full" style={{ minHeight: 'calc(100vh - 4rem)' }}>
-        <div className="sticky top-16 self-start h-[calc(100vh-4rem)]">
-          <AdminSidebar />
-        </div>
+      <div className="flex w-full">
+        <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           <header className="h-12 flex items-center border-b px-4 gap-3 sticky top-16 z-10 bg-background">
             <SidebarTrigger />

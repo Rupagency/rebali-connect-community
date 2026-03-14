@@ -166,3 +166,9 @@ body.capacitor-android main {
 .listing-marquee.paused {
   animation-play-state: paused;
 }
+
+/* Admin sidebar: offset for sticky header */
+[data-sidebar="sidebar"] {
+  top: 4rem !important;
+  height: calc(100vh - 4rem) !important;
+}
