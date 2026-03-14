@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import UserDetailDialog from '@/components/admin/UserDetailDialog';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -112,6 +113,7 @@ export default function AdminSecurity() {
   const { data: bannedDevices } = useAdminBannedDevices();
   const [recalculating, setRecalculating] = useState(false);
   const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const recalculateAll = async () => {
     if (!profiles?.length) return;
@@ -200,13 +202,13 @@ export default function AdminSecurity() {
               </TableHeader>
               <TableBody>
                 {(profiles || []).sort((a: any, b: any) => (a.trust_score ?? 50) - (b.trust_score ?? 50)).slice(0, 50).map((p: any) => (
-                  <TableRow key={p.id}>
+                  <TableRow key={p.id} className="cursor-pointer hover:bg-muted/50" onClick={() => setSelectedUserId(p.id)}>
                     <TableCell className="font-medium">{p.display_name || '?'}</TableCell>
                     <TableCell><span className={`font-bold ${p.trust_score < 30 ? 'text-destructive' : p.trust_score < 60 ? 'text-amber-500' : 'text-primary'}`}>{p.trust_score ?? 50}</span></TableCell>
                     <TableCell><Badge variant={p.risk_level === 'high' ? 'destructive' : p.risk_level === 'medium' ? 'outline' : 'secondary'}>{p.risk_level}</Badge></TableCell>
                     <TableCell>{p.phone_verified ? '✅' : '—'}</TableCell>
                     <TableCell>{p.is_verified_seller ? '✅' : '—'}</TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <Button size="sm" variant="ghost" onClick={() => recalculateSingle(p.id)} disabled={recalcSingleId === p.id}>
                         {recalcSingleId === p.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
                       </Button>
@@ -285,6 +287,12 @@ export default function AdminSecurity() {
           )}
         </CardContent>
       </Card>
+
+      <UserDetailDialog
+        userId={selectedUserId}
+        profile={profiles?.find((p: any) => p.id === selectedUserId)}
+        onClose={() => setSelectedUserId(null)}
+      />
     </div>
   );
 }
