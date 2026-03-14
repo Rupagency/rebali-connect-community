@@ -225,7 +225,7 @@ export default function AdminListings() {
             <div className="flex flex-wrap gap-2">
               <Badge variant={selectedListing.status === 'active' ? 'default' : 'secondary'}>{t(`myListings.${selectedListing.status}`)}</Badge>
               <Badge variant="outline">{t(`categories.${selectedListing.category}`)}</Badge>
-              <Badge variant="outline">{t(`condition.${selectedListing.condition}`)}</Badge>
+              <Badge variant="outline">{t(`conditions.${selectedListing.condition}`)}</Badge>
             </div>
 
             <Separator />
