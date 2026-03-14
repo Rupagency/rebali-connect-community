@@ -55,7 +55,7 @@ export default function AdminReports() {
     await logAction('bulk_resolve_reports', 'report', undefined, { count: ids.length });
     qc.invalidateQueries({ queryKey: ['admin-reports'] });
     setSelectedIds(new Set());
-    toast({ title: `${ids.length} signalements résolus` });
+    toast({ title: `${ids.length} ${t('adminPage.resolveSelected')}` });
   };
 
   const archiveListing = async (listingId: string) => {
@@ -131,7 +131,7 @@ export default function AdminReports() {
         </h2>
         {selectedIds.size > 0 && (
           <Button onClick={bulkResolve} size="sm">
-            <CheckCircle className="h-3 w-3 mr-1" /> Résoudre {selectedIds.size} sélectionnés
+            <CheckCircle className="h-3 w-3 mr-1" /> {t('adminPage.resolveSelected')} ({selectedIds.size})
           </Button>
         )}
       </div>
@@ -145,7 +145,7 @@ export default function AdminReports() {
         <TabsContent value="pending" className="space-y-3 mt-4">
           {pendingReports.length > 1 && (
             <Button variant="outline" size="sm" onClick={() => selectAll(pendingReports)}>
-              Tout sélectionner ({pendingReports.length})
+              {t('adminPage.selectAll')} ({pendingReports.length})
             </Button>
           )}
           {pendingReports.length === 0 ? (

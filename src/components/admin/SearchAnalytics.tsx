@@ -10,7 +10,6 @@ import { Search, TrendingUp, Activity, Calendar } from 'lucide-react';
 export default function SearchAnalytics() {
   const { t } = useLanguage();
 
-  // Trending searches (top terms last 7 days)
   const { data: trending } = useQuery({
     queryKey: ['admin-trending-searches'],
     queryFn: async () => {
@@ -19,7 +18,6 @@ export default function SearchAnalytics() {
     },
   });
 
-  // Raw search logs for volume analysis
   const { data: searchLogs } = useQuery({
     queryKey: ['admin-search-logs'],
     queryFn: async () => {
@@ -32,7 +30,6 @@ export default function SearchAnalytics() {
     },
   });
 
-  // Daily volume for last 14 days
   const dailyVolume = (() => {
     if (!searchLogs?.length) return [];
     const days: Record<string, number> = {};
@@ -48,12 +45,11 @@ export default function SearchAnalytics() {
       if (key && key in days) days[key]++;
     });
     return Object.entries(days).map(([date, count]) => ({
-      date: date.slice(5), // MM-DD
+      date: date.slice(5),
       searches: count,
     }));
   })();
 
-  // Hourly distribution (today)
   const hourlyDistribution = (() => {
     if (!searchLogs?.length) return [];
     const today = new Date().toISOString().slice(0, 10);
@@ -83,38 +79,37 @@ export default function SearchAnalytics() {
           <CardContent className="p-4 text-center">
             <Search className="h-6 w-6 text-primary mx-auto mb-1" />
             <p className="text-2xl font-bold">{totalSearches}</p>
-            <p className="text-xs text-muted-foreground">Recherches (30j)</p>
+            <p className="text-xs text-muted-foreground">{t('adminPage.searches30d')}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Activity className="h-6 w-6 text-primary mx-auto mb-1" />
             <p className="text-2xl font-bold">{todaySearches}</p>
-            <p className="text-xs text-muted-foreground">Aujourd'hui</p>
+            <p className="text-xs text-muted-foreground">{t('adminPage.today')}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <TrendingUp className="h-6 w-6 text-primary mx-auto mb-1" />
             <p className="text-2xl font-bold">{trending?.length || 0}</p>
-            <p className="text-xs text-muted-foreground">Termes tendance</p>
+            <p className="text-xs text-muted-foreground">{t('adminPage.trendingTerms')}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Calendar className="h-6 w-6 text-primary mx-auto mb-1" />
             <p className="text-2xl font-bold">{uniqueTerms}</p>
-            <p className="text-xs text-muted-foreground">Termes uniques</p>
+            <p className="text-xs text-muted-foreground">{t('adminPage.uniqueTerms')}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Charts row */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Daily volume */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Volume quotidien (14 jours)</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminPage.dailyVolume14d')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[250px]">
@@ -138,10 +133,9 @@ export default function SearchAnalytics() {
           </CardContent>
         </Card>
 
-        {/* Hourly distribution */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Distribution horaire (aujourd'hui)</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminPage.hourlyDistToday')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[250px]">
@@ -170,7 +164,7 @@ export default function SearchAnalytics() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" /> Termes populaires (7 derniers jours)
+            <TrendingUp className="h-4 w-4" /> {t('adminPage.popularTerms7d')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -180,9 +174,9 @@ export default function SearchAnalytics() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>#</TableHead>
-                    <TableHead>Terme</TableHead>
-                    <TableHead className="text-right">Recherches</TableHead>
-                    <TableHead className="text-right">Popularité</TableHead>
+                    <TableHead>{t('adminPage.colTerm')}</TableHead>
+                    <TableHead className="text-right">{t('adminPage.colSearches')}</TableHead>
+                    <TableHead className="text-right">{t('adminPage.colPopularity')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -214,7 +208,7 @@ export default function SearchAnalytics() {
               </Table>
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground text-center py-6">Aucune donnée de recherche</p>
+            <p className="text-sm text-muted-foreground text-center py-6">{t('adminPage.noSearchData')}</p>
           )}
         </CardContent>
       </Card>

@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -192,22 +193,6 @@ function KPICard({ icon: Icon, label, value, trend, variant = 'default', subtitl
   );
 }
 
-function PeriodSelector({ value, onChange }: { value: Period; onChange: (v: Period) => void }) {
-  return (
-    <Select value={value} onValueChange={(v) => onChange(v as Period)}>
-      <SelectTrigger className="w-[140px]">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="day">Par jour</SelectItem>
-        <SelectItem value="week">Par semaine</SelectItem>
-        <SelectItem value="month">Par mois</SelectItem>
-        <SelectItem value="year">Par an</SelectItem>
-      </SelectContent>
-    </Select>
-  );
-}
-
 const tooltipStyle = {
   backgroundColor: 'hsl(var(--background))',
   border: '1px solid hsl(var(--border))',
@@ -216,12 +201,12 @@ const tooltipStyle = {
 };
 
 export default function AdminStats() {
+  const { t } = useLanguage();
   const { profiles, listings, conversations, invoices, proSubs, devices, events, isLoading } = useAdminStatsData();
   const [period, setPeriod] = useState<Period>('day');
 
   const daysForPeriod = period === 'day' ? 30 : period === 'week' ? 90 : period === 'month' ? 365 : 1095;
 
-  // ── KPI calculations ──
   const kpis = useMemo(() => {
     const now = Date.now();
     const d7 = now - 7 * 86400000;
@@ -250,7 +235,6 @@ export default function AdminStats() {
     return { signups7d, signupGrowth, revenue30d, totalRevenue, deals7d, totalDeals: deals.length, activeListings, totalViews, activeSubs, totalUsers: profiles.length, totalListings: listings.length };
   }, [profiles, listings, conversations, invoices, proSubs]);
 
-  // ── Time series ──
   const signupSeries = useMemo(() => groupByPeriod(profiles, 'created_at', period, daysForPeriod), [profiles, period, daysForPeriod]);
   const listingSeries = useMemo(() => groupByPeriod(listings, 'created_at', period, daysForPeriod), [listings, period, daysForPeriod]);
   const dealSeries = useMemo(() => groupByPeriod(
@@ -274,7 +258,6 @@ export default function AdminStats() {
     return Object.entries(buckets).map(([label, amount]) => ({ label, amount: Math.round(amount / 1000) }));
   }, [invoices, signupSeries, period, daysForPeriod]);
 
-  // ── User breakdown ──
   const userBreakdown = useMemo(() => {
     const langMap: Record<string, number> = {};
     const typeMap: Record<string, number> = {};
@@ -292,7 +275,6 @@ export default function AdminStats() {
     };
   }, [profiles]);
 
-  // ── Listings breakdown ──
   const listingBreakdown = useMemo(() => {
     const catMap: Record<string, number> = {};
     const locMap: Record<string, number> = {};
@@ -309,13 +291,12 @@ export default function AdminStats() {
     };
   }, [listings]);
 
-  // ── Device / Platform ──
   const deviceBreakdown = useMemo(() => {
     const osMap: Record<string, number> = {};
     const browserMap: Record<string, number> = {};
     devices.forEach(d => {
-      osMap[d.os || 'Inconnu'] = (osMap[d.os || 'Inconnu'] || 0) + 1;
-      browserMap[d.browser || 'Inconnu'] = (browserMap[d.browser || 'Inconnu'] || 0) + 1;
+      osMap[d.os || '?'] = (osMap[d.os || '?'] || 0) + 1;
+      browserMap[d.browser || '?'] = (browserMap[d.browser || '?'] || 0) + 1;
     });
     return {
       byOS: Object.entries(osMap).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value),
@@ -323,7 +304,6 @@ export default function AdminStats() {
     };
   }, [devices]);
 
-  // ── Subscription breakdown ──
   const subBreakdown = useMemo(() => {
     const planMap: Record<string, number> = {};
     proSubs.forEach(s => {
@@ -340,43 +320,52 @@ export default function AdminStats() {
     );
   }
 
+  const periodLabel = period === 'day' ? t('adminPage.period30d') : period === 'week' ? t('adminPage.period3m') : period === 'month' ? t('adminPage.period12m') : t('adminPage.periodAll');
+
   return (
     <div className="space-y-6">
-      {/* Period selector */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold flex items-center gap-2">
-          <TrendingUp className="h-5 w-5" /> Statistiques complètes
+          <TrendingUp className="h-5 w-5" /> {t('adminPage.fullStats')}
         </h2>
-        <PeriodSelector value={period} onChange={setPeriod} />
+        <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="day">{t('adminPage.byDay')}</SelectItem>
+            <SelectItem value="week">{t('adminPage.byWeek')}</SelectItem>
+            <SelectItem value="month">{t('adminPage.byMonth')}</SelectItem>
+            <SelectItem value="year">{t('adminPage.byYear')}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* ── Primary KPIs ── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <KPICard icon={Users} label="Utilisateurs total" value={kpis.totalUsers} />
-        <KPICard icon={UserPlus} label="Inscriptions (7j)" value={kpis.signups7d} trend={kpis.signupGrowth} subtitle="vs semaine précédente" />
-        <KPICard icon={DollarSign} label="Revenus (30j)" value={`${(kpis.revenue30d / 1000).toFixed(0)}k`} variant="success" subtitle="IDR" />
-        <KPICard icon={ShoppingCart} label="Deals confirmés (7j)" value={kpis.deals7d} variant="success" />
-        <KPICard icon={Star} label="Abonnés Pro actifs" value={kpis.activeSubs} variant="success" />
+        <KPICard icon={Users} label={t('adminPage.usersTotal')} value={kpis.totalUsers} />
+        <KPICard icon={UserPlus} label={t('adminPage.signups7d')} value={kpis.signups7d} trend={kpis.signupGrowth} subtitle={t('adminPage.vsPrevWeek')} />
+        <KPICard icon={DollarSign} label={t('adminPage.revenue30d')} value={`${(kpis.revenue30d / 1000).toFixed(0)}k`} variant="success" subtitle="IDR" />
+        <KPICard icon={ShoppingCart} label={t('adminPage.dealsConfirmed7d')} value={kpis.deals7d} variant="success" />
+        <KPICard icon={Star} label={t('adminPage.activeProSubs')} value={kpis.activeSubs} variant="success" />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPICard icon={Eye} label="Vues totales" value={kpis.totalViews.toLocaleString()} />
-        <KPICard icon={Calendar} label="Annonces actives" value={kpis.activeListings} />
-        <KPICard icon={MessageCircle} label="Deals total" value={kpis.totalDeals} />
-        <KPICard icon={DollarSign} label="Revenus total" value={`${(kpis.totalRevenue / 1000000).toFixed(1)}M`} variant="success" subtitle="IDR" />
+        <KPICard icon={Eye} label={t('adminPage.totalViews')} value={kpis.totalViews.toLocaleString()} />
+        <KPICard icon={Calendar} label={t('adminPage.activeLabel')} value={kpis.activeListings} />
+        <KPICard icon={MessageCircle} label={t('adminPage.totalDeals')} value={kpis.totalDeals} />
+        <KPICard icon={DollarSign} label={t('adminPage.totalRevenue')} value={`${(kpis.totalRevenue / 1000000).toFixed(1)}M`} variant="success" subtitle="IDR" />
       </div>
 
-      {/* ── Time Series Charts ── */}
       <Tabs defaultValue="signups" className="space-y-4">
         <TabsList className="flex-wrap h-auto gap-1">
-          <TabsTrigger value="signups">Inscriptions</TabsTrigger>
-          <TabsTrigger value="listings">Annonces</TabsTrigger>
-          <TabsTrigger value="deals">Deals</TabsTrigger>
-          <TabsTrigger value="revenue">Revenus</TabsTrigger>
+          <TabsTrigger value="signups">{t('adminPage.signupsTab')}</TabsTrigger>
+          <TabsTrigger value="listings">{t('adminPage.listingsTab')}</TabsTrigger>
+          <TabsTrigger value="deals">{t('adminPage.dealsTab')}</TabsTrigger>
+          <TabsTrigger value="revenue">{t('adminPage.revenueTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="signups">
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm">Inscriptions {period === 'day' ? '(30 jours)' : period === 'week' ? '(3 mois)' : period === 'month' ? '(12 mois)' : '(toutes)'}</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.signupsTab')} {periodLabel}</CardTitle></CardHeader>
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -385,7 +374,7 @@ export default function AdminStats() {
                     <XAxis dataKey="label" tick={{ fontSize: 10 }} className="fill-muted-foreground" interval="preserveStartEnd" />
                     <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" />
                     <Tooltip contentStyle={tooltipStyle} />
-                    <Area type="monotone" dataKey="count" stroke="hsl(var(--primary))" fill="hsl(var(--primary) / 0.15)" strokeWidth={2} name="Inscriptions" />
+                    <Area type="monotone" dataKey="count" stroke="hsl(var(--primary))" fill="hsl(var(--primary) / 0.15)" strokeWidth={2} name={t('adminPage.signupsTab')} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -395,7 +384,7 @@ export default function AdminStats() {
 
         <TabsContent value="listings">
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm">Annonces créées</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.listingsCreated7d')}</CardTitle></CardHeader>
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -404,7 +393,7 @@ export default function AdminStats() {
                     <XAxis dataKey="label" tick={{ fontSize: 10 }} className="fill-muted-foreground" interval="preserveStartEnd" />
                     <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" />
                     <Tooltip contentStyle={tooltipStyle} />
-                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} name="Annonces" />
+                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} name={t('adminPage.listingsTab')} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -414,7 +403,7 @@ export default function AdminStats() {
 
         <TabsContent value="deals">
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm">Deals conclus</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.dealsCompleted')}</CardTitle></CardHeader>
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -423,7 +412,7 @@ export default function AdminStats() {
                     <XAxis dataKey="label" tick={{ fontSize: 10 }} className="fill-muted-foreground" interval="preserveStartEnd" />
                     <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" />
                     <Tooltip contentStyle={tooltipStyle} />
-                    <Line type="monotone" dataKey="count" stroke="hsl(var(--chart-2, 150 60% 50%))" strokeWidth={2} dot={false} name="Deals" />
+                    <Line type="monotone" dataKey="count" stroke="hsl(var(--chart-2, 150 60% 50%))" strokeWidth={2} dot={false} name={t('adminPage.dealsTab')} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -433,7 +422,7 @@ export default function AdminStats() {
 
         <TabsContent value="revenue">
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm">Revenus (k IDR)</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.revenueKIdr')}</CardTitle></CardHeader>
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -441,8 +430,8 @@ export default function AdminStats() {
                     <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                     <XAxis dataKey="label" tick={{ fontSize: 10 }} className="fill-muted-foreground" interval="preserveStartEnd" />
                     <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" />
-                    <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v}k IDR`, 'Revenus']} />
-                    <Bar dataKey="amount" fill="hsl(var(--chart-2, 150 60% 50%))" radius={[4, 4, 0, 0]} name="Revenus" />
+                    <Tooltip contentStyle={tooltipStyle} formatter={(v: any) => [`${v}k IDR`, t('adminPage.revenueTab')]} />
+                    <Bar dataKey="amount" fill="hsl(var(--chart-2, 150 60% 50%))" radius={[4, 4, 0, 0]} name={t('adminPage.revenueTab')} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -451,11 +440,9 @@ export default function AdminStats() {
         </TabsContent>
       </Tabs>
 
-      {/* ── Breakdowns ── */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* User language distribution */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Globe className="h-4 w-4" /> Langue préférée</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Globe className="h-4 w-4" /> {t('adminPage.preferredLang')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -470,18 +457,17 @@ export default function AdminStats() {
           </CardContent>
         </Card>
 
-        {/* User type */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Users className="h-4 w-4" /> Répartition utilisateurs</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Users className="h-4 w-4" /> {t('adminPage.userBreakdown')}</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-3 pt-2">
               {[
-                { label: 'Particuliers', count: userBreakdown.byType.find(t => t.name === 'private')?.value || 0, color: 'bg-primary' },
-                { label: 'Business', count: userBreakdown.byType.find(t => t.name === 'business')?.value || 0, color: 'bg-emerald-500' },
-                { label: 'Vendeurs vérifiés', count: userBreakdown.verified, color: 'bg-blue-500' },
-                { label: 'Téléphone vérifié', count: userBreakdown.phoneVerified, color: 'bg-amber-500' },
-                { label: 'Parrainés', count: userBreakdown.referred, color: 'bg-purple-500' },
-                { label: 'Bannis', count: userBreakdown.banned, color: 'bg-destructive' },
+                { label: t('adminPage.privateUsers'), count: userBreakdown.byType.find(t => t.name === 'private')?.value || 0, color: 'bg-primary' },
+                { label: t('adminPage.businessPro'), count: userBreakdown.byType.find(t => t.name === 'business')?.value || 0, color: 'bg-emerald-500' },
+                { label: t('adminPage.verifiedSellers'), count: userBreakdown.verified, color: 'bg-blue-500' },
+                { label: t('adminPage.phoneVerifiedLabel'), count: userBreakdown.phoneVerified, color: 'bg-amber-500' },
+                { label: t('adminPage.referred'), count: userBreakdown.referred, color: 'bg-purple-500' },
+                { label: t('admin.banned'), count: userBreakdown.banned, color: 'bg-destructive' },
               ].map(item => {
                 const total = kpis.totalUsers || 1;
                 const pct = Math.round((item.count / total) * 100);
@@ -501,9 +487,8 @@ export default function AdminStats() {
           </CardContent>
         </Card>
 
-        {/* Categories */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Top catégories</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.topCategories')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -512,16 +497,15 @@ export default function AdminStats() {
                   <XAxis type="number" tick={{ fontSize: 11 }} className="fill-muted-foreground" />
                   <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} width={100} className="fill-muted-foreground" />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} name="Annonces" />
+                  <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} name={t('adminPage.listingsTab')} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
 
-        {/* Locations */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Top localisations</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.topLocations')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -530,16 +514,15 @@ export default function AdminStats() {
                   <XAxis type="number" tick={{ fontSize: 11 }} className="fill-muted-foreground" />
                   <YAxis dataKey="name" type="category" tick={{ fontSize: 10 }} width={100} className="fill-muted-foreground" />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Bar dataKey="value" fill="hsl(var(--chart-2, 150 60% 50%))" radius={[0, 4, 4, 0]} name="Annonces" />
+                  <Bar dataKey="value" fill="hsl(var(--chart-2, 150 60% 50%))" radius={[0, 4, 4, 0]} name={t('adminPage.listingsTab')} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
 
-        {/* Platform / OS */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Smartphone className="h-4 w-4" /> Plateformes (OS)</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Smartphone className="h-4 w-4" /> {t('adminPage.platformsOS')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -554,9 +537,8 @@ export default function AdminStats() {
           </CardContent>
         </Card>
 
-        {/* Browsers */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Monitor className="h-4 w-4" /> Navigateurs</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Monitor className="h-4 w-4" /> {t('adminPage.browsers')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -572,10 +554,9 @@ export default function AdminStats() {
         </Card>
       </div>
 
-      {/* Subscriptions & Listings status */}
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Abonnements par plan</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.subsByPlan')}</CardTitle></CardHeader>
           <CardContent>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -591,7 +572,7 @@ export default function AdminStats() {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Statut des annonces</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">{t('adminPage.listingStatuses')}</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-3 pt-2">
               {listingBreakdown.byStatus.map(item => (

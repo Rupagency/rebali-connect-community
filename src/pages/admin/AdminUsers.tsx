@@ -41,7 +41,6 @@ export default function AdminUsers() {
   const [editingUser, setEditingUser] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-  // Edit fields
   const [editUserDisplayName, setEditUserDisplayName] = useState('');
   const [editUserLang, setEditUserLang] = useState('');
   const [editUserPhone, setEditUserPhone] = useState('');
@@ -65,25 +64,14 @@ export default function AdminUsers() {
   const getMaxListings = (userId: string) => {
     const profile = profiles?.find((p: any) => p.id === userId);
     if (!profile) return 5;
-
-    const extraSlots = (allUserAddons || [])
-      .filter((a: any) => a.user_id === userId && a.active)
-      .reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
-
-    if (profile.listing_limit_override != null) {
-      return profile.listing_limit_override + extraSlots;
-    }
-
+    const extraSlots = (allUserAddons || []).filter((a: any) => a.user_id === userId && a.active).reduce((sum: number, a: any) => sum + (a.extra_slots || 0), 0);
+    if (profile.listing_limit_override != null) return profile.listing_limit_override + extraSlots;
     if (profile.user_type === 'business') {
-      const activeSub = (proSubscriptions || []).find(
-        (s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date()
-      );
-
+      const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === userId && s.status === 'active' && new Date(s.expires_at) > new Date());
       if (activeSub?.plan_type === 'agence') return 9999;
       if (activeSub?.plan_type === 'vendeur_pro') return 20;
-      return 5; // free_pro / no active sub
+      return 5;
     }
-
     const ageDays = Math.floor((Date.now() - new Date(profile.created_at).getTime()) / 86400000);
     const base = ageDays < 7 ? 3 : 5;
     return base + extraSlots;
@@ -105,7 +93,7 @@ export default function AdminUsers() {
     await logAction('bulk_ban_users', 'user', undefined, { count: selectedIds.size, ids: Array.from(selectedIds) });
     qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setSelectedIds(new Set());
-    toast({ title: `${selectedIds.size} utilisateurs bannis` });
+    toast({ title: `${selectedIds.size} ${t('adminPage.banSelected')}` });
   };
 
   const toggleSelect = (id: string) => {
@@ -141,7 +129,6 @@ export default function AdminUsers() {
 
     await logAction('edit_user', 'user', selectedUser.id, { fields: ['display_name', 'preferred_lang', 'phone', 'whatsapp', 'listing_limit_override'] });
 
-    // Handle points
     if (selectedUser.user_type !== 'business') {
       const currentPts = allUserPoints?.find((p: any) => p.user_id === selectedUser.id);
       const newBalance = Math.max(0, parseInt(editUserPoints) || 0);
@@ -151,7 +138,6 @@ export default function AdminUsers() {
       }
     }
 
-    // Handle subscription
     if (selectedUser.user_type === 'business') {
       const activeSub = (proSubscriptions || []).find((s: any) => s.user_id === selectedUser.id && s.status === 'active');
       if (editSubStatus === 'none' && activeSub) {
@@ -188,7 +174,7 @@ export default function AdminUsers() {
         </h2>
         {selectedIds.size > 0 && (
           <Button variant="destructive" size="sm" onClick={bulkBan}>
-            <Ban className="h-3 w-3 mr-1" /> Bannir {selectedIds.size} sélectionnés
+            <Ban className="h-3 w-3 mr-1" /> {t('adminPage.banSelected')} ({selectedIds.size})
           </Button>
         )}
       </div>
@@ -259,7 +245,6 @@ export default function AdminUsers() {
         </Table>
       </div>
 
-      {/* User detail dialog */}
       {selectedUser && (
         <Dialog open={!!selectedUser} onOpenChange={(open) => { if (!open && !editingUser) setSelectedUser(null); }}>
           <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto" onInteractOutside={(e) => { if (editingUser) e.preventDefault(); }} onEscapeKeyDown={(e) => { if (editingUser) { e.preventDefault(); setEditingUser(false); } }}>
@@ -306,20 +291,20 @@ export default function AdminUsers() {
                   <div><label className="text-xs text-muted-foreground">{t('profile.whatsapp')}</label><Input value={editUserWhatsapp} onChange={e => setEditUserWhatsapp(e.target.value)} placeholder="+62..." /></div>
                   {selectedUser.user_type === 'business' ? (
                     <>
-                      <Separator /><h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Abonnement Pro</h4>
-                      <div><label className="text-xs text-muted-foreground">Statut</label>
+                      <Separator /><h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t('adminPage.proSubscription')}</h4>
+                      <div><label className="text-xs text-muted-foreground">{t('admin.colStatus')}</label>
                         <Select value={editSubStatus} onValueChange={setEditSubStatus}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
-                          <SelectItem value="none">Aucun abonnement</SelectItem><SelectItem value="active">Actif</SelectItem>
+                          <SelectItem value="none">{t('adminPage.noSubscription')}</SelectItem><SelectItem value="active">{t('adminPage.activeLabel')}</SelectItem>
                         </SelectContent></Select>
                       </div>
                       {editSubStatus === 'active' && (
                         <>
                           <div><label className="text-xs text-muted-foreground">Plan</label>
                             <Select value={editSubPlanType} onValueChange={setEditSubPlanType}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>
-                              <SelectItem value="free_pro">Pro Gratuit</SelectItem><SelectItem value="vendeur_pro">Vendeur Pro (99k/mois)</SelectItem><SelectItem value="agence">Agence (249k/mois)</SelectItem>
+                              <SelectItem value="free_pro">{t('adminPage.freePro')}</SelectItem><SelectItem value="vendeur_pro">{t('adminPage.sellerPro')}</SelectItem><SelectItem value="agence">{t('adminPage.agency')}</SelectItem>
                             </SelectContent></Select>
                           </div>
-                          <div><label className="text-xs text-muted-foreground">Durée (mois)</label><Input type="number" min="1" max="12" value={editSubDurationMonths} onChange={e => setEditSubDurationMonths(e.target.value)} /><p className="text-[10px] text-muted-foreground mt-1">À partir d'aujourd'hui</p></div>
+                          <div><label className="text-xs text-muted-foreground">{t('adminPage.durationMonths')}</label><Input type="number" min="1" max="12" value={editSubDurationMonths} onChange={e => setEditSubDurationMonths(e.target.value)} /><p className="text-[10px] text-muted-foreground mt-1">{t('adminPage.fromToday')}</p></div>
                         </>
                       )}
                     </>
@@ -337,17 +322,17 @@ export default function AdminUsers() {
                   {selectedUser.user_type === 'business' ? (() => {
                     const userSubs = (proSubscriptions || []).filter((s: any) => s.user_id === selectedUser.id);
                     const activeSub = userSubs.find((s: any) => s.status === 'active' && new Date(s.expires_at) > new Date());
-                    const planLabels: Record<string, string> = { free_pro: 'Pro Gratuit', vendeur_pro: 'Vendeur Pro', agence: 'Agence' };
+                    const planLabels: Record<string, string> = { free_pro: t('adminPage.freePro'), vendeur_pro: t('adminPage.sellerPro'), agence: t('adminPage.agency') };
                     return (
                       <div className="col-span-2 p-3 rounded-lg border bg-muted/30 space-y-2">
-                        <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Abonnement Pro</span></div>
+                        <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">{t('adminPage.proSubscription')}</span></div>
                         {activeSub ? (
                           <div className="space-y-1">
-                            <div className="flex items-center justify-between"><span className="text-sm">{planLabels[activeSub.plan_type] || activeSub.plan_type}</span><Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">Actif</Badge></div>
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /><span>Expire: {new Date(activeSub.expires_at).toLocaleDateString()}</span></div>
-                            <div className="text-xs text-muted-foreground">Boosts: {activeSub.monthly_boosts_used}/{activeSub.monthly_boosts_included}</div>
+                            <div className="flex items-center justify-between"><span className="text-sm">{planLabels[activeSub.plan_type] || activeSub.plan_type}</span><Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">{t('adminPage.activeLabel')}</Badge></div>
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /><span>{t('adminPage.expires')}: {new Date(activeSub.expires_at).toLocaleDateString()}</span></div>
+                            <div className="text-xs text-muted-foreground">{t('adminPage.boosts')}: {activeSub.monthly_boosts_used}/{activeSub.monthly_boosts_included}</div>
                           </div>
-                        ) : <p className="text-sm text-muted-foreground">Aucun abonnement actif</p>}
+                        ) : <p className="text-sm text-muted-foreground">{t('adminPage.noActiveSub')}</p>}
                       </div>
                     );
                   })() : (
@@ -360,7 +345,6 @@ export default function AdminUsers() {
 
             <Separator />
 
-            {/* Trust Score */}
             <div
               className="flex items-center justify-between p-3 rounded-lg border bg-muted/30 cursor-pointer hover:border-primary/50 transition-colors"
               onClick={() => {
@@ -371,8 +355,8 @@ export default function AdminUsers() {
               <div className="flex items-center gap-2">
                 <ShieldCheck className={`h-5 w-5 ${selectedUser.trust_score >= 70 ? 'text-green-600' : selectedUser.trust_score >= 40 ? 'text-amber-500' : 'text-destructive'}`} />
                 <div>
-                  <p className="text-sm font-semibold">Trust Score</p>
-                  <p className="text-xs text-muted-foreground">Cliquer pour voir les détails →</p>
+                  <p className="text-sm font-semibold">{t('security.trustScore')}</p>
+                  <p className="text-xs text-muted-foreground">{t('adminPage.clickForDetails')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -387,7 +371,6 @@ export default function AdminUsers() {
 
             <Separator />
 
-            {/* Listings summary */}
             <div className="space-y-3">
               <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{t('admin.userListings')}</h4>
               <div className="grid grid-cols-4 gap-2">

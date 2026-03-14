@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,20 +13,22 @@ interface UserDetailDialogProps {
   onClose: () => void;
 }
 
-const FACTOR_LABELS: Record<string, { label: string; icon: any }> = {
-  whatsapp_verified: { label: 'WhatsApp vérifié', icon: Phone },
-  account_age: { label: 'Ancienneté du compte', icon: Clock },
-  active_listings: { label: 'Annonces actives', icon: Package },
-  completed_deals: { label: 'Deals complétés', icon: Handshake },
-  positive_reviews: { label: 'Avis positifs (≥4★)', icon: Star },
-  id_verified: { label: 'Identité vérifiée', icon: UserCheck },
-  unresolved_reports: { label: 'Signalements non résolus', icon: ShieldAlert },
-  fake_listings: { label: 'Annonces frauduleuses', icon: AlertTriangle },
-  vpn_detected: { label: 'VPN détecté', icon: Wifi },
-  multi_account: { label: 'Multi-compte', icon: Fingerprint },
-};
-
 export default function UserDetailDialog({ userId, profile, onClose }: UserDetailDialogProps) {
+  const { t } = useLanguage();
+
+  const FACTOR_LABELS: Record<string, { label: string; icon: any }> = {
+    whatsapp_verified: { label: t('adminPage.whatsappVerified'), icon: Phone },
+    account_age: { label: t('adminPage.accountAge'), icon: Clock },
+    active_listings: { label: t('adminPage.activeListingsLabel'), icon: Package },
+    completed_deals: { label: t('adminPage.completedDeals'), icon: Handshake },
+    positive_reviews: { label: t('adminPage.positiveReviews'), icon: Star },
+    id_verified: { label: t('adminPage.idVerified'), icon: UserCheck },
+    unresolved_reports: { label: t('adminPage.unresolvedReports'), icon: ShieldAlert },
+    fake_listings: { label: t('adminPage.fakeListings'), icon: AlertTriangle },
+    vpn_detected: { label: t('adminPage.vpnDetected'), icon: Wifi },
+    multi_account: { label: t('adminPage.multiAccount'), icon: Fingerprint },
+  };
+
   const { data, isLoading } = useQuery({
     queryKey: ['admin-user-detail-dialog', userId],
     enabled: !!userId,
@@ -41,12 +44,8 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
           .limit(20),
       ]);
 
-      if (trustRes.error) {
-        console.error('Failed to load trust score details:', trustRes.error);
-      }
-      if (listingsRes.error) {
-        console.error('Failed to load user listings:', listingsRes.error);
-      }
+      if (trustRes.error) console.error('Failed to load trust score details:', trustRes.error);
+      if (listingsRes.error) console.error('Failed to load user listings:', listingsRes.error);
 
       return {
         trustData: trustRes.data ?? null,
@@ -71,7 +70,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
     <Dialog open={!!userId} onOpenChange={() => onClose()}>
       <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
-          <DialogDescription className="sr-only">Détails du profil utilisateur</DialogDescription>
+          <DialogDescription className="sr-only">{t('adminPage.scoreBreakdown')}</DialogDescription>
           <DialogTitle className="flex items-center gap-3">
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" />
@@ -81,9 +80,9 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
               </div>
             )}
             <div>
-              <p className="text-lg">{profile.display_name || 'Sans nom'}</p>
+              <p className="text-lg">{profile.display_name || t('adminPage.noName')}</p>
               <p className="text-xs text-muted-foreground font-normal">
-                {profile.user_type === 'business' ? 'Pro' : 'Particulier'} · Inscrit le {new Date(profile.created_at).toLocaleDateString()}
+                {profile.user_type === 'business' ? t('common.pro') : t('common.private')} · {t('adminPage.registeredOn')} {new Date(profile.created_at).toLocaleDateString()}
               </p>
             </div>
           </DialogTitle>
@@ -93,23 +92,21 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
           <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
         ) : (
           <div className="space-y-5">
-            {/* Profile summary */}
             <div className="grid grid-cols-3 gap-3 text-center">
               <Card><CardContent className="p-3">
                 <p className={`text-2xl font-bold ${scoreColor}`}>{score}</p>
-                <p className="text-xs text-muted-foreground">Trust Score</p>
+                <p className="text-xs text-muted-foreground">{t('security.trustScore')}</p>
               </CardContent></Card>
               <Card><CardContent className="p-3">
                 <Badge variant={riskBadge as any} className="text-sm">{profile.risk_level || 'low'}</Badge>
-                <p className="text-xs text-muted-foreground mt-1">Niveau de risque</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('security.riskLevel')}</p>
               </CardContent></Card>
               <Card><CardContent className="p-3">
                 <p className="text-2xl font-bold">{listings.length}</p>
-                <p className="text-xs text-muted-foreground">Annonces</p>
+                <p className="text-xs text-muted-foreground">{t('admin.listings')}</p>
               </CardContent></Card>
             </div>
 
-            {/* Verification status */}
             <div className="flex flex-wrap gap-2">
               <Badge variant={profile.phone_verified ? 'default' : 'outline'} className="gap-1">
                 <Phone className="h-3 w-3" /> WhatsApp {profile.phone_verified ? '✓' : '✗'}
@@ -117,18 +114,17 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
               <Badge variant={profile.is_verified_seller ? 'default' : 'outline'} className="gap-1">
                 <UserCheck className="h-3 w-3" /> ID {profile.is_verified_seller ? '✓' : '✗'}
               </Badge>
-              {profile.is_banned && <Badge variant="destructive">Banni</Badge>}
+              {profile.is_banned && <Badge variant="destructive">{t('admin.banned')}</Badge>}
             </div>
 
             <Separator />
 
-            {/* Trust score breakdown */}
             <div>
               <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4" /> Détail du calcul
+                <ShieldCheck className="h-4 w-4" /> {t('adminPage.scoreBreakdown')}
               </h4>
               {Object.keys(factors).length === 0 ? (
-                <p className="text-sm text-muted-foreground">Aucun calcul disponible — recalculez le score.</p>
+                <p className="text-sm text-muted-foreground">{t('adminPage.noScoreAvailable')}</p>
               ) : (
                 <div className="space-y-2">
                   {Object.entries(factors).map(([key, value]) => {
@@ -149,7 +145,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
                   })}
                   <Separator />
                   <div className="flex items-center justify-between py-1.5 px-3 font-bold">
-                    <span>Total</span>
+                    <span>{t('adminPage.totalLabel')}</span>
                     <span className={scoreColor}>{score}/100</span>
                   </div>
                 </div>
@@ -158,13 +154,12 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
 
             <Separator />
 
-            {/* Listings */}
             <div>
               <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Package className="h-4 w-4" /> Annonces ({listings.length})
+                <Package className="h-4 w-4" /> {t('admin.listings')} ({listings.length})
               </h4>
               {listings.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Aucune annonce</p>
+                <p className="text-sm text-muted-foreground">{t('adminPage.noListingsFound')}</p>
               ) : (
                 <div className="space-y-1.5 max-h-60 overflow-y-auto">
                   {listings.map(l => (
@@ -180,7 +175,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
                         <p className="text-xs text-muted-foreground">{l.category} · {new Date(l.created_at).toLocaleDateString()}</p>
                       </div>
                       <div className="flex items-center gap-2 ml-3 shrink-0">
-                        <span className="text-xs text-muted-foreground">{l.views_count} vues</span>
+                        <span className="text-xs text-muted-foreground">{l.views_count} {t('adminPage.viewsLabel')}</span>
                         <Badge variant={l.status === 'active' ? 'default' : l.status === 'sold' ? 'secondary' : 'outline'} className="text-xs">
                           {l.status}
                         </Badge>
@@ -193,7 +188,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
 
             {trustData?.last_calculated && (
               <p className="text-xs text-muted-foreground text-right">
-                Dernière mise à jour : {new Date(trustData.last_calculated).toLocaleString()}
+                {t('adminPage.lastUpdated')} : {new Date(trustData.last_calculated).toLocaleString()}
               </p>
             )}
           </div>

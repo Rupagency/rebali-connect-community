@@ -38,24 +38,14 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
 
       clearTimeout(timer);
 
-      if (error) {
-        throw new Error(error.message || 'Erreur lors du déchiffrement');
-      }
+      if (error) throw new Error(error.message || t('adminPage.decryptError'));
 
-      // supabase-js v2 returns data as Blob when Content-Type is image/*
-      // But if the function returned JSON error, data will be an object
-      if (data instanceof Blob && data.size > 0) {
-        return data;
-      }
+      if (data instanceof Blob && data.size > 0) return data;
 
-      // If data is not a Blob, try to read it as error
-      if (data && typeof data === 'object' && 'error' in data) {
-        throw new Error((data as any).error);
-      }
+      if (data && typeof data === 'object' && 'error' in data) throw new Error((data as any).error);
 
-      // Fallback: fetch directly with auth header
       const session = (await supabase.auth.getSession()).data.session;
-      if (!session) throw new Error('Session expirée');
+      if (!session) throw new Error('Session expired');
 
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/decrypt-document`;
       const res = await fetch(url, {
@@ -73,15 +63,13 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
 
       if (!res.ok) {
         const errBody = await res.text();
-        throw new Error(`Erreur ${res.status}: ${errBody}`);
+        throw new Error(`Error ${res.status}: ${errBody}`);
       }
 
       return await res.blob();
     } catch (err: any) {
       clearTimeout(timer);
-      if (err.name === 'AbortError') {
-        throw new Error('Le déchiffrement a expiré, réessayez.');
-      }
+      if (err.name === 'AbortError') throw new Error(t('adminPage.decryptError'));
       throw err;
     }
   };
@@ -113,8 +101,8 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
     } catch (err: any) {
       console.error('Failed to decrypt images:', err);
       toast({
-        title: 'Erreur de déchiffrement',
-        description: err?.message || 'Impossible de charger les documents.',
+        title: t('adminPage.decryptError'),
+        description: err?.message || t('adminPage.cannotLoadDoc'),
         variant: 'destructive',
       });
       setReviewed(false);
@@ -133,16 +121,15 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
         </div>
       </div>
 
-      {/* Documents section - must view before deciding */}
       {!showImages ? (
         <div className="flex flex-col items-center gap-2 py-4 bg-muted/30 rounded-md border border-dashed">
           <Eye className="h-6 w-6 text-muted-foreground" />
           <p className="text-sm text-muted-foreground text-center">
-            Vous devez examiner les documents avant de pouvoir approuver ou rejeter
+            {t('adminPage.mustReviewDocs')}
           </p>
           <Button onClick={loadDecryptedImages} disabled={loadingImages} variant="outline">
             {loadingImages ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
-            {loadingImages ? 'Déchiffrement...' : 'Voir les documents'}
+            {loadingImages ? t('adminPage.decrypting') : t('adminPage.viewDocuments')}
           </Button>
         </div>
       ) : (
@@ -150,27 +137,26 @@ function VerificationCard({ verification, profileName, onApprove, onReject }: {
           <div className="grid grid-cols-2 gap-3">
             {docUrl ? (
               <div>
-                <p className="text-xs font-medium mb-1 text-muted-foreground">Document</p>
+                <p className="text-xs font-medium mb-1 text-muted-foreground">{t('adminPage.document')}</p>
                 <img src={docUrl} alt="Document" className="rounded-md border max-h-64 object-contain w-full cursor-pointer" onClick={() => window.open(docUrl, '_blank')} />
               </div>
             ) : (
               <div className="flex items-center justify-center h-32 bg-muted rounded-md border">
-                <p className="text-xs text-muted-foreground">Impossible de charger le document</p>
+                <p className="text-xs text-muted-foreground">{t('adminPage.cannotLoadDoc')}</p>
               </div>
             )}
             {selfieUrl ? (
               <div>
-                <p className="text-xs font-medium mb-1 text-muted-foreground">Selfie</p>
+                <p className="text-xs font-medium mb-1 text-muted-foreground">{t('adminPage.selfieLabel')}</p>
                 <img src={selfieUrl} alt="Selfie" className="rounded-md border max-h-64 object-contain w-full cursor-pointer" onClick={() => window.open(selfieUrl, '_blank')} />
               </div>
             ) : (
               <div className="flex items-center justify-center h-32 bg-muted rounded-md border">
-                <p className="text-xs text-muted-foreground">Impossible de charger le selfie</p>
+                <p className="text-xs text-muted-foreground">{t('adminPage.cannotLoadSelfie')}</p>
               </div>
             )}
           </div>
 
-          {/* Action buttons - only shown after viewing documents */}
           <div className="flex gap-2 justify-end pt-2 border-t">
             <Button size="sm" onClick={onApprove} disabled={!reviewed}>
               <CheckCircle className="h-4 w-4 mr-1" /> {t('security.approve')}
@@ -201,7 +187,6 @@ export default function AdminSecurity() {
   const [recalcSingleId, setRecalcSingleId] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  // Auto-open user from URL param
   useEffect(() => {
     const uid = searchParams.get('user_id');
     if (uid && profiles?.length) {
@@ -222,7 +207,7 @@ export default function AdminSecurity() {
     }
     await qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setRecalculating(false);
-    toast({ title: `${done} scores recalculés` });
+    toast({ title: `${done} ${t('adminPage.scoresRecalculated')}` });
   };
 
   const recalculateSingle = async (userId: string) => {
@@ -230,7 +215,7 @@ export default function AdminSecurity() {
     await supabase.functions.invoke('calculate-trust-score', { body: { user_id: userId } });
     await qc.invalidateQueries({ queryKey: ['admin-profiles'] });
     setRecalcSingleId(null);
-    toast({ title: 'Score recalculé' });
+    toast({ title: t('adminPage.scoreRecalculated') });
   };
 
   const approveVerification = async (v: any) => {
@@ -252,7 +237,6 @@ export default function AdminSecurity() {
     toast({ title: t('security.reject') });
   };
 
-  // Shared device detection
   const sharedHashes = (() => {
     const hashToUsers: Record<string, Set<string>> = {};
     (allDevices || []).forEach((d: any) => {
@@ -274,22 +258,20 @@ export default function AdminSecurity() {
     <div className="space-y-6">
       <h2 className="text-xl font-bold flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.securityTab')}</h2>
 
-      {/* Security Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card><CardContent className="p-4 text-center"><ShieldAlert className="h-6 w-6 text-destructive mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'high').length || 0}</p><p className="text-xs text-muted-foreground">High Risk</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-6 w-6 text-amber-500 mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'medium').length || 0}</p><p className="text-xs text-muted-foreground">Medium Risk</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><ShieldCheck className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.phone_verified).length || 0}</p><p className="text-xs text-muted-foreground">{t('security.whatsappVerified')}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><ShieldAlert className="h-6 w-6 text-destructive mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'high').length || 0}</p><p className="text-xs text-muted-foreground">{t('adminPage.highRisk')}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><AlertTriangle className="h-6 w-6 text-amber-500 mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.risk_level === 'medium').length || 0}</p><p className="text-xs text-muted-foreground">{t('adminPage.mediumRisk')}</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><ShieldCheck className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{profiles?.filter((p: any) => p.phone_verified).length || 0}</p><p className="text-xs text-muted-foreground">{t('adminPage.whatsappVerified')}</p></CardContent></Card>
         <Card><CardContent className="p-4 text-center"><FileCheck className="h-6 w-6 text-primary mx-auto mb-1" /><p className="text-2xl font-bold">{idVerifications?.filter((v: any) => v.status === 'pending').length || 0}</p><p className="text-xs text-muted-foreground">{t('security.pendingVerifications')}</p></CardContent></Card>
       </div>
 
-      {/* Trust Scores */}
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold flex items-center gap-2"><Fingerprint className="h-5 w-5" /> {t('security.trustScore')}</h3>
             <Button size="sm" variant="outline" onClick={recalculateAll} disabled={recalculating}>
               {recalculating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <RefreshCw className="h-4 w-4 mr-1" />}
-              {recalculating ? 'Calcul en cours...' : 'Recalculer tous les scores'}
+              {recalculating ? t('adminPage.recalculating') : t('adminPage.recalculateAll')}
             </Button>
           </div>
           <div className="rounded-md border">
@@ -300,7 +282,7 @@ export default function AdminSecurity() {
                   <TableHead>{t('security.trustScore')}</TableHead>
                   <TableHead>{t('security.riskLevel')}</TableHead>
                   <TableHead>WhatsApp</TableHead>
-                  <TableHead>Verified</TableHead>
+                  <TableHead>{t('adminPage.idVerified')}</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
@@ -325,7 +307,6 @@ export default function AdminSecurity() {
         </CardContent>
       </Card>
 
-      {/* Pending Verifications */}
       <Card>
         <CardContent className="p-4">
           <h3 className="font-bold mb-3 flex items-center gap-2"><FileCheck className="h-5 w-5" /> {t('security.pendingVerifications')}</h3>
@@ -342,7 +323,6 @@ export default function AdminSecurity() {
         </CardContent>
       </Card>
 
-      {/* Shared Devices */}
       <Card>
         <CardContent className="p-4">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Wifi className="h-5 w-5" /> {t('security.linkedAccounts')}</h3>
@@ -366,7 +346,6 @@ export default function AdminSecurity() {
         </CardContent>
       </Card>
 
-      {/* Banned Devices */}
       <Card>
         <CardContent className="p-4">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Ban className="h-5 w-5" /> {t('security.banDevice')}</h3>
@@ -375,7 +354,7 @@ export default function AdminSecurity() {
           ) : (
             <div className="rounded-md border">
               <Table>
-                <TableHeader><TableRow><TableHead>Type</TableHead><TableHead>Value</TableHead><TableHead>Reason</TableHead><TableHead>Date</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead>{t('adminPage.colType')}</TableHead><TableHead>{t('adminPage.colTarget')}</TableHead><TableHead>{t('adminPage.colDetails')}</TableHead><TableHead>{t('adminPage.colDate')}</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {bannedDevices.map((bd: any) => (
                     <TableRow key={bd.id}>
