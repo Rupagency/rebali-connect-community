@@ -1504,6 +1504,7 @@
   },
   "comingSoon": {
     "tagline": "The trusted marketplace for Bali is almost here",
+    "subtitle": "Buy & sell second-hand between expats, locals and businesses — 100% free, 100% secure.",
     "days": "Days",
     "hours": "Hours",
     "minutes": "Min",
@@ -1512,7 +1513,24 @@
     "joinWaitlist": "Join the Waitlist",
     "confirmed": "You're on the list! We'll notify you at launch.",
     "alreadyRegistered": "You're already registered!",
-    "success": "Welcome to the waitlist!",
-    "disclaimer": "We'll only email you when we launch. No spam, ever."
+    "success": "Welcome to the waitlist! 🎉",
+    "disclaimer": "We'll only email you when we launch. No spam, ever.",
+    "waitlistCount": "{count} people already joined",
+    "features": "Why Re-Bali?",
+    "feature1Title": "100% Free",
+    "feature1Desc": "No commission, no hidden fees. Post and sell for free.",
+    "feature2Title": "Verified Sellers",
+    "feature2Desc": "ID-verified sellers and trust scores for safe transactions.",
+    "feature3Title": "Built for Bali",
+    "feature3Desc": "Designed for the expat and local community in Bali.",
+    "feature4Title": "WhatsApp Relay",
+    "feature4Desc": "Chat securely without sharing your number.",
+    "testimonial1": "Finally a marketplace I can trust in Bali!",
+    "testimonial1Author": "Sarah M., Canggu",
+    "testimonial2": "The WhatsApp relay is genius. Feels safe.",
+    "testimonial2Author": "Made W., Seminyak",
+    "testimonial3": "Moving to Bali was easier with Re-Bali.",
+    "testimonial3Author": "Thomas L., Ubud",
+    "launchDate": "Launching April 1st, 2026"
   }
 }

@@ -1548,6 +1548,7 @@
   },
   "comingSoon": {
     "tagline": "La marketplace de confiance pour Bali arrive bientôt",
+    "subtitle": "Achetez & vendez entre expats, locaux et entreprises — 100% gratuit, 100% sécurisé.",
     "days": "Jours",
     "hours": "Heures",
     "minutes": "Min",
@@ -1556,7 +1557,24 @@
     "joinWaitlist": "Rejoindre la liste d'attente",
     "confirmed": "Vous êtes inscrit ! On vous prévient au lancement.",
     "alreadyRegistered": "Vous êtes déjà inscrit !",
-    "success": "Bienvenue sur la liste d'attente !",
-    "disclaimer": "On vous envoie un seul email au lancement. Pas de spam."
+    "success": "Bienvenue sur la liste d'attente ! 🎉",
+    "disclaimer": "On vous envoie un seul email au lancement. Pas de spam.",
+    "waitlistCount": "{count} personnes déjà inscrites",
+    "features": "Pourquoi Re-Bali ?",
+    "feature1Title": "100% Gratuit",
+    "feature1Desc": "Pas de commission, pas de frais cachés. Publiez et vendez gratuitement.",
+    "feature2Title": "Vendeurs vérifiés",
+    "feature2Desc": "Vendeurs vérifiés par ID et scores de confiance pour des transactions sûres.",
+    "feature3Title": "Conçu pour Bali",
+    "feature3Desc": "Pensé pour la communauté expat et locale à Bali.",
+    "feature4Title": "Relais WhatsApp",
+    "feature4Desc": "Discutez en sécurité sans partager votre numéro.",
+    "testimonial1": "Enfin une marketplace de confiance à Bali !",
+    "testimonial1Author": "Sarah M., Canggu",
+    "testimonial2": "Le relais WhatsApp est génial. On se sent en sécurité.",
+    "testimonial2Author": "Made W., Seminyak",
+    "testimonial3": "S'installer à Bali était plus simple avec Re-Bali.",
+    "testimonial3Author": "Thomas L., Ubud",
+    "launchDate": "Lancement le 1er avril 2026"
   }
 }
