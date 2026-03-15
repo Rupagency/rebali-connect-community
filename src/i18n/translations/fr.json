@@ -1199,7 +1199,10 @@
     "statusPending": "En attente",
     "noReferralsYet": "Aucun parrainage. Partagez votre code !",
     "codeCopied": "Code copié !",
-    "history": "Historique de parrainage"
+    "history": "Historique de parrainage",
+    "earlyAdopterCta": "Invite 3 amis = badge exclusif Early Adopter !",
+    "earlyAdopterCtaDetail": "Affiché sur ton profil et tes annonces.",
+    "earlyAdopterEarned": "🎉 Tu as obtenu le badge Early Adopter !"
   },
   "browse": {
     "filters": "Filtres",
