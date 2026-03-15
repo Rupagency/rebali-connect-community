@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { supabase } from '@/integrations/supabase/client';
 import ListingCard from '@/components/ListingCard';
+import BrowseListingSkeleton from '@/components/skeletons/BrowseListingSkeleton';
 import SearchAutocomplete from '@/components/SearchAutocomplete';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
