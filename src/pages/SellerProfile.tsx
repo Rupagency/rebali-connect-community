@@ -12,6 +12,7 @@ import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import BlockUserButton from '@/components/BlockUserButton';
+import ShareButton from '@/components/ShareButton';
 
 export default function SellerProfile() {
   const { id } = useParams<{ id: string }>();
