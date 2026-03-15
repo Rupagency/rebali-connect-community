@@ -16,7 +16,6 @@ import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, REBALI_WA_NUMBER, g
 import TrustIndicator from '@/components/TrustIndicator';
 import { MapPin, Eye, Phone, MessageCircle, Flag, User, Calendar, Heart, ChevronRight, ThumbsUp, Star, Briefcase, ArrowRight, ShieldCheck, Home } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { openExternal } from '@/lib/openExternal';
