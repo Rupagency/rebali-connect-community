@@ -12,10 +12,10 @@ import ConfettiEffect from '@/components/ConfettiEffect';
 const MEMBER_ONBOARDING_KEY = 'rebali-member-onboarding-done';
 
 const steps = [
-  { icon: UserCircle, translationKey: 'setupProfile', color: 'bg-primary/10 text-primary' },
-  { icon: Phone, translationKey: 'verifyPhone', color: 'bg-green-500/10 text-green-600' },
-  { icon: Camera, translationKey: 'firstListing', color: 'bg-accent/10 text-accent' },
-  { icon: MessageCircle, translationKey: 'startChatting', color: 'bg-blue-500/10 text-blue-600' },
+  { icon: UserCircle, translationKey: 'setupProfile', color: 'bg-primary/10 text-primary', action: '/profile' },
+  { icon: Phone, translationKey: 'verifyPhone', color: 'bg-primary/10 text-primary', action: '/profile' },
+  { icon: Camera, translationKey: 'firstListing', color: 'bg-accent/10 text-accent', action: '/create' },
+  { icon: MessageCircle, translationKey: 'startChatting', color: 'bg-primary/10 text-primary', action: '/browse' },
 ];
 
 const slideVariants = {
