@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { lazy, Suspense, useEffect } from "react";
+import OfflineBanner from "./components/OfflineBanner";
 
 // Lazy-loaded pages for code splitting (better Core Web Vitals)
 const Browse = lazy(() => import("./pages/Browse"));
@@ -90,6 +91,7 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
+            <OfflineBanner />
             <BrowserRouter>
               <ErrorBoundary>
               <Suspense fallback={<PageFallback />}>
