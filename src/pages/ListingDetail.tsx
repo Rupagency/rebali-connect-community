@@ -441,71 +441,12 @@ export default function ListingDetail() {
               </div>
               {/* Share & Fav floating buttons */}
               <div className="absolute top-3 right-3 flex gap-2">
-                {isNativePlatform ? (
-                  <button
-                    className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md"
-                    onClick={async () => {
-                      try {
-                        const { Share } = await import('@capacitor/share');
-                        const shareUrl = `https://re-bali.com/listing/${id}`;
-                        const title = listing?.title_original || 'Re-Bali';
-                        const price = listing?.price ? formatPrice(listing.price, listing.currency) : '';
-                        await Share.share({
-                          title,
-                          text: `${title} - ${price}`,
-                          url: shareUrl,
-                          dialogTitle: t('share.shareThis') || 'Share',
-                        });
-                      } catch (e) {
-                        // User cancelled or error
-                      }
-                    }}
-                  >
-                    <Share2 className="h-5 w-5 text-foreground" />
-                  </button>
-                ) : (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md">
-                      <Share2 className="h-5 w-5 text-foreground" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    {(() => {
-                      const shareUrl = `https://re-bali.com/listing/${id}`;
-                      const ogUrl = `https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/og-listing?id=${id}`;
-                      return (
-                        <>
-                          <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(shareUrl); toast({ title: t('listing.linkCopied') }); }}>
-                            <Link2 className="h-4 w-4 mr-2" />
-                            {t('share.copyLink')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => {
-                            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-                            if (isMobile) {
-                              window.location.href = `fb://share/?link=${encodeURIComponent(ogUrl)}`;
-                              setTimeout(() => {
-                              openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`);
-                              }, 1200);
-                              return;
-                            }
-
-                            openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogUrl)}`);
-                          }}>
-                            <Facebook className="h-4 w-4 mr-2" />
-                            {t('share.facebook')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => openExternal(`https://wa.me/?text=${encodeURIComponent(ogUrl)}`)}>
-                            <MessageCircle className="h-4 w-4 mr-2" />
-                            {t('share.whatsapp')}
-                          </DropdownMenuItem>
-                        </>
-                      );
-                    })()}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                )}
+                <ShareButton
+                  url={`/listing/${id}`}
+                  title={listing?.title_original || 'Re-Bali'}
+                  text={`${listing?.title_original || ''} - ${listing?.price ? formatPrice(listing.price, listing.currency) : ''}`}
+                  variant="icon"
+                />
                 <button
                   onClick={toggleFavorite}
                   className="w-10 h-10 rounded-full bg-card/90 backdrop-blur flex items-center justify-center hover:bg-card transition-colors shadow-md"
