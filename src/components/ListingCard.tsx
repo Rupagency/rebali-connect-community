@@ -8,6 +8,7 @@ import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuff
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
+import ShareButton from '@/components/ShareButton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
