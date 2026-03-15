@@ -84,6 +84,7 @@ const App = () => {
             <BrowserRouter>
               <ErrorBoundary>
               <Suspense fallback={<PageFallback />}>
+              <Routes>
                 <Route element={<Layout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/browse" element={<Browse />} />
@@ -126,8 +127,9 @@ const App = () => {
                   <Route path="/business/:id" element={<BusinessPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
-              <Routes>
-              {/* ... keep existing code */}
+              </Routes>
+              </Suspense>
+              </ErrorBoundary>
             </BrowserRouter>
           </TooltipProvider>
         </AuthProvider>
