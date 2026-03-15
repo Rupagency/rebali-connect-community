@@ -30,6 +30,7 @@ import UserBadges from '@/components/UserBadges';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
 import BlockUserButton from '@/components/BlockUserButton';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
+import ListingDetailSkeleton from '@/components/skeletons/ListingDetailSkeleton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 

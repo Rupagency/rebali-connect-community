@@ -386,11 +386,7 @@ export default function Messages() {
           <div className={`${isMobile ? 'w-full' : 'w-80 flex-shrink-0'} flex flex-col border border-border rounded-lg overflow-hidden`}>
             <div className="flex-1 overflow-y-auto messages-scroll-area">
               {convsLoading ? (
-                <div className="p-4 space-y-3">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-16 bg-muted rounded-lg animate-pulse" />
-                  ))}
-                </div>
+                <ConversationListSkeleton />
               ) : conversations && conversations.length > 0 ? (
                 conversations.map((conv: any) => {
                   const other = conv.buyer_id === user.id ? conv.seller : conv.buyer;

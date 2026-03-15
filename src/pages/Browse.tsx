@@ -352,11 +352,7 @@ export default function Browse() {
       </p>
 
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="aspect-[4/3] bg-muted rounded-lg animate-pulse" />
-          ))}
-        </div>
+        <BrowseListingSkeleton />
       ) : filteredListings && filteredListings.length > 0 ? (
         <>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
