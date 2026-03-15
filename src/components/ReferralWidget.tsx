@@ -170,6 +170,25 @@ export default function ReferralWidget() {
           </div>
         )}
 
+        {/* Early Adopter incentive */}
+        {validated < 3 && (
+          <div className="flex items-center gap-3 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-3">
+            <Sparkles className="h-5 w-5 text-fuchsia-500 shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{t('referral.earlyAdopterCta') || 'Invite 3 friends = exclusive Early Adopter badge!'}</span>
+              {' '}{t('referral.earlyAdopterCtaDetail') || 'Displayed on your profile and listings.'}
+            </p>
+          </div>
+        )}
+        {validated >= 3 && (
+          <div className="flex items-center gap-3 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-3">
+            <Sparkles className="h-5 w-5 text-fuchsia-500 shrink-0" />
+            <p className="text-sm font-medium text-fuchsia-600">
+              {t('referral.earlyAdopterEarned') || '🎉 You earned the Early Adopter badge!'}
+            </p>
+          </div>
+        )}
+
         {referrals.length === 0 && !loading && (
           <p className="text-sm text-muted-foreground text-center py-2">
             {t('referral.noReferralsYet') || 'No referrals yet. Share your code!'}
