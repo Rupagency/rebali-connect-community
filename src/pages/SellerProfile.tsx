@@ -145,7 +145,14 @@ export default function SellerProfile() {
 
             {/* Badges & Trust */}
             <div className="mt-3 space-y-3 border-t pt-3 w-full">
-              <ActiveSellerStatus userId={id!} showStock={false} />
+              <div className="flex items-center justify-between">
+                <ActiveSellerStatus userId={id!} showStock={false} />
+                <ShareButton
+                  url={`/seller/${id}`}
+                  title={seller.display_name || 'Seller'}
+                  variant="button"
+                />
+              </div>
               <UserBadges userId={id!} profile={seller} />
               <TrustIndicator score={(seller as any).trust_score ?? 50} riskLevel={((seller as any).risk_level as 'low' | 'medium' | 'high') ?? 'low'} />
               <BlockUserButton
