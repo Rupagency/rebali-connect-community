@@ -1352,6 +1352,7 @@
   },
   "comingSoon": {
     "tagline": "Marketplace terpercaya untuk Bali segera hadir",
+    "subtitle": "Jual & beli barang bekas antar expat, lokal, dan bisnis — 100% gratis, 100% aman.",
     "days": "Hari",
     "hours": "Jam",
     "minutes": "Menit",
@@ -1360,7 +1361,24 @@
     "joinWaitlist": "Bergabung Waitlist",
     "confirmed": "Anda terdaftar! Kami akan memberi tahu saat peluncuran.",
     "alreadyRegistered": "Anda sudah terdaftar!",
-    "success": "Selamat datang di waitlist!",
-    "disclaimer": "Kami hanya akan mengirim email saat peluncuran. Tanpa spam."
+    "success": "Selamat datang di waitlist! 🎉",
+    "disclaimer": "Kami hanya akan mengirim email saat peluncuran. Tanpa spam.",
+    "waitlistCount": "{count} orang sudah bergabung",
+    "features": "Mengapa Re-Bali?",
+    "feature1Title": "100% Gratis",
+    "feature1Desc": "Tanpa komisi, tanpa biaya tersembunyi. Pasang dan jual gratis.",
+    "feature2Title": "Penjual Terverifikasi",
+    "feature2Desc": "Penjual terverifikasi ID dan skor kepercayaan untuk transaksi aman.",
+    "feature3Title": "Dibuat untuk Bali",
+    "feature3Desc": "Dirancang untuk komunitas expat dan lokal di Bali.",
+    "feature4Title": "Relay WhatsApp",
+    "feature4Desc": "Chat aman tanpa membagikan nomor Anda.",
+    "testimonial1": "Akhirnya marketplace yang bisa dipercaya di Bali!",
+    "testimonial1Author": "Sarah M., Canggu",
+    "testimonial2": "Relay WhatsApp-nya jenius. Terasa aman.",
+    "testimonial2Author": "Made W., Seminyak",
+    "testimonial3": "Pindah ke Bali lebih mudah dengan Re-Bali.",
+    "testimonial3Author": "Thomas L., Ubud",
+    "launchDate": "Diluncurkan 1 April 2026"
   }
 }
