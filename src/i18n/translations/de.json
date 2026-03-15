@@ -1126,7 +1126,10 @@
     "statusPending": "Ausstehend",
     "noReferralsYet": "Noch keine Empfehlungen. Teile deinen Code!",
     "codeCopied": "Code kopiert!",
-    "history": "Empfehlungsverlauf"
+    "history": "Empfehlungsverlauf",
+    "earlyAdopterCta": "Lade 3 Freunde ein = exklusives Early Adopter Badge!",
+    "earlyAdopterCtaDetail": "Wird auf deinem Profil und deinen Anzeigen angezeigt.",
+    "earlyAdopterEarned": "🎉 Du hast das Early Adopter Badge erhalten!"
   },
   "pro": {
     "freePro": "Free Pro",

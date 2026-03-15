@@ -1126,7 +1126,10 @@
     "statusPending": "Menunggu",
     "noReferralsYet": "Belum ada referral. Bagikan kode Anda!",
     "codeCopied": "Kode disalin!",
-    "history": "Riwayat Referral"
+    "history": "Riwayat Referral",
+    "earlyAdopterCta": "Undang 3 teman = badge eksklusif Early Adopter!",
+    "earlyAdopterCtaDetail": "Ditampilkan di profil dan iklan Anda.",
+    "earlyAdopterEarned": "🎉 Anda mendapatkan badge Early Adopter!"
   },
   "pro": {
     "freePro": "Pro Gratis",

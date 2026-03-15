@@ -1175,7 +1175,10 @@
     "statusPending": "लंबित",
     "noReferralsYet": "अभी कोई रेफरल नहीं। अपना कोड साझा करें!",
     "codeCopied": "कोड कॉपी हो गया!",
-    "history": "रेफरल इतिहास"
+    "history": "रेफरल इतिहास",
+    "earlyAdopterCta": "3 दोस्तों को आमंत्रित करें = विशेष Early Adopter बैज!",
+    "earlyAdopterCtaDetail": "आपकी प्रोफ़ाइल और विज्ञापनों पर प्रदर्शित होता है।",
+    "earlyAdopterEarned": "🎉 आपने Early Adopter बैज प्राप्त किया!"
   },
   "pro": {
     "freePro": "फ्री प्रो",

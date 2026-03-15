@@ -1175,7 +1175,10 @@
     "statusPending": "Beklemede",
     "noReferralsYet": "Henüz referans yok. Kodunuzu paylaşın!",
     "codeCopied": "Kod kopyalandı!",
-    "history": "Referans Geçmişi"
+    "history": "Referans Geçmişi",
+    "earlyAdopterCta": "3 arkadaş davet et = özel Early Adopter rozeti!",
+    "earlyAdopterCtaDetail": "Profilinde ve ilanlarında görüntülenir.",
+    "earlyAdopterEarned": "🎉 Early Adopter rozetini kazandın!"
   },
   "pro": {
     "freePro": "Ücretsiz Pro",
