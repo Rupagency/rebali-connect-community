@@ -86,7 +86,7 @@ export default function SellerProfile() {
     return <Navigate to={`/business/${id}`} replace />;
   }
 
-  if (!seller) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.loading')}</div>;
+  if (!seller) return <SellerProfileSkeleton />;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-5xl">
