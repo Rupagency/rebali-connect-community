@@ -82,6 +82,7 @@ export default function UserBadges({ userId, profile, compact }: UserBadgesProps
     trustScore: profile.trust_score || 0,
     phoneVerified: profile.phone_verified,
     isVerified: profile.is_verified_seller,
+    validatedReferrals: data.validatedReferrals,
   };
 
   const earned = BADGES.filter(b => b.condition(ctx));
