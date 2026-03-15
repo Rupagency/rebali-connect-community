@@ -126,8 +126,8 @@ const App = () => {
                   <Route path="/business/:id" element={<BusinessPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
-              </Routes>
-              </Suspense>
+              <Routes>
+              {/* ... keep existing code */}
             </BrowserRouter>
           </TooltipProvider>
         </AuthProvider>
