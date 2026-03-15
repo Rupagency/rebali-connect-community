@@ -299,7 +299,7 @@ export default function ComingSoon() {
             </p>
           )}
           {submitted ? (
-            <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+            <div className="flex items-center justify-center gap-2 text-primary">
               <CheckCircle className="h-5 w-5" />
               <span className="font-semibold">{t('comingSoon.confirmed')}</span>
             </div>
