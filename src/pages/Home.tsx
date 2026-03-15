@@ -464,6 +464,7 @@ export default function Home() {
       </ErrorBoundary>
 
       {/* 🎯 Personalized Recommendations (logged-in users only) */}
+      <ErrorBoundary>
       {user && recommendedListings && recommendedListings.length > 0 && (
         <section className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-4">
@@ -481,6 +482,7 @@ export default function Home() {
           <ListingMarquee listings={recommendedListings} isLoading={recoLoading} emptyMessage={t('common.noResults')} />
         </section>
       )}
+      </ErrorBoundary>
 
       {(featuredLoading || hasFeatured) && (
         <section className="bg-gradient-to-b from-amber-50/50 to-background dark:from-amber-950/10 border-y border-amber-200/30 py-10">
