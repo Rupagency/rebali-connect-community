@@ -119,6 +119,10 @@ export default function MemberOnboarding() {
               <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
                 {t(`onboarding.member.${currentStep.translationKey}.desc`)}
               </p>
+              <Button variant="outline" size="sm" onClick={handleQuickAction} className="text-xs">
+                {t(`onboarding.member.${currentStep.translationKey}.cta`) || t('common.next')}
+              </Button>
+              </p>
             </motion.div>
           </AnimatePresence>
 
