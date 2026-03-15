@@ -1124,7 +1124,10 @@
     "statusPending": "待验证",
     "noReferralsYet": "还没有推荐。分享您的代码！",
     "codeCopied": "代码已复制！",
-    "history": "推荐历史"
+    "history": "推荐历史",
+    "earlyAdopterCta": "邀请3位好友 = 独家 Early Adopter 徽章！",
+    "earlyAdopterCtaDetail": "展示在您的个人资料和商品列表上。",
+    "earlyAdopterEarned": "🎉 您已获得 Early Adopter 徽章！"
   },
   "pro": {
     "freePro": "免费Pro",

@@ -1124,7 +1124,10 @@
     "statusPending": "Pendiente",
     "noReferralsYet": "Sin referidos aún. ¡Comparte tu código!",
     "codeCopied": "¡Código copiado!",
-    "history": "Historial de referidos"
+    "history": "Historial de referidos",
+    "earlyAdopterCta": "¡Invita 3 amigos = badge exclusivo Early Adopter!",
+    "earlyAdopterCtaDetail": "Se muestra en tu perfil y anuncios.",
+    "earlyAdopterEarned": "🎉 ¡Has obtenido el badge Early Adopter!"
   },
   "pro": {
     "freePro": "Pro Gratis",

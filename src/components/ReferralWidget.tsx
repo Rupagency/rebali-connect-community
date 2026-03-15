@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Gift, Copy, Share2, CheckCircle, Clock, Users } from 'lucide-react';
+import { Gift, Copy, Share2, CheckCircle, Clock, Users, Sparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface Referral {
@@ -167,6 +167,25 @@ export default function ReferralWidget() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Early Adopter incentive */}
+        {validated < 3 && (
+          <div className="flex items-center gap-3 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-3">
+            <Sparkles className="h-5 w-5 text-fuchsia-500 shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{t('referral.earlyAdopterCta') || 'Invite 3 friends = exclusive Early Adopter badge!'}</span>
+              {' '}{t('referral.earlyAdopterCtaDetail') || 'Displayed on your profile and listings.'}
+            </p>
+          </div>
+        )}
+        {validated >= 3 && (
+          <div className="flex items-center gap-3 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-3">
+            <Sparkles className="h-5 w-5 text-fuchsia-500 shrink-0" />
+            <p className="text-sm font-medium text-fuchsia-600">
+              {t('referral.earlyAdopterEarned') || '🎉 You earned the Early Adopter badge!'}
+            </p>
           </div>
         )}
 
