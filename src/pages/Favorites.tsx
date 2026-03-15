@@ -36,11 +36,7 @@ export default function Favorites() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-extrabold mb-6">{t('favorites.title')}</h1>
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-64 bg-muted rounded-lg animate-pulse" />
-          ))}
-        </div>
+        <BrowseListingSkeleton count={4} />
       ) : favorites && favorites.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {favorites.map((listing: any) => (
