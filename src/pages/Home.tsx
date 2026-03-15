@@ -484,6 +484,7 @@ export default function Home() {
       )}
       </ErrorBoundary>
 
+      <ErrorBoundary>
       {(featuredLoading || hasFeatured) && (
         <section className="bg-gradient-to-b from-amber-50/50 to-background dark:from-amber-950/10 border-y border-amber-200/30 py-10">
           <div className="container mx-auto px-4">
@@ -518,15 +519,22 @@ export default function Home() {
           </div>
         </section>
       )}
+      </ErrorBoundary>
 
       {/* How it works */}
-      <HowItWorks />
+      <ErrorBoundary>
+        <HowItWorks />
+      </ErrorBoundary>
 
       {/* Category: Immobilier (with featured injection) */}
-      <CategoryRow category="immobilier" featuredListings={featuredListings} />
+      <ErrorBoundary>
+        <CategoryRow category="immobilier" featuredListings={featuredListings} />
+      </ErrorBoundary>
 
       {/* Category: Emploi (with featured injection) */}
-      <CategoryRow category="emploi" featuredListings={featuredListings} />
+      <ErrorBoundary>
+        <CategoryRow category="emploi" featuredListings={featuredListings} />
+      </ErrorBoundary>
     </div>
   );
 }
