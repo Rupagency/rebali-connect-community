@@ -433,6 +433,7 @@ export default function Home() {
       </section>
 
       {/* Latest Listings - Marquee */}
+      <ErrorBoundary>
       <section className="container mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-extrabold">{t('home.latest')}</h2>
@@ -445,6 +446,7 @@ export default function Home() {
         </div>
         <ListingMarquee listings={listings || []} isLoading={isLoading} emptyMessage={t('common.noResults')} />
       </section>
+      </ErrorBoundary>
 
       {/* 🚀 Homepage Boosted Listings - Marquee */}
       {(homepageBoostedLoading || (homepageBoosted && homepageBoosted.length > 0)) && (
