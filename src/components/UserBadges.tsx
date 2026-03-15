@@ -57,9 +57,18 @@ export default function UserBadges({ userId, profile, compact }: UserBadgesProps
   const { data } = useQuery({
     queryKey: ['user-badges-data', userId],
     queryFn: async () => {
-      const { data: count } = await supabase
-        .rpc('get_completed_deals_count', { _user_id: userId });
-      return { completedDeals: (count as number) || 0 };
+      const [{ data: count }, { data: referrals }] = await Promise.all([
+        supabase.rpc('get_completed_deals_count', { _user_id: userId }),
+        supabase
+          .from('referrals')
+          .select('id')
+          .eq('referrer_id', userId)
+          .eq('status', 'validated'),
+      ]);
+      return {
+        completedDeals: (count as number) || 0,
+        validatedReferrals: referrals?.length || 0,
+      };
     },
     staleTime: 5 * 60 * 1000,
   });
