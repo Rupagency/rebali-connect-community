@@ -177,7 +177,7 @@ export default function ComingSoon() {
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="flex items-center justify-center gap-2 bg-green-500/10 text-green-600 dark:text-green-400 rounded-xl p-4"
+                className="flex items-center justify-center gap-2 bg-primary/10 text-primary rounded-xl p-4"
               >
                 <CheckCircle className="h-5 w-5" />
                 <span className="font-semibold">{t('comingSoon.confirmed')}</span>
