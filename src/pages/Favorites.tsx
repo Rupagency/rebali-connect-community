@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Navigate, Link } from 'react-router-dom';
 import ListingCard from '@/components/ListingCard';
+import BrowseListingSkeleton from '@/components/skeletons/BrowseListingSkeleton';
 import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
@@ -35,11 +36,7 @@ export default function Favorites() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-extrabold mb-6">{t('favorites.title')}</h1>
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-64 bg-muted rounded-lg animate-pulse" />
-          ))}
-        </div>
+        <BrowseListingSkeleton count={4} />
       ) : favorites && favorites.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {favorites.map((listing: any) => (
