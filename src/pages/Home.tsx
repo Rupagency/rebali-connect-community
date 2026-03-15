@@ -449,6 +449,7 @@ export default function Home() {
       </ErrorBoundary>
 
       {/* 🚀 Homepage Boosted Listings - Marquee */}
+      <ErrorBoundary>
       {(homepageBoostedLoading || (homepageBoosted && homepageBoosted.length > 0)) && (
         <section className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-4">
@@ -460,6 +461,7 @@ export default function Home() {
           <ListingMarquee listings={homepageBoosted || []} isLoading={homepageBoostedLoading} emptyMessage="" />
         </section>
       )}
+      </ErrorBoundary>
 
       {/* 🎯 Personalized Recommendations (logged-in users only) */}
       {user && recommendedListings && recommendedListings.length > 0 && (
