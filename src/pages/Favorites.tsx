@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Navigate, Link } from 'react-router-dom';
 import ListingCard from '@/components/ListingCard';
+import BrowseListingSkeleton from '@/components/skeletons/BrowseListingSkeleton';
 import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
