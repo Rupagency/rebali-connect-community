@@ -8,6 +8,7 @@ import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuff
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
+import ShareButton from '@/components/ShareButton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
@@ -109,6 +110,12 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
             </Badge>
           )}
           <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+            <ShareButton
+              url={`/listing/${listing.id}`}
+              title={title}
+              text={`${title} - ${formatPrice(listing.price, listing.currency)}`}
+              variant="mini"
+            />
             {isPro ? (
               <Badge className="bg-primary text-primary-foreground text-[10px] gap-1 font-bold shadow">
                 <Briefcase className="h-3 w-3" />

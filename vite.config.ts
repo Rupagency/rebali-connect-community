@@ -23,6 +23,39 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         importScripts: ["/sw-push.js"],
+        runtimeCaching: [
+          {
+            // Cache Supabase REST API calls (listings, profiles, etc.)
+            urlPattern: /^https:\/\/eddrshyqlrpxgvyxpjee\.supabase\.co\/rest\/v1\//,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "supabase-api-cache",
+              expiration: { maxEntries: 200, maxAgeSeconds: 7 * 24 * 60 * 60 },
+              networkTimeoutSeconds: 5,
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // Cache listing images from Supabase Storage
+            urlPattern: /^https:\/\/eddrshyqlrpxgvyxpjee\.supabase\.co\/storage\/v1\/object\/public\/listings\//,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "listing-images-cache",
+              expiration: { maxEntries: 500, maxAgeSeconds: 30 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // Cache avatar images
+            urlPattern: /^https:\/\/eddrshyqlrpxgvyxpjee\.supabase\.co\/storage\/v1\/object\/public\/avatars\//,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "avatar-images-cache",
+              expiration: { maxEntries: 100, maxAgeSeconds: 14 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
       manifest: {
         name: "Re-Bali — Petites annonces Bali",

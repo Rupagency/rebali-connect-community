@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   Sprout, Clock, Award, Crown, CheckCircle, ShieldCheck,
-  Handshake, Target, Flame, Trophy, Medal
+  Handshake, Target, Flame, Trophy, Medal, Sparkles
 } from 'lucide-react';
 
 interface UserBadgesProps {
@@ -32,9 +32,11 @@ interface BadgeContext {
   trustScore: number;
   phoneVerified: boolean;
   isVerified: boolean;
+  validatedReferrals: number;
 }
 
 const BADGES: BadgeDef[] = [
+  { key: 'earlyAdopter', icon: Sparkles, color: 'bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20', condition: c => c.validatedReferrals >= 3 },
   { key: 'newMember', icon: Sprout, color: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20', condition: c => c.ageDays < 7 },
   { key: 'activeMember', icon: Clock, color: 'bg-blue-500/10 text-blue-600 border-blue-500/20', condition: c => c.ageDays >= 30 && c.ageDays < 180 },
   { key: 'veteran', icon: Award, color: 'bg-purple-500/10 text-purple-600 border-purple-500/20', condition: c => c.ageDays >= 180 && c.ageDays < 365 },
@@ -55,9 +57,18 @@ export default function UserBadges({ userId, profile, compact }: UserBadgesProps
   const { data } = useQuery({
     queryKey: ['user-badges-data', userId],
     queryFn: async () => {
-      const { data: count } = await supabase
-        .rpc('get_completed_deals_count', { _user_id: userId });
-      return { completedDeals: (count as number) || 0 };
+      const [{ data: count }, { data: referrals }] = await Promise.all([
+        supabase.rpc('get_completed_deals_count', { _user_id: userId }),
+        supabase
+          .from('referrals')
+          .select('id')
+          .eq('referrer_id', userId)
+          .eq('status', 'validated'),
+      ]);
+      return {
+        completedDeals: (count as number) || 0,
+        validatedReferrals: referrals?.length || 0,
+      };
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -71,6 +82,7 @@ export default function UserBadges({ userId, profile, compact }: UserBadgesProps
     trustScore: profile.trust_score || 0,
     phoneVerified: profile.phone_verified,
     isVerified: profile.is_verified_seller,
+    validatedReferrals: data.validatedReferrals,
   };
 
   const earned = BADGES.filter(b => b.condition(ctx));
