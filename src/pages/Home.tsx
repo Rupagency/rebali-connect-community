@@ -11,6 +11,7 @@ import AnimatedHeroText from '@/components/AnimatedHeroText';
 import { Plus, ArrowRight, Star, SlidersHorizontal, X, Sparkles } from 'lucide-react';
 import CategoryMarquee from '@/components/CategoryMarquee';
 import HowItWorks from '@/components/HowItWorks';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { CATEGORY_ICONS, CATEGORIES, CONDITIONS, LOCATIONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
@@ -432,6 +433,7 @@ export default function Home() {
       </section>
 
       {/* Latest Listings - Marquee */}
+      <ErrorBoundary>
       <section className="container mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-extrabold">{t('home.latest')}</h2>
@@ -444,8 +446,10 @@ export default function Home() {
         </div>
         <ListingMarquee listings={listings || []} isLoading={isLoading} emptyMessage={t('common.noResults')} />
       </section>
+      </ErrorBoundary>
 
       {/* 🚀 Homepage Boosted Listings - Marquee */}
+      <ErrorBoundary>
       {(homepageBoostedLoading || (homepageBoosted && homepageBoosted.length > 0)) && (
         <section className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-4">
@@ -457,8 +461,10 @@ export default function Home() {
           <ListingMarquee listings={homepageBoosted || []} isLoading={homepageBoostedLoading} emptyMessage="" />
         </section>
       )}
+      </ErrorBoundary>
 
       {/* 🎯 Personalized Recommendations (logged-in users only) */}
+      <ErrorBoundary>
       {user && recommendedListings && recommendedListings.length > 0 && (
         <section className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-4">
@@ -476,7 +482,9 @@ export default function Home() {
           <ListingMarquee listings={recommendedListings} isLoading={recoLoading} emptyMessage={t('common.noResults')} />
         </section>
       )}
+      </ErrorBoundary>
 
+      <ErrorBoundary>
       {(featuredLoading || hasFeatured) && (
         <section className="bg-gradient-to-b from-amber-50/50 to-background dark:from-amber-950/10 border-y border-amber-200/30 py-10">
           <div className="container mx-auto px-4">
@@ -511,15 +519,22 @@ export default function Home() {
           </div>
         </section>
       )}
+      </ErrorBoundary>
 
       {/* How it works */}
-      <HowItWorks />
+      <ErrorBoundary>
+        <HowItWorks />
+      </ErrorBoundary>
 
       {/* Category: Immobilier (with featured injection) */}
-      <CategoryRow category="immobilier" featuredListings={featuredListings} />
+      <ErrorBoundary>
+        <CategoryRow category="immobilier" featuredListings={featuredListings} />
+      </ErrorBoundary>
 
       {/* Category: Emploi (with featured injection) */}
-      <CategoryRow category="emploi" featuredListings={featuredListings} />
+      <ErrorBoundary>
+        <CategoryRow category="emploi" featuredListings={featuredListings} />
+      </ErrorBoundary>
     </div>
   );
 }
