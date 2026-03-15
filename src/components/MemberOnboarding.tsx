@@ -54,8 +54,13 @@ export default function MemberOnboarding() {
       setStep(step + 1);
     } else {
       handleClose();
-      navigate('/profile');
+      navigate(currentStep.action);
     }
+  };
+
+  const handleQuickAction = () => {
+    handleClose();
+    navigate(currentStep.action);
   };
 
   const handleBack = () => {
