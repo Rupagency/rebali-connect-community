@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Gift, Copy, Share2, CheckCircle, Clock, Users } from 'lucide-react';
+import { Gift, Copy, Share2, CheckCircle, Clock, Users, Sparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface Referral {
