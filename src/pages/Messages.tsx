@@ -16,6 +16,7 @@ import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/hooks/use-toast';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
+import { ConversationListSkeleton } from '@/components/skeletons/MessagesSkeleton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
