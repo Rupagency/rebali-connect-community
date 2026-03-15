@@ -239,7 +239,7 @@ export default function ListingDetail() {
       .catch((error) => console.error('translate-listing retry failed:', error));
   }, [id, listing, language, refetchListing]);
 
-  if (isLoading) return <div className="container mx-auto px-4 py-8"><div className="animate-pulse h-96 bg-muted rounded-lg" /></div>;
+  if (isLoading) return <ListingDetailSkeleton />;
   if (!listing) return <div className="container mx-auto px-4 py-20 text-center text-muted-foreground">{t('common.noResults')}</div>;
 
   const translation = listing.listing_translations?.find((tr: any) => tr.lang === language);
