@@ -51,7 +51,16 @@ const BusinessPage = lazy(() => import("./pages/BusinessPage"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 
-const queryClient = new QueryClient({});
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,        // 1 min — avoid refetch on every navigation
+      gcTime: 10 * 60 * 1000,      // 10 min garbage collection
+      retry: 1,                     // single retry on failure
+      refetchOnWindowFocus: false,  // no auto-refetch on tab switch
+    },
+  },
+});
 
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-[50vh]">
