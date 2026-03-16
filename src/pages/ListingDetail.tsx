@@ -419,7 +419,7 @@ export default function ListingDetail() {
             <div className="aspect-[4/3] relative">
                 <img
                   src={images.length > 0
-                    ? supabase.storage.from('listings').getPublicUrl(images[currentImage]?.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl
+                    ? getListingImageUrl(images[currentImage]?.storage_path.replace(/\.jpg$/, '_wm.jpg'))
                     : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg'}
                   alt={title}
                   className="w-full h-full object-cover"
