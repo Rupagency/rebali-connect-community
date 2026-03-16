@@ -303,11 +303,29 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const count = Math.min(Math.max(body.count || 350, 10), 500);
 
-    // 1. Create fake users
+    // 1. Create or find fake users
+    // First, try to find all existing seed users in one query
+    const { data: existingProfiles } = await adminClient
+      .from("profiles")
+      .select("id, display_name")
+      .filter("listing_limit_override", "eq", 100)
+      .limit(50);
+    
+    const existingByName = new Map<string, string>();
+    for (const p of existingProfiles || []) {
+      if (p.display_name) existingByName.set(p.display_name, p.id);
+    }
+
     const userIds: string[] = [];
     for (const fakeUser of FAKE_USERS) {
+      // Check if already exists
+      const existingId = existingByName.get(fakeUser.name);
+      if (existingId) {
+        userIds.push(existingId);
+        continue;
+      }
+
       const email = `fake_${fakeUser.name.toLowerCase().replace(/\s/g, ".")}@seed.rebali.test`;
-      // Try creating, skip if exists
       const { data: newUser, error: userErr } = await adminClient.auth.admin.createUser({
         email,
         password: `SeedPass!${randInt(1000, 9999)}`,
@@ -317,7 +335,6 @@ Deno.serve(async (req) => {
 
       if (newUser?.user) {
         userIds.push(newUser.user.id);
-        // Update profile with avatar and high listing limit
         await adminClient.from("profiles").update({
           avatar_url: fakeUser.avatar,
           display_name: fakeUser.name,
@@ -325,15 +342,12 @@ Deno.serve(async (req) => {
           phone_verified: true,
           trust_score: randInt(60, 95),
         }).eq("id", newUser.user.id);
-      } else if (userErr?.message?.includes("already been registered")) {
-        // Find existing user
-        const { data: existingUsers } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
-        const found = existingUsers?.users?.find((u: any) => u.email === email);
-        if (found) userIds.push(found.id);
+      } else {
+        console.log(`Skipping user ${email}: ${userErr?.message}`);
       }
     }
 
-    if (userIds.length === 0) throw new Error("No seed users created");
+    if (userIds.length === 0) throw new Error("No seed users found or created");
 
     // 2. Build listing pool from all categories
     const allCategories = Object.keys(LISTINGS);
