@@ -305,31 +305,55 @@ Deno.serve(async (req) => {
 
     // ── PURGE ACTION ──
     if (body.action === "purge") {
-      // Find all seed users by email pattern
-      const { data: { users: allUsers } } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
-      const seedUsers = (allUsers || []).filter((u: any) => u.email?.endsWith("@seed.rebali.test"));
-      const seedUserIds = seedUsers.map((u: any) => u.id);
+      // Find all seed users by email pattern (paginate)
+      const seedUserIds: string[] = [];
+      let page = 1;
+      while (true) {
+        const { data: { users: batch } } = await adminClient.auth.admin.listUsers({ page, perPage: 100 });
+        if (!batch || batch.length === 0) break;
+        for (const u of batch) {
+          if (u.email?.endsWith("@seed.rebali.test")) seedUserIds.push(u.id);
+        }
+        if (batch.length < 100) break;
+        page++;
+      }
 
       let deletedListings = 0;
       if (seedUserIds.length > 0) {
-        // Delete listing_images for seed listings
-        const { data: seedListings } = await adminClient
-          .from("listings")
-          .select("id")
-          .in("seller_id", seedUserIds);
-        const seedListingIds = (seedListings || []).map((l: any) => l.id);
+        // Process in chunks of 50 to avoid .in() limits
+        const chunkSize = 50;
+        for (let i = 0; i < seedUserIds.length; i += chunkSize) {
+          const chunk = seedUserIds.slice(i, i + chunkSize);
 
-        if (seedListingIds.length > 0) {
-          await adminClient.from("listing_images").delete().in("listing_id", seedListingIds);
-          await adminClient.from("listing_translations").delete().in("listing_id", seedListingIds);
-          const { count } = await adminClient.from("listings").delete({ count: "exact" }).in("seller_id", seedUserIds);
-          deletedListings = count || 0;
-        }
+          // Get listing IDs for this chunk of sellers
+          const { data: chunkListings } = await adminClient
+            .from("listings")
+            .select("id")
+            .in("seller_id", chunk);
+          const chunkListingIds = (chunkListings || []).map((l: any) => l.id);
 
-        // Delete profiles then auth users
-        await adminClient.from("profiles").delete().in("id", seedUserIds);
-        for (const uid of seedUserIds) {
-          await adminClient.auth.admin.deleteUser(uid);
+          // Delete images & translations in sub-chunks
+          for (let j = 0; j < chunkListingIds.length; j += chunkSize) {
+            const listingChunk = chunkListingIds.slice(j, j + chunkSize);
+            await Promise.all([
+              adminClient.from("listing_images").delete().in("listing_id", listingChunk),
+              adminClient.from("listing_translations").delete().in("listing_id", listingChunk),
+            ]);
+          }
+
+          // Delete listings for this user chunk
+          const { count } = await adminClient.from("listings").delete({ count: "exact" }).in("seller_id", chunk);
+          deletedListings += count || 0;
+
+          // Delete profiles
+          await adminClient.from("profiles").delete().in("id", chunk);
+
+          // Delete auth users in parallel (batch of 5)
+          for (let k = 0; k < chunk.length; k += 5) {
+            await Promise.all(
+              chunk.slice(k, k + 5).map(uid => adminClient.auth.admin.deleteUser(uid))
+            );
+          }
         }
       }
 
