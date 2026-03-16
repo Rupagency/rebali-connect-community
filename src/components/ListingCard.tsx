@@ -174,4 +174,6 @@ const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: f
       </Card>
     </Link>
   );
-}
+});
+
+export default ListingCard;
