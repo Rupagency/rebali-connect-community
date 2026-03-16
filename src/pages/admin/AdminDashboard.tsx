@@ -2,12 +2,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAdminProfiles, useAdminListings, useAdminReports, useAdminAnalyticsEvents, useAdminProSubscriptions } from '@/hooks/useAdminData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Users, FileText, AlertTriangle, Ban, TrendingUp, DollarSign,
-  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package
+  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package, Sprout
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'default' }: {
   icon: any; label: string; value: number | string; trend?: number; trendLabel?: string;
@@ -41,6 +44,21 @@ export default function AdminDashboard() {
   const { data: reports } = useAdminReports();
   const { data: events } = useAdminAnalyticsEvents();
   const { data: proSubs } = useAdminProSubscriptions();
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeed = async () => {
+    if (!confirm('Créer ~350 fausses annonces avec 15 profils fictifs ?')) return;
+    setSeeding(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { count: 350 } });
+      if (error) throw error;
+      toast.success(`✅ Seed terminé : ${data?.created} annonces, ${data?.users} utilisateurs`);
+    } catch (err: any) {
+      toast.error(`Erreur seed : ${err.message}`);
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const pendingReports = reports?.filter((r: any) => !r.resolved) || [];
   const bannedUsers = profiles?.filter((p: any) => p.is_banned) || [];
@@ -96,6 +114,14 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Seed button */}
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding}>
+          <Sprout className="h-4 w-4 mr-2" />
+          {seeding ? 'Seed en cours...' : 'Seed 350 annonces'}
+        </Button>
+      </div>
+
       {/* Primary KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <KPICard icon={Users} label={t('admin.users')} value={profiles?.length || 0} trend={userGrowthPct} trendLabel={t('adminPage.vsPrevWeek')} />
