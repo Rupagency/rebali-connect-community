@@ -40,11 +40,11 @@ function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'defau
 export default function AdminDashboard() {
   const { t } = useLanguage();
   const { session } = useAuth();
-  const { data: profiles } = useAdminProfiles();
-  const { data: allListings } = useAdminListings();
-  const { data: reports } = useAdminReports();
-  const { data: events } = useAdminAnalyticsEvents();
-  const { data: proSubs } = useAdminProSubscriptions();
+  const { data: profiles, isLoading: profilesLoading } = useAdminProfiles();
+  const { data: allListings, isLoading: listingsLoading } = useAdminListings();
+  const { data: reports, isLoading: reportsLoading } = useAdminReports();
+  const { data: events, isLoading: eventsLoading } = useAdminAnalyticsEvents();
+  const { data: proSubs, isLoading: proSubsLoading } = useAdminProSubscriptions();
   const [seeding, setSeeding] = useState(false);
   const [purging, setPurging] = useState(false);
 

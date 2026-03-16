@@ -9,8 +9,8 @@ import { useAuth } from '@/contexts/AuthContext';
  */
 
 function useSessionReady() {
-  const { session, isAdmin } = useAuth();
-  return !!session && isAdmin;
+  const { user, isAdmin, loading } = useAuth();
+  return !!user && isAdmin && !loading;
 }
 
 export function useAdminProfiles() {
