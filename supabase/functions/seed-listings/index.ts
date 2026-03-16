@@ -432,19 +432,33 @@ Deno.serve(async (req) => {
         // Continue anyway
       }
 
-      // Insert images for each listing
+      // Insert images for each listing using template-specific images
       if (insertedListings) {
         const imageRows: any[] = [];
-        for (const listing of insertedListings) {
-          const catImages = IMAGES[listing.category] || IMAGES.divers;
-          const numImages = randInt(1, Math.min(4, catImages.length));
-          const shuffled = [...catImages].sort(() => Math.random() - 0.5);
-          for (let j = 0; j < numImages; j++) {
-            imageRows.push({
-              listing_id: listing.id,
-              storage_path: unsplashUrl(shuffled[j]),
-              sort_order: j,
-            });
+        for (let idx = 0; idx < insertedListings.length; idx++) {
+          const listing = insertedListings[idx];
+          const meta = batchMeta[idx];
+          // Use template-specific images if available, otherwise fall back to category pool
+          const templateImages = meta?.template?.images;
+          if (templateImages && templateImages.length > 0) {
+            for (let j = 0; j < templateImages.length; j++) {
+              imageRows.push({
+                listing_id: listing.id,
+                storage_path: unsplashUrl(templateImages[j]),
+                sort_order: j,
+              });
+            }
+          } else {
+            const catImages = IMAGES[listing.category] || IMAGES.divers;
+            const numImages = randInt(1, Math.min(3, catImages.length));
+            const shuffled = [...catImages].sort(() => Math.random() - 0.5);
+            for (let j = 0; j < numImages; j++) {
+              imageRows.push({
+                listing_id: listing.id,
+                storage_path: unsplashUrl(shuffled[j]),
+                sort_order: j,
+              });
+            }
           }
         }
 
