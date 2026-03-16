@@ -681,10 +681,10 @@ export default function Profile() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { icon: Package, label: t('profile.statsActive'), value: stats.active, color: 'text-primary', href: '/my-listings' },
-          { icon: ShoppingBag, label: t('profile.statsSold'), value: stats.sold, color: 'text-accent', href: '/my-listings?tab=sold' },
-          { icon: Eye, label: t('profile.statsTotalViews'), value: stats.totalViews, color: 'text-muted-foreground', href: null },
-          { icon: Star, label: t('profile.statsAvgRating'), value: stats.reviewCount > 0 ? stats.avgRating.toFixed(1) : '—', color: 'text-accent', href: `/seller/${encodeURIComponent(user.id)}` },
+          { icon: Package, label: t('profile.statsActive'), value: statsLoading ? '—' : stats.active, color: 'text-primary', href: '/my-listings' },
+          { icon: ShoppingBag, label: t('profile.statsSold'), value: statsLoading ? '—' : stats.sold, color: 'text-accent', href: '/my-listings?tab=sold' },
+          { icon: Eye, label: t('profile.statsTotalViews'), value: statsLoading ? '—' : stats.totalViews, color: 'text-muted-foreground', href: null },
+          { icon: Star, label: t('profile.statsAvgRating'), value: statsLoading ? '—' : (stats.reviewCount > 0 ? stats.avgRating.toFixed(1) : '—'), color: 'text-accent', href: `/seller/${encodeURIComponent(user.id)}` },
         ].map((stat, i) => (
           <Card
             key={i}
@@ -699,6 +699,9 @@ export default function Profile() {
           </Card>
         ))}
       </div>
+      {statsError && (
+        <p className="text-xs text-destructive">{t('common.error') || 'Erreur de chargement des statistiques.'}</p>
+      )}
 
       {/* Information Form */}
       <Card>
