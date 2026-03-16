@@ -47,14 +47,23 @@ export default function AdminDashboard() {
   const [seeding, setSeeding] = useState(false);
 
   const handleSeed = async () => {
-    if (!confirm('Créer ~350 fausses annonces avec 15 profils fictifs ?')) return;
+    const totalTarget = 350;
+    const batchSize = 30;
+    if (!confirm(`Créer ~${totalTarget} fausses annonces en lots de ${batchSize} ?`)) return;
     setSeeding(true);
+    let totalCreated = 0;
     try {
-      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { count: 350 } });
-      if (error) throw error;
-      toast.success(`✅ Seed terminé : ${data?.created} annonces, ${data?.users} utilisateurs`);
+      for (let i = 0; i < Math.ceil(totalTarget / batchSize); i++) {
+        const remaining = totalTarget - totalCreated;
+        const thisCount = Math.min(batchSize, remaining);
+        toast.info(`Lot ${i + 1}/${Math.ceil(totalTarget / batchSize)} (${thisCount} annonces)...`);
+        const { data, error } = await supabase.functions.invoke('seed-listings', { body: { count: thisCount } });
+        if (error) throw error;
+        totalCreated += data?.created || thisCount;
+      }
+      toast.success(`✅ Seed terminé : ${totalCreated} annonces créées`);
     } catch (err: any) {
-      toast.error(`Erreur seed : ${err.message}`);
+      toast.error(`Erreur seed au lot (${totalCreated} créées) : ${err.message}`);
     } finally {
       setSeeding(false);
     }
