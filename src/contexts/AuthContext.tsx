@@ -17,9 +17,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/**
- * Direct REST call bypassing the Supabase client to avoid internal deadlocks.
- */
 async function supabaseRest(path: string, accessToken: string) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: {
@@ -32,6 +29,20 @@ async function supabaseRest(path: string, accessToken: string) {
   return res.json();
 }
 
+function buildProfileFallback(authUser: User, profileRow: any | null) {
+  const metadataName = typeof authUser.user_metadata?.display_name === 'string' ? authUser.user_metadata.display_name.trim() : '';
+  const emailPrefix = authUser.email?.split('@')?.[0] ?? 'User';
+
+  return {
+    ...(profileRow ?? {}),
+    id: profileRow?.id ?? authUser.id,
+    display_name: profileRow?.display_name || metadataName || emailPrefix,
+    user_type: profileRow?.user_type || (authUser.user_metadata?.user_type === 'business' ? 'business' : 'private'),
+    preferred_lang: profileRow?.preferred_lang || 'en',
+    created_at: profileRow?.created_at || authUser.created_at || new Date().toISOString(),
+  };
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -40,67 +51,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const accessTokenRef = useRef<string | null>(null);
 
-  // Fetch profile using raw fetch to avoid Supabase client deadlock
-  const fetchProfile = useCallback(async (userId: string, token: string) => {
+  const fetchProfile = useCallback(async (authUser: User, token: string) => {
     try {
-      console.log('[Auth] fetchProfile for:', userId);
+      console.log('[Auth] fetchProfile for:', authUser.id);
 
       const [profileData, rolesData] = await Promise.all([
-        supabaseRest(`profiles?id=eq.${userId}&select=*&limit=1`, token),
-        supabaseRest(`user_roles?user_id=eq.${userId}&select=role`, token),
+        supabaseRest(`profiles?id=eq.${authUser.id}&select=*&limit=1`, token),
+        supabaseRest(`user_roles?user_id=eq.${authUser.id}&select=role`, token),
       ]);
 
       const prof = profileData?.[0] ?? null;
-      console.log('[Auth] profile result:', { data: !!prof });
-      setProfile(prof);
+      const safeProfile = buildProfileFallback(authUser, prof);
 
-      console.log('[Auth] roles:', rolesData);
+      console.log('[Auth] profile result:', {
+        hasRow: !!prof,
+        hasDisplayName: !!safeProfile?.display_name,
+        hasCreatedAt: !!safeProfile?.created_at,
+      });
+
+      setProfile(safeProfile);
       setIsAdmin(rolesData?.some((r: any) => r.role === 'admin') || false);
     } catch (err: any) {
       console.error('[Auth] fetchProfile catch:', err?.message);
-      setProfile(null);
+      setProfile(buildProfileFallback(authUser, null));
       setIsAdmin(false);
     }
   }, []);
 
   const refreshProfile = useCallback(async () => {
     const token = accessTokenRef.current;
-    if (user && token) await fetchProfile(user.id, token);
+    if (user && token) await fetchProfile(user, token);
   }, [user, fetchProfile]);
 
   useEffect(() => {
     let mounted = true;
 
-    // Use onAuthStateChange as THE SOLE source of truth.
-    // Supabase v2 fires INITIAL_SESSION first (restores from storage),
-    // then SIGNED_IN/SIGNED_OUT/TOKEN_REFRESHED for subsequent changes.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
-        if (!mounted) return;
-        console.log('[Auth] authChange:', event, newSession?.user?.id ?? 'null');
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (!mounted) return;
+      console.log('[Auth] authChange:', event, newSession?.user?.id ?? 'null');
 
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-        accessTokenRef.current = newSession?.access_token ?? null;
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
+      accessTokenRef.current = newSession?.access_token ?? null;
+      setLoading(false);
 
-        // Always mark loading as done after any auth event
-        setLoading(false);
-
-        // Fetch profile in background (deferred to escape auth lock)
-        if (newSession?.user && newSession.access_token) {
-          const uid = newSession.user.id;
-          const token = newSession.access_token;
-          setTimeout(() => {
-            if (mounted) fetchProfile(uid, token);
-          }, 0);
-        } else {
-          setProfile(null);
-          setIsAdmin(false);
-        }
+      if (newSession?.user && newSession.access_token) {
+        const authUser = newSession.user;
+        const token = newSession.access_token;
+        setTimeout(() => {
+          if (mounted) fetchProfile(authUser, token);
+        }, 0);
+      } else {
+        setProfile(null);
+        setIsAdmin(false);
       }
-    );
+    });
 
-    // Safety: if onAuthStateChange never fires (shouldn't happen), unlock after 5s
     const safetyTimer = setTimeout(() => {
       if (mounted) {
         console.warn('[Auth] safety timeout — forcing loading=false');
