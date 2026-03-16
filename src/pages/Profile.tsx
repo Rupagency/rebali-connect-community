@@ -594,11 +594,12 @@ export default function Profile() {
     navigate('/');
   };
 
-  const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })
+  const memberSince = (profile?.created_at || user?.created_at)
+    ? new Date(profile?.created_at || user?.created_at || '').toLocaleDateString(undefined, { year: 'numeric', month: 'long' })
     : '';
 
-  const initials = (profile?.display_name || 'U').slice(0, 2).toUpperCase();
+  const fallbackDisplayName = profile?.display_name || user?.user_metadata?.display_name || user?.email?.split('@')?.[0] || t('profile.displayName');
+  const initials = fallbackDisplayName.slice(0, 2).toUpperCase();
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl space-y-6">
