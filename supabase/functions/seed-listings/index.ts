@@ -302,6 +302,42 @@ Deno.serve(async (req) => {
     if (!roleCheck) throw new Error("Admin only");
 
     const body = await req.json().catch(() => ({}));
+
+    // ── PURGE ACTION ──
+    if (body.action === "purge") {
+      // Find all seed users by email pattern
+      const { data: { users: allUsers } } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
+      const seedUsers = (allUsers || []).filter((u: any) => u.email?.endsWith("@seed.rebali.test"));
+      const seedUserIds = seedUsers.map((u: any) => u.id);
+
+      let deletedListings = 0;
+      if (seedUserIds.length > 0) {
+        // Delete listing_images for seed listings
+        const { data: seedListings } = await adminClient
+          .from("listings")
+          .select("id")
+          .in("seller_id", seedUserIds);
+        const seedListingIds = (seedListings || []).map((l: any) => l.id);
+
+        if (seedListingIds.length > 0) {
+          await adminClient.from("listing_images").delete().in("listing_id", seedListingIds);
+          await adminClient.from("listing_translations").delete().in("listing_id", seedListingIds);
+          const { count } = await adminClient.from("listings").delete({ count: "exact" }).in("seller_id", seedUserIds);
+          deletedListings = count || 0;
+        }
+
+        // Delete profiles then auth users
+        await adminClient.from("profiles").delete().in("id", seedUserIds);
+        for (const uid of seedUserIds) {
+          await adminClient.auth.admin.deleteUser(uid);
+        }
+      }
+
+      return new Response(JSON.stringify({ deleted_listings: deletedListings, deleted_users: seedUserIds.length }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const count = Math.min(Math.max(body.count || 350, 10), 500);
 
     // 1. Create or find fake users
