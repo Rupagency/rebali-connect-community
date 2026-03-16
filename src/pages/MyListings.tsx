@@ -5,6 +5,7 @@ import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
