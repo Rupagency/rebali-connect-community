@@ -470,7 +470,7 @@ export default function ListingDetail() {
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
                     <img
-                      src={supabase.storage.from('listings').getPublicUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl}
+                      src={getListingImageUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg'))}
                       alt=""
                       className="w-full h-full object-cover"
                       onError={(e) => {
