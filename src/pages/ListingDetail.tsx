@@ -475,7 +475,7 @@ export default function ListingDetail() {
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        const fallback = supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl;
+                        const fallback = getListingImageUrl(img.storage_path);
                         if (target.src !== fallback) target.src = fallback;
                       }}
                     />
