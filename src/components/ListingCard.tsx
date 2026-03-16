@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import ShareButton from '@/components/ShareButton';

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Rocket, Star, Home, ShieldCheck, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 
 interface ListingCardSmallProps {
   listing: {
