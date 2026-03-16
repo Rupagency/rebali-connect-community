@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Users, FileText, AlertTriangle, Ban, TrendingUp, DollarSign,
-  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package, Seedling
+  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package, Sprout
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useMemo, useState } from 'react';
