@@ -624,7 +624,7 @@ export default function Profile() {
             </div>
             <div className="flex-1 text-center sm:text-left space-y-1">
               <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-                <h1 className="text-2xl font-bold">{profile?.display_name || t('profile.displayName')}</h1>
+                <h1 className="text-2xl font-bold">{fallbackDisplayName}</h1>
                 <Badge variant={profile?.user_type === 'business' ? 'default' : 'secondary'}>
                   {profile?.user_type === 'business' ? t('common.pro') : t('common.private')}
                 </Badge>
