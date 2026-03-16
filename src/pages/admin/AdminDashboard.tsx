@@ -45,6 +45,21 @@ export default function AdminDashboard() {
   const { data: events } = useAdminAnalyticsEvents();
   const { data: proSubs } = useAdminProSubscriptions();
   const [seeding, setSeeding] = useState(false);
+  const [purging, setPurging] = useState(false);
+
+  const handlePurgeSeed = async () => {
+    if (!confirm('Supprimer TOUTES les annonces et profils seed (@seed.rebali.test) ?')) return;
+    setPurging(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { action: 'purge' } });
+      if (error) throw error;
+      toast.success(`✅ Purge terminée : ${data?.deleted_listings || 0} annonces, ${data?.deleted_users || 0} utilisateurs supprimés`);
+    } catch (err: any) {
+      toast.error(`Erreur purge : ${err.message}`);
+    } finally {
+      setPurging(false);
+    }
+  };
 
   const handleSeed = async () => {
     const totalTarget = 350;
@@ -124,8 +139,12 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       {/* Seed button */}
-      <div className="flex justify-end">
-        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding}>
+      <div className="flex justify-end gap-2">
+        <Button variant="destructive" size="sm" onClick={handlePurgeSeed} disabled={purging || seeding}>
+          <Ban className="h-4 w-4 mr-2" />
+          {purging ? 'Purge en cours...' : 'Purge seed'}
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding || purging}>
           <Sprout className="h-4 w-4 mr-2" />
           {seeding ? 'Seed en cours...' : 'Seed 350 annonces'}
         </Button>
