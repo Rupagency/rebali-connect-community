@@ -276,7 +276,9 @@ export default function Home() {
           },
         }}
       />
-      <CategoryMarquee />
+      <Suspense fallback={null}>
+        <CategoryMarquee />
+      </Suspense>
 
       {/* Hero */}
       <section className="relative z-30 bg-gradient-to-br from-primary/10 via-background to-accent/10">
