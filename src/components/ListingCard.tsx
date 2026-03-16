@@ -59,7 +59,7 @@ const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: f
       : listing.title_original;
 
   const imageUrl = listing.listing_images?.[0]?.storage_path
-    ? supabase.storage.from('listings').getPublicUrl(listing.listing_images[0].storage_path).data.publicUrl
+    ? getListingImageUrl(listing.listing_images[0].storage_path)
     : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
 
   const timeAgo = formatDistanceToNow(new Date(listing.created_at), {
