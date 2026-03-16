@@ -305,20 +305,30 @@ Deno.serve(async (req) => {
 
     // ── PURGE ACTION ──
     if (body.action === "purge") {
-      // Find all seed users by email pattern (paginate through auth)
-      const seedUserIds: string[] = [];
+      // Find all seed users by email pattern in Auth + profile marker fallback
+      const seedUserIdsSet = new Set<string>();
+
       let page = 1;
+      const perPage = 100;
       while (true) {
-        const { data: { users: batch } } = await adminClient.auth.admin.listUsers({ page, perPage: 100 });
+        const { data: { users: batch } } = await adminClient.auth.admin.listUsers({ page, per_page: perPage });
         if (!batch || batch.length === 0) break;
         for (const u of batch) {
-          if (u.email?.endsWith("@seed.rebali.test")) seedUserIds.push(u.id);
+          if (u.email?.endsWith("@seed.rebali.test")) seedUserIdsSet.add(u.id);
         }
-        if (batch.length < 100) break;
+        if (batch.length < perPage) break;
         page++;
       }
 
-      console.log(`[purge] Found ${seedUserIds.length} seed users`);
+      const fakeNames = FAKE_USERS.map(u => u.name);
+      const { data: seedProfiles } = await adminClient
+        .from("profiles")
+        .select("id")
+        .eq("listing_limit_override", 100)
+        .in("display_name", fakeNames);
+      for (const p of seedProfiles || []) seedUserIdsSet.add((p as any).id);
+
+      const seedUserIds = [...seedUserIdsSet];
       let deletedListings = 0;
 
       if (seedUserIds.length > 0) {
