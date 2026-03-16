@@ -413,6 +413,8 @@ export default function Profile() {
 
   // Stats
   const [stats, setStats] = useState({ active: 0, sold: 0, totalViews: 0, avgRating: 0, reviewCount: 0 });
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState(false);
   // Reviews
   const [reviews, setReviews] = useState<any[]>([]);
 
@@ -431,33 +433,53 @@ export default function Profile() {
 
   useEffect(() => {
     if (!user) return;
-    // Fetch stats
+    let cancelled = false;
+
     const fetchStats = async () => {
-      const { data: listings } = await supabase
-        .from('listings')
-        .select('status, views_count')
-        .eq('seller_id', user.id);
+      setStatsLoading(true);
+      setStatsError(false);
 
-      const active = listings?.filter(l => l.status === 'active').length || 0;
-      const sold = listings?.filter(l => l.status === 'sold').length || 0;
-      const totalViews = listings?.reduce((sum, l) => sum + (l.views_count || 0), 0) || 0;
+      try {
+        const { data: listings, error: listingsError } = await supabase
+          .from('listings')
+          .select('status, views_count')
+          .eq('seller_id', user.id);
 
-      const { data: revs } = await supabase
-        .from('reviews')
-        .select('rating, comment, created_at, reviewer_id, profiles!reviews_reviewer_id_fkey(display_name, avatar_url)')
-        .eq('seller_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10);
+        if (listingsError) throw listingsError;
 
-      const avgRating = revs && revs.length > 0
-        ? revs.reduce((sum, r) => sum + r.rating, 0) / revs.length
-        : 0;
+        const active = listings?.filter(l => l.status === 'active').length || 0;
+        const sold = listings?.filter(l => l.status === 'sold').length || 0;
+        const totalViews = listings?.reduce((sum, l) => sum + (l.views_count || 0), 0) || 0;
 
-      setStats({ active, sold, totalViews, avgRating, reviewCount: revs?.length || 0 });
-      setReviews(revs || []);
+        const { data: revs, error: reviewsError } = await supabase
+          .from('reviews')
+          .select('rating, comment, created_at, reviewer_id, profiles!reviews_reviewer_id_fkey(display_name, avatar_url)')
+          .eq('seller_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (reviewsError) throw reviewsError;
+
+        const avgRating = revs && revs.length > 0
+          ? revs.reduce((sum, r) => sum + r.rating, 0) / revs.length
+          : 0;
+
+        if (cancelled) return;
+        setStats({ active, sold, totalViews, avgRating, reviewCount: revs?.length || 0 });
+        setReviews(revs || []);
+      } catch (error) {
+        console.error('[Profile] stats fetch failed:', error);
+        if (!cancelled) setStatsError(true);
+      } finally {
+        if (!cancelled) setStatsLoading(false);
+      }
     };
+
     fetchStats();
-  }, [user]);
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   if (authLoading) {
     return (
