@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -357,7 +358,7 @@ export default function ListingDetail() {
         title={title}
         description={description?.slice(0, 160)}
         image={images.length > 0
-          ? supabase.storage.from('listings').getPublicUrl(images[0]?.storage_path).data.publicUrl
+          ? getListingImageUrl(images[0]?.storage_path)
           : undefined}
         url={`/listing/${id}`}
         type="product"
@@ -368,7 +369,7 @@ export default function ListingDetail() {
             name: title,
             description: description?.slice(0, 300),
             image: images.length > 0
-              ? supabase.storage.from('listings').getPublicUrl(images[0]?.storage_path).data.publicUrl
+              ? getListingImageUrl(images[0]?.storage_path)
               : "https://re-bali.com/pwa-512x512.png",
             url: `https://re-bali.com/listing/${id}`,
             offers: {
@@ -418,7 +419,7 @@ export default function ListingDetail() {
             <div className="aspect-[4/3] relative">
                 <img
                   src={images.length > 0
-                    ? supabase.storage.from('listings').getPublicUrl(images[currentImage]?.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl
+                    ? getListingImageUrl(images[currentImage]?.storage_path.replace(/\.jpg$/, '_wm.jpg'))
                     : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg'}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -430,7 +431,7 @@ export default function ListingDetail() {
                     // Fallback to original if _wm version doesn't exist (old listings)
                     const target = e.target as HTMLImageElement;
                     const originalUrl = images[currentImage]?.storage_path
-                      ? supabase.storage.from('listings').getPublicUrl(images[currentImage].storage_path).data.publicUrl
+                      ? getListingImageUrl(images[currentImage].storage_path)
                       : '';
                     if (originalUrl && target.src !== originalUrl) {
                       target.src = originalUrl;
@@ -469,12 +470,12 @@ export default function ListingDetail() {
                   <button key={img.id} onClick={() => setCurrentImage(i)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${i === currentImage ? 'border-primary' : 'border-transparent hover:border-border'}`}>
                     <img
-                      src={supabase.storage.from('listings').getPublicUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg')).data.publicUrl}
+                      src={getListingImageUrl(img.storage_path.replace(/\.jpg$/, '_wm.jpg'))}
                       alt=""
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        const fallback = supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl;
+                        const fallback = getListingImageUrl(img.storage_path);
                         if (target.src !== fallback) target.src = fallback;
                       }}
                     />

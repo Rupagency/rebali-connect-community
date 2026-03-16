@@ -3,6 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProStatus } from '@/hooks/useProStatus';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { isNativePlatform } from '@/capacitor';
@@ -151,7 +152,7 @@ function ListingsPerformance({ listings, statsMap, t, navigate }: any) {
           <div className="space-y-3">
             {sorted.map((listing: any) => {
               const imgUrl = listing.listing_images?.[0]?.storage_path
-                ? supabase.storage.from('listings').getPublicUrl(listing.listing_images[0].storage_path).data.publicUrl
+                ? getListingImageUrl(listing.listing_images[0].storage_path)
                 : '/placeholder.svg';
               const stats = statsMap[listing.id] || { favs: 0, waClicks: 0, convos: 0 };
 

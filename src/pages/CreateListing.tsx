@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -102,7 +103,7 @@ export default function CreateListing() {
       setExistingImageUrls(imgs.map((img: any) => ({
         id: img.id,
         storage_path: img.storage_path,
-        url: supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl,
+        url: getListingImageUrl(img.storage_path),
       })));
     };
     loadListing();

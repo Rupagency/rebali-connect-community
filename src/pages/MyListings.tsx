@@ -5,6 +5,7 @@ import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getListingImageUrl } from '@/lib/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -212,7 +213,7 @@ export default function MyListings() {
 
   const ListingRow = ({ listing }: { listing: any }) => {
     const imgUrl = listing.listing_images?.[0]?.storage_path
-      ? supabase.storage.from('listings').getPublicUrl(listing.listing_images[0].storage_path).data.publicUrl
+      ? getListingImageUrl(listing.listing_images[0].storage_path)
       : '/placeholder.svg';
     const boostInfo = getBoostInfo(listing.id);
     const isFeatured = boostInfo?.type === 'boost_premium';
