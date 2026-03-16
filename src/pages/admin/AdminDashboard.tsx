@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useAdminProfiles, useAdminListings, useAdminReports, useAdminAnalyticsEvents, useAdminProSubscriptions } from '@/hooks/useAdminData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +10,6 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useMemo, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'default' }: {
@@ -39,6 +39,7 @@ function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'defau
 
 export default function AdminDashboard() {
   const { t } = useLanguage();
+  const { session } = useAuth();
   const { data: profiles } = useAdminProfiles();
   const { data: allListings } = useAdminListings();
   const { data: reports } = useAdminReports();
@@ -47,12 +48,40 @@ export default function AdminDashboard() {
   const [seeding, setSeeding] = useState(false);
   const [purging, setPurging] = useState(false);
 
+  const invokeSeedFunction = async (payload: Record<string, unknown>) => {
+    if (!session?.access_token) throw new Error('Session expirée, reconnecte-toi puis réessaie');
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/seed-listings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error || `Erreur HTTP ${res.status}`);
+      return json;
+    } catch (err: any) {
+      if (err?.name === 'AbortError') throw new Error('Timeout de la requête purge/seed. Réessaie.');
+      throw err;
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
+
   const handlePurgeSeed = async () => {
     if (!confirm('Supprimer TOUTES les annonces et profils seed (@seed.rebali.test) ?')) return;
     setPurging(true);
     try {
-      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { action: 'purge' } });
-      if (error) throw error;
+      const data = await invokeSeedFunction({ action: 'purge' });
       toast.success(`✅ Purge terminée : ${data?.deleted_listings || 0} annonces, ${data?.deleted_users || 0} utilisateurs supprimés`);
     } catch (err: any) {
       toast.error(`Erreur purge : ${err.message}`);
@@ -72,8 +101,7 @@ export default function AdminDashboard() {
         const remaining = totalTarget - totalCreated;
         const thisCount = Math.min(batchSize, remaining);
         toast.info(`Lot ${i + 1}/${Math.ceil(totalTarget / batchSize)} (${thisCount} annonces)...`);
-        const { data, error } = await supabase.functions.invoke('seed-listings', { body: { count: thisCount } });
-        if (error) throw error;
+        const data = await invokeSeedFunction({ count: thisCount });
         totalCreated += data?.created || thisCount;
       }
       toast.success(`✅ Seed terminé : ${totalCreated} annonces créées`);
