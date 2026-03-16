@@ -213,7 +213,7 @@ export default function MyListings() {
 
   const ListingRow = ({ listing }: { listing: any }) => {
     const imgUrl = listing.listing_images?.[0]?.storage_path
-      ? supabase.storage.from('listings').getPublicUrl(listing.listing_images[0].storage_path).data.publicUrl
+      ? getListingImageUrl(listing.listing_images[0].storage_path)
       : '/placeholder.svg';
     const boostInfo = getBoostInfo(listing.id);
     const isFeatured = boostInfo?.type === 'boost_premium';

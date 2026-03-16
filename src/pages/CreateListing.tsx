@@ -103,7 +103,7 @@ export default function CreateListing() {
       setExistingImageUrls(imgs.map((img: any) => ({
         id: img.id,
         storage_path: img.storage_path,
-        url: supabase.storage.from('listings').getPublicUrl(img.storage_path).data.publicUrl,
+        url: getListingImageUrl(img.storage_path),
       })));
     };
     loadListing();
