@@ -44,6 +44,21 @@ export default function AdminDashboard() {
   const { data: reports } = useAdminReports();
   const { data: events } = useAdminAnalyticsEvents();
   const { data: proSubs } = useAdminProSubscriptions();
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeed = async () => {
+    if (!confirm('Créer ~350 fausses annonces avec 15 profils fictifs ?')) return;
+    setSeeding(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { count: 350 } });
+      if (error) throw error;
+      toast.success(`✅ Seed terminé : ${data?.created} annonces, ${data?.users} utilisateurs`);
+    } catch (err: any) {
+      toast.error(`Erreur seed : ${err.message}`);
+    } finally {
+      setSeeding(false);
+    }
+  };
 
   const pendingReports = reports?.filter((r: any) => !r.resolved) || [];
   const bannedUsers = profiles?.filter((p: any) => p.is_banned) || [];
