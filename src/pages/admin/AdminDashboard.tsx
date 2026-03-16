@@ -139,8 +139,12 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       {/* Seed button */}
-      <div className="flex justify-end">
-        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding}>
+      <div className="flex justify-end gap-2">
+        <Button variant="destructive" size="sm" onClick={handlePurgeSeed} disabled={purging || seeding}>
+          <Ban className="h-4 w-4 mr-2" />
+          {purging ? 'Purge en cours...' : 'Purge seed'}
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding || purging}>
           <Sprout className="h-4 w-4 mr-2" />
           {seeding ? 'Seed en cours...' : 'Seed 350 annonces'}
         </Button>
