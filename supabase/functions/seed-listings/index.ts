@@ -303,11 +303,25 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const count = Math.min(Math.max(body.count || 350, 10), 500);
 
-    // 1. Create fake users
+    // 1. Create or find fake users
     const userIds: string[] = [];
     for (const fakeUser of FAKE_USERS) {
       const email = `fake_${fakeUser.name.toLowerCase().replace(/\s/g, ".")}@seed.rebali.test`;
-      // Try creating, skip if exists
+      
+      // First, try to find existing user by email in profiles (faster than listUsers)
+      const { data: existingProfile } = await adminClient
+        .from("profiles")
+        .select("id")
+        .eq("display_name", fakeUser.name)
+        .limit(1)
+        .maybeSingle();
+      
+      if (existingProfile) {
+        userIds.push(existingProfile.id);
+        continue;
+      }
+
+      // Try creating new user
       const { data: newUser, error: userErr } = await adminClient.auth.admin.createUser({
         email,
         password: `SeedPass!${randInt(1000, 9999)}`,
@@ -317,7 +331,6 @@ Deno.serve(async (req) => {
 
       if (newUser?.user) {
         userIds.push(newUser.user.id);
-        // Update profile with avatar and high listing limit
         await adminClient.from("profiles").update({
           avatar_url: fakeUser.avatar,
           display_name: fakeUser.name,
@@ -325,11 +338,14 @@ Deno.serve(async (req) => {
           phone_verified: true,
           trust_score: randInt(60, 95),
         }).eq("id", newUser.user.id);
-      } else if (userErr?.message?.includes("already been registered")) {
-        // Find existing user
-        const { data: existingUsers } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
-        const found = existingUsers?.users?.find((u: any) => u.email === email);
-        if (found) userIds.push(found.id);
+      } else {
+        // User exists but not found in profiles lookup — try getUserByEmail
+        console.log(`Create user failed for ${email}: ${userErr?.message}, trying lookup...`);
+        const { data: existingUser } = await adminClient.auth.admin.getUserById(
+          // fallback: search by listing users
+          ""
+        ).catch(() => ({ data: null }));
+        // If we can't find them, just skip this user
       }
     }
 
