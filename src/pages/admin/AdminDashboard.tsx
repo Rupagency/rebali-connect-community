@@ -114,6 +114,14 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Seed button */}
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" onClick={handleSeed} disabled={seeding}>
+          <Sprout className="h-4 w-4 mr-2" />
+          {seeding ? 'Seed en cours...' : 'Seed 350 annonces'}
+        </Button>
+      </div>
+
       {/* Primary KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <KPICard icon={Users} label={t('admin.users')} value={profiles?.length || 0} trend={userGrowthPct} trendLabel={t('adminPage.vsPrevWeek')} />
