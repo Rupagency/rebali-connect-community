@@ -304,24 +304,28 @@ Deno.serve(async (req) => {
     const count = Math.min(Math.max(body.count || 350, 10), 500);
 
     // 1. Create or find fake users
+    // First, try to find all existing seed users in one query
+    const { data: existingProfiles } = await adminClient
+      .from("profiles")
+      .select("id, display_name")
+      .filter("listing_limit_override", "eq", 100)
+      .limit(50);
+    
+    const existingByName = new Map<string, string>();
+    for (const p of existingProfiles || []) {
+      if (p.display_name) existingByName.set(p.display_name, p.id);
+    }
+
     const userIds: string[] = [];
     for (const fakeUser of FAKE_USERS) {
-      const email = `fake_${fakeUser.name.toLowerCase().replace(/\s/g, ".")}@seed.rebali.test`;
-      
-      // First, try to find existing user by email in profiles (faster than listUsers)
-      const { data: existingProfile } = await adminClient
-        .from("profiles")
-        .select("id")
-        .eq("display_name", fakeUser.name)
-        .limit(1)
-        .maybeSingle();
-      
-      if (existingProfile) {
-        userIds.push(existingProfile.id);
+      // Check if already exists
+      const existingId = existingByName.get(fakeUser.name);
+      if (existingId) {
+        userIds.push(existingId);
         continue;
       }
 
-      // Try creating new user
+      const email = `fake_${fakeUser.name.toLowerCase().replace(/\s/g, ".")}@seed.rebali.test`;
       const { data: newUser, error: userErr } = await adminClient.auth.admin.createUser({
         email,
         password: `SeedPass!${randInt(1000, 9999)}`,
@@ -339,17 +343,11 @@ Deno.serve(async (req) => {
           trust_score: randInt(60, 95),
         }).eq("id", newUser.user.id);
       } else {
-        // User exists but not found in profiles lookup — try getUserByEmail
-        console.log(`Create user failed for ${email}: ${userErr?.message}, trying lookup...`);
-        const { data: existingUser } = await adminClient.auth.admin.getUserById(
-          // fallback: search by listing users
-          ""
-        ).catch(() => ({ data: null }));
-        // If we can't find them, just skip this user
+        console.log(`Skipping user ${email}: ${userErr?.message}`);
       }
     }
 
-    if (userIds.length === 0) throw new Error("No seed users created");
+    if (userIds.length === 0) throw new Error("No seed users found or created");
 
     // 2. Build listing pool from all categories
     const allCategories = Object.keys(LISTINGS);
