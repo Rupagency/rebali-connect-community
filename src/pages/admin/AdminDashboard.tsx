@@ -80,11 +80,13 @@ export default function AdminDashboard() {
   const handlePurgeSeed = async () => {
     if (!confirm('Supprimer TOUTES les annonces et profils seed (@seed.rebali.test) ?')) return;
     setPurging(true);
+    const toastId = toast.loading('🗑️ Purge en cours… Recherche des utilisateurs seed…', { duration: Infinity, position: 'bottom-right' });
     try {
+      toast.loading('🗑️ Suppression des annonces, images, conversations…', { id: toastId, position: 'bottom-right' });
       const data = await invokeSeedFunction({ action: 'purge' });
-      toast.success(`✅ Purge terminée : ${data?.deleted_listings || 0} annonces, ${data?.deleted_users || 0} utilisateurs supprimés`);
+      toast.success(`✅ Purge terminée !\n${data?.deleted_listings || 0} annonces supprimées\n${data?.deleted_users || 0} utilisateurs supprimés`, { id: toastId, duration: 8000, position: 'bottom-right' });
     } catch (err: any) {
-      toast.error(`Erreur purge : ${err.message}`);
+      toast.error(`❌ Erreur purge : ${err.message}`, { id: toastId, duration: 8000, position: 'bottom-right' });
     } finally {
       setPurging(false);
     }
