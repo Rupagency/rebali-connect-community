@@ -2,12 +2,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAdminProfiles, useAdminListings, useAdminReports, useAdminAnalyticsEvents, useAdminProSubscriptions } from '@/hooks/useAdminData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Users, FileText, AlertTriangle, Ban, TrendingUp, DollarSign,
-  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package
+  ShieldCheck, ArrowUpRight, ArrowDownRight, UserPlus, Package, Seedling
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 function KPICard({ icon: Icon, label, value, trend, trendLabel, variant = 'default' }: {
   icon: any; label: string; value: number | string; trend?: number; trendLabel?: string;
