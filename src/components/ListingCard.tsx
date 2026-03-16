@@ -36,7 +36,9 @@ interface ListingCardProps {
   favCount?: number;
 }
 
-export default function ListingCard({ listing, boostTypes, favCount: favCountProp }: ListingCardProps) {
+import { memo } from 'react';
+
+const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: favCountProp }: ListingCardProps) {
   const { t, language } = useLanguage();
 
   const isBoosted = boostTypes?.includes('boost') || false;
@@ -171,4 +173,6 @@ export default function ListingCard({ listing, boostTypes, favCount: favCountPro
       </Card>
     </Link>
   );
-}
+});
+
+export default ListingCard;

@@ -9,9 +9,12 @@ import ListingCard from '@/components/ListingCard';
 import ListingMarquee from '@/components/ListingMarquee';
 import AnimatedHeroText from '@/components/AnimatedHeroText';
 import { Plus, ArrowRight, Star, SlidersHorizontal, X, Sparkles } from 'lucide-react';
-import CategoryMarquee from '@/components/CategoryMarquee';
-import HowItWorks from '@/components/HowItWorks';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { lazy, Suspense } from 'react';
+
+// Lazy load below-fold components
+const CategoryMarquee = lazy(() => import('@/components/CategoryMarquee'));
+const HowItWorks = lazy(() => import('@/components/HowItWorks'));
 import { CATEGORY_ICONS, CATEGORIES, CONDITIONS, LOCATIONS } from '@/lib/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
@@ -273,7 +276,9 @@ export default function Home() {
           },
         }}
       />
-      <CategoryMarquee />
+      <Suspense fallback={null}>
+        <CategoryMarquee />
+      </Suspense>
 
       {/* Hero */}
       <section className="relative z-30 bg-gradient-to-br from-primary/10 via-background to-accent/10">
@@ -523,7 +528,9 @@ export default function Home() {
 
       {/* How it works */}
       <ErrorBoundary>
-        <HowItWorks />
+        <Suspense fallback={null}>
+          <HowItWorks />
+        </Suspense>
       </ErrorBoundary>
 
       {/* Category: Immobilier (with featured injection) */}

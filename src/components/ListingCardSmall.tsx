@@ -54,11 +54,14 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
         isFeatured ? 'ring-2 ring-amber-400 shadow-amber-200/50' : isBoosted ? 'ring-2 ring-blue-400 shadow-blue-200/50' : ''
       }`}>
         <div className="aspect-square overflow-hidden bg-muted relative">
-          <img
+           <img
             src={imageUrl}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
+            decoding="async"
+            width={180}
+            height={180}
           />
           {(isBoosted || isFeatured) && (
             <div className="absolute top-1.5 left-1.5">
