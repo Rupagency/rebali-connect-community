@@ -1,11 +1,11 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Rocket, Star, Home, ShieldCheck, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
-import { supabase } from '@/integrations/supabase/client';
-import { getListingImageUrl } from '@/lib/utils';
+import { getListingImageCandidates } from '@/lib/utils';
 
 interface ListingCardSmallProps {
   listing: {
@@ -21,7 +21,7 @@ interface ListingCardSmallProps {
     seller_id: string;
     extra_fields?: any;
     listing_type?: string;
-    listing_images?: { storage_path: string }[];
+    listing_images?: { storage_path: string; sort_order?: number }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
     _isSponsored?: boolean;
@@ -45,9 +45,22 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
       ? enTranslation.title
       : listing.title_original;
 
-  const imageUrl = listing.listing_images?.[0]?.storage_path
-    ? getListingImageUrl(listing.listing_images[0].storage_path)
-    : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
+  const fallbackImage = CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
+  const imageCandidates = useMemo(
+    () => getListingImageCandidates(listing.listing_images, fallbackImage),
+    [listing.listing_images, fallbackImage]
+  );
+  const [imageIndex, setImageIndex] = useState(0);
+
+  useEffect(() => {
+    setImageIndex(0);
+  }, [listing.id, imageCandidates[0]]);
+
+  const imageUrl = imageCandidates[Math.min(imageIndex, imageCandidates.length - 1)] ?? fallbackImage;
+
+  const handleImageError = () => {
+    setImageIndex(prev => (prev < imageCandidates.length - 1 ? prev + 1 : prev));
+  };
 
   return (
     <Link to={`/listing/${listing.id}`} className="block flex-shrink-0 w-[160px] sm:w-[180px]">
@@ -55,7 +68,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
         isFeatured ? 'ring-2 ring-amber-400 shadow-amber-200/50' : isBoosted ? 'ring-2 ring-blue-400 shadow-blue-200/50' : ''
       }`}>
         <div className="aspect-square overflow-hidden bg-muted relative">
-           <img
+          <img
             src={imageUrl}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -63,6 +76,7 @@ export default function ListingCardSmall({ listing, boostTypes }: ListingCardSma
             decoding="async"
             width={180}
             height={180}
+            onError={handleImageError}
           />
           {(isBoosted || isFeatured) && (
             <div className="absolute top-1.5 left-1.5">

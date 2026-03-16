@@ -1,3 +1,4 @@
+import { memo, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -5,8 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Eye, Clock, Briefcase, Heart, ShieldCheck, Rocket, Star, Home, Megaphone } from 'lucide-react';
 import { formatPrice, CATEGORY_ICONS, CATEGORY_PLACEHOLDERS, getRentalPeriodSuffix } from '@/lib/constants';
-import { supabase } from '@/integrations/supabase/client';
-import { getListingImageUrl } from '@/lib/utils';
+import { getListingImageCandidates } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import ShareButton from '@/components/ShareButton';
@@ -27,7 +27,7 @@ interface ListingCardProps {
     seller_id: string;
     extra_fields?: any;
     listing_type?: string;
-    listing_images?: { storage_path: string }[];
+    listing_images?: { storage_path: string; sort_order?: number }[];
     listing_translations?: { lang: string; title: string }[];
     profiles?: { user_type: string; is_verified_seller: boolean } | null;
     favorites?: { count: number }[];
@@ -36,8 +36,6 @@ interface ListingCardProps {
   boostTypes?: string[];
   favCount?: number;
 }
-
-import { memo } from 'react';
 
 const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: favCountProp }: ListingCardProps) {
   const { t, language } = useLanguage();
@@ -59,9 +57,22 @@ const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: f
       ? enTranslation.title
       : listing.title_original;
 
-  const imageUrl = listing.listing_images?.[0]?.storage_path
-    ? getListingImageUrl(listing.listing_images[0].storage_path)
-    : CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
+  const fallbackImage = CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
+  const imageCandidates = useMemo(
+    () => getListingImageCandidates(listing.listing_images, fallbackImage),
+    [listing.listing_images, fallbackImage]
+  );
+  const [imageIndex, setImageIndex] = useState(0);
+
+  useEffect(() => {
+    setImageIndex(0);
+  }, [listing.id, imageCandidates[0]]);
+
+  const imageUrl = imageCandidates[Math.min(imageIndex, imageCandidates.length - 1)] ?? fallbackImage;
+
+  const handleImageError = () => {
+    setImageIndex(prev => (prev < imageCandidates.length - 1 ? prev + 1 : prev));
+  };
 
   const timeAgo = formatDistanceToNow(new Date(listing.created_at), {
     addSuffix: true,
@@ -80,8 +91,9 @@ const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: f
             decoding="async"
             width={400}
             height={300}
+            onError={handleImageError}
           />
-          
+
           <Badge className="absolute top-2 left-2 bg-card/90 text-foreground text-xs">
             {CATEGORY_ICONS[listing.category]} {t(`categories.${listing.category}`)}
           </Badge>
