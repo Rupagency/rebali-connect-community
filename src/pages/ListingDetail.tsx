@@ -431,7 +431,7 @@ export default function ListingDetail() {
                     // Fallback to original if _wm version doesn't exist (old listings)
                     const target = e.target as HTMLImageElement;
                     const originalUrl = images[currentImage]?.storage_path
-                      ? supabase.storage.from('listings').getPublicUrl(images[currentImage].storage_path).data.publicUrl
+                      ? getListingImageUrl(images[currentImage].storage_path)
                       : '';
                     if (originalUrl && target.src !== originalUrl) {
                       target.src = originalUrl;
