@@ -369,7 +369,7 @@ export default function ListingDetail() {
             name: title,
             description: description?.slice(0, 300),
             image: images.length > 0
-              ? supabase.storage.from('listings').getPublicUrl(images[0]?.storage_path).data.publicUrl
+              ? getListingImageUrl(images[0]?.storage_path)
               : "https://re-bali.com/pwa-512x512.png",
             url: `https://re-bali.com/listing/${id}`,
             offers: {
