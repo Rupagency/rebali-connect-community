@@ -413,6 +413,8 @@ export default function Profile() {
 
   // Stats
   const [stats, setStats] = useState({ active: 0, sold: 0, totalViews: 0, avgRating: 0, reviewCount: 0 });
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState(false);
   // Reviews
   const [reviews, setReviews] = useState<any[]>([]);
 
@@ -431,33 +433,53 @@ export default function Profile() {
 
   useEffect(() => {
     if (!user) return;
-    // Fetch stats
+    let cancelled = false;
+
     const fetchStats = async () => {
-      const { data: listings } = await supabase
-        .from('listings')
-        .select('status, views_count')
-        .eq('seller_id', user.id);
+      setStatsLoading(true);
+      setStatsError(false);
 
-      const active = listings?.filter(l => l.status === 'active').length || 0;
-      const sold = listings?.filter(l => l.status === 'sold').length || 0;
-      const totalViews = listings?.reduce((sum, l) => sum + (l.views_count || 0), 0) || 0;
+      try {
+        const { data: listings, error: listingsError } = await supabase
+          .from('listings')
+          .select('status, views_count')
+          .eq('seller_id', user.id);
 
-      const { data: revs } = await supabase
-        .from('reviews')
-        .select('rating, comment, created_at, reviewer_id, profiles!reviews_reviewer_id_fkey(display_name, avatar_url)')
-        .eq('seller_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10);
+        if (listingsError) throw listingsError;
 
-      const avgRating = revs && revs.length > 0
-        ? revs.reduce((sum, r) => sum + r.rating, 0) / revs.length
-        : 0;
+        const active = listings?.filter(l => l.status === 'active').length || 0;
+        const sold = listings?.filter(l => l.status === 'sold').length || 0;
+        const totalViews = listings?.reduce((sum, l) => sum + (l.views_count || 0), 0) || 0;
 
-      setStats({ active, sold, totalViews, avgRating, reviewCount: revs?.length || 0 });
-      setReviews(revs || []);
+        const { data: revs, error: reviewsError } = await supabase
+          .from('reviews')
+          .select('rating, comment, created_at, reviewer_id, profiles!reviews_reviewer_id_fkey(display_name, avatar_url)')
+          .eq('seller_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (reviewsError) throw reviewsError;
+
+        const avgRating = revs && revs.length > 0
+          ? revs.reduce((sum, r) => sum + r.rating, 0) / revs.length
+          : 0;
+
+        if (cancelled) return;
+        setStats({ active, sold, totalViews, avgRating, reviewCount: revs?.length || 0 });
+        setReviews(revs || []);
+      } catch (error) {
+        console.error('[Profile] stats fetch failed:', error);
+        if (!cancelled) setStatsError(true);
+      } finally {
+        if (!cancelled) setStatsLoading(false);
+      }
     };
+
     fetchStats();
-  }, [user]);
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   if (authLoading) {
     return (
@@ -572,11 +594,12 @@ export default function Profile() {
     navigate('/');
   };
 
-  const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })
+  const memberSince = (profile?.created_at || user?.created_at)
+    ? new Date(profile?.created_at || user?.created_at || '').toLocaleDateString(undefined, { year: 'numeric', month: 'long' })
     : '';
 
-  const initials = (profile?.display_name || 'U').slice(0, 2).toUpperCase();
+  const fallbackDisplayName = profile?.display_name || user?.user_metadata?.display_name || user?.email?.split('@')?.[0] || t('profile.displayName');
+  const initials = fallbackDisplayName.slice(0, 2).toUpperCase();
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl space-y-6">
@@ -601,7 +624,7 @@ export default function Profile() {
             </div>
             <div className="flex-1 text-center sm:text-left space-y-1">
               <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-                <h1 className="text-2xl font-bold">{profile?.display_name || t('profile.displayName')}</h1>
+                <h1 className="text-2xl font-bold">{fallbackDisplayName}</h1>
                 <Badge variant={profile?.user_type === 'business' ? 'default' : 'secondary'}>
                   {profile?.user_type === 'business' ? t('common.pro') : t('common.private')}
                 </Badge>
@@ -659,10 +682,10 @@ export default function Profile() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { icon: Package, label: t('profile.statsActive'), value: stats.active, color: 'text-primary', href: '/my-listings' },
-          { icon: ShoppingBag, label: t('profile.statsSold'), value: stats.sold, color: 'text-accent', href: '/my-listings?tab=sold' },
-          { icon: Eye, label: t('profile.statsTotalViews'), value: stats.totalViews, color: 'text-muted-foreground', href: null },
-          { icon: Star, label: t('profile.statsAvgRating'), value: stats.reviewCount > 0 ? stats.avgRating.toFixed(1) : '—', color: 'text-accent', href: `/seller/${encodeURIComponent(user.id)}` },
+          { icon: Package, label: t('profile.statsActive'), value: statsLoading ? '—' : stats.active, color: 'text-primary', href: '/my-listings' },
+          { icon: ShoppingBag, label: t('profile.statsSold'), value: statsLoading ? '—' : stats.sold, color: 'text-accent', href: '/my-listings?tab=sold' },
+          { icon: Eye, label: t('profile.statsTotalViews'), value: statsLoading ? '—' : stats.totalViews, color: 'text-muted-foreground', href: null },
+          { icon: Star, label: t('profile.statsAvgRating'), value: statsLoading ? '—' : (stats.reviewCount > 0 ? stats.avgRating.toFixed(1) : '—'), color: 'text-accent', href: `/seller/${encodeURIComponent(user.id)}` },
         ].map((stat, i) => (
           <Card
             key={i}
@@ -677,6 +700,9 @@ export default function Profile() {
           </Card>
         ))}
       </div>
+      {statsError && (
+        <p className="text-xs text-destructive">{t('common.error') || 'Erreur de chargement des statistiques.'}</p>
+      )}
 
       {/* Information Form */}
       <Card>
