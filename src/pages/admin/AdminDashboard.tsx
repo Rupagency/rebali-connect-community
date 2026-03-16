@@ -45,6 +45,21 @@ export default function AdminDashboard() {
   const { data: events } = useAdminAnalyticsEvents();
   const { data: proSubs } = useAdminProSubscriptions();
   const [seeding, setSeeding] = useState(false);
+  const [purging, setPurging] = useState(false);
+
+  const handlePurgeSeed = async () => {
+    if (!confirm('Supprimer TOUTES les annonces et profils seed (@seed.rebali.test) ?')) return;
+    setPurging(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('seed-listings', { body: { action: 'purge' } });
+      if (error) throw error;
+      toast.success(`✅ Purge terminée : ${data?.deleted_listings || 0} annonces, ${data?.deleted_users || 0} utilisateurs supprimés`);
+    } catch (err: any) {
+      toast.error(`Erreur purge : ${err.message}`);
+    } finally {
+      setPurging(false);
+    }
+  };
 
   const handleSeed = async () => {
     const totalTarget = 350;
