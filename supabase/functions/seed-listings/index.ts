@@ -305,7 +305,7 @@ Deno.serve(async (req) => {
 
     // ── PURGE ACTION ──
     if (body.action === "purge") {
-      // Find all seed users by email pattern (paginate)
+      // Find all seed users by email pattern (paginate through auth)
       const seedUserIds: string[] = [];
       let page = 1;
       while (true) {
@@ -318,45 +318,94 @@ Deno.serve(async (req) => {
         page++;
       }
 
+      console.log(`[purge] Found ${seedUserIds.length} seed users`);
       let deletedListings = 0;
+
       if (seedUserIds.length > 0) {
-        // Process in chunks of 50 to avoid .in() limits
-        const chunkSize = 50;
+        const chunkSize = 30;
+
+        // 1. Collect ALL listing IDs (bypass 1000-row default limit)
+        const allListingIds: string[] = [];
         for (let i = 0; i < seedUserIds.length; i += chunkSize) {
-          const chunk = seedUserIds.slice(i, i + chunkSize);
-
-          // Get listing IDs for this chunk of sellers
-          const { data: chunkListings } = await adminClient
-            .from("listings")
-            .select("id")
-            .in("seller_id", chunk);
-          const chunkListingIds = (chunkListings || []).map((l: any) => l.id);
-
-          // Delete images & translations in sub-chunks
-          for (let j = 0; j < chunkListingIds.length; j += chunkSize) {
-            const listingChunk = chunkListingIds.slice(j, j + chunkSize);
-            await Promise.all([
-              adminClient.from("listing_images").delete().in("listing_id", listingChunk),
-              adminClient.from("listing_translations").delete().in("listing_id", listingChunk),
-            ]);
+          const userChunk = seedUserIds.slice(i, i + chunkSize);
+          let from = 0;
+          while (true) {
+            const { data } = await adminClient
+              .from("listings")
+              .select("id")
+              .in("seller_id", userChunk)
+              .range(from, from + 999);
+            if (!data || data.length === 0) break;
+            allListingIds.push(...data.map((l: any) => l.id));
+            if (data.length < 1000) break;
+            from += 1000;
           }
+        }
+        console.log(`[purge] Found ${allListingIds.length} seed listings`);
 
-          // Delete listings for this user chunk
-          const { count } = await adminClient.from("listings").delete({ count: "exact" }).in("seller_id", chunk);
+        // 2. Delete all FK dependencies on listings (in chunks)
+        for (let i = 0; i < allListingIds.length; i += chunkSize) {
+          const ids = allListingIds.slice(i, i + chunkSize);
+          await Promise.all([
+            adminClient.from("listing_images").delete().in("listing_id", ids),
+            adminClient.from("listing_translations").delete().in("listing_id", ids),
+            adminClient.from("favorites").delete().in("listing_id", ids),
+            adminClient.from("reports").delete().in("listing_id", ids),
+            adminClient.from("whatsapp_click_logs").delete().in("listing_id", ids),
+            adminClient.from("user_addons").delete().in("listing_id", ids),
+            adminClient.from("search_notifications").delete().in("listing_id", ids),
+          ]);
+        }
+
+        // 3. Delete conversations + messages for seed users
+        for (let i = 0; i < seedUserIds.length; i += chunkSize) {
+          const userChunk = seedUserIds.slice(i, i + chunkSize);
+          const { data: convs1 } = await adminClient.from("conversations").select("id").in("buyer_id", userChunk);
+          const { data: convs2 } = await adminClient.from("conversations").select("id").in("seller_id", userChunk);
+          const convIds = [...(convs1 || []), ...(convs2 || [])].map((c: any) => c.id);
+          const uniqueConvIds = [...new Set(convIds)];
+          for (let j = 0; j < uniqueConvIds.length; j += chunkSize) {
+            const convChunk = uniqueConvIds.slice(j, j + chunkSize);
+            await adminClient.from("messages").delete().in("conversation_id", convChunk);
+            await adminClient.from("wa_relay_tokens").delete().in("conversation_id", convChunk);
+            await adminClient.from("reviews").delete().in("conversation_id", convChunk);
+          }
+          await adminClient.from("conversations").delete().in("buyer_id", userChunk);
+          await adminClient.from("conversations").delete().in("seller_id", userChunk);
+        }
+
+        // 4. Delete listings
+        for (let i = 0; i < seedUserIds.length; i += chunkSize) {
+          const userChunk = seedUserIds.slice(i, i + chunkSize);
+          const { count } = await adminClient.from("listings").delete({ count: "exact" }).in("seller_id", userChunk);
           deletedListings += count || 0;
+        }
 
-          // Delete profiles
-          await adminClient.from("profiles").delete().in("id", chunk);
+        // 5. Delete remaining user-linked data, then profiles, then auth
+        for (let i = 0; i < seedUserIds.length; i += chunkSize) {
+          const userChunk = seedUserIds.slice(i, i + chunkSize);
+          await Promise.all([
+            adminClient.from("user_blocks").delete().in("blocker_id", userChunk),
+            adminClient.from("user_blocks").delete().in("blocked_id", userChunk),
+            adminClient.from("referrals").delete().in("referrer_id", userChunk),
+            adminClient.from("referrals").delete().in("referred_id", userChunk),
+            adminClient.from("reviews").delete().in("reviewer_id", userChunk),
+            adminClient.from("reviews").delete().in("seller_id", userChunk),
+            adminClient.from("saved_searches").delete().in("user_id", userChunk),
+            adminClient.from("favorites").delete().in("user_id", userChunk),
+          ]);
+          await adminClient.from("profiles").delete().in("id", userChunk);
+        }
 
-          // Delete auth users in parallel (batch of 5)
-          for (let k = 0; k < chunk.length; k += 5) {
-            await Promise.all(
-              chunk.slice(k, k + 5).map(uid => adminClient.auth.admin.deleteUser(uid))
-            );
-          }
+        // 6. Delete auth users (parallel batches of 5)
+        for (let i = 0; i < seedUserIds.length; i += 5) {
+          await Promise.all(
+            seedUserIds.slice(i, i + 5).map(uid => adminClient.auth.admin.deleteUser(uid))
+          );
         }
       }
 
+      console.log(`[purge] Done: ${deletedListings} listings, ${seedUserIds.length} users`);
       return new Response(JSON.stringify({ deleted_listings: deletedListings, deleted_users: seedUserIds.length }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
