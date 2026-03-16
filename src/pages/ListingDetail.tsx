@@ -358,7 +358,7 @@ export default function ListingDetail() {
         title={title}
         description={description?.slice(0, 160)}
         image={images.length > 0
-          ? supabase.storage.from('listings').getPublicUrl(images[0]?.storage_path).data.publicUrl
+          ? getListingImageUrl(images[0]?.storage_path)
           : undefined}
         url={`/listing/${id}`}
         type="product"
