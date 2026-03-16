@@ -528,7 +528,9 @@ export default function Home() {
 
       {/* How it works */}
       <ErrorBoundary>
-        <HowItWorks />
+        <Suspense fallback={null}>
+          <HowItWorks />
+        </Suspense>
       </ErrorBoundary>
 
       {/* Category: Immobilier (with featured injection) */}
