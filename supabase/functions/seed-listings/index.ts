@@ -329,6 +329,7 @@ Deno.serve(async (req) => {
       for (const p of seedProfiles || []) seedUserIdsSet.add((p as any).id);
 
       const seedUserIds = [...seedUserIdsSet];
+      let deletedListings = 0;
 
       if (seedUserIds.length > 0) {
         const chunkSize = 30;
