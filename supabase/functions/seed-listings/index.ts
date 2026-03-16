@@ -112,6 +112,7 @@ interface ListingTemplate {
   subcategory?: string;
   listing_type?: string;
   extra_fields?: Record<string, string | number>;
+  images?: string[]; // Specific Unsplash photo IDs for this template
 }
 
 const LISTINGS: Record<string, ListingTemplate[]> = {
