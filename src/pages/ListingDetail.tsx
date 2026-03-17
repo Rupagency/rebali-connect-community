@@ -1,5 +1,5 @@
 import SEOHead from '@/components/SEOHead';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
@@ -32,6 +32,7 @@ import WatermarkOverlay from '@/components/WatermarkOverlay';
 import BlockUserButton from '@/components/BlockUserButton';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import ListingDetailSkeleton from '@/components/skeletons/ListingDetailSkeleton';
+import BoostPromptDialog from '@/components/BoostPromptDialog';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
@@ -55,7 +56,9 @@ const BALI_COORDS: Record<string, { lat: string; lng: string; bbox: string }> = 
 
 export default function ListingDetail() {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { t, language } = useLanguage();
+  const [showBoostPrompt, setShowBoostPrompt] = useState(!!(location.state as any)?.showBoostPrompt);
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
@@ -827,6 +830,16 @@ export default function ListingDetail() {
           </form>
         </DialogContent>
       </Dialog>
+      {id && showBoostPrompt && (
+        <BoostPromptDialog
+          listingId={id}
+          open={showBoostPrompt}
+          onClose={() => {
+            setShowBoostPrompt(false);
+            window.history.replaceState({}, document.title);
+          }}
+        />
+      )}
     </div>
   );
 }
