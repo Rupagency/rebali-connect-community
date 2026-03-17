@@ -180,7 +180,7 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
 
             {/* Balance indicator */}
             <p className="text-xs text-center text-muted-foreground">
-              💰 {balance} pts {t('points.available')}
+              💰 {balance} pts
             </p>
 
             {/* Skip */}
