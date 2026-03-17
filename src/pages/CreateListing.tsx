@@ -418,7 +418,7 @@ export default function CreateListing() {
 
         toast({ title: t('createListing.listingCreated') });
         import('@/lib/analytics').then(({ trackEvent }) => trackEvent('listing_created', { listing_id: listing.id, category: form.category })).catch(() => {});
-        navigate(`/listing/${listing.id}`);
+        navigate(`/listing/${listing.id}`, { state: { showBoostPrompt: true } });
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
