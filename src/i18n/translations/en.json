@@ -30,7 +30,9 @@
     "optional": "Optional",
     "private": "Private",
     "pro": "Pro",
-    "sponsored": "Sponsored"
+    "sponsored": "Sponsored",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "Home",
