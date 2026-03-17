@@ -830,6 +830,16 @@ export default function ListingDetail() {
           </form>
         </DialogContent>
       </Dialog>
+      {id && showBoostPrompt && (
+        <BoostPromptDialog
+          listingId={id}
+          open={showBoostPrompt}
+          onClose={() => {
+            setShowBoostPrompt(false);
+            window.history.replaceState({}, document.title);
+          }}
+        />
+      )}
     </div>
   );
 }
