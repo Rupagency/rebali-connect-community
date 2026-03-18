@@ -16,6 +16,8 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { PasswordStrength } from '@/components/PasswordStrength';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LegalDialog } from '@/components/LegalDialog';
+import { SocialLoginButtons } from '@/components/SocialLoginButtons';
+import { Separator } from '@/components/ui/separator';
 
 export default function Auth() {
   const { t } = useLanguage();
