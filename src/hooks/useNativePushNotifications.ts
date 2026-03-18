@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 /**
  * Native push notifications for iOS/Android via Capacitor.
  * Registers the device token with Supabase for server-side push delivery.
- * 
+ *
  * On web, this hook is a no-op — use usePushNotifications (Web Push / VAPID) instead.
  */
 export function useNativePushNotifications() {
@@ -18,55 +18,42 @@ export function useNativePushNotifications() {
     if (!Capacitor.isNativePlatform() || !user || registeredRef.current) return;
 
     try {
-      // Request permission
-      const permResult = await PushNotifications.requestPermissions();
-      if (permResult.receive !== 'granted') {
-        console.log('[NativePush] Permission denied');
-        return;
-      }
+      const platform = Capacitor.getPlatform(); // 'ios' or 'android'
 
-      // Register with APNS/FCM
-      await PushNotifications.register();
-
-      // Listen for registration token
-      PushNotifications.addListener('registration', async (token) => {
+      // Attach listeners BEFORE register() to avoid missing a fast token callback
+      await PushNotifications.addListener('registration', async (token) => {
         console.log('[NativePush] Token:', token.value);
         registeredRef.current = true;
 
-        // Store the native push token in push_subscriptions
-        // We use "native://<platform>" as endpoint to distinguish from web push
-        const platform = Capacitor.getPlatform(); // 'ios' or 'android'
         const endpoint = `native://${platform}/${token.value}`;
 
-        await supabase.from('push_subscriptions').upsert(
+        const { error } = await supabase.from('push_subscriptions').upsert(
           {
             user_id: user.id,
             endpoint,
-            p256dh: token.value, // store FCM/APNS token here
-            auth: platform, // store platform identifier
+            p256dh: token.value,
+            auth: platform,
           } as any,
           { onConflict: 'user_id,endpoint' }
         );
+
+        if (error) {
+          console.error('[NativePush] Failed to store token:', error);
+        }
       });
 
-      // Handle registration errors
-      PushNotifications.addListener('registrationError', (error) => {
+      await PushNotifications.addListener('registrationError', (error) => {
         console.error('[NativePush] Registration error:', error);
       });
 
-      // Handle received notifications when app is in foreground
-      PushNotifications.addListener('pushNotificationReceived', (notification) => {
+      await PushNotifications.addListener('pushNotificationReceived', (notification) => {
         console.log('[NativePush] Received:', notification);
-        // The notification is automatically shown by the OS when app is in background
-        // For foreground, we could show an in-app toast
       });
 
-      // Handle notification tap (opens the app)
-      PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
+      await PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
         console.log('[NativePush] Action:', action);
         const data = action.notification.data;
-        
-        // Navigate based on notification type
+
         if (data?.type === 'message' && data?.conversation_id) {
           window.location.hash = '';
           window.location.href = `/messages?conv=${data.conversation_id}`;
@@ -78,6 +65,14 @@ export function useNativePushNotifications() {
           window.location.href = `/listing/${data.listing_id}`;
         }
       });
+
+      const permResult = await PushNotifications.requestPermissions();
+      if (permResult.receive !== 'granted') {
+        console.log('[NativePush] Permission denied');
+        return;
+      }
+
+      await PushNotifications.register();
     } catch (err) {
       console.error('[NativePush] Setup error:', err);
     }
@@ -88,6 +83,7 @@ export function useNativePushNotifications() {
 
     return () => {
       if (Capacitor.isNativePlatform()) {
+        registeredRef.current = false;
         PushNotifications.removeAllListeners();
       }
     };
