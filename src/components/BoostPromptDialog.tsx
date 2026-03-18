@@ -24,6 +24,7 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
   const { user } = useAuth();
   const qc = useQueryClient();
   const [purchasing, setPurchasing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [confirmBoostType, setConfirmBoostType] = useState<string | null>(null);
 
   // Fetch user's stock boosts
