@@ -262,6 +262,17 @@ export default function CreateListing() {
     }
   };
 
+  const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number): Promise<T | null> => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const timeoutPromise = new Promise<null>((resolve) => {
+      timeoutId = setTimeout(() => resolve(null), timeoutMs);
+    });
+
+    const result = await Promise.race([promise, timeoutPromise]);
+    if (timeoutId) clearTimeout(timeoutId);
+    return result as T | null;
+  };
+
   // Called when user clicks "Publish" — for new listings, show boost choice first
   const handlePublishClick = () => {
     if (!user || !canPost || loading) return;
@@ -297,29 +308,40 @@ export default function CreateListing() {
         setPublishStep(t('publish.progress.checking'));
         setPublishProgress(10);
         const firstHash = await computeImageHash(photos[0]);
-        const { data: modResult } = await supabase.functions.invoke('moderate-image', {
-          body: {
-            image_hash: firstHash,
-            title: form.title,
-            description: form.description,
-          },
-        });
-        if (modResult && !modResult.safe) {
-          const warnings = (modResult.warnings || []) as string[];
-          setModerationWarnings(warnings);
-          if (warnings.includes('duplicate_image')) {
-            const dupeTitle = modResult.duplicate_listings?.[0]?.title || '';
-            toast({
-              title: t('moderation.duplicateImage'),
-              description: dupeTitle ? `${t('moderation.duplicateOf')}: "${dupeTitle}"` : undefined,
-              variant: 'destructive',
-            });
-            setLoading(false);
-            setPublishProgress(0);
-            return;
-          }
-          if (warnings.includes('similar_title')) {
-            toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
+        const moderationResponse = await withTimeout(
+          supabase.functions.invoke('moderate-image', {
+            body: {
+              image_hash: firstHash,
+              title: form.title,
+              description: form.description,
+            },
+          }),
+          15000
+        );
+
+        if (!moderationResponse) {
+          console.warn('moderate-image timed out, continuing publication');
+        } else {
+          const { data: modResult, error: moderationError } = moderationResponse;
+          if (moderationError) {
+            console.warn('Moderation check failed, continuing publication', moderationError);
+          } else if (modResult && !modResult.safe) {
+            const warnings = (modResult.warnings || []) as string[];
+            setModerationWarnings(warnings);
+            if (warnings.includes('duplicate_image')) {
+              const dupeTitle = modResult.duplicate_listings?.[0]?.title || '';
+              toast({
+                title: t('moderation.duplicateImage'),
+                description: dupeTitle ? `${t('moderation.duplicateOf')}: "${dupeTitle}"` : undefined,
+                variant: 'destructive',
+              });
+              setLoading(false);
+              setPublishProgress(0);
+              return;
+            }
+            if (warnings.includes('similar_title')) {
+              toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
+            }
           }
         }
       } catch (e) {
@@ -348,7 +370,7 @@ export default function CreateListing() {
 
         const username = profile?.display_name || 'user';
         const startIndex = existingImageUrls.length;
-        
+
         setPublishStep(t('publish.progress.uploading'));
         for (let i = 0; i < photos.length; i++) {
           setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 50));
@@ -452,14 +474,30 @@ export default function CreateListing() {
         if (selectedBoost) {
           setPublishStep(t('publish.progress.boosting'));
           setPublishProgress(70);
-          if (selectedBoost === 'stock') {
-            await supabase.functions.invoke('manage-points', {
-              body: { action: 'use_stock_boost', listing_id: listing.id },
-            });
-          } else {
-            await supabase.functions.invoke('manage-points', {
-              body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
-            });
+
+          const boostResponse = await withTimeout(
+            selectedBoost === 'stock'
+              ? supabase.functions.invoke('manage-points', {
+                  body: { action: 'use_stock_boost', listing_id: listing.id },
+                })
+              : supabase.functions.invoke('manage-points', {
+                  body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
+                }),
+            15000
+          );
+
+          if (!boostResponse) {
+            toast({ title: t('points.purchaseError'), variant: 'destructive' });
+          } else if (boostResponse.error || boostResponse.data?.error) {
+            const boostError = boostResponse.data?.error;
+            const boostErrorMessage = boostError === 'insufficient_points'
+              ? t('points.insufficientPoints')
+              : boostError === 'already_boosted'
+              ? t('points.boost.alreadyBoosted')
+              : boostError === 'no_stock_boosts'
+              ? t('points.boost.noStockBoosts')
+              : t('points.purchaseError');
+            toast({ title: boostErrorMessage, variant: 'destructive' });
           }
         }
 
@@ -467,7 +505,7 @@ export default function CreateListing() {
         setPublishStep(t('publish.progress.translating'));
         setPublishProgress(85);
         triggerListingTranslation(listing.id).catch(() => {});
-        
+
         // Small delay to let translation start
         await new Promise(r => setTimeout(r, 600));
 
