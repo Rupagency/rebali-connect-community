@@ -22,6 +22,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffectiveListingLimit } from '@/hooks/useEffectiveListingLimit';
 import { isNativePlatform } from '@/capacitor';
 import { openExternal } from '@/lib/openExternal';
+import { trackEvent } from '@/lib/analytics';
 
 
 const STEPS = ['stepCategory', 'stepDetails', 'stepPhotos', 'stepPreview'] as const;

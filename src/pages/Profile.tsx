@@ -26,6 +26,7 @@ import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import SavedSearches from '@/components/SavedSearches';
 import PushNotificationToggle from '@/components/PushNotificationToggle';
 import ReferralWidget from '@/components/ReferralWidget';
+import { trackEvent } from '@/lib/analytics';
 
 const profileSchema = z.object({
   display_name: z.string().trim().min(2, 'Min 2 characters').max(50, 'Max 50 characters'),
