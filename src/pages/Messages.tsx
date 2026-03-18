@@ -28,6 +28,7 @@ export default function Messages() {
   const activeConvId = searchParams.get('conv');
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [dealClosedDialogOpen, setDealClosedDialogOpen] = useState(false);
