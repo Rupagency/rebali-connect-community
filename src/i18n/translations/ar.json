@@ -1,6 +1,8 @@
 {
   "common": {
-    "sponsored": "مُموَّل"
+    "sponsored": "مُموَّل",
+    "skip": "تخطي",
+    "later": "لاحقاً"
   },
   "nav": {
     "home": "الرئيسية",

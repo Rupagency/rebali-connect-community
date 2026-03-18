@@ -1,6 +1,8 @@
 {
   "common": {
-    "sponsored": "Gesponsord"
+    "sponsored": "Gesponsord",
+    "skip": "Overslaan",
+    "later": "Later"
   },
   "nav": {
     "home": "Home",

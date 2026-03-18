@@ -1,6 +1,8 @@
 {
   "common": {
-    "sponsored": "スポンサー"
+    "sponsored": "スポンサー",
+    "skip": "スキップ",
+    "later": "あとで"
   },
   "nav": {
     "home": "ホーム",
