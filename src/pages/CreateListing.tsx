@@ -177,20 +177,20 @@ export default function CreateListing() {
         ctx.drawImage(img, 0, 0);
 
         const shortSide = Math.min(w, h);
-        const fontSize = Math.max(16, Math.round(shortSide / 28));
-        const text = `Re-Bali.com • @${username}`;
+        const fontSize = Math.max(12, Math.round(shortSide / 50));
+        const text = `Re-Bali.com`;
 
-        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-        ctx.lineWidth = Math.max(1, fontSize / 12);
+        ctx.font = `${fontSize}px Arial, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.lineWidth = Math.max(0.5, fontSize / 16);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        const angle = -30 * (Math.PI / 180);
+        const angle = -25 * (Math.PI / 180);
         const metrics = ctx.measureText(text);
-        const textW = metrics.width + fontSize * 3;
-        const textH = fontSize * 4;
+        const textW = metrics.width + fontSize * 6;
+        const textH = fontSize * 6;
         const diagonal = Math.sqrt(w * w + h * h);
 
         ctx.save();
