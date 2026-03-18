@@ -119,12 +119,7 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
     handleClose();
   };
 
-  // On native, redirect to webapp
-  if (isNativePlatform && open) {
-    openExternalAuthenticated(`${WEBAPP_URL}/points`);
-    handleClose();
-    return null;
-  }
+  // On native, keep dialog inline (no redirect) — payment links use Capacitor Browser
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o && !showConfetti) handleClose(); }}>
