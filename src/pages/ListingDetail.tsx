@@ -32,7 +32,7 @@ import UserBadges from '@/components/UserBadges';
 import BlockUserButton from '@/components/BlockUserButton';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import ListingDetailSkeleton from '@/components/skeletons/ListingDetailSkeleton';
-import BoostPromptDialog from '@/components/BoostPromptDialog';
+
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
