@@ -28,6 +28,7 @@ export default function Messages() {
   const activeConvId = searchParams.get('conv');
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [dealClosedDialogOpen, setDealClosedDialogOpen] = useState(false);
@@ -273,9 +274,12 @@ export default function Messages() {
     }
   }, [isMobile]);
 
-  // Scroll to bottom
+  // Scroll to bottom of messages container only (not the whole page)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [convMessages]);
 
   const sendMessage = async () => {
@@ -651,7 +655,7 @@ export default function Messages() {
                 )}
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 messages-scroll-area">
+                <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 messages-scroll-area">
                   {convMessages?.map((msg: any) => {
                     const isMine = msg.sender_id === user.id;
                     const isSystem = msg.from_role === 'system';
