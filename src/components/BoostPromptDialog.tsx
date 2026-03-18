@@ -4,8 +4,6 @@ import ConfettiEffect from '@/components/ConfettiEffect';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { isNativePlatform } from '@/capacitor';
-import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
@@ -119,16 +117,11 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
     handleClose();
   };
 
-  // On native, redirect to webapp
-  if (isNativePlatform && open) {
-    openExternalAuthenticated(`${WEBAPP_URL}/points`);
-    handleClose();
-    return null;
-  }
+  // On native, keep dialog inline (no redirect) — payment links use Capacitor Browser
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o && !showConfetti) handleClose(); }}>
-      <DialogContent className="relative z-[60] max-w-sm overflow-hidden border-border bg-popover text-popover-foreground shadow-lg">
+      <DialogContent className="relative z-[60] max-w-sm max-h-[85vh] overflow-y-auto border-border bg-popover text-popover-foreground shadow-lg">
         {showConfetti && <ConfettiEffect count={50} />}
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">

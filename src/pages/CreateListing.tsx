@@ -20,6 +20,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
 import { useEffectiveListingLimit } from '@/hooks/useEffectiveListingLimit';
+import { isNativePlatform } from '@/capacitor';
+import { openExternal } from '@/lib/openExternal';
 
 
 const STEPS = ['stepCategory', 'stepDetails', 'stepPhotos', 'stepPreview'] as const;
@@ -971,6 +973,15 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
       void refreshBoostData();
     };
     window.addEventListener('focus', onFocus);
+    // On native, listen for Browser close event
+    let browserListener: { remove: () => void } | undefined;
+    if (isNativePlatform) {
+      import('@capacitor/browser').then(({ Browser }) => {
+        Browser.addListener('browserFinished', () => void refreshBoostData()).then(l => {
+          browserListener = l;
+        });
+      });
+    }
     const timer = window.setInterval(() => {
       void refreshBoostData();
     }, 4000);
@@ -978,6 +989,7 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
     return () => {
       window.removeEventListener('focus', onFocus);
       window.clearInterval(timer);
+      browserListener?.remove();
     };
   }, [open, awaitingPayment, refreshBoostData]);
 
@@ -1012,12 +1024,19 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
       return;
     }
 
-    const paymentWindow = window.open(data.invoice_url, '_blank', 'noopener,noreferrer');
-    if (!paymentWindow) {
-      window.location.href = data.invoice_url;
-    } else {
+    if (isNativePlatform) {
+      // On native, use Capacitor in-app browser
+      await openExternal(data.invoice_url);
       setAwaitingPayment(true);
       void refreshBoostData();
+    } else {
+      const paymentWindow = window.open(data.invoice_url, '_blank', 'noopener,noreferrer');
+      if (!paymentWindow) {
+        window.location.href = data.invoice_url;
+      } else {
+        setAwaitingPayment(true);
+        void refreshBoostData();
+      }
     }
 
     setBuyingPoints(false);
@@ -1048,7 +1067,7 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
-      <DialogContent className="max-w-sm border-border bg-popover text-popover-foreground">
+      <DialogContent className="max-w-sm max-h-[85vh] overflow-y-auto border-border bg-popover text-popover-foreground">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">🔥 {t('points.boost.dialogTitle')}</DialogTitle>
           <DialogDescription>{t('points.boost.dialogChoose')}</DialogDescription>
