@@ -98,3 +98,6 @@ verify_jwt = false
 
 [functions.close-expired-deals]
 verify_jwt = false
+
+[functions.push-engagement]
+verify_jwt = false
