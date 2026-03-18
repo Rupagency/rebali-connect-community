@@ -660,7 +660,7 @@ export default function Profile() {
         <Card>
           <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <p className="text-sm text-muted-foreground">{t('security.npwpRequiredToSell')}</p>
-            <Button onClick={scrollToNpwpSection}>{t('security.npwpGoVerify')}</Button>
+            <Button onClick={() => { trackEvent('npwp_verify_click', { source: 'profile_banner' }); scrollToNpwpSection(); }}>{t('security.npwpGoVerify')}</Button>
           </CardContent>
         </Card>
       )}

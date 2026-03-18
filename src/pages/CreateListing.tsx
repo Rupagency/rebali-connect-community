@@ -534,7 +534,7 @@ export default function CreateListing() {
       <div className="container mx-auto px-4 py-20 text-center space-y-4">
         <ShieldCheck className="h-12 w-12 text-muted-foreground mx-auto" />
         <p className="text-lg text-muted-foreground">{t('security.npwpRequiredToSell')}</p>
-        <Button className="mt-4" onClick={() => navigate('/profile#npwp')}>{t('security.npwpGoVerify')}</Button>
+        <Button className="mt-4" onClick={() => { trackEvent('npwp_verify_click', { source: 'create_listing' }); navigate('/profile#npwp'); }}>{t('security.npwpGoVerify')}</Button>
       </div>
     );
   }
