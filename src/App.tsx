@@ -92,7 +92,8 @@ const App = () => {
             <Toaster />
             <Sonner />
             <OfflineBanner />
-            <BrowserRouter>
+             <BrowserRouter>
+              <ScrollToTop />
               <ErrorBoundary>
               <Suspense fallback={<PageFallback />}>
               <Routes>
