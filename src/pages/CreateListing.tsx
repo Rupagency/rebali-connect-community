@@ -851,11 +851,138 @@ export default function CreateListing() {
             {t('common.next')} <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
-          <Button onClick={handlePublish} disabled={loading}>
+          <Button onClick={handlePublishClick} disabled={loading}>
             {isEditMode ? t('listing.update') : t('createListing.publishListing')}
           </Button>
         )}
       </div>
+
+      {/* Pre-publish boost choice dialog */}
+      <PreBoostDialog
+        open={showPreBoost}
+        onClose={() => setShowPreBoost(false)}
+        onChoice={handleBoostDecision}
+        t={t}
+      />
+
+      {/* Publishing overlay */}
+      {loading && publishProgress > 0 && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm mx-4 space-y-6 text-center">
+            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <Rocket className="h-8 w-8 text-primary animate-bounce" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-foreground mb-1">{t('publish.progress.title')}</h3>
+              <p className="text-sm text-muted-foreground">{publishStep}</p>
+            </div>
+            <Progress value={publishProgress} className="h-3" />
+            <p className="text-xs text-muted-foreground">{publishProgress}%</p>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+/* ---- Pre-publish boost choice ---- */
+function PreBoostDialog({ open, onClose, onChoice, t }: {
+  open: boolean;
+  onClose: () => void;
+  onChoice: (choice: string | null) => void;
+  t: (key: string) => string;
+}) {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+
+  const { data: stockBoosts = [] } = useQuery({
+    queryKey: ['stock-boosts', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data } = await supabase
+        .from('user_addons')
+        .select('id, listing_id, addon_type, expires_at')
+        .eq('user_id', user.id)
+        .eq('active', true)
+        .eq('addon_type', 'boost')
+        .is('listing_id', null);
+      return (data || []).filter(b => b.expires_at && new Date(b.expires_at).getTime() > Date.now());
+    },
+    enabled: !!user && open,
+  });
+
+  const { data: pointsData } = useQuery({
+    queryKey: ['user-points', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data } = await supabase.from('user_points').select('balance').eq('user_id', user.id).maybeSingle();
+      return data;
+    },
+    enabled: !!user && open,
+  });
+
+  const balance = pointsData?.balance ?? 0;
+  const stockCount = stockBoosts.length;
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-lg">
+            🔥 {t('points.boost.dialogTitle')}
+          </DialogTitle>
+          <DialogDescription>
+            {t('points.boost.dialogChoose')}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3">
+          {stockCount > 0 && (
+            <button
+              onClick={() => onChoice('stock')}
+              className="w-full p-4 rounded-xl border-2 border-emerald-300 hover:border-emerald-500 bg-emerald-500/5 transition-colors flex items-center gap-3 text-left"
+            >
+              <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                <Zap className="h-5 w-5 text-emerald-500" />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-sm">{t('points.boost.useStock')}</p>
+                <p className="text-xs text-muted-foreground">{t('points.boost.useStockDesc').replace('{count}', String(stockCount))}</p>
+              </div>
+              <Badge className="bg-emerald-500 text-white">{t('points.boost.free')}</Badge>
+            </button>
+          )}
+          <button
+            onClick={() => onChoice('boost')}
+            className="w-full p-4 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-colors flex items-center gap-3 text-left"
+          >
+            <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <Rocket className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">{t('points.boost.boost48h')}</p>
+              <p className="text-xs text-muted-foreground">{t('points.boost.boost48hDesc')}</p>
+            </div>
+            <span className="font-bold text-primary text-sm">50 pts</span>
+          </button>
+          <button
+            onClick={() => onChoice('boost_premium')}
+            className="w-full p-4 rounded-xl border-2 border-amber-200 hover:border-amber-400 transition-colors flex items-center gap-3 text-left"
+          >
+            <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+              <Star className="h-5 w-5 text-amber-500" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">{t('points.boost.premium')}</p>
+              <p className="text-xs text-muted-foreground">{t('points.boost.premiumDesc')}</p>
+            </div>
+            <span className="font-bold text-primary text-sm">100 pts</span>
+          </button>
+          <p className="text-xs text-center text-muted-foreground">💰 {balance} pts</p>
+          <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => onChoice(null)}>
+            {t('common.skip') || 'Skip'}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
