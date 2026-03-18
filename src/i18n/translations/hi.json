@@ -292,7 +292,10 @@
     "acceptTermsRequired": "खाता बनाने के लिए आपको उपयोग की शर्तें और गोपनीयता नीति स्वीकार करनी होगी",
     "userAlreadyExists": "यह खाता पहले से मौजूद है",
     "tryLogin": "इस ईमेल से लॉगिन करने का प्रयास करें।",
-    "signupSuccess": "खाता सफलतापूर्वक बनाया गया! Re-Bali में आपका स्वागत है।"
+    "signupSuccess": "खाता सफलतापूर्वक बनाया गया! Re-Bali में आपका स्वागत है।",
+    "continueWithGoogle": "Google से जारी रखें",
+    "continueWithApple": "Apple से जारी रखें",
+    "orContinueWith": "या इससे जारी रखें"
   },
   "profile": {
     "title": "प्रोफ़ाइल सेटिंग्स",

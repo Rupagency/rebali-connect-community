@@ -280,7 +280,10 @@
     "acceptTermsRequired": "Sie müssen die Nutzungsbedingungen und Datenschutzrichtlinie akzeptieren, um ein Konto zu erstellen",
     "userAlreadyExists": "Dieses Konto existiert bereits",
     "tryLogin": "Versuchen Sie, sich mit dieser E-Mail anzumelden.",
-    "signupSuccess": "Konto erfolgreich erstellt! Willkommen bei Re-Bali."
+    "signupSuccess": "Konto erfolgreich erstellt! Willkommen bei Re-Bali.",
+    "continueWithGoogle": "Weiter mit Google",
+    "continueWithApple": "Weiter mit Apple",
+    "orContinueWith": "oder weiter mit"
   },
   "profile": {
     "title": "Profileinstellungen",
