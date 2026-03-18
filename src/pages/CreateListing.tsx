@@ -290,7 +290,6 @@ export default function CreateListing() {
 
   const handleBoostDecision = (choice: string | null) => {
     setShowPreBoost(false);
-    setBoostChoice(choice);
     handlePublish(choice);
   };
 
