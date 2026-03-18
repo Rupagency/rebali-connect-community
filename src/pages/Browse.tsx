@@ -347,9 +347,11 @@ export default function Browse() {
       )}
 
       {/* Results */}
-      <p className="text-sm text-muted-foreground mb-4">
-        {filteredListings?.length || 0} {t('filters.results')}
-      </p>
+      {!isLoading && (
+        <p className="text-sm text-muted-foreground mb-4">
+          {filteredListings?.length || 0} {t('filters.results')}
+        </p>
+      )}
 
       {isLoading ? (
         <BrowseListingSkeleton />
