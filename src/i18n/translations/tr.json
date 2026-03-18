@@ -1348,19 +1348,23 @@
     "member": {
       "setupProfile": {
         "title": "Profilinizi Tamamlayın 👤",
-        "desc": "Güven oluşturmak için bir isim ve avatar ekleyin."
+        "desc": "Güven oluşturmak için bir isim ve avatar ekleyin.",
+        "cta": "Profili Düzenle"
       },
       "verifyPhone": {
         "title": "WhatsApp'ı Doğrulayın 📱",
-        "desc": "Mesajlaşma ve güven rozetleri için WhatsApp numaranızı bağlayın."
+        "desc": "Mesajlaşma ve güven rozetleri için WhatsApp numaranızı bağlayın.",
+        "cta": "Şimdi Doğrula"
       },
       "firstListing": {
         "title": "İlk İlanınızı Verin 📸",
-        "desc": "Fotoğraf çekin, fiyat belirleyin ve anında yayınlayın — %100 ücretsiz!"
+        "desc": "Fotoğraf çekin, fiyat belirleyin ve anında yayınlayın — %100 ücretsiz!",
+        "cta": "İlan Ver"
       },
       "startChatting": {
         "title": "Alım Satıma Başlayın 💬",
-        "desc": "İlanları gözden geçirin, favorileri kaydedin ve satıcılarla iletişime geçin."
+        "desc": "İlanları gözden geçirin, favorileri kaydedin ve satıcılarla iletişime geçin.",
+        "cta": "İlanları Gözat"
       },
       "goToProfile": "Profilime Git"
     }

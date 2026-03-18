@@ -1443,19 +1443,23 @@
     "member": {
       "setupProfile": {
         "title": "Complétez votre profil 👤",
-        "desc": "Ajoutez un nom et un avatar pour inspirer confiance. La première impression compte !"
+        "desc": "Ajoutez un nom et un avatar pour inspirer confiance. La première impression compte !",
+        "cta": "Modifier le profil"
       },
       "verifyPhone": {
         "title": "Vérifiez votre WhatsApp 📱",
-        "desc": "Liez votre numéro WhatsApp pour débloquer la messagerie, gagner des badges et recevoir des notifications."
+        "desc": "Liez votre numéro WhatsApp pour débloquer la messagerie, gagner des badges et recevoir des notifications.",
+        "cta": "Vérifier maintenant"
       },
       "firstListing": {
         "title": "Publiez votre 1ère annonce 📸",
-        "desc": "Prenez une photo, fixez votre prix et catégorie. Votre annonce est en ligne instantanément — c'est 100% gratuit !"
+        "desc": "Prenez une photo, fixez votre prix et catégorie. Votre annonce est en ligne instantanément — c'est 100% gratuit !",
+        "cta": "Publier une annonce"
       },
       "startChatting": {
         "title": "Achetez & Vendez 💬",
-        "desc": "Parcourez les annonces, sauvegardez vos favoris et contactez les vendeurs. Votre aventure Re-Bali commence !"
+        "desc": "Parcourez les annonces, sauvegardez vos favoris et contactez les vendeurs. Votre aventure Re-Bali commence !",
+        "cta": "Parcourir les annonces"
       },
       "goToProfile": "Aller à mon profil"
     }

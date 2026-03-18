@@ -563,19 +563,23 @@
     "member": {
       "setupProfile": {
         "title": "Profiel voltooien 👤",
-        "desc": "Voeg een naam en avatar toe om vertrouwen op te bouwen."
+        "desc": "Voeg een naam en avatar toe om vertrouwen op te bouwen.",
+        "cta": "Profiel bewerken"
       },
       "verifyPhone": {
         "title": "WhatsApp verifiëren 📱",
-        "desc": "Koppel je WhatsApp-nummer voor berichten en vertrouwensbadges."
+        "desc": "Koppel je WhatsApp-nummer voor berichten en vertrouwensbadges.",
+        "cta": "Nu verifiëren"
       },
       "firstListing": {
         "title": "Eerste advertentie plaatsen 📸",
-        "desc": "Maak een foto, stel je prijs in en publiceer direct — 100% gratis!"
+        "desc": "Maak een foto, stel je prijs in en publiceer direct — 100% gratis!",
+        "cta": "Advertentie plaatsen"
       },
       "startChatting": {
         "title": "Begin met kopen & verkopen 💬",
-        "desc": "Bekijk advertenties, bewaar favorieten en neem contact op met verkopers."
+        "desc": "Bekijk advertenties, bewaar favorieten en neem contact op met verkopers.",
+        "cta": "Advertenties bekijken"
       },
       "goToProfile": "Naar mijn profiel"
     }

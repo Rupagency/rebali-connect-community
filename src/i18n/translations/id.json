@@ -1338,19 +1338,23 @@
     "member": {
       "setupProfile": {
         "title": "Lengkapi Profil Anda 👤",
-        "desc": "Tambahkan nama tampilan dan avatar untuk membangun kepercayaan. Kesan pertama itu penting!"
+        "desc": "Tambahkan nama tampilan dan avatar untuk membangun kepercayaan. Kesan pertama itu penting!",
+        "cta": "Edit Profil"
       },
       "verifyPhone": {
         "title": "Verifikasi WhatsApp Anda 📱",
-        "desc": "Hubungkan nomor WhatsApp untuk membuka pesan, mendapatkan lencana kepercayaan, dan notifikasi."
+        "desc": "Hubungkan nomor WhatsApp untuk membuka pesan, mendapatkan lencana kepercayaan, dan notifikasi.",
+        "cta": "Verifikasi Sekarang"
       },
       "firstListing": {
         "title": "Pasang Iklan Pertama 📸",
-        "desc": "Foto, tentukan harga dan kategori. Iklan Anda langsung tayang — 100% gratis!"
+        "desc": "Foto, tentukan harga dan kategori. Iklan Anda langsung tayang — 100% gratis!",
+        "cta": "Pasang Iklan"
       },
       "startChatting": {
         "title": "Mulai Jual Beli 💬",
-        "desc": "Jelajahi iklan, simpan favorit, dan hubungi penjual. Perjalanan Re-Bali Anda dimulai!"
+        "desc": "Jelajahi iklan, simpan favorit, dan hubungi penjual. Perjalanan Re-Bali Anda dimulai!",
+        "cta": "Jelajahi Iklan"
       },
       "goToProfile": "Ke Profil Saya"
     }
