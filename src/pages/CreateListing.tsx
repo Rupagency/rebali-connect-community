@@ -973,6 +973,15 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
       void refreshBoostData();
     };
     window.addEventListener('focus', onFocus);
+    // On native, listen for Browser close event
+    let browserListener: { remove: () => void } | undefined;
+    if (isNativePlatform) {
+      import('@capacitor/browser').then(({ Browser }) => {
+        Browser.addListener('browserFinished', () => void refreshBoostData()).then(l => {
+          browserListener = l;
+        });
+      });
+    }
     const timer = window.setInterval(() => {
       void refreshBoostData();
     }, 4000);
@@ -980,6 +989,8 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
     return () => {
       window.removeEventListener('focus', onFocus);
       window.clearInterval(timer);
+      browserListener?.remove();
+    };
     };
   }, [open, awaitingPayment, refreshBoostData]);
 
