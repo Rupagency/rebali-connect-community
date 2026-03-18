@@ -259,21 +259,40 @@ export default function CreateListing() {
     }
   };
 
-  const handlePublish = async () => {
+  // Called when user clicks "Publish" — for new listings, show boost choice first
+  const handlePublishClick = () => {
     if (!user || !canPost || loading) return;
-
-    // Check content for suspicious patterns (before setLoading so button stays enabled on block)
     if (checkContent(form.description) || checkContent(form.title)) {
       toast({ title: t('security.contentBlocked'), variant: 'destructive' });
       return;
     }
+    if (isEditMode) {
+      // Edit mode: no boost prompt, just publish directly
+      handlePublish(null);
+    } else {
+      setShowPreBoost(true);
+    }
+  };
+
+  const handleBoostDecision = (choice: string | null) => {
+    setShowPreBoost(false);
+    setBoostChoice(choice);
+    handlePublish(choice);
+  };
+
+  const handlePublish = async (selectedBoost: string | null) => {
+    if (!user || !canPost || loading) return;
 
     setLoading(true);
+    setPublishProgress(5);
+    setPublishStep(t('publish.progress.preparing'));
 
     // Run image moderation checks (hash duplicate detection)
     setModerationWarnings([]);
     if (photos.length > 0) {
       try {
+        setPublishStep(t('publish.progress.checking'));
+        setPublishProgress(10);
         const firstHash = await computeImageHash(photos[0]);
         const { data: modResult } = await supabase.functions.invoke('moderate-image', {
           body: {
@@ -293,9 +312,9 @@ export default function CreateListing() {
               variant: 'destructive',
             });
             setLoading(false);
+            setPublishProgress(0);
             return;
           }
-          // Other warnings are shown but don't block
           if (warnings.includes('similar_title')) {
             toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
           }
@@ -307,6 +326,8 @@ export default function CreateListing() {
 
     try {
       if (isEditMode && editId) {
+        setPublishStep(t('publish.progress.updating'));
+        setPublishProgress(20);
         // Update existing listing
         const { error } = await supabase.from('listings').update({
           category: form.category as any,
@@ -322,13 +343,12 @@ export default function CreateListing() {
         } as any).eq('id', editId);
         if (error) throw error;
 
-        // Existing images already have a watermark burned in — do NOT re-watermark
-        // (re-watermarking layers a second watermark on top, causing visual inconsistency)
         const username = profile?.display_name || 'user';
-
-        // Upload new images: original (for thumbnails) + watermarked (for detail page)
         const startIndex = existingImageUrls.length;
+        
+        setPublishStep(t('publish.progress.uploading'));
         for (let i = 0; i < photos.length; i++) {
+          setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 50));
           const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const originalBlob = await new Promise<Blob>((resolve) => {
@@ -359,13 +379,19 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation and wait for a reliable kickoff before redirect
+        setPublishStep(t('publish.progress.translating'));
+        setPublishProgress(80);
         await triggerListingTranslation(editId);
 
+        setPublishProgress(100);
+        setPublishStep(t('publish.progress.done'));
         toast({ title: t('listing.updated') });
+        await new Promise(r => setTimeout(r, 500));
         navigate(`/listing/${editId}`);
       } else {
         // Create new listing
+        setPublishStep(t('publish.progress.creating'));
+        setPublishProgress(15);
         const { data: listing, error } = await supabase.from('listings').insert({
           seller_id: user.id,
           category: form.category as any,
@@ -384,9 +410,11 @@ export default function CreateListing() {
 
         if (error) throw error;
 
-        // Upload images: original (for thumbnails) + watermarked (for detail page)
+        // Upload images
+        setPublishStep(t('publish.progress.uploading'));
         const username = profile?.display_name || 'user';
         for (let i = 0; i < photos.length; i++) {
+          setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 45));
           const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const originalBlob = await new Promise<Blob>((resolve) => {
@@ -417,17 +445,41 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation and wait for a reliable kickoff before redirect
-        await triggerListingTranslation(listing.id);
+        // Apply boost if chosen
+        if (selectedBoost) {
+          setPublishStep(t('publish.progress.boosting'));
+          setPublishProgress(70);
+          if (selectedBoost === 'stock') {
+            await supabase.functions.invoke('manage-points', {
+              body: { action: 'use_stock_boost', listing_id: listing.id },
+            });
+          } else {
+            await supabase.functions.invoke('manage-points', {
+              body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
+            });
+          }
+        }
 
+        // Trigger translation (fire-and-forget for speed)
+        setPublishStep(t('publish.progress.translating'));
+        setPublishProgress(85);
+        triggerListingTranslation(listing.id).catch(() => {});
+        
+        // Small delay to let translation start
+        await new Promise(r => setTimeout(r, 600));
+
+        setPublishProgress(100);
+        setPublishStep(t('publish.progress.done'));
         toast({ title: t('createListing.listingCreated') });
         import('@/lib/analytics').then(({ trackEvent }) => trackEvent('listing_created', { listing_id: listing.id, category: form.category })).catch(() => {});
-        navigate(`/listing/${listing.id}?boost=1`, { state: { showBoostPrompt: true } });
+        await new Promise(r => setTimeout(r, 500));
+        navigate(`/listing/${listing.id}`);
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
     }
     setLoading(false);
+    setPublishProgress(0);
   };
 
   if (!user) {
