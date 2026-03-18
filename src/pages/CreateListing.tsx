@@ -301,7 +301,6 @@ export default function CreateListing() {
       }
     }
 
-    setLoading(true);
     try {
       if (isEditMode && editId) {
         // Update existing listing
