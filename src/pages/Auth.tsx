@@ -16,6 +16,8 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { PasswordStrength } from '@/components/PasswordStrength';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LegalDialog } from '@/components/LegalDialog';
+import { SocialLoginButtons } from '@/components/SocialLoginButtons';
+import { Separator } from '@/components/ui/separator';
 
 export default function Auth() {
   const { t } = useLanguage();
@@ -158,6 +160,15 @@ export default function Auth() {
               <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
+              <div className="space-y-4">
+                <SocialLoginButtons />
+                <div className="relative">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    {t('auth.orContinueWith')}
+                  </span>
+                </div>
+              </div>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <Label>{t('auth.email')}</Label>
@@ -183,6 +194,15 @@ export default function Auth() {
               <CardDescription>{t('auth.signupSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
+              <div className="space-y-4">
+                <SocialLoginButtons />
+                <div className="relative">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    {t('auth.orContinueWith')}
+                  </span>
+                </div>
+              </div>
               <form onSubmit={handleSignup} className="space-y-4">
                 {/* User type selector */}
                 <div>

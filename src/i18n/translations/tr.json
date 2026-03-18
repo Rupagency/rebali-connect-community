@@ -292,7 +292,10 @@
     "acceptTermsRequired": "Hesap oluşturmak için Kullanım Koşullarını ve Gizlilik Politikasını kabul etmelisiniz",
     "userAlreadyExists": "Bu hesap zaten mevcut",
     "tryLogin": "Bu e-posta ile giriş yapmayı deneyin.",
-    "signupSuccess": "Hesap başarıyla oluşturuldu! Re-Bali'ye hoş geldiniz."
+    "signupSuccess": "Hesap başarıyla oluşturuldu! Re-Bali'ye hoş geldiniz.",
+    "continueWithGoogle": "Google ile devam et",
+    "continueWithApple": "Apple ile devam et",
+    "orContinueWith": "veya şununla devam et"
   },
   "profile": {
     "title": "Profil Ayarları",

@@ -278,7 +278,10 @@
     "acceptTermsRequired": "Debes aceptar las Condiciones de uso y la Política de privacidad para crear una cuenta",
     "userAlreadyExists": "Esta cuenta ya existe",
     "tryLogin": "Intenta iniciar sesión con este email.",
-    "signupSuccess": "¡Cuenta creada con éxito! Bienvenido a Re-Bali."
+    "signupSuccess": "¡Cuenta creada con éxito! Bienvenido a Re-Bali.",
+    "continueWithGoogle": "Continuar con Google",
+    "continueWithApple": "Continuar con Apple",
+    "orContinueWith": "o continuar con"
   },
   "profile": {
     "title": "Configuración de perfil",
