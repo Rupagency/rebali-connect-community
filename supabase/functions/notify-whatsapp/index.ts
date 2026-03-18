@@ -165,8 +165,12 @@ ${tmpl.reply}: ${convLink}`;
     const fonnteResult = await fonnteRes.json();
     console.log("Fonnte response:", JSON.stringify(fonnteResult));
 
-    // Send push notification
+    // Send push notification with translated preview
     try {
+      const translatedBody = message_preview
+        ? (await translateText(message_preview, recipientLang)).substring(0, 100)
+        : listingTitle;
+
       await fetch(`${supabaseUrl}/functions/v1/send-push`, {
         method: "POST",
         headers: {
@@ -176,7 +180,7 @@ ${tmpl.reply}: ${convLink}`;
         body: JSON.stringify({
           user_id: recipientId,
           title: `📩 ${senderName}`,
-          body: message_preview ? message_preview.substring(0, 100) : listingTitle,
+          body: translatedBody,
           url: `/messages?conv=${conversation_id}`,
           tag: `msg-${conversation_id}`,
           channel: "rebali_messages",
