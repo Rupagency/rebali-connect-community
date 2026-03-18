@@ -428,5 +428,28 @@
     "viewsLabel": "閲覧",
     "usersTotal": "ユーザー合計",
     "activeLabel": "アクティブ"
+  },
+  "points": {
+    "insufficientPoints": "ポイントが不足しています",
+    "purchaseError": "購入エラー",
+    "purchaseSuccess": "購入成功！",
+    "boost": {
+      "dialogTitle": "このリスティングをブースト",
+      "dialogChoose": "適用するブーストの種類を選択",
+      "dialogConfirm": "購入を確認",
+      "useStock": "ストックブーストを使用",
+      "useStockDesc": "無料48時間ブースト • {count}個利用可能",
+      "free": "無料",
+      "boost48h": "ブースト48時間",
+      "boost48hDesc": "カテゴリ内でトップ表示",
+      "premium": "プレミアムブースト",
+      "premiumDesc": "ホームページで注目表示",
+      "confirmQuestion": "このブーストにポイントを使用してよろしいですか？",
+      "back": "戻る",
+      "confirm": "確認",
+      "alreadyBoosted": "このリスティングは既にブースト済みです",
+      "noStockBoosts": "ストックにブーストがありません",
+      "stockApplied": "🚀 ストックからブーストを適用しました！"
+    }
   }
 }
