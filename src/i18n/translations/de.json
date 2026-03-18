@@ -1299,19 +1299,23 @@
     "member": {
       "setupProfile": {
         "title": "Profil vervollständigen 👤",
-        "desc": "Fügen Sie einen Namen und Avatar hinzu, um Vertrauen aufzubauen."
+        "desc": "Fügen Sie einen Namen und Avatar hinzu, um Vertrauen aufzubauen.",
+        "cta": "Profil bearbeiten"
       },
       "verifyPhone": {
         "title": "WhatsApp verifizieren 📱",
-        "desc": "Verknüpfen Sie Ihre WhatsApp-Nummer für Nachrichten und Vertrauens-Badges."
+        "desc": "Verknüpfen Sie Ihre WhatsApp-Nummer für Nachrichten und Vertrauens-Badges.",
+        "cta": "Jetzt verifizieren"
       },
       "firstListing": {
         "title": "Erste Anzeige aufgeben 📸",
-        "desc": "Foto machen, Preis festlegen und sofort veröffentlichen — 100% kostenlos!"
+        "desc": "Foto machen, Preis festlegen und sofort veröffentlichen — 100% kostenlos!",
+        "cta": "Anzeige aufgeben"
       },
       "startChatting": {
         "title": "Kaufen & Verkaufen 💬",
-        "desc": "Durchsuchen, Favoriten speichern und Verkäufer kontaktieren. Los geht's!"
+        "desc": "Durchsuchen, Favoriten speichern und Verkäufer kontaktieren. Los geht's!",
+        "cta": "Anzeigen durchsuchen"
       },
       "goToProfile": "Zu meinem Profil"
     }

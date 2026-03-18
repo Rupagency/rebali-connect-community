@@ -1297,19 +1297,23 @@
     "member": {
       "setupProfile": {
         "title": "完善您的资料 👤",
-        "desc": "添加名称和头像以建立信任。"
+        "desc": "添加名称和头像以建立信任。",
+        "cta": "编辑资料"
       },
       "verifyPhone": {
         "title": "验证WhatsApp 📱",
-        "desc": "关联WhatsApp号码以解锁消息和信任徽章。"
+        "desc": "关联WhatsApp号码以解锁消息和信任徽章。",
+        "cta": "立即验证"
       },
       "firstListing": {
         "title": "发布第一条广告 📸",
-        "desc": "拍照、定价，即刻发布 — 100%免费！"
+        "desc": "拍照、定价，即刻发布 — 100%免费！",
+        "cta": "发布广告"
       },
       "startChatting": {
         "title": "开始买卖 💬",
-        "desc": "浏览广告、收藏、联系卖家。"
+        "desc": "浏览广告、收藏、联系卖家。",
+        "cta": "浏览广告"
       },
       "goToProfile": "前往我的资料"
     }

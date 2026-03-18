@@ -1297,19 +1297,23 @@
     "member": {
       "setupProfile": {
         "title": "Completa tu perfil 👤",
-        "desc": "Añade un nombre y avatar para generar confianza."
+        "desc": "Añade un nombre y avatar para generar confianza.",
+        "cta": "Editar perfil"
       },
       "verifyPhone": {
         "title": "Verifica tu WhatsApp 📱",
-        "desc": "Vincula tu número de WhatsApp para mensajería e insignias de confianza."
+        "desc": "Vincula tu número de WhatsApp para mensajería e insignias de confianza.",
+        "cta": "Verificar ahora"
       },
       "firstListing": {
         "title": "Publica tu primer anuncio 📸",
-        "desc": "Toma una foto, fija tu precio y publica al instante — ¡100% gratis!"
+        "desc": "Toma una foto, fija tu precio y publica al instante — ¡100% gratis!",
+        "cta": "Publicar anuncio"
       },
       "startChatting": {
         "title": "Compra y Vende 💬",
-        "desc": "Explora anuncios, guarda favoritos y contacta vendedores."
+        "desc": "Explora anuncios, guarda favoritos y contacta vendedores.",
+        "cta": "Explorar anuncios"
       },
       "goToProfile": "Ir a mi perfil"
     }
