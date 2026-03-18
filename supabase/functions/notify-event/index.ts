@@ -226,6 +226,10 @@ Deno.serve(async (req) => {
       title = title.replace("{sender}", data.sender_name);
       body = body.replace("{sender}", data.sender_name);
     }
+    if (data?.count) {
+      title = title.replace("{count}", String(data.count));
+      body = body.replace("{count}", String(data.count));
+    }
 
     // Determine deep link URL
     let url = "/";
