@@ -57,5 +57,7 @@
 	<string>Re-Bali uses your location to find listings near you.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Re-Bali uses your location to find listings near you.</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 </dict>
 </plist>
