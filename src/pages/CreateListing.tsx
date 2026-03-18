@@ -1108,7 +1108,7 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
                 {buyingPoints ? <Loader2 className="h-4 w-4 animate-spin" /> : t('points.buy')}
               </Button>
               {awaitingPayment && (
-                <p className="text-[11px] text-muted-foreground text-center">{t('points.purchaseSuccess')}</p>
+                <p className="text-[11px] text-muted-foreground text-center">…</p>
               )}
             </div>
           )}
