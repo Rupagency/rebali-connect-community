@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
 import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck, Rocket, Star, Zap } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
