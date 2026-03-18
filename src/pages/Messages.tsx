@@ -655,7 +655,7 @@ export default function Messages() {
                 )}
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 messages-scroll-area">
+                <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 messages-scroll-area">
                   {convMessages?.map((msg: any) => {
                     const isMine = msg.sender_id === user.id;
                     const isSystem = msg.from_role === 'system';
