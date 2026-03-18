@@ -36,7 +36,7 @@ export function SocialLoginButtons() {
     try {
       const redirectTo = Capacitor.isNativePlatform()
         ? 'capacitor://localhost'
-        : window.location.origin;
+        : 'https://re-bali.com';
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
