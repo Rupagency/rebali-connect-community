@@ -1581,5 +1581,18 @@
     "testimonial3": "S'installer à Bali était plus simple avec Re-Bali.",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "Lancement le 1er avril 2026"
+  },
+  "publish": {
+    "progress": {
+      "title": "Publication en cours...",
+      "preparing": "Préparation de votre annonce...",
+      "checking": "Vérification du contenu...",
+      "creating": "Création de votre annonce...",
+      "updating": "Mise à jour de votre annonce...",
+      "uploading": "Envoi des photos...",
+      "boosting": "Application du boost...",
+      "translating": "Traduction en 12 langues...",
+      "done": "C'est presque prêt !"
+    }
   }
 }

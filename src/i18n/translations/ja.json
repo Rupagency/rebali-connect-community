@@ -451,5 +451,18 @@
       "noStockBoosts": "ストックにブーストがありません",
       "stockApplied": "🚀 ストックからブーストを適用しました！"
     }
+  },
+  "publish": {
+    "progress": {
+      "title": "広告を公開中...",
+      "preparing": "広告を準備中...",
+      "checking": "コンテンツを確認中...",
+      "creating": "広告を作成中...",
+      "updating": "広告を更新中...",
+      "uploading": "写真をアップロード中...",
+      "boosting": "ブーストを適用中...",
+      "translating": "12言語に翻訳中...",
+      "done": "もうすぐ完了！"
+    }
   }
 }

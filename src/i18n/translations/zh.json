@@ -1438,5 +1438,18 @@
     "testimonial3": "有了Re-Bali，搬到巴厘岛更轻松了。",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "2026年4月1日上线"
+  },
+  "publish": {
+    "progress": {
+      "title": "正在发布您的广告...",
+      "preparing": "正在准备您的广告...",
+      "checking": "正在检查内容...",
+      "creating": "正在创建您的广告...",
+      "updating": "正在更新您的广告...",
+      "uploading": "正在上传照片...",
+      "boosting": "正在应用推广...",
+      "translating": "正在翻译成12种语言...",
+      "done": "即将完成！"
+    }
   }
 }
