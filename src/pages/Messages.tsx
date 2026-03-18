@@ -36,20 +36,41 @@ export default function Messages() {
   const [inlineComment, setInlineComment] = useState('');
   const blockedIds = useBlockedUsers();
 
-  // Fetch conversations
+  // Fetch conversations (without profiles join - use public_profiles separately)
   const { data: conversations, isLoading: convsLoading } = useQuery({
     queryKey: ['conversations', user?.id],
     queryFn: async () => {
       const { data } = await supabase
         .from('conversations')
-        .select('*, listings!conversations_listing_id_fkey(title_original, listing_images(storage_path, sort_order)), buyer:profiles!conversations_buyer_id_fkey(id, display_name, avatar_url), seller:profiles!conversations_seller_id_fkey(id, display_name, avatar_url)')
+        .select('*, listings!conversations_listing_id_fkey(title_original, listing_images(storage_path, sort_order))')
         .or(`buyer_id.eq.${user!.id},seller_id.eq.${user!.id}`)
         .order('updated_at', { ascending: false });
-      // Filter out conversations with blocked users
-      return (data || []).filter((c: any) => {
+      
+      const convs = (data || []).filter((c: any) => {
         const otherId = c.buyer_id === user!.id ? c.seller_id : c.buyer_id;
         return !blockedIds.includes(otherId);
       });
+
+      // Batch-fetch public profiles for all participants
+      const userIds = new Set<string>();
+      convs.forEach((c: any) => { userIds.add(c.buyer_id); userIds.add(c.seller_id); });
+      const uniqueIds = Array.from(userIds);
+      
+      let profilesMap: Record<string, any> = {};
+      if (uniqueIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from('public_profiles')
+          .select('id, display_name, avatar_url')
+          .in('id', uniqueIds);
+        (profiles || []).forEach((p: any) => { profilesMap[p.id] = p; });
+      }
+
+      // Merge profiles into conversations
+      return convs.map((c: any) => ({
+        ...c,
+        buyer: profilesMap[c.buyer_id] || null,
+        seller: profilesMap[c.seller_id] || null,
+      }));
     },
     enabled: !!user,
   });
