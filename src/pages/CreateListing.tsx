@@ -18,7 +18,7 @@ import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck, Rocket, Star, Zap } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useProStatus } from '@/hooks/useProStatus';
 
 
@@ -34,7 +34,7 @@ export default function CreateListing() {
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPreBoost, setShowPreBoost] = useState(false);
-  const [boostChoice, setBoostChoice] = useState<string | null>(null);
+  
   const [publishProgress, setPublishProgress] = useState(0);
   const [publishStep, setPublishStep] = useState('');
   const [existingImageUrls, setExistingImageUrls] = useState<{ id: string; storage_path: string; url: string }[]>([]);
@@ -262,6 +262,17 @@ export default function CreateListing() {
     }
   };
 
+  const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number): Promise<T | null> => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const timeoutPromise = new Promise<null>((resolve) => {
+      timeoutId = setTimeout(() => resolve(null), timeoutMs);
+    });
+
+    const result = await Promise.race([promise, timeoutPromise]);
+    if (timeoutId) clearTimeout(timeoutId);
+    return result as T | null;
+  };
+
   // Called when user clicks "Publish" — for new listings, show boost choice first
   const handlePublishClick = () => {
     if (!user || !canPost || loading) return;
@@ -279,7 +290,6 @@ export default function CreateListing() {
 
   const handleBoostDecision = (choice: string | null) => {
     setShowPreBoost(false);
-    setBoostChoice(choice);
     handlePublish(choice);
   };
 
@@ -297,29 +307,40 @@ export default function CreateListing() {
         setPublishStep(t('publish.progress.checking'));
         setPublishProgress(10);
         const firstHash = await computeImageHash(photos[0]);
-        const { data: modResult } = await supabase.functions.invoke('moderate-image', {
-          body: {
-            image_hash: firstHash,
-            title: form.title,
-            description: form.description,
-          },
-        });
-        if (modResult && !modResult.safe) {
-          const warnings = (modResult.warnings || []) as string[];
-          setModerationWarnings(warnings);
-          if (warnings.includes('duplicate_image')) {
-            const dupeTitle = modResult.duplicate_listings?.[0]?.title || '';
-            toast({
-              title: t('moderation.duplicateImage'),
-              description: dupeTitle ? `${t('moderation.duplicateOf')}: "${dupeTitle}"` : undefined,
-              variant: 'destructive',
-            });
-            setLoading(false);
-            setPublishProgress(0);
-            return;
-          }
-          if (warnings.includes('similar_title')) {
-            toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
+        const moderationResponse = await withTimeout(
+          supabase.functions.invoke('moderate-image', {
+            body: {
+              image_hash: firstHash,
+              title: form.title,
+              description: form.description,
+            },
+          }),
+          15000
+        );
+
+        if (!moderationResponse) {
+          console.warn('moderate-image timed out, continuing publication');
+        } else {
+          const { data: modResult, error: moderationError } = moderationResponse;
+          if (moderationError) {
+            console.warn('Moderation check failed, continuing publication', moderationError);
+          } else if (modResult && !modResult.safe) {
+            const warnings = (modResult.warnings || []) as string[];
+            setModerationWarnings(warnings);
+            if (warnings.includes('duplicate_image')) {
+              const dupeTitle = modResult.duplicate_listings?.[0]?.title || '';
+              toast({
+                title: t('moderation.duplicateImage'),
+                description: dupeTitle ? `${t('moderation.duplicateOf')}: "${dupeTitle}"` : undefined,
+                variant: 'destructive',
+              });
+              setLoading(false);
+              setPublishProgress(0);
+              return;
+            }
+            if (warnings.includes('similar_title')) {
+              toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
+            }
           }
         }
       } catch (e) {
@@ -348,7 +369,7 @@ export default function CreateListing() {
 
         const username = profile?.display_name || 'user';
         const startIndex = existingImageUrls.length;
-        
+
         setPublishStep(t('publish.progress.uploading'));
         for (let i = 0; i < photos.length; i++) {
           setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 50));
@@ -452,14 +473,30 @@ export default function CreateListing() {
         if (selectedBoost) {
           setPublishStep(t('publish.progress.boosting'));
           setPublishProgress(70);
-          if (selectedBoost === 'stock') {
-            await supabase.functions.invoke('manage-points', {
-              body: { action: 'use_stock_boost', listing_id: listing.id },
-            });
-          } else {
-            await supabase.functions.invoke('manage-points', {
-              body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
-            });
+
+          const boostResponse = await withTimeout(
+            selectedBoost === 'stock'
+              ? supabase.functions.invoke('manage-points', {
+                  body: { action: 'use_stock_boost', listing_id: listing.id },
+                })
+              : supabase.functions.invoke('manage-points', {
+                  body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
+                }),
+            15000
+          );
+
+          if (!boostResponse) {
+            toast({ title: t('points.purchaseError'), variant: 'destructive' });
+          } else if (boostResponse.error || boostResponse.data?.error) {
+            const boostError = boostResponse.data?.error;
+            const boostErrorMessage = boostError === 'insufficient_points'
+              ? t('points.insufficientPoints')
+              : boostError === 'already_boosted'
+              ? t('points.boost.alreadyBoosted')
+              : boostError === 'no_stock_boosts'
+              ? t('points.boost.noStockBoosts')
+              : t('points.purchaseError');
+            toast({ title: boostErrorMessage, variant: 'destructive' });
           }
         }
 
@@ -467,7 +504,7 @@ export default function CreateListing() {
         setPublishStep(t('publish.progress.translating'));
         setPublishProgress(85);
         triggerListingTranslation(listing.id).catch(() => {});
-        
+
         // Small delay to let translation start
         await new Promise(r => setTimeout(r, 600));
 
@@ -877,9 +914,18 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
   t: (key: string) => string;
 }) {
   const { user } = useAuth();
-  const qc = useQueryClient();
+  const [pendingChoice, setPendingChoice] = useState<'stock' | 'boost' | 'boost_premium' | null>(null);
+  const [buyingPoints, setBuyingPoints] = useState(false);
+  const [awaitingPayment, setAwaitingPayment] = useState(false);
 
-  const { data: stockBoosts = [] } = useQuery({
+  useEffect(() => {
+    if (!open) return;
+    setPendingChoice(null);
+    setBuyingPoints(false);
+    setAwaitingPayment(false);
+  }, [open]);
+
+  const { data: stockBoosts = [], refetch: refetchStockBoosts } = useQuery({
     queryKey: ['stock-boosts', user?.id],
     queryFn: async () => {
       if (!user) return [];
@@ -890,57 +936,142 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
         .eq('active', true)
         .eq('addon_type', 'boost')
         .is('listing_id', null);
-      return (data || []).filter(b => b.expires_at && new Date(b.expires_at).getTime() > Date.now());
+      return (data || []).filter((boost) => boost.expires_at && new Date(boost.expires_at).getTime() > Date.now());
     },
     enabled: !!user && open,
   });
 
-  const { data: pointsData } = useQuery({
+  const { data: pointsData, refetch: refetchPoints } = useQuery({
     queryKey: ['user-points', user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const { data } = await supabase.from('user_points').select('balance').eq('user_id', user.id).maybeSingle();
+      const { data } = await supabase
+        .from('user_points')
+        .select('balance')
+        .eq('user_id', user.id)
+        .maybeSingle();
       return data;
     },
     enabled: !!user && open,
   });
 
+  const refreshBoostData = useCallback(async () => {
+    await Promise.all([refetchPoints(), refetchStockBoosts()]);
+  }, [refetchPoints, refetchStockBoosts]);
+
   const balance = pointsData?.balance ?? 0;
   const stockCount = stockBoosts.length;
+  const requiredPoints = pendingChoice === 'boost_premium' ? 100 : pendingChoice === 'boost' ? 50 : 0;
+  const needsPoints = pendingChoice === 'boost' || pendingChoice === 'boost_premium';
+  const hasEnoughPoints = !needsPoints || balance >= requiredPoints;
+  const canConfirm = !!pendingChoice && (pendingChoice === 'stock' ? stockCount > 0 : hasEnoughPoints);
+
+  useEffect(() => {
+    if (!open || !awaitingPayment) return;
+    const onFocus = () => {
+      void refreshBoostData();
+    };
+    window.addEventListener('focus', onFocus);
+    const timer = window.setInterval(() => {
+      void refreshBoostData();
+    }, 4000);
+
+    return () => {
+      window.removeEventListener('focus', onFocus);
+      window.clearInterval(timer);
+    };
+  }, [open, awaitingPayment, refreshBoostData]);
+
+  useEffect(() => {
+    if (!awaitingPayment || !needsPoints) return;
+    if (balance >= requiredPoints) {
+      setAwaitingPayment(false);
+      toast({ title: t('points.purchaseSuccess') });
+    }
+  }, [awaitingPayment, needsPoints, balance, requiredPoints, t]);
+
+  const handleBuyPoints = async () => {
+    if (!needsPoints || hasEnoughPoints) return;
+
+    const missingPoints = requiredPoints - balance;
+    const packId = missingPoints <= 50
+      ? 'starter'
+      : missingPoints <= 150
+      ? 'popular'
+      : missingPoints <= 300
+      ? 'pro'
+      : 'business';
+
+    setBuyingPoints(true);
+    const { data, error } = await supabase.functions.invoke('xendit-create-invoice', {
+      body: { type: 'points', pack_id: packId },
+    });
+
+    if (error || data?.error || !data?.invoice_url) {
+      toast({ title: t('points.purchaseError'), variant: 'destructive' });
+      setBuyingPoints(false);
+      return;
+    }
+
+    const paymentWindow = window.open(data.invoice_url, '_blank', 'noopener,noreferrer');
+    if (!paymentWindow) {
+      window.location.href = data.invoice_url;
+    } else {
+      setAwaitingPayment(true);
+      void refreshBoostData();
+    }
+
+    setBuyingPoints(false);
+  };
+
+  const handleConfirm = () => {
+    if (!pendingChoice) return;
+
+    if (pendingChoice === 'stock' && stockCount === 0) {
+      toast({ title: t('points.boost.noStockBoosts'), variant: 'destructive' });
+      return;
+    }
+
+    if (needsPoints && !hasEnoughPoints) {
+      toast({ title: t('points.insufficientPoints'), variant: 'destructive' });
+      return;
+    }
+
+    onChoice(pendingChoice);
+  };
+
+  const getCardClass = (option: 'stock' | 'boost' | 'boost_premium') => {
+    const isSelected = pendingChoice === option;
+    return `w-full rounded-xl border p-4 transition-colors text-left flex items-center gap-3 ${
+      isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-primary/40'
+    }`;
+  };
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
-      <DialogContent className="max-w-sm">
+    <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
+      <DialogContent className="max-w-sm border-border bg-popover text-popover-foreground">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg">
-            🔥 {t('points.boost.dialogTitle')}
-          </DialogTitle>
-          <DialogDescription>
-            {t('points.boost.dialogChoose')}
-          </DialogDescription>
+          <DialogTitle className="flex items-center gap-2 text-lg">🔥 {t('points.boost.dialogTitle')}</DialogTitle>
+          <DialogDescription>{t('points.boost.dialogChoose')}</DialogDescription>
         </DialogHeader>
+
         <div className="space-y-3">
           {stockCount > 0 && (
-            <button
-              onClick={() => onChoice('stock')}
-              className="w-full p-4 rounded-xl border-2 border-emerald-300 hover:border-emerald-500 bg-emerald-500/5 transition-colors flex items-center gap-3 text-left"
-            >
-              <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                <Zap className="h-5 w-5 text-emerald-500" />
+            <button type="button" onClick={() => setPendingChoice('stock')} className={getCardClass('stock')}>
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Zap className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-sm">{t('points.boost.useStock')}</p>
                 <p className="text-xs text-muted-foreground">{t('points.boost.useStockDesc').replace('{count}', String(stockCount))}</p>
               </div>
-              <Badge className="bg-emerald-500 text-white">{t('points.boost.free')}</Badge>
+              <Badge variant="secondary">{t('points.boost.free')}</Badge>
             </button>
           )}
-          <button
-            onClick={() => onChoice('boost')}
-            className="w-full p-4 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-colors flex items-center gap-3 text-left"
-          >
-            <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-              <Rocket className="h-5 w-5 text-blue-500" />
+
+          <button type="button" onClick={() => setPendingChoice('boost')} className={getCardClass('boost')}>
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <Rocket className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
               <p className="font-semibold text-sm">{t('points.boost.boost48h')}</p>
@@ -948,12 +1079,10 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
             </div>
             <span className="font-bold text-primary text-sm">50 pts</span>
           </button>
-          <button
-            onClick={() => onChoice('boost_premium')}
-            className="w-full p-4 rounded-xl border-2 border-amber-200 hover:border-amber-400 transition-colors flex items-center gap-3 text-left"
-          >
-            <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-              <Star className="h-5 w-5 text-amber-500" />
+
+          <button type="button" onClick={() => setPendingChoice('boost_premium')} className={getCardClass('boost_premium')}>
+            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <Star className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
               <p className="font-semibold text-sm">{t('points.boost.premium')}</p>
@@ -961,10 +1090,37 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
             </div>
             <span className="font-bold text-primary text-sm">100 pts</span>
           </button>
-          <p className="text-xs text-center text-muted-foreground">💰 {balance} pts</p>
-          <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => onChoice(null)}>
-            {t('common.skip') || 'Skip'}
-          </Button>
+
+          <div className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground text-center">
+            💰 {balance} pts
+          </div>
+
+          {pendingChoice && (
+            <p className="text-xs text-center text-muted-foreground">{t('points.boost.confirmQuestion')}</p>
+          )}
+
+          {pendingChoice && needsPoints && !hasEnoughPoints && (
+            <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 space-y-2">
+              <p className="text-xs text-destructive">
+                {t('points.insufficientPoints')} ({balance}/{requiredPoints} pts)
+              </p>
+              <Button type="button" variant="outline" className="w-full" onClick={handleBuyPoints} disabled={buyingPoints}>
+                {buyingPoints ? <Loader2 className="h-4 w-4 animate-spin" /> : t('points.buy')}
+              </Button>
+              {awaitingPayment && (
+                <p className="text-[11px] text-muted-foreground text-center">…</p>
+              )}
+            </div>
+          )}
+
+          <DialogFooter className="flex gap-2 sm:gap-2">
+            <Button type="button" variant="ghost" className="w-full" onClick={() => onChoice(null)}>
+              {t('common.skip') || 'Skip'}
+            </Button>
+            <Button type="button" className="w-full" disabled={!canConfirm} onClick={handleConfirm}>
+              {t('points.boost.confirm')}
+            </Button>
+          </DialogFooter>
         </div>
       </DialogContent>
     </Dialog>
