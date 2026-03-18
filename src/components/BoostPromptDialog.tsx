@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import ConfettiEffect from '@/components/ConfettiEffect';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,6 +24,7 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
   const { user } = useAuth();
   const qc = useQueryClient();
   const [purchasing, setPurchasing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [confirmBoostType, setConfirmBoostType] = useState<string | null>(null);
 
   // Fetch user's stock boosts
@@ -79,8 +81,12 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
       toast({ title: msg, variant: 'destructive' });
     } else {
       toast({ title: t('points.boost.stockApplied') });
+      setShowConfetti(true);
       qc.invalidateQueries({ queryKey: ['stock-boosts'] });
       qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      setTimeout(() => { setShowConfetti(false); handleClose(); }, 2000);
+      setPurchasing(false);
+      return;
     }
     setPurchasing(false);
     handleClose();
@@ -101,8 +107,12 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
       toast({ title: msg, variant: 'destructive' });
     } else {
       toast({ title: t('points.purchaseSuccess') });
+      setShowConfetti(true);
       qc.invalidateQueries({ queryKey: ['stock-boosts'] });
       qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      setTimeout(() => { setShowConfetti(false); setConfirmBoostType(null); handleClose(); }, 2000);
+      setPurchasing(false);
+      return;
     }
     setPurchasing(false);
     setConfirmBoostType(null);
@@ -117,8 +127,9 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
   }
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) handleClose(); }}>
-      <DialogContent className="max-w-sm">
+    <Dialog open={open} onOpenChange={(o) => { if (!o && !showConfetti) handleClose(); }}>
+      <DialogContent className="max-w-sm relative overflow-hidden">
+        {showConfetti && <ConfettiEffect count={50} />}
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
             🔥 {t('points.boost.dialogTitle')}
