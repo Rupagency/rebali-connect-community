@@ -106,6 +106,76 @@ const TEMPLATES: Record<string, Record<string, { title: string; body: string }>>
     hi: { title: "नई समीक्षा ⭐", body: "{sender} ने आपके लिए एक समीक्षा छोड़ी है। देखें!" },
     tr: { title: "Yeni Değerlendirme ⭐", body: "{sender} size bir değerlendirme bıraktı. Kontrol edin!" },
   },
+  whatsapp_verified: {
+    en: { title: "WhatsApp Verified ✅", body: "Your WhatsApp number is now verified! You've unlocked full access to Re-Bali." },
+    fr: { title: "WhatsApp vérifié ✅", body: "Votre numéro WhatsApp est maintenant vérifié ! Vous avez un accès complet à Re-Bali." },
+    id: { title: "WhatsApp Terverifikasi ✅", body: "Nomor WhatsApp Anda sudah terverifikasi! Anda memiliki akses penuh ke Re-Bali." },
+    es: { title: "WhatsApp verificado ✅", body: "¡Tu número de WhatsApp está verificado! Tienes acceso completo a Re-Bali." },
+    de: { title: "WhatsApp verifiziert ✅", body: "Ihre WhatsApp-Nummer ist verifiziert! Sie haben vollen Zugang zu Re-Bali." },
+    nl: { title: "WhatsApp geverifieerd ✅", body: "Uw WhatsApp-nummer is geverifieerd! U hebt volledige toegang tot Re-Bali." },
+    zh: { title: "WhatsApp 已验证 ✅", body: "您的 WhatsApp 号码已验证！您已解锁 Re-Bali 的完整访问权限。" },
+    ja: { title: "WhatsApp認証完了 ✅", body: "WhatsApp番号が認証されました！Re-Baliの全機能がご利用いただけます。" },
+    ru: { title: "WhatsApp подтверждён ✅", body: "Ваш номер WhatsApp подтверждён! Вы получили полный доступ к Re-Bali." },
+    ar: { title: "تم التحقق من WhatsApp ✅", body: "تم التحقق من رقم WhatsApp الخاص بك! لقد فتحت الوصول الكامل إلى Re-Bali." },
+    hi: { title: "WhatsApp सत्यापित ✅", body: "आपका WhatsApp नंबर सत्यापित हो गया है! आपने Re-Bali तक पूर्ण पहुंच अनलॉक कर ली है।" },
+    tr: { title: "WhatsApp Doğrulandı ✅", body: "WhatsApp numaranız doğrulandı! Re-Bali'ye tam erişim kazandınız." },
+  },
+  profile_incomplete: {
+    en: { title: "Complete Your Profile 📝", body: "Verify your WhatsApp to unlock all features and start buying & selling on Re-Bali!" },
+    fr: { title: "Complétez votre profil 📝", body: "Vérifiez votre WhatsApp pour débloquer toutes les fonctionnalités et acheter/vendre sur Re-Bali !" },
+    id: { title: "Lengkapi Profil Anda 📝", body: "Verifikasi WhatsApp Anda untuk membuka semua fitur dan mulai jual beli di Re-Bali!" },
+    es: { title: "Completa tu perfil 📝", body: "¡Verifica tu WhatsApp para desbloquear todas las funciones y comprar/vender en Re-Bali!" },
+    de: { title: "Profil vervollständigen 📝", body: "Verifizieren Sie Ihre WhatsApp-Nummer, um alle Funktionen freizuschalten!" },
+    nl: { title: "Voltooi uw profiel 📝", body: "Verifieer uw WhatsApp om alle functies te ontgrendelen en te kopen/verkopen op Re-Bali!" },
+    zh: { title: "完善您的资料 📝", body: "验证您的 WhatsApp 以解锁所有功能，开始在 Re-Bali 上买卖！" },
+    ja: { title: "プロフィールを完成させましょう 📝", body: "WhatsAppを認証して全機能をアンロックし、Re-Baliで売買を始めましょう！" },
+    ru: { title: "Заполните профиль 📝", body: "Подтвердите WhatsApp, чтобы разблокировать все функции и начать покупать/продавать на Re-Bali!" },
+    ar: { title: "أكمل ملفك الشخصي 📝", body: "تحقق من WhatsApp لفتح جميع الميزات والبدء في البيع والشراء على Re-Bali!" },
+    hi: { title: "अपना प्रोफ़ाइल पूरा करें 📝", body: "सभी सुविधाएं अनलॉक करने के लिए अपना WhatsApp सत्यापित करें और Re-Bali पर खरीदारी/बिक्री शुरू करें!" },
+    tr: { title: "Profilinizi Tamamlayın 📝", body: "Tüm özelliklerin kilidini açmak için WhatsApp'ınızı doğrulayın ve Re-Bali'de alışverişe başlayın!" },
+  },
+  inactive_seller: {
+    en: { title: "Miss Your Sales? 🛒", body: "You haven't posted a new listing in a while. Re-Bali buyers are looking — post something today!" },
+    fr: { title: "Vos ventes vous manquent ? 🛒", body: "Vous n'avez pas publié d'annonce depuis un moment. Les acheteurs Re-Bali cherchent — publiez aujourd'hui !" },
+    id: { title: "Rindu Penjualan? 🛒", body: "Anda belum memposting iklan baru dalam beberapa waktu. Pembeli Re-Bali sedang mencari — posting sesuatu hari ini!" },
+    es: { title: "¿Echas de menos vender? 🛒", body: "No has publicado un anuncio en un tiempo. ¡Los compradores de Re-Bali están buscando — publica algo hoy!" },
+    de: { title: "Vermissen Sie Ihre Verkäufe? 🛒", body: "Sie haben schon lange keine Anzeige mehr geschaltet. Re-Bali-Käufer suchen — veröffentlichen Sie heute!" },
+    nl: { title: "Mist u uw verkoop? 🛒", body: "U hebt al een tijdje geen advertentie geplaatst. Re-Bali-kopers zoeken — plaats er vandaag een!" },
+    zh: { title: "想念您的销售吗？🛒", body: "您已经有一段时间没有发布新列表了。Re-Bali 买家正在寻找 — 今天就发布吧！" },
+    ja: { title: "販売が恋しいですか？🛒", body: "しばらく新しいリスティングを投稿していません。Re-Baliの買い手が探しています — 今日投稿しましょう！" },
+    ru: { title: "Скучаете по продажам? 🛒", body: "Вы давно не размещали объявления. Покупатели Re-Bali ищут — разместите что-нибудь сегодня!" },
+    ar: { title: "هل تفتقد مبيعاتك؟ 🛒", body: "لم تنشر إعلانًا جديدًا منذ فترة. مشترو Re-Bali يبحثون — انشر شيئًا اليوم!" },
+    hi: { title: "अपनी बिक्री याद आती है? 🛒", body: "आपने कुछ समय से कोई नई लिस्टिंग पोस्ट नहीं की है। Re-Bali खरीदार ढूंढ रहे हैं — आज कुछ पोस्ट करें!" },
+    tr: { title: "Satışlarınızı Özlüyor musunuz? 🛒", body: "Bir süredir yeni ilan yayınlamadınız. Re-Bali alıcıları arıyor — bugün bir şey yayınlayın!" },
+  },
+  welcome_back: {
+    en: { title: "We Miss You! 👋", body: "It's been a while since your last visit. Check out what's new on Re-Bali!" },
+    fr: { title: "Vous nous manquez ! 👋", body: "Cela fait un moment. Découvrez les nouveautés sur Re-Bali !" },
+    id: { title: "Kami Rindu Anda! 👋", body: "Sudah lama tidak berkunjung. Lihat yang baru di Re-Bali!" },
+    es: { title: "¡Te echamos de menos! 👋", body: "Ha pasado un tiempo. ¡Descubre las novedades en Re-Bali!" },
+    de: { title: "Wir vermissen Sie! 👋", body: "Es ist eine Weile her. Entdecken Sie die Neuigkeiten auf Re-Bali!" },
+    nl: { title: "We missen u! 👋", body: "Het is een tijdje geleden. Bekijk de nieuwste items op Re-Bali!" },
+    zh: { title: "我们想您了！👋", body: "好久不见了。来看看 Re-Bali 的新内容吧！" },
+    ja: { title: "お久しぶりです！👋", body: "しばらくぶりですね。Re-Baliの最新情報をチェックしてください！" },
+    ru: { title: "Мы скучаем! 👋", body: "Давно не заходили. Посмотрите новинки на Re-Bali!" },
+    ar: { title: "نفتقدك! 👋", body: "مر وقت منذ زيارتك الأخيرة. اطلع على الجديد في Re-Bali!" },
+    hi: { title: "हम आपको याद करते हैं! 👋", body: "आपकी आखिरी यात्रा के बाद से काफी समय हो गया है। Re-Bali पर नया क्या है देखें!" },
+    tr: { title: "Sizi Özledik! 👋", body: "Son ziyaretinizden bu yana epey zaman geçti. Re-Bali'deki yeniliklere göz atın!" },
+  },
+  listing_views_milestone: {
+    en: { title: "Your Listing is Popular! 🔥", body: "Your listing \"{listing}\" has reached {count} views! Keep the momentum going." },
+    fr: { title: "Votre annonce est populaire ! 🔥", body: "Votre annonce \"{listing}\" a atteint {count} vues ! Continuez sur cette lancée." },
+    id: { title: "Iklan Anda Populer! 🔥", body: "Iklan Anda \"{listing}\" telah mencapai {count} tampilan! Pertahankan momentum ini." },
+    es: { title: "¡Tu anuncio es popular! 🔥", body: "Tu anuncio \"{listing}\" alcanzó {count} vistas. ¡Sigue así!" },
+    de: { title: "Ihre Anzeige ist beliebt! 🔥", body: "Ihre Anzeige \"{listing}\" hat {count} Aufrufe erreicht! Weiter so." },
+    nl: { title: "Uw advertentie is populair! 🔥", body: "Uw advertentie \"{listing}\" heeft {count} weergaven bereikt!" },
+    zh: { title: "您的列表很受欢迎！🔥", body: "您的\"{listing}\"已达到 {count} 次浏览！继续保持。" },
+    ja: { title: "リスティングが人気です！🔥", body: "\"{listing}\"が{count}回閲覧されました！この勢いを維持しましょう。" },
+    ru: { title: "Ваше объявление популярно! 🔥", body: "Ваше объявление \"{listing}\" набрало {count} просмотров! Продолжайте в том же духе." },
+    ar: { title: "إعلانك شائع! 🔥", body: "إعلانك \"{listing}\" وصل إلى {count} مشاهدة! استمر في الزخم." },
+    hi: { title: "आपकी लिस्टिंग लोकप्रिय है! 🔥", body: "आपकी लिस्टिंग \"{listing}\" {count} व्यूज तक पहुंच गई है! गति बनाए रखें।" },
+    tr: { title: "İlanınız Popüler! 🔥", body: "\"{listing}\" ilanınız {count} görüntülemeye ulaştı! Bu ivmeyi koruyun." },
+  },
 };
 
 Deno.serve(async (req) => {
@@ -156,13 +226,25 @@ Deno.serve(async (req) => {
       title = title.replace("{sender}", data.sender_name);
       body = body.replace("{sender}", data.sender_name);
     }
+    if (data?.count) {
+      title = title.replace("{count}", String(data.count));
+      body = body.replace("{count}", String(data.count));
+    }
 
     // Determine deep link URL
     let url = "/";
     if (data?.conversation_id) {
       url = `/messages?conv=${data.conversation_id}`;
-    } else if (event_type === "listing_expired") {
+    } else if (data?.listing_id) {
+      url = `/listing/${data.listing_id}`;
+    } else if (event_type === "listing_expired" || event_type === "inactive_seller") {
       url = "/my-listings";
+    } else if (event_type === "profile_incomplete") {
+      url = "/profile";
+    } else if (event_type === "whatsapp_verified") {
+      url = "/profile";
+    } else if (event_type === "welcome_back") {
+      url = "/browse";
     }
 
     // Call send-push
