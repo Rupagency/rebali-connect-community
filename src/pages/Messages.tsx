@@ -292,6 +292,16 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     toast({ title: t('messages.buyerConfirmDeal') });
     import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, role: 'buyer_confirmed' })).catch(() => {});
+    // Push notification to seller
+    if (activeConv) {
+      supabase.functions.invoke('notify-event', {
+        body: {
+          event_type: 'deal_confirmed',
+          user_id: activeConv.seller_id,
+          data: { listing_title: activeConv.listings?.title_original, conversation_id: activeConvId },
+        },
+      }).catch(() => {});
+    }
   };
 
   const handleSubmitRating = async () => {
