@@ -235,8 +235,16 @@ Deno.serve(async (req) => {
     let url = "/";
     if (data?.conversation_id) {
       url = `/messages?conv=${data.conversation_id}`;
-    } else if (event_type === "listing_expired") {
+    } else if (data?.listing_id) {
+      url = `/listing/${data.listing_id}`;
+    } else if (event_type === "listing_expired" || event_type === "inactive_seller") {
       url = "/my-listings";
+    } else if (event_type === "profile_incomplete") {
+      url = "/profile";
+    } else if (event_type === "whatsapp_verified") {
+      url = "/profile";
+    } else if (event_type === "welcome_back") {
+      url = "/browse";
     }
 
     // Call send-push

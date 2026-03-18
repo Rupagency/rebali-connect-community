@@ -195,6 +195,26 @@ Deno.serve(async (req) => {
       console.error("promo message error (non-blocking):", e);
     }
 
+    // Send push notification confirming WhatsApp verification (non-blocking)
+    try {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      await fetch(`${supabaseUrl}/functions/v1/notify-event`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${svcKey}`,
+        },
+        body: JSON.stringify({
+          event_type: "whatsapp_verified",
+          user_id,
+          data: {},
+        }),
+      });
+    } catch (e) {
+      console.error("whatsapp_verified push error (non-blocking):", e);
+    }
+
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
