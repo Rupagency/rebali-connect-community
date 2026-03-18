@@ -1385,5 +1385,18 @@
     "testimonial3": "Pindah ke Bali lebih mudah dengan Re-Bali.",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "Diluncurkan 1 April 2026"
+  },
+  "publish": {
+    "progress": {
+      "title": "Menerbitkan iklan Anda...",
+      "preparing": "Menyiapkan iklan Anda...",
+      "checking": "Memeriksa konten...",
+      "creating": "Membuat iklan Anda...",
+      "updating": "Memperbarui iklan Anda...",
+      "uploading": "Mengunggah foto...",
+      "boosting": "Menerapkan boost...",
+      "translating": "Menerjemahkan ke 12 bahasa...",
+      "done": "Hampir selesai!"
+    }
   }
 }

@@ -883,5 +883,18 @@
       "noStockBoosts": "Geen boosts op voorraad",
       "stockApplied": "🚀 Boost toegepast uit je voorraad!"
     }
+  },
+  "publish": {
+    "progress": {
+      "title": "Uw advertentie wordt gepubliceerd...",
+      "preparing": "Uw advertentie wordt voorbereid...",
+      "checking": "Inhoud wordt gecontroleerd...",
+      "creating": "Uw advertentie wordt aangemaakt...",
+      "updating": "Uw advertentie wordt bijgewerkt...",
+      "uploading": "Foto's worden geüpload...",
+      "boosting": "Boost wordt toegepast...",
+      "translating": "Vertaling naar 12 talen...",
+      "done": "Bijna klaar!"
+    }
   }
 }

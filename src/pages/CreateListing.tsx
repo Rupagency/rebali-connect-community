@@ -11,13 +11,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_ICONS, MAX_ACTIVE_LISTINGS, formatPrice, CATEGORY_FIELDS, SUBCATEGORY_FIELDS, CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL, SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE, getRentalPeriodSuffix } from '@/lib/constants';
 import { toast } from '@/hooks/use-toast';
-import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck, Rocket, Star, Zap } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useProStatus } from '@/hooks/useProStatus';
+
 
 const STEPS = ['stepCategory', 'stepDetails', 'stepPhotos', 'stepPreview'] as const;
 
@@ -30,6 +33,10 @@ export default function CreateListing() {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [showPreBoost, setShowPreBoost] = useState(false);
+  const [boostChoice, setBoostChoice] = useState<string | null>(null);
+  const [publishProgress, setPublishProgress] = useState(0);
+  const [publishStep, setPublishStep] = useState('');
   const [existingImageUrls, setExistingImageUrls] = useState<{ id: string; storage_path: string; url: string }[]>([]);
 
   const [form, setForm] = useState({
@@ -177,20 +184,20 @@ export default function CreateListing() {
         ctx.drawImage(img, 0, 0);
 
         const shortSide = Math.min(w, h);
-        const fontSize = Math.max(16, Math.round(shortSide / 28));
-        const text = `Re-Bali.com • @${username}`;
+        const fontSize = Math.max(12, Math.round(shortSide / 50));
+        const text = `Re-Bali.com`;
 
-        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-        ctx.lineWidth = Math.max(1, fontSize / 12);
+        ctx.font = `${fontSize}px Arial, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.lineWidth = Math.max(0.5, fontSize / 16);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        const angle = -30 * (Math.PI / 180);
+        const angle = -25 * (Math.PI / 180);
         const metrics = ctx.measureText(text);
-        const textW = metrics.width + fontSize * 3;
-        const textH = fontSize * 4;
+        const textW = metrics.width + fontSize * 6;
+        const textH = fontSize * 6;
         const diagonal = Math.sqrt(w * w + h * h);
 
         ctx.save();
@@ -255,21 +262,40 @@ export default function CreateListing() {
     }
   };
 
-  const handlePublish = async () => {
+  // Called when user clicks "Publish" — for new listings, show boost choice first
+  const handlePublishClick = () => {
     if (!user || !canPost || loading) return;
-
-    // Check content for suspicious patterns (before setLoading so button stays enabled on block)
     if (checkContent(form.description) || checkContent(form.title)) {
       toast({ title: t('security.contentBlocked'), variant: 'destructive' });
       return;
     }
+    if (isEditMode) {
+      // Edit mode: no boost prompt, just publish directly
+      handlePublish(null);
+    } else {
+      setShowPreBoost(true);
+    }
+  };
+
+  const handleBoostDecision = (choice: string | null) => {
+    setShowPreBoost(false);
+    setBoostChoice(choice);
+    handlePublish(choice);
+  };
+
+  const handlePublish = async (selectedBoost: string | null) => {
+    if (!user || !canPost || loading) return;
 
     setLoading(true);
+    setPublishProgress(5);
+    setPublishStep(t('publish.progress.preparing'));
 
     // Run image moderation checks (hash duplicate detection)
     setModerationWarnings([]);
     if (photos.length > 0) {
       try {
+        setPublishStep(t('publish.progress.checking'));
+        setPublishProgress(10);
         const firstHash = await computeImageHash(photos[0]);
         const { data: modResult } = await supabase.functions.invoke('moderate-image', {
           body: {
@@ -289,9 +315,9 @@ export default function CreateListing() {
               variant: 'destructive',
             });
             setLoading(false);
+            setPublishProgress(0);
             return;
           }
-          // Other warnings are shown but don't block
           if (warnings.includes('similar_title')) {
             toast({ title: t('moderation.similarTitle'), variant: 'destructive' });
           }
@@ -303,6 +329,8 @@ export default function CreateListing() {
 
     try {
       if (isEditMode && editId) {
+        setPublishStep(t('publish.progress.updating'));
+        setPublishProgress(20);
         // Update existing listing
         const { error } = await supabase.from('listings').update({
           category: form.category as any,
@@ -318,13 +346,12 @@ export default function CreateListing() {
         } as any).eq('id', editId);
         if (error) throw error;
 
-        // Existing images already have a watermark burned in — do NOT re-watermark
-        // (re-watermarking layers a second watermark on top, causing visual inconsistency)
         const username = profile?.display_name || 'user';
-
-        // Upload new images: original (for thumbnails) + watermarked (for detail page)
         const startIndex = existingImageUrls.length;
+        
+        setPublishStep(t('publish.progress.uploading'));
         for (let i = 0; i < photos.length; i++) {
+          setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 50));
           const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const originalBlob = await new Promise<Blob>((resolve) => {
@@ -355,13 +382,19 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation and wait for a reliable kickoff before redirect
+        setPublishStep(t('publish.progress.translating'));
+        setPublishProgress(80);
         await triggerListingTranslation(editId);
 
+        setPublishProgress(100);
+        setPublishStep(t('publish.progress.done'));
         toast({ title: t('listing.updated') });
+        await new Promise(r => setTimeout(r, 500));
         navigate(`/listing/${editId}`);
       } else {
         // Create new listing
+        setPublishStep(t('publish.progress.creating'));
+        setPublishProgress(15);
         const { data: listing, error } = await supabase.from('listings').insert({
           seller_id: user.id,
           category: form.category as any,
@@ -380,9 +413,11 @@ export default function CreateListing() {
 
         if (error) throw error;
 
-        // Upload images: original (for thumbnails) + watermarked (for detail page)
+        // Upload images
+        setPublishStep(t('publish.progress.uploading'));
         const username = profile?.display_name || 'user';
         for (let i = 0; i < photos.length; i++) {
+          setPublishProgress(20 + Math.round((i / Math.max(photos.length, 1)) * 45));
           const imageHash = await computeImageHash(photos[i]);
           const watermarked = await addWatermark(photos[i], username);
           const originalBlob = await new Promise<Blob>((resolve) => {
@@ -413,17 +448,41 @@ export default function CreateListing() {
           } as any);
         }
 
-        // Trigger translation and wait for a reliable kickoff before redirect
-        await triggerListingTranslation(listing.id);
+        // Apply boost if chosen
+        if (selectedBoost) {
+          setPublishStep(t('publish.progress.boosting'));
+          setPublishProgress(70);
+          if (selectedBoost === 'stock') {
+            await supabase.functions.invoke('manage-points', {
+              body: { action: 'use_stock_boost', listing_id: listing.id },
+            });
+          } else {
+            await supabase.functions.invoke('manage-points', {
+              body: { action: 'purchase', addon_type: selectedBoost, listing_id: listing.id },
+            });
+          }
+        }
 
+        // Trigger translation (fire-and-forget for speed)
+        setPublishStep(t('publish.progress.translating'));
+        setPublishProgress(85);
+        triggerListingTranslation(listing.id).catch(() => {});
+        
+        // Small delay to let translation start
+        await new Promise(r => setTimeout(r, 600));
+
+        setPublishProgress(100);
+        setPublishStep(t('publish.progress.done'));
         toast({ title: t('createListing.listingCreated') });
         import('@/lib/analytics').then(({ trackEvent }) => trackEvent('listing_created', { listing_id: listing.id, category: form.category })).catch(() => {});
-        navigate(`/listing/${listing.id}?boost=1`, { state: { showBoostPrompt: true } });
+        await new Promise(r => setTimeout(r, 500));
+        navigate(`/listing/${listing.id}`);
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
     }
     setLoading(false);
+    setPublishProgress(0);
   };
 
   if (!user) {
@@ -776,11 +835,138 @@ export default function CreateListing() {
             {t('common.next')} <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
-          <Button onClick={handlePublish} disabled={loading}>
+          <Button onClick={handlePublishClick} disabled={loading}>
             {isEditMode ? t('listing.update') : t('createListing.publishListing')}
           </Button>
         )}
       </div>
+
+      {/* Pre-publish boost choice dialog */}
+      <PreBoostDialog
+        open={showPreBoost}
+        onClose={() => setShowPreBoost(false)}
+        onChoice={handleBoostDecision}
+        t={t}
+      />
+
+      {/* Publishing overlay */}
+      {loading && publishProgress > 0 && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm mx-4 space-y-6 text-center">
+            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <Rocket className="h-8 w-8 text-primary animate-bounce" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-foreground mb-1">{t('publish.progress.title')}</h3>
+              <p className="text-sm text-muted-foreground">{publishStep}</p>
+            </div>
+            <Progress value={publishProgress} className="h-3" />
+            <p className="text-xs text-muted-foreground">{publishProgress}%</p>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+/* ---- Pre-publish boost choice ---- */
+function PreBoostDialog({ open, onClose, onChoice, t }: {
+  open: boolean;
+  onClose: () => void;
+  onChoice: (choice: string | null) => void;
+  t: (key: string) => string;
+}) {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+
+  const { data: stockBoosts = [] } = useQuery({
+    queryKey: ['stock-boosts', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data } = await supabase
+        .from('user_addons')
+        .select('id, listing_id, addon_type, expires_at')
+        .eq('user_id', user.id)
+        .eq('active', true)
+        .eq('addon_type', 'boost')
+        .is('listing_id', null);
+      return (data || []).filter(b => b.expires_at && new Date(b.expires_at).getTime() > Date.now());
+    },
+    enabled: !!user && open,
+  });
+
+  const { data: pointsData } = useQuery({
+    queryKey: ['user-points', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data } = await supabase.from('user_points').select('balance').eq('user_id', user.id).maybeSingle();
+      return data;
+    },
+    enabled: !!user && open,
+  });
+
+  const balance = pointsData?.balance ?? 0;
+  const stockCount = stockBoosts.length;
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-lg">
+            🔥 {t('points.boost.dialogTitle')}
+          </DialogTitle>
+          <DialogDescription>
+            {t('points.boost.dialogChoose')}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3">
+          {stockCount > 0 && (
+            <button
+              onClick={() => onChoice('stock')}
+              className="w-full p-4 rounded-xl border-2 border-emerald-300 hover:border-emerald-500 bg-emerald-500/5 transition-colors flex items-center gap-3 text-left"
+            >
+              <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                <Zap className="h-5 w-5 text-emerald-500" />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-sm">{t('points.boost.useStock')}</p>
+                <p className="text-xs text-muted-foreground">{t('points.boost.useStockDesc').replace('{count}', String(stockCount))}</p>
+              </div>
+              <Badge className="bg-emerald-500 text-white">{t('points.boost.free')}</Badge>
+            </button>
+          )}
+          <button
+            onClick={() => onChoice('boost')}
+            className="w-full p-4 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition-colors flex items-center gap-3 text-left"
+          >
+            <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <Rocket className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">{t('points.boost.boost48h')}</p>
+              <p className="text-xs text-muted-foreground">{t('points.boost.boost48hDesc')}</p>
+            </div>
+            <span className="font-bold text-primary text-sm">50 pts</span>
+          </button>
+          <button
+            onClick={() => onChoice('boost_premium')}
+            className="w-full p-4 rounded-xl border-2 border-amber-200 hover:border-amber-400 transition-colors flex items-center gap-3 text-left"
+          >
+            <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+              <Star className="h-5 w-5 text-amber-500" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">{t('points.boost.premium')}</p>
+              <p className="text-xs text-muted-foreground">{t('points.boost.premiumDesc')}</p>
+            </div>
+            <span className="font-bold text-primary text-sm">100 pts</span>
+          </button>
+          <p className="text-xs text-center text-muted-foreground">💰 {balance} pts</p>
+          <Button variant="ghost" className="w-full text-muted-foreground" onClick={() => onChoice(null)}>
+            {t('common.skip') || 'Skip'}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

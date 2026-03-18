@@ -1440,5 +1440,18 @@
     "testimonial3": "Der Umzug nach Bali war mit Re-Bali einfacher.",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "Start am 1. April 2026"
+  },
+  "publish": {
+    "progress": {
+      "title": "Ihre Anzeige wird veröffentlicht...",
+      "preparing": "Ihre Anzeige wird vorbereitet...",
+      "checking": "Inhalt wird überprüft...",
+      "creating": "Ihre Anzeige wird erstellt...",
+      "updating": "Ihre Anzeige wird aktualisiert...",
+      "uploading": "Fotos werden hochgeladen...",
+      "boosting": "Boost wird angewendet...",
+      "translating": "Übersetzung in 12 Sprachen...",
+      "done": "Fast fertig!"
+    }
   }
 }

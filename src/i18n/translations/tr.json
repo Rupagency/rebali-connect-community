@@ -1486,5 +1486,18 @@
     "testimonial3": "Bali'ye taşınmak Re-Bali ile daha kolay oldu.",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "1 Nisan 2026'da lansman"
+  },
+  "publish": {
+    "progress": {
+      "title": "İlanınız yayınlanıyor...",
+      "preparing": "İlanınız hazırlanıyor...",
+      "checking": "İçerik kontrol ediliyor...",
+      "creating": "İlanınız oluşturuluyor...",
+      "updating": "İlanınız güncelleniyor...",
+      "uploading": "Fotoğraflar yükleniyor...",
+      "boosting": "Boost uygulanıyor...",
+      "translating": "12 dile çevriliyor...",
+      "done": "Neredeyse hazır!"
+    }
   }
 }

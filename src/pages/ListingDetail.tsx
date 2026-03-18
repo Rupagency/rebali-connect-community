@@ -32,7 +32,7 @@ import UserBadges from '@/components/UserBadges';
 import BlockUserButton from '@/components/BlockUserButton';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import ListingDetailSkeleton from '@/components/skeletons/ListingDetailSkeleton';
-import BoostPromptDialog from '@/components/BoostPromptDialog';
+
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
 
@@ -58,9 +58,6 @@ export default function ListingDetail() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const { t, language } = useLanguage();
-  const [showBoostPrompt, setShowBoostPrompt] = useState(
-    () => !!(location.state as any)?.showBoostPrompt || new URLSearchParams(location.search).get('boost') === '1'
-  );
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
@@ -832,19 +829,6 @@ export default function ListingDetail() {
           </form>
         </DialogContent>
       </Dialog>
-      {id && showBoostPrompt && (
-        <BoostPromptDialog
-          listingId={id}
-          open={showBoostPrompt}
-          onClose={() => {
-            setShowBoostPrompt(false);
-            const params = new URLSearchParams(location.search);
-            params.delete('boost');
-            const cleaned = params.toString();
-            navigate(`${location.pathname}${cleaned ? `?${cleaned}` : ''}${location.hash}`, { replace: true, state: {} });
-          }}
-        />
-      )}
     </div>
   );
 }
