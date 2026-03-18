@@ -69,6 +69,7 @@ export default function VisitorOnboarding() {
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden border-none">
+        <DialogTitle className="sr-only">Onboarding</DialogTitle>
         <div className="relative">
         {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
