@@ -18,7 +18,7 @@ import { toast } from '@/hooks/use-toast';
 import { Upload, X, ChevronLeft, ChevronRight, Check, MapPin, Loader2, AlertTriangle, ShieldCheck, Rocket, Star, Zap } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useProStatus } from '@/hooks/useProStatus';
 
 
