@@ -34,7 +34,7 @@ export default function CreateListing() {
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [showPreBoost, setShowPreBoost] = useState(false);
-  const [boostChoice, setBoostChoice] = useState<string | null>(null);
+  
   const [publishProgress, setPublishProgress] = useState(0);
   const [publishStep, setPublishStep] = useState('');
   const [existingImageUrls, setExistingImageUrls] = useState<{ id: string; storage_path: string; url: string }[]>([]);
