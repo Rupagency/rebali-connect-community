@@ -160,6 +160,15 @@ export default function Auth() {
               <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
+              <div className="space-y-4">
+                <SocialLoginButtons />
+                <div className="relative">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    {t('auth.orContinueWith')}
+                  </span>
+                </div>
+              </div>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <Label>{t('auth.email')}</Label>
