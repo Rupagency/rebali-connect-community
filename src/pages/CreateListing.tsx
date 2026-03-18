@@ -991,7 +991,6 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
       window.clearInterval(timer);
       browserListener?.remove();
     };
-    };
   }, [open, awaitingPayment, refreshBoostData]);
 
   useEffect(() => {
