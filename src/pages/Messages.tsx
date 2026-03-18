@@ -274,9 +274,12 @@ export default function Messages() {
     }
   }, [isMobile]);
 
-  // Scroll to bottom
+  // Scroll to bottom of messages container only (not the whole page)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [convMessages]);
 
   const sendMessage = async () => {
