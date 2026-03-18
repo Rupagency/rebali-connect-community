@@ -257,13 +257,14 @@ export default function CreateListing() {
 
   const handlePublish = async () => {
     if (!user || !canPost || loading) return;
-    setLoading(true);
 
-    // Check content for suspicious patterns
+    // Check content for suspicious patterns (before setLoading so button stays enabled on block)
     if (checkContent(form.description) || checkContent(form.title)) {
       toast({ title: t('security.contentBlocked'), variant: 'destructive' });
       return;
     }
+
+    setLoading(true);
 
     // Run image moderation checks (hash duplicate detection)
     setModerationWarnings([]);
