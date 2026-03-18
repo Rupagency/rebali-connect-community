@@ -422,6 +422,16 @@ export default function Profile() {
     if (!authLoading && !user) navigate('/auth', { replace: true });
   }, [authLoading, user, navigate]);
 
+  // Auto-scroll to NPWP section when navigating with #npwp hash
+  useEffect(() => {
+    if (window.location.hash === '#npwp') {
+      const el = document.getElementById('npwp');
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+      }
+    }
+  }, [profile]);
+
   useEffect(() => {
     if (profile) {
       setForm({
@@ -780,7 +790,9 @@ export default function Profile() {
       <SavedSearches />
 
       {/* Identity Verification */}
-      <IdVerification user={user} profile={profile} refreshProfile={refreshProfile} />
+      <div id="npwp">
+        <IdVerification user={user} profile={profile} refreshProfile={refreshProfile} />
+      </div>
 
       {/* Security */}
       <Card>
