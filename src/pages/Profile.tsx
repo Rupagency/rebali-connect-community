@@ -177,20 +177,53 @@ function IdVerification({ user, profile, refreshProfile }: { user: any; profile:
   const isPro = profile?.user_type === 'business';
 
   useEffect(() => {
+    let mounted = true;
+
+    const safetyTimer = setTimeout(() => {
+      if (mounted) {
+        console.warn('[Profile] NPWP status timeout — forcing loading=false');
+        setLoadingStatus(false);
+      }
+    }, 6000);
+
     const fetchStatus = async () => {
-      const { data } = await supabase
-        .from('id_verifications')
-        .select('status, document_type')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(1);
-      if (data && data.length > 0) setVerificationStatus(data[0].status);
-      setLoadingStatus(false);
+      try {
+        const { data, error } = await supabase
+          .from('id_verifications')
+          .select('status, document_type')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (error) throw error;
+
+        if (mounted && data && data.length > 0) {
+          setVerificationStatus(data[0].status);
+        }
+      } catch (err) {
+        console.error('[Profile] NPWP status fetch error:', err);
+      } finally {
+        if (mounted) setLoadingStatus(false);
+      }
     };
+
     fetchStatus();
+
+    return () => {
+      mounted = false;
+      clearTimeout(safetyTimer);
+    };
   }, [user.id]);
 
-  if (loadingStatus) return null;
+  if (loadingStatus) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Already verified
   if (profile?.is_verified_seller || verificationStatus === 'approved') {
