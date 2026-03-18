@@ -1401,19 +1401,23 @@
     "member": {
       "setupProfile": {
         "title": "Complete Your Profile 👤",
-        "desc": "Add a display name and avatar to build trust with other members. First impressions matter!"
+        "desc": "Add a display name and avatar to build trust with other members. First impressions matter!",
+        "cta": "Edit Profile"
       },
       "verifyPhone": {
         "title": "Verify Your WhatsApp 📱",
-        "desc": "Link your WhatsApp number to unlock messaging, earn trust badges, and get notified of deals."
+        "desc": "Link your WhatsApp number to unlock messaging, earn trust badges, and get notified of deals.",
+        "cta": "Verify Now"
       },
       "firstListing": {
         "title": "Post Your First Ad 📸",
-        "desc": "Take a photo, set your price and category. Your listing goes live instantly — it's 100% free!"
+        "desc": "Take a photo, set your price and category. Your listing goes live instantly — it's 100% free!",
+        "cta": "Post an Ad"
       },
       "startChatting": {
         "title": "Start Buying & Selling 💬",
-        "desc": "Browse listings, save favorites, and connect with sellers. Your Re-Bali journey starts now!"
+        "desc": "Browse listings, save favorites, and connect with sellers. Your Re-Bali journey starts now!",
+        "cta": "Browse Listings"
       },
       "goToProfile": "Go to My Profile"
     }
