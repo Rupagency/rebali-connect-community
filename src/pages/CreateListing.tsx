@@ -1014,12 +1014,19 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
       return;
     }
 
-    const paymentWindow = window.open(data.invoice_url, '_blank', 'noopener,noreferrer');
-    if (!paymentWindow) {
-      window.location.href = data.invoice_url;
-    } else {
+    if (isNativePlatform) {
+      // On native, use Capacitor in-app browser
+      await openExternal(data.invoice_url);
       setAwaitingPayment(true);
       void refreshBoostData();
+    } else {
+      const paymentWindow = window.open(data.invoice_url, '_blank', 'noopener,noreferrer');
+      if (!paymentWindow) {
+        window.location.href = data.invoice_url;
+      } else {
+        setAwaitingPayment(true);
+        void refreshBoostData();
+      }
     }
 
     setBuyingPoints(false);
