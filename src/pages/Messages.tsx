@@ -553,8 +553,16 @@ export default function Messages() {
                                  queryClient.invalidateQueries({ queryKey: ['conversations'] });
                                  queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
                                  queryClient.invalidateQueries({ queryKey: ['last-messages'] });
-                                  toast({ title: t('messages.dealClosedSuccess') });
-                                  import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, listing_id: activeConv.listing_id })).catch(() => {});
+                                   toast({ title: t('messages.dealClosedSuccess') });
+                                   import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, listing_id: activeConv.listing_id })).catch(() => {});
+                                   // Push notification to buyer
+                                   supabase.functions.invoke('notify-event', {
+                                     body: {
+                                       event_type: 'deal_closed',
+                                       user_id: activeConv.buyer_id,
+                                       data: { listing_title: activeConv.listings?.title_original, conversation_id: activeConvId },
+                                     },
+                                   }).catch(() => {});
                                } catch (err) {
                                  toast({ title: 'Error', variant: 'destructive' });
                                }
