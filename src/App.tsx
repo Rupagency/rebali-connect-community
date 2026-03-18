@@ -8,6 +8,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
+import { ScrollToTop } from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { lazy, Suspense, useEffect } from "react";
@@ -92,7 +93,8 @@ const App = () => {
             <Toaster />
             <Sonner />
             <OfflineBanner />
-            <BrowserRouter>
+             <BrowserRouter>
+              <ScrollToTop />
               <ErrorBoundary>
               <Suspense fallback={<PageFallback />}>
               <Routes>
