@@ -83,3 +83,6 @@ verify_jwt = false
 
 [functions.seed-listings]
 verify_jwt = false
+
+[functions.notify-favorite]
+verify_jwt = false
