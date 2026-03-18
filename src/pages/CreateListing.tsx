@@ -75,9 +75,8 @@ export default function CreateListing() {
     enabled: !!user,
   });
 
-  // Dynamic listing limit based on user type and subscription
-  const { listingLimit: proListingLimit, isPro } = useProStatus();
-  const effectiveLimit = isPro ? proListingLimit : MAX_ACTIVE_LISTINGS;
+  // Dynamic listing limit based on user type, subscription, and addons
+  const effectiveLimit = useEffectiveListingLimit();
   const canPost = isEditMode || (activeCount || 0) < effectiveLimit;
 
   // Load existing listing for edit mode
