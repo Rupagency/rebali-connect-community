@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Rocket, Star, Zap, X } from 'lucide-react';
+import { Rocket, Star, Zap } from 'lucide-react';
 
 interface BoostPromptDialogProps {
   listingId: string;

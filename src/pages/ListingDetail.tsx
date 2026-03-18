@@ -838,7 +838,10 @@ export default function ListingDetail() {
           open={showBoostPrompt}
           onClose={() => {
             setShowBoostPrompt(false);
-            window.history.replaceState({}, document.title);
+            const params = new URLSearchParams(location.search);
+            params.delete('boost');
+            const cleaned = params.toString();
+            navigate(`${location.pathname}${cleaned ? `?${cleaned}` : ''}${location.hash}`, { replace: true, state: {} });
           }}
         />
       )}
