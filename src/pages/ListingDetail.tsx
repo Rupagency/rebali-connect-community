@@ -829,19 +829,6 @@ export default function ListingDetail() {
           </form>
         </DialogContent>
       </Dialog>
-      {id && showBoostPrompt && (
-        <BoostPromptDialog
-          listingId={id}
-          open={showBoostPrompt}
-          onClose={() => {
-            setShowBoostPrompt(false);
-            const params = new URLSearchParams(location.search);
-            params.delete('boost');
-            const cleaned = params.toString();
-            navigate(`${location.pathname}${cleaned ? `?${cleaned}` : ''}${location.hash}`, { replace: true, state: {} });
-          }}
-        />
-      )}
     </div>
   );
 }
