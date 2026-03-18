@@ -58,7 +58,9 @@ export default function ListingDetail() {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const { t, language } = useLanguage();
-  const [showBoostPrompt, setShowBoostPrompt] = useState(!!(location.state as any)?.showBoostPrompt);
+  const [showBoostPrompt, setShowBoostPrompt] = useState(
+    () => !!(location.state as any)?.showBoostPrompt || new URLSearchParams(location.search).get('boost') === '1'
+  );
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
