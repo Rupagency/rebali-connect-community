@@ -123,7 +123,7 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o && !showConfetti) handleClose(); }}>
-      <DialogContent className="relative z-[60] max-w-sm overflow-hidden border-border bg-popover text-popover-foreground shadow-lg">
+      <DialogContent className="relative z-[60] max-w-sm max-h-[85vh] overflow-y-auto border-border bg-popover text-popover-foreground shadow-lg">
         {showConfetti && <ConfettiEffect count={50} />}
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">

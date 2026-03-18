@@ -1057,7 +1057,7 @@ function PreBoostDialog({ open, onClose, onChoice, t }: {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
-      <DialogContent className="max-w-sm border-border bg-popover text-popover-foreground">
+      <DialogContent className="max-w-sm max-h-[85vh] overflow-y-auto border-border bg-popover text-popover-foreground">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">🔥 {t('points.boost.dialogTitle')}</DialogTitle>
           <DialogDescription>{t('points.boost.dialogChoose')}</DialogDescription>
