@@ -780,7 +780,9 @@ export default function Profile() {
       <SavedSearches />
 
       {/* Identity Verification */}
-      <IdVerification user={user} profile={profile} refreshProfile={refreshProfile} />
+      <div id="npwp">
+        <IdVerification user={user} profile={profile} refreshProfile={refreshProfile} />
+      </div>
 
       {/* Security */}
       <Card>
