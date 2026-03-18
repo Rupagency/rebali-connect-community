@@ -1,6 +1,8 @@
 {
   "common": {
-    "sponsored": "مُموَّل"
+    "sponsored": "مُموَّل",
+    "skip": "تخطي",
+    "later": "لاحقاً"
   },
   "nav": {
     "home": "الرئيسية",
@@ -493,5 +495,28 @@
     "viewsLabel": "مشاهدات",
     "usersTotal": "إجمالي المستخدمين",
     "activeLabel": "نشط"
+  },
+  "points": {
+    "insufficientPoints": "نقاط غير كافية",
+    "purchaseError": "خطأ في الشراء",
+    "purchaseSuccess": "تم الشراء بنجاح!",
+    "boost": {
+      "dialogTitle": "عزّز هذا الإعلان",
+      "dialogChoose": "اختر نوع التعزيز المراد تطبيقه",
+      "dialogConfirm": "أكّد عملية الشراء",
+      "useStock": "استخدم تعزيزاً من المخزون",
+      "useStockDesc": "تعزيز مجاني 48 ساعة • {count} متاح",
+      "free": "مجاني",
+      "boost48h": "تعزيز 48 ساعة",
+      "boost48hDesc": "أعلى القائمة في فئتك",
+      "premium": "تعزيز مميز",
+      "premiumDesc": "مُبرز على الصفحة الرئيسية",
+      "confirmQuestion": "هل أنت متأكد من استخدام نقاطك لهذا التعزيز؟",
+      "back": "رجوع",
+      "confirm": "تأكيد",
+      "alreadyBoosted": "هذا الإعلان معزّز بالفعل",
+      "noStockBoosts": "لا توجد تعزيزات في المخزون",
+      "stockApplied": "🚀 تم تطبيق التعزيز من مخزونك!"
+    }
   }
 }

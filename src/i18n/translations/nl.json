@@ -1,6 +1,8 @@
 {
   "common": {
-    "sponsored": "Gesponsord"
+    "sponsored": "Gesponsord",
+    "skip": "Overslaan",
+    "later": "Later"
   },
   "nav": {
     "home": "Home",
@@ -858,5 +860,28 @@
     "viewsLabel": "weergaven",
     "usersTotal": "Totaal gebruikers",
     "activeLabel": "Actief"
+  },
+  "points": {
+    "insufficientPoints": "Onvoldoende punten",
+    "purchaseError": "Fout bij aankoop",
+    "purchaseSuccess": "Aankoop geslaagd!",
+    "boost": {
+      "dialogTitle": "Boost deze advertentie",
+      "dialogChoose": "Kies het type boost om toe te passen",
+      "dialogConfirm": "Bevestig je aankoop",
+      "useStock": "Gebruik een voorraadboost",
+      "useStockDesc": "Gratis 48u boost • {count} beschikbaar",
+      "free": "Gratis",
+      "boost48h": "Boost 48u",
+      "boost48hDesc": "Bovenaan de lijst in je categorie",
+      "premium": "Premium Boost",
+      "premiumDesc": "Uitgelicht op de homepage",
+      "confirmQuestion": "Weet je zeker dat je je punten wilt gebruiken voor deze boost?",
+      "back": "Terug",
+      "confirm": "Bevestigen",
+      "alreadyBoosted": "Deze advertentie is al geboost",
+      "noStockBoosts": "Geen boosts op voorraad",
+      "stockApplied": "🚀 Boost toegepast uit je voorraad!"
+    }
   }
 }
