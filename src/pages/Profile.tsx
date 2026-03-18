@@ -643,9 +643,28 @@ export default function Profile() {
 
   const fallbackDisplayName = profile?.display_name || user?.user_metadata?.display_name || user?.email?.split('@')?.[0] || t('profile.displayName');
   const initials = fallbackDisplayName.slice(0, 2).toUpperCase();
+  const needsNpwpVerification = profile?.user_type === 'business' && !profile?.is_verified_seller;
+
+  const scrollToNpwpSection = () => {
+    const el = document.getElementById('npwp');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    window.location.hash = '#npwp';
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl space-y-6">
+      {needsNpwpVerification && (
+        <Card>
+          <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-sm text-muted-foreground">{t('security.npwpRequiredToSell')}</p>
+            <Button onClick={scrollToNpwpSection}>{t('security.npwpGoVerify')}</Button>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header with Avatar */}
       <Card>
         <CardContent className="p-6">
