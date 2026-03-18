@@ -107,8 +107,12 @@ export default function BoostPromptDialog({ listingId, open, onClose }: BoostPro
       toast({ title: msg, variant: 'destructive' });
     } else {
       toast({ title: t('points.purchaseSuccess') });
+      setShowConfetti(true);
       qc.invalidateQueries({ queryKey: ['stock-boosts'] });
       qc.invalidateQueries({ queryKey: ['my-boosts'] });
+      setTimeout(() => { setShowConfetti(false); setConfirmBoostType(null); handleClose(); }, 2000);
+      setPurchasing(false);
+      return;
     }
     setPurchasing(false);
     setConfirmBoostType(null);
