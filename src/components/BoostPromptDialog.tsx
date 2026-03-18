@@ -4,8 +4,6 @@ import ConfettiEffect from '@/components/ConfettiEffect';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { isNativePlatform } from '@/capacitor';
-import { openExternalAuthenticated, WEBAPP_URL } from '@/lib/openExternal';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
