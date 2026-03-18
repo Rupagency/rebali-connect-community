@@ -143,6 +143,8 @@ Toutes les fonctions sensibles utilisent `SECURITY DEFINER` avec `SET search_pat
 | Device fingerprint | Empreinte + IP stockées à l'inscription |
 | Device ban | Blocage matériel en cas de fraude |
 | Auto-modération | 3 signalements scam/24h → archivage + risk_level = high |
+| Rate limit send-otp | 3/15min + 10/jour/user + 5/jour/phone |
+| Rate limit send-contact | 5/15min par IP + validation inputs (email, longueur, catégorie) |
 | Content filter | URLs, téléphones, liens messagerie bloqués dans messages |
 | Duplicate image | Hash d'image pour détecter les annonces copiées |
 
