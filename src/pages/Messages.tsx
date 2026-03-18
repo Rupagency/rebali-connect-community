@@ -292,6 +292,16 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     toast({ title: t('messages.buyerConfirmDeal') });
     import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, role: 'buyer_confirmed' })).catch(() => {});
+    // Push notification to seller
+    if (activeConv) {
+      supabase.functions.invoke('notify-event', {
+        body: {
+          event_type: 'deal_confirmed',
+          user_id: activeConv.seller_id,
+          data: { listing_title: activeConv.listings?.title_original, conversation_id: activeConvId },
+        },
+      }).catch(() => {});
+    }
   };
 
   const handleSubmitRating = async () => {
@@ -333,6 +343,15 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['my-review', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['other-review', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+    // Push notification to reviewed user
+    const reviewedUserId2 = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
+    supabase.functions.invoke('notify-event', {
+      body: {
+        event_type: 'new_review',
+        user_id: reviewedUserId2,
+        data: { sender_name: profile?.display_name || 'User', conversation_id: activeConvId },
+      },
+    }).catch(() => {});
 
     // Check if both rated -> close conversation
     const otherUserId = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
@@ -553,8 +572,16 @@ export default function Messages() {
                                  queryClient.invalidateQueries({ queryKey: ['conversations'] });
                                  queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
                                  queryClient.invalidateQueries({ queryKey: ['last-messages'] });
-                                  toast({ title: t('messages.dealClosedSuccess') });
-                                  import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, listing_id: activeConv.listing_id })).catch(() => {});
+                                   toast({ title: t('messages.dealClosedSuccess') });
+                                   import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, listing_id: activeConv.listing_id })).catch(() => {});
+                                   // Push notification to buyer
+                                   supabase.functions.invoke('notify-event', {
+                                     body: {
+                                       event_type: 'deal_closed',
+                                       user_id: activeConv.buyer_id,
+                                       data: { listing_title: activeConv.listings?.title_original, conversation_id: activeConvId },
+                                     },
+                                   }).catch(() => {});
                                } catch (err) {
                                  toast({ title: 'Error', variant: 'destructive' });
                                }

@@ -314,6 +314,18 @@ export default function ListingDetail() {
         .single();
       if (newConv) {
         toast({ title: t('messages.conversationStarted') });
+        // Push notification to seller about new conversation
+        supabase.functions.invoke('notify-event', {
+          body: {
+            event_type: 'new_conversation',
+            user_id: listing.seller_id,
+            data: {
+              listing_title: listing.title_original,
+              sender_name: profile?.display_name || 'User',
+              conversation_id: newConv.id,
+            },
+          },
+        }).catch(() => {});
         // Trigger real estate services promo BEFORE navigating
         if (listing.category === 'immobilier') {
           try {
