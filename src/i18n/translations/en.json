@@ -1539,5 +1539,18 @@
     "testimonial3": "Moving to Bali was easier with Re-Bali.",
     "testimonial3Author": "Thomas L., Ubud",
     "launchDate": "Launching April 1st, 2026"
+  },
+  "publish": {
+    "progress": {
+      "title": "Publishing your listing...",
+      "preparing": "Preparing your listing...",
+      "checking": "Checking content...",
+      "creating": "Creating your listing...",
+      "updating": "Updating your listing...",
+      "uploading": "Uploading photos...",
+      "boosting": "Applying boost...",
+      "translating": "Translating to 12 languages...",
+      "done": "Almost there!"
+    }
   }
 }
