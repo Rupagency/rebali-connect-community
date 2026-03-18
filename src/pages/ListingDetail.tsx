@@ -28,7 +28,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import ListingCard from '@/components/ListingCard';
 import UserBadges from '@/components/UserBadges';
-import WatermarkOverlay from '@/components/WatermarkOverlay';
+
 import BlockUserButton from '@/components/BlockUserButton';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import ListingDetailSkeleton from '@/components/skeletons/ListingDetailSkeleton';
@@ -441,7 +441,7 @@ export default function ListingDetail() {
                     }
                   }}
                 />
-                <WatermarkOverlay />
+                
               </div>
               {/* Share & Fav floating buttons */}
               <div className="absolute top-3 right-3 flex gap-2">
