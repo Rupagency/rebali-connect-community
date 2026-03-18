@@ -12,15 +12,15 @@ Deno.serve(async (req) => {
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, serviceKey);
 
     // Find conversations where deal_closed = true, buyer_confirmed = false, and deal_closed_at > 7 days ago
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
     const { data: expiredConvs, error } = await supabase
       .from("conversations")
-      .select("id, buyer_id, seller_id")
+      .select("id, buyer_id, seller_id, listing_id, listings!conversations_listing_id_fkey(title_original)")
       .eq("deal_closed", true)
       .eq("buyer_confirmed", false)
       .neq("relay_status", "closed")
@@ -43,6 +43,27 @@ Deno.serve(async (req) => {
         content: "⏰ This conversation has been automatically closed after 7 days without buyer confirmation.",
         from_role: "system",
       });
+
+      const listingTitle = (conv as any).listings?.title_original || "listing";
+
+      // Notify both buyer and seller
+      for (const userId of [conv.buyer_id, conv.seller_id]) {
+        fetch(`${supabaseUrl}/functions/v1/notify-event`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${serviceKey}`,
+          },
+          body: JSON.stringify({
+            event_type: "deal_expired",
+            user_id: userId,
+            data: {
+              listing_title: listingTitle,
+              conversation_id: conv.id,
+            },
+          }),
+        }).catch((e) => console.error("notify deal expired error:", e));
+      }
 
       closedCount++;
     }

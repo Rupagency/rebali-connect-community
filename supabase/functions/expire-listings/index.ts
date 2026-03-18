@@ -12,10 +12,9 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, serviceKey);
 
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
@@ -24,7 +23,7 @@ Deno.serve(async (req) => {
       .update({ status: "archived" })
       .eq("status", "active")
       .lt("created_at", thirtyDaysAgo)
-      .select("id");
+      .select("id, seller_id, title_original");
 
     if (error) {
       console.error("Expire listings error:", error);
@@ -36,6 +35,22 @@ Deno.serve(async (req) => {
 
     const count = data?.length || 0;
     console.log(`Archived ${count} expired listings`);
+
+    // Send push notifications to each seller
+    for (const listing of data || []) {
+      fetch(`${supabaseUrl}/functions/v1/notify-event`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${serviceKey}`,
+        },
+        body: JSON.stringify({
+          event_type: "listing_expired",
+          user_id: listing.seller_id,
+          data: { listing_title: listing.title_original },
+        }),
+      }).catch((e) => console.error("notify listing expired error:", e));
+    }
 
     return new Response(JSON.stringify({ archived: count }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

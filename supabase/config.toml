@@ -86,3 +86,15 @@ verify_jwt = false
 
 [functions.notify-favorite]
 verify_jwt = false
+
+[functions.notify-event]
+verify_jwt = false
+
+[functions.remind-deal-confirmation]
+verify_jwt = false
+
+[functions.expire-listings]
+verify_jwt = false
+
+[functions.close-expired-deals]
+verify_jwt = false

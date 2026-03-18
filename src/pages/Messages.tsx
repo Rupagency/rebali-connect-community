@@ -343,6 +343,15 @@ export default function Messages() {
     queryClient.invalidateQueries({ queryKey: ['my-review', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['other-review', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+    // Push notification to reviewed user
+    const reviewedUserId2 = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
+    supabase.functions.invoke('notify-event', {
+      body: {
+        event_type: 'new_review',
+        user_id: reviewedUserId2,
+        data: { sender_name: profile?.display_name || 'User', conversation_id: activeConvId },
+      },
+    }).catch(() => {});
 
     // Check if both rated -> close conversation
     const otherUserId = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
