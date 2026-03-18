@@ -278,7 +278,10 @@
     "acceptTermsRequired": "Anda harus menerima Syarat Penggunaan dan Kebijakan Privasi untuk membuat akun",
     "userAlreadyExists": "Akun ini sudah ada",
     "tryLogin": "Coba masuk dengan email ini.",
-    "signupSuccess": "Akun berhasil dibuat! Selamat datang di Re-Bali."
+    "signupSuccess": "Akun berhasil dibuat! Selamat datang di Re-Bali.",
+    "continueWithGoogle": "Lanjutkan dengan Google",
+    "continueWithApple": "Lanjutkan dengan Apple",
+    "orContinueWith": "atau lanjutkan dengan"
   },
   "profile": {
     "title": "Pengaturan Profil",
