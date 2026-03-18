@@ -441,7 +441,7 @@ export default function ListingDetail() {
                     }
                   }}
                 />
-                <WatermarkOverlay />
+                
               </div>
               {/* Share & Fav floating buttons */}
               <div className="absolute top-3 right-3 flex gap-2">
