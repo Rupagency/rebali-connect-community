@@ -18,7 +18,15 @@
     "searches": "عمليات البحث",
     "favorites": "المفضلة",
     "messages": "الرسائل",
-    "loginSignup": "تسجيل الدخول"
+    "loginSignup": "تسجيل الدخول",
+    "trustAndPoints": "الثقة والشارات والنقاط",
+    "trustBadges": "الثقة والشارات",
+    "pointsShop": "متجر النقاط",
+    "faq": "الأسئلة الشائعة",
+    "terms": "شروط الاستخدام",
+    "privacy": "سياسة الخصوصية",
+    "pdpl": "PDPL (حماية البيانات)",
+    "contact": "الاتصال بالدعم"
   },
   "search": {
     "placeholder": "ابحث عن أي شيء...",
