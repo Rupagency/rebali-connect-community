@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 
 function GoogleIcon() {
   return (
@@ -28,23 +29,46 @@ export function SocialLoginButtons() {
   const { t } = useLanguage();
   const [loading, setLoading] = useState<'google' | 'apple' | null>(null);
   
-  const platform = Capacitor.getPlatform(); // 'web', 'ios', 'android'
-  const showApple = platform !== 'android'; // Show Apple on web + iOS, hide on Android
+  const platform = Capacitor.getPlatform();
+  const isNative = Capacitor.isNativePlatform();
+  const showApple = platform !== 'android';
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     setLoading(provider);
     try {
-      const redirectTo = Capacitor.isNativePlatform()
+      const redirectTo = isNative
         ? 'capacitor://localhost'
         : 'https://re-bali.com';
 
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: { redirectTo },
-      });
+      if (isNative) {
+        // On native: get the OAuth URL, open in system browser, then deep-link back
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: {
+            redirectTo,
+            skipBrowserRedirect: true, // Don't redirect the WebView
+          },
+        });
 
-      if (error) {
-        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+        if (error) {
+          toast({ title: 'Error', description: error.message, variant: 'destructive' });
+          return;
+        }
+
+        if (data?.url) {
+          // Open OAuth flow in system browser (not in-app WebView)
+          await Browser.open({ url: data.url, windowName: '_self' });
+        }
+      } else {
+        // On web: normal OAuth flow
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: { redirectTo },
+        });
+
+        if (error) {
+          toast({ title: 'Error', description: error.message, variant: 'destructive' });
+        }
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err?.message || 'Something went wrong', variant: 'destructive' });
