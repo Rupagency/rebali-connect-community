@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Download, X, Share } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { isNativePlatform } from '@/capacitor';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -52,7 +53,7 @@ export default function PwaInstallButton() {
     return () => document.removeEventListener('mousedown', handler);
   }, [showIOSTip]);
 
-  if (!isMobile || isStandalone || dismissed) return null;
+  if (!isMobile || isStandalone || dismissed || isNativePlatform) return null;
   if (!deferredPrompt && !isIOS) return null;
 
   const handleClick = async () => {
