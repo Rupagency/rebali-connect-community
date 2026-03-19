@@ -1415,91 +1415,37 @@
     "title": "अक्सर पूछे जाने वाले प्रश्न",
     "subtitle": "Re-Bali मार्केटप्लेस के बारे में सब कुछ",
     "howItWorks": {
-      "title": "How It Works",
-      "q1": {
-        "q": "What is Re-Bali?",
-        "a": "Re-Bali is a trusted marketplace for buying and selling goods and services in Bali, Indonesia. All transactions happen through our secure in-app chat system."
-      },
-      "q2": {
-        "q": "How do I post a listing?",
-        "a": "Sign up, click 'Publish', fill in your item details, upload photos, and your listing goes live after a quick review. You can post up to 3-5 listings depending on your account age."
-      },
-      "q3": {
-        "q": "How do buyers contact me?",
-        "a": "Buyers send messages through our built-in chat. Your personal phone number stays private until you decide to share it."
-      },
-      "q4": {
-        "q": "How are deals completed?",
-        "a": "When you agree on a price, the seller closes the deal, and the buyer confirms. Both parties can then leave reviews. Payments happen directly between buyer and seller."
-      },
-      "q5": {
-        "q": "Is Re-Bali free to use?",
-        "a": "Yes! Posting listings and messaging is free. Optional premium features like boosts and VIP status can be purchased with points or IDR."
-      }
+      "title": "यह कैसे काम करता है",
+      "q1": { "q": "Re-Bali क्या है?", "a": "Re-Bali बाली, इंडोनेशिया में सामान और सेवाओं को खरीदने-बेचने के लिए एक विश्वसनीय मार्केटप्लेस है। सभी लेनदेन हमारे सुरक्षित इन-ऐप चैट सिस्टम के माध्यम से होते हैं।" },
+      "q2": { "q": "मैं विज्ञापन कैसे पोस्ट करूं?", "a": "साइन अप करें, 'प्रकाशित करें' पर क्लिक करें, विवरण भरें, फ़ोटो अपलोड करें, और त्वरित समीक्षा के बाद आपका विज्ञापन लाइव हो जाएगा। आप खाते की उम्र के अनुसार 3-5 विज्ञापन पोस्ट कर सकते हैं।" },
+      "q3": { "q": "खरीदार मुझसे कैसे संपर्क करते हैं?", "a": "खरीदार हमारे बिल्ट-इन चैट के माध्यम से संदेश भेजते हैं। जब तक आप साझा करने का निर्णय नहीं लेते, आपका व्यक्तिगत फ़ोन नंबर गोपनीय रहता है।" },
+      "q4": { "q": "सौदे कैसे पूरे होते हैं?", "a": "जब आप कीमत पर सहमत होते हैं, तो विक्रेता सौदा बंद करता है और खरीदार पुष्टि करता है। दोनों पक्ष समीक्षा छोड़ सकते हैं। भुगतान सीधे खरीदार और विक्रेता के बीच होता है।" },
+      "q5": { "q": "क्या Re-Bali मुफ़्त है?", "a": "हाँ! विज्ञापन पोस्ट करना और मैसेज करना मुफ़्त है। बूस्ट और VIP जैसी वैकल्पिक प्रीमियम सुविधाएं पॉइंट्स या IDR से खरीदी जा सकती हैं।" }
     },
     "safety": {
-      "title": "Safety & Trust",
-      "q1": {
-        "q": "How does the trust score work?",
-        "a": "Your trust score is calculated from account age, completed deals, positive reviews, and verification status. Higher scores unlock badges like 'Safe Seller' and 'Trusted Pro'."
-      },
-      "q2": {
-        "q": "How are scams prevented?",
-        "a": "We use content moderation, image duplicate detection, phone verification, identity verification, and automatic flagging of suspicious accounts. Listings with 3+ scam reports are auto-archived."
-      },
-      "q3": {
-        "q": "Can I block a user?",
-        "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden from you. You can unblock anytime from your Blocked Users page."
-      },
-      "q4": {
-        "q": "How do I report a suspicious listing?",
-        "a": "Tap the 'Report' button on any listing. Choose a reason (scam, prohibited, spam, etc.) and we'll review it within 24 hours."
-      }
+      "title": "सुरक्षा और विश्वास",
+      "q1": { "q": "विश्वास स्कोर कैसे काम करता है?", "a": "आपका विश्वास स्कोर खाते की उम्र, पूर्ण किए गए सौदों, सकारात्मक समीक्षाओं और सत्यापन स्थिति से गणना होता है। उच्च स्कोर 'सुरक्षित विक्रेता' और 'Trusted Pro' जैसे बैज अनलॉक करते हैं।" },
+      "q2": { "q": "धोखाधड़ी कैसे रोकी जाती है?", "a": "हम कंटेंट मॉडरेशन, इमेज डुप्लिकेट डिटेक्शन, फ़ोन सत्यापन, पहचान सत्यापन और संदिग्ध खातों की स्वचालित फ़्लैगिंग का उपयोग करते हैं। 3+ धोखाधड़ी रिपोर्ट वाले विज्ञापन स्वचालित रूप से आर्काइव हो जाते हैं।" },
+      "q3": { "q": "क्या मैं किसी उपयोगकर्ता को ब्लॉक कर सकता हूँ?", "a": "हाँ। उनकी प्रोफ़ाइल पर जाएं और 'ब्लॉक' पर टैप करें। उनके विज्ञापन और संदेश आपसे छिपा दिए जाएंगे। आप ब्लॉक किए गए उपयोगकर्ता पृष्ठ से कभी भी अनब्लॉक कर सकते हैं।" },
+      "q4": { "q": "मैं संदिग्ध विज्ञापन की रिपोर्ट कैसे करूं?", "a": "किसी भी विज्ञापन पर 'रिपोर्ट' बटन पर टैप करें। एक कारण चुनें (धोखाधड़ी, निषिद्ध, स्पैम, आदि) और हम 24 घंटे के भीतर इसकी समीक्षा करेंगे।" }
     },
     "payments": {
-      "title": "Payments & Points",
-      "q1": {
-        "q": "How do payments work?",
-        "a": "Re-Bali does not process payments between buyers and sellers. You arrange payment directly (cash, bank transfer, etc.). We provide the secure communication channel."
-      },
-      "q2": {
-        "q": "What are points?",
-        "a": "Points are earned by completing deals, getting reviews, and earning badges. Spend them on boosts, VIP status, and extra listing slots in the Points Shop."
-      },
-      "q3": {
-        "q": "Can I buy points with real money?",
-        "a": "Yes! Point packs are available for purchase in IDR through our secure payment system powered by Xendit."
-      }
+      "title": "भुगतान और पॉइंट्स",
+      "q1": { "q": "भुगतान कैसे काम करता है?", "a": "Re-Bali खरीदारों और विक्रेताओं के बीच भुगतान प्रोसेस नहीं करता। आप सीधे भुगतान व्यवस्थित करते हैं (नकद, बैंक ट्रांसफर, आदि)। हम सुरक्षित संचार चैनल प्रदान करते हैं।" },
+      "q2": { "q": "पॉइंट्स क्या हैं?", "a": "पॉइंट्स सौदे पूरे करने, समीक्षाएं प्राप्त करने और बैज कमाने से अर्जित होते हैं। इन्हें पॉइंट्स शॉप में बूस्ट, VIP स्टेटस और अतिरिक्त विज्ञापन स्लॉट के लिए खर्च करें।" },
+      "q3": { "q": "क्या मैं असली पैसे से पॉइंट्स खरीद सकता हूँ?", "a": "हाँ! पॉइंट पैक Xendit द्वारा संचालित हमारे सुरक्षित भुगतान प्रणाली के माध्यम से IDR में उपलब्ध हैं।" }
     },
     "verification": {
-      "title": "Verification",
-      "q1": {
-        "q": "How do I verify my WhatsApp?",
-        "a": "Go to your Profile, enter your WhatsApp number, and we'll send a verification code via WhatsApp. Once verified, you earn the WhatsApp Verified badge and 20 points."
-      },
-      "q2": {
-        "q": "How does identity verification work?",
-        "a": "Upload a government-issued ID (KTP, passport, or driving license) and a selfie. Our team reviews it within 48 hours. You earn the Identity Verified badge and 40 points."
-      },
-      "q3": {
-        "q": "Is my personal data safe?",
-        "a": "Yes. Verification documents are encrypted at rest, automatically purged after review, and never shared with other users. Only our admin team can access them during verification."
-      }
+      "title": "सत्यापन",
+      "q1": { "q": "मैं अपना WhatsApp कैसे सत्यापित करूं?", "a": "अपनी प्रोफ़ाइल पर जाएं, अपना WhatsApp नंबर दर्ज करें, और हम एक सत्यापन कोड भेजेंगे। सत्यापन के बाद आपको WhatsApp सत्यापित बैज और 20 पॉइंट्स मिलेंगे।" },
+      "q2": { "q": "पहचान सत्यापन कैसे काम करता है?", "a": "सरकारी पहचान पत्र (KTP, पासपोर्ट या ड्राइविंग लाइसेंस) और एक सेल्फी अपलोड करें। हमारी टीम 48 घंटे के भीतर इसकी समीक्षा करती है। आपको पहचान सत्यापित बैज और 40 पॉइंट्स मिलेंगे।" },
+      "q3": { "q": "क्या मेरा व्यक्तिगत डेटा सुरक्षित है?", "a": "हाँ। सत्यापन दस्तावेज़ एन्क्रिप्ट किए जाते हैं, समीक्षा के बाद स्वचालित रूप से हटा दिए जाते हैं, और कभी भी अन्य उपयोगकर्ताओं के साथ साझा नहीं किए जाते।" }
     },
     "account": {
-      "title": "My Account",
-      "q1": {
-        "q": "How do I change my display name or avatar?",
-        "a": "Go to Profile, tap Edit, and update your display name or upload a new avatar photo."
-      },
-      "q2": {
-        "q": "What's the difference between Private and Business accounts?",
-        "a": "Private accounts are for individuals (3-5 listings). Business (Pro) accounts get more listings, analytics, a business page, and priority support."
-      },
-      "q3": {
-        "q": "How do I delete my account?",
-        "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
-      }
+      "title": "मेरा खाता",
+      "q1": { "q": "मैं अपना नाम या अवतार कैसे बदलूं?", "a": "प्रोफ़ाइल पर जाएं, संपादित करें पर टैप करें, और अपना प्रदर्शन नाम अपडेट करें या एक नई अवतार फ़ोटो अपलोड करें।" },
+      "q2": { "q": "व्यक्तिगत और व्यावसायिक खातों में क्या अंतर है?", "a": "व्यक्तिगत खाते व्यक्तियों के लिए हैं (3-5 विज्ञापन)। व्यावसायिक (Pro) खातों में अधिक विज्ञापन, एनालिटिक्स, बिज़नेस पेज और प्राथमिकता सहायता मिलती है।" },
+      "q3": { "q": "मैं अपना खाता कैसे हटाऊं?", "a": "संपर्क पृष्ठ के माध्यम से हमारी सहायता टीम से संपर्क करें। हम आपके अनुरोध को संसाधित करेंगे और इंडोनेशियाई PDP कानून के अनुसार 30 दिनों के भीतर आपका सभी डेटा हटा देंगे।" }
     },
     "legal": {
       "title": "कानूनी और अनुपालन",
