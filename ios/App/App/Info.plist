@@ -62,6 +62,8 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>com.rebali.app</string>
 			<key>CFBundleURLSchemes</key>
