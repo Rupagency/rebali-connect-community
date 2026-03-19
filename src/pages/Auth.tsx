@@ -42,6 +42,8 @@ export default function Auth() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [legalDialog, setLegalDialog] = useState<'terms' | 'privacy' | null>(null);
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
+  const [mfaChallenge, setMfaChallenge] = useState<{ factorId: string; challengeId: string } | null>(null);
+  const [mfaCode, setMfaCode] = useState('');
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
