@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Download, X, Share } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { isNativePlatform } from '@/capacitor';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
