@@ -888,6 +888,9 @@ export default function Profile() {
         </CardContent>
       </Card>
 
+      {/* Two-Factor Authentication */}
+      <TwoFactorSetup />
+
       {/* Reviews Received */}
       <Card>
         <CardHeader>
