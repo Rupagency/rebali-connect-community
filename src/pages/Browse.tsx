@@ -1,7 +1,7 @@
 import SEOHead from '@/components/SEOHead';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { supabase } from '@/integrations/supabase/client';
 import ListingCard from '@/components/ListingCard';
@@ -12,9 +12,10 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { CATEGORIES, LOCATIONS, LOCATION_GROUPS, CONDITIONS, CATEGORY_TREE, LOCATION_COORDS, getDistanceKm, CATEGORIES_WITH_RENTAL } from '@/lib/constants';
-import { SlidersHorizontal, X, MapPin, Loader2 } from 'lucide-react';
+import { SlidersHorizontal, X, MapPin, Loader2, Sparkles } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useBlockedUsers } from '@/hooks/useBlockedUsers';
+import { useAuth } from '@/contexts/AuthContext';
 
 const PAGE_SIZE = 20;
 
@@ -31,6 +32,7 @@ export default function Browse() {
   const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const blockedIds = useBlockedUsers();
+  const { user } = useAuth();
 
   // Initialize all filters from URL params
   const [search, setSearch] = useState(searchParams.get('q') || '');
@@ -85,6 +87,22 @@ export default function Browse() {
     setRadiusKm(25);
   };
 
+  // Fetch user's favorite categories for recommended sort
+  const { data: userFavCategories } = useQuery({
+    queryKey: ['user-fav-categories', user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('favorites')
+        .select('listing_id, listings!inner(category)')
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false })
+        .limit(50);
+      return [...new Set((data || []).map((f: any) => (f.listings as any)?.category).filter(Boolean))] as string[];
+    },
+    enabled: !!user && sort === 'recommended',
+    staleTime: 5 * 60 * 1000,
+  });
+
   // Infinite query
   const {
     data,
@@ -93,7 +111,7 @@ export default function Browse() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice],
+    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice, userFavCategories],
     queryFn: async ({ pageParam = 0 }) => {
       // If searching, use multilingual search RPC to get matching IDs first
       let matchingIds: string[] | null = null;
@@ -117,7 +135,12 @@ export default function Browse() {
       if (minPrice) query = query.gte('price', Number(minPrice));
       if (maxPrice) query = query.lte('price', Number(maxPrice));
 
-      if (sort === 'newest') query = query.order('created_at', { ascending: false });
+      // For recommended sort, filter by fav categories and exclude own listings
+      if (sort === 'recommended' && userFavCategories && userFavCategories.length > 0 && user) {
+        query = query.in('category', userFavCategories).neq('seller_id', user.id);
+      }
+
+      if (sort === 'newest' || sort === 'recommended') query = query.order('created_at', { ascending: false });
       else if (sort === 'price_low') query = query.order('price', { ascending: true });
       else if (sort === 'price_high') query = query.order('price', { ascending: false });
       else if (sort === 'most_viewed') query = query.order('views_count', { ascending: false });
@@ -280,6 +303,14 @@ export default function Browse() {
             <SelectItem value="price_high">{t('filters.sortPriceHigh')}</SelectItem>
             <SelectItem value="most_viewed">{t('filters.sortMostViewed')}</SelectItem>
             <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
+            {user && (
+              <SelectItem value="recommended">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {t('filters.sortRecommended') || 'Recommended'}
+                </span>
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
         {showListingTypeFilter && (
