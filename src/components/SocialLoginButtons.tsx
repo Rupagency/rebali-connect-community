@@ -37,7 +37,7 @@ export function SocialLoginButtons() {
     setLoading(provider);
     try {
       const redirectTo = isNative
-        ? 'capacitor://localhost'
+        ? 'com.rebali.app://auth/callback'
         : 'https://re-bali.com';
 
       if (isNative) {
@@ -57,7 +57,7 @@ export function SocialLoginButtons() {
 
         if (data?.url) {
           // Open OAuth flow in system browser (not in-app WebView)
-          await Browser.open({ url: data.url, windowName: '_self' });
+          await Browser.open({ url: data.url });
         }
       } else {
         // On web: normal OAuth flow
