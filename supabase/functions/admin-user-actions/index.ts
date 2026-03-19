@@ -123,23 +123,34 @@ Deno.serve(async (req) => {
         const { data: { user }, error: getUserError } = await adminClient.auth.admin.getUserById(user_id);
         if (getUserError || !user) throw new Error("User not found");
 
+        let totpRemoved = 0;
+        let emailMfaDisabled = false;
+
+        // Remove TOTP factors
         const factors = user.factors || [];
         const verifiedFactors = factors.filter((f: any) => f.status === "verified");
-
-        if (verifiedFactors.length === 0) {
-          return new Response(
-            JSON.stringify({ success: true, message: "No MFA factors to remove" }),
-            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-
-        // Delete all verified MFA factors
         for (const factor of verifiedFactors) {
           const { error } = await adminClient.auth.admin.deleteFactor({
             userId: user_id,
             id: factor.id,
           });
           if (error) console.error(`Failed to delete factor ${factor.id}:`, error);
+          else totpRemoved++;
+        }
+
+        // Disable email MFA
+        const { data: emailMfa } = await adminClient
+          .from("email_mfa")
+          .select("enabled")
+          .eq("user_id", user_id)
+          .single();
+
+        if (emailMfa?.enabled) {
+          await adminClient
+            .from("email_mfa")
+            .update({ enabled: false })
+            .eq("user_id", user_id);
+          emailMfaDisabled = true;
         }
 
         // Log admin action
@@ -148,11 +159,11 @@ Deno.serve(async (req) => {
           action: "disable_mfa",
           target_type: "user",
           target_id: user_id,
-          details: { factors_removed: verifiedFactors.length },
+          details: { totp_removed: totpRemoved, email_mfa_disabled: emailMfaDisabled },
         });
 
         return new Response(
-          JSON.stringify({ success: true, factors_removed: verifiedFactors.length }),
+          JSON.stringify({ success: true, totp_removed: totpRemoved, email_mfa_disabled: emailMfaDisabled }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
