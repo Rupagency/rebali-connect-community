@@ -203,33 +203,62 @@ export default function Auth() {
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle>{t('auth.loginTitle')}</CardTitle>
-              <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
+              <CardTitle>{mfaChallenge ? '🔐 Double authentification' : t('auth.loginTitle')}</CardTitle>
+              <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <SocialLoginButtons />
-                <div className="relative">
-                  <Separator />
-                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-                    {t('auth.orContinueWith')}
-                  </span>
+              {mfaChallenge ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                    <span>Code à 6 chiffres requis</span>
+                  </div>
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} value={mfaCode} onChange={setMfaCode}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                  <Button onClick={handleMfaVerify} className="w-full" disabled={loading || mfaCode.length !== 6}>
+                    {loading ? t('common.loading') : 'Vérifier'}
+                  </Button>
+                  <Button variant="ghost" size="sm" className="w-full" onClick={() => { setMfaChallenge(null); setMfaCode(''); }}>
+                    {t('common.back')}
+                  </Button>
                 </div>
-              </div>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <Label>{t('auth.email')}</Label>
-                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-                </div>
-                <div>
-                  <Label>{t('auth.password')}</Label>
-                  <PasswordInput value={password} onChange={e => setPassword(e.target.value)} required />
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>{t('common.login')}</Button>
-                <div className="text-sm text-center">
-                  <button type="button" onClick={handleForgotPassword} className="text-primary hover:underline">{t('auth.forgotPassword')}</button>
-                </div>
-              </form>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    <SocialLoginButtons />
+                    <div className="relative">
+                      <Separator />
+                      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                        {t('auth.orContinueWith')}
+                      </span>
+                    </div>
+                  </div>
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                      <Label>{t('auth.email')}</Label>
+                      <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                    </div>
+                    <div>
+                      <Label>{t('auth.password')}</Label>
+                      <PasswordInput value={password} onChange={e => setPassword(e.target.value)} required />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>{t('common.login')}</Button>
+                    <div className="text-sm text-center">
+                      <button type="button" onClick={handleForgotPassword} className="text-primary hover:underline">{t('auth.forgotPassword')}</button>
+                    </div>
+                  </form>
+                </>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
