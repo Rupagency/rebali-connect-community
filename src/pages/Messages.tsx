@@ -305,14 +305,11 @@ export default function Messages() {
 
   const handleBuyerConfirm = async () => {
     if (!activeConvId || !user) return;
-    await supabase.from('conversations').update({
-      buyer_confirmed: true,
-      buyer_confirmed_at: new Date().toISOString(),
-    } as any).eq('id', activeConvId);
-    await supabase.from('messages').insert({
-      conversation_id: activeConvId, sender_id: user.id,
-      content: `✅ ${t('messages.buyerConfirmDeal')}`, from_role: 'system',
-    });
+    const { error } = await supabase.rpc('confirm_deal', { _conversation_id: activeConvId });
+    if (error) {
+      toast({ title: error.message, variant: 'destructive' });
+      return;
+    }
     queryClient.invalidateQueries({ queryKey: ['conversations'] });
     queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     toast({ title: t('messages.buyerConfirmDeal') });
