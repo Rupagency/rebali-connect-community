@@ -83,12 +83,40 @@ export default function Auth() {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
       setLoading(false);
     } else if (data?.session) {
-      // Normal login (no MFA)
+      // Session returned — check for email MFA before completing login
+      try {
+        const { data: emailMfa } = await supabase
+          .from('email_mfa')
+          .select('enabled')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (emailMfa?.enabled) {
+          // Send email MFA code
+          setEmailMfaSending(true);
+          const { error: sendErr } = await supabase.functions.invoke('send-mfa-email', {
+            body: { action: 'send_code' },
+          });
+          setEmailMfaSending(false);
+          if (sendErr) {
+            console.error('[Auth] Email MFA send error:', sendErr);
+            // Still allow login if email MFA fails to send
+            if (data?.user) logDevice(data.user.id);
+            navigate('/', { replace: true });
+          } else {
+            setEmailMfaPending(true);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // No email MFA row — continue normally
+      }
+
       if (data?.user) logDevice(data.user.id);
       navigate('/', { replace: true });
     } else {
-      // MFA required — no session returned
-      // Check for MFA factors
+      // MFA required — no session returned (TOTP)
       try {
         const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
         if (factorsError) throw factorsError;
@@ -103,9 +131,41 @@ export default function Auth() {
       } catch (err: any) {
         console.error('[Auth] MFA challenge error:', err);
       }
-      // Fallback: navigate anyway
       navigate('/', { replace: true });
     }
+  };
+
+  const handleEmailMfaVerify = async () => {
+    if (emailMfaCode.length !== 6) return;
+    setLoading(true);
+    try {
+      const { data: result, error } = await supabase.functions.invoke('verify-mfa-email', {
+        body: { code: emailMfaCode },
+      });
+      if (error) throw error;
+      if (!result?.verified) throw new Error(result?.error || 'Code invalide');
+
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) logDevice(currentUser.id);
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      toast({ title: 'Code invalide', description: err.message, variant: 'destructive' });
+      setEmailMfaCode('');
+    }
+    setLoading(false);
+  };
+
+  const handleResendEmailMfa = async () => {
+    setEmailMfaSending(true);
+    try {
+      await supabase.functions.invoke('send-mfa-email', {
+        body: { action: 'send_code' },
+      });
+      toast({ title: 'Code renvoyé', description: 'Vérifiez votre boîte email.' });
+    } catch {
+      toast({ title: 'Erreur', description: 'Impossible de renvoyer le code.', variant: 'destructive' });
+    }
+    setEmailMfaSending(false);
   };
 
   const handleMfaVerify = async () => {
