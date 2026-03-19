@@ -52,20 +52,21 @@ const BusinessServices = lazy(() => import("./pages/BusinessServices"));
 const BusinessPage = lazy(() => import("./pages/BusinessPage"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
+const NativeAuthCallback = lazy(() => import("./pages/NativeAuthCallback"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,        // 1 min — avoid refetch on every navigation
-      gcTime: 10 * 60 * 1000,      // 10 min garbage collection
-      retry: 1,                     // single retry on failure
-      refetchOnWindowFocus: false,  // no auto-refetch on tab switch
+      staleTime: 60 * 1000, // 1 min — avoid refetch on every navigation
+      gcTime: 10 * 60 * 1000, // 10 min garbage collection
+      retry: 1, // single retry on failure
+      refetchOnWindowFocus: false, // no auto-refetch on tab switch
     },
   },
 });
 
 const PageFallback = () => (
-  <div className="flex items-center justify-center min-h-[50vh]">
+  <div className="flex min-h-[50vh] items-center justify-center">
     <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
   </div>
 );
@@ -83,73 +84,75 @@ const usePrefetchRoutes = () => {
 
 const App = () => {
   usePrefetchRoutes();
+
   return (
-  <HelmetProvider>
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <LanguageProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <OfflineBanner />
-             <BrowserRouter>
-              <ScrollToTop />
-              <ErrorBoundary>
-              <Suspense fallback={<PageFallback />}>
-              <Routes>
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/browse" element={<Browse />} />
-                  <Route path="/listing/:id" element={<ListingDetail />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route path="/create" element={<CreateListing />} />
-                  <Route path="/my-listings" element={<MyListings />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="reports" element={<AdminReports />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="listings" element={<AdminListings />} />
-                    <Route path="security" element={<AdminSecurity />} />
-                    <Route path="wa-relay" element={<AdminWARelay />} />
-                    <Route path="search-analytics" element={<AdminSearchAnalytics />} />
-                    <Route path="logs" element={<AdminLogs />} />
-                    <Route path="stats" element={<AdminStats />} />
-                  </Route>
-                  <Route path="/about" element={<About />} />
-                  <Route path="/safety" element={<Safety />} />
-                  <Route path="/rules" element={<Rules />} />
-                  <Route path="/vip" element={<VIP />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/trust-badges" element={<TrustBadges />} />
-                  <Route path="/points" element={<PointsShop />} />
-                  <Route path="/dashboard" element={<SellerDashboard />} />
-                  <Route path="/pro-subscription" element={<ProSubscription />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/blocked-users" element={<BlockedUsers />} />
-                  <Route path="/business-services" element={<BusinessServices />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/coming-soon" element={<ComingSoon />} />
-                  
-                  <Route path="/seller/:id" element={<SellerProfile />} />
-                  <Route path="/business/:id" element={<BusinessPage />} />
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
-              </Suspense>
-              </ErrorBoundary>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-  </HelmetProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <LanguageProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <OfflineBanner />
+                <BrowserRouter>
+                  <ScrollToTop />
+                  <ErrorBoundary>
+                    <Suspense fallback={<PageFallback />}>
+                      <Routes>
+                        <Route path="/native-auth-callback" element={<NativeAuthCallback />} />
+
+                        <Route element={<Layout />}>
+                          <Route path="/" element={<Home />} />
+                          <Route path="/browse" element={<Browse />} />
+                          <Route path="/listing/:id" element={<ListingDetail />} />
+                          <Route path="/auth" element={<Auth />} />
+                          <Route path="/reset-password" element={<ResetPassword />} />
+                          <Route path="/create" element={<CreateListing />} />
+                          <Route path="/my-listings" element={<MyListings />} />
+                          <Route path="/profile" element={<Profile />} />
+                          <Route path="/admin" element={<AdminLayout />}>
+                            <Route index element={<AdminDashboard />} />
+                            <Route path="reports" element={<AdminReports />} />
+                            <Route path="users" element={<AdminUsers />} />
+                            <Route path="listings" element={<AdminListings />} />
+                            <Route path="security" element={<AdminSecurity />} />
+                            <Route path="wa-relay" element={<AdminWARelay />} />
+                            <Route path="search-analytics" element={<AdminSearchAnalytics />} />
+                            <Route path="logs" element={<AdminLogs />} />
+                            <Route path="stats" element={<AdminStats />} />
+                          </Route>
+                          <Route path="/about" element={<About />} />
+                          <Route path="/safety" element={<Safety />} />
+                          <Route path="/rules" element={<Rules />} />
+                          <Route path="/vip" element={<VIP />} />
+                          <Route path="/favorites" element={<Favorites />} />
+                          <Route path="/terms" element={<Terms />} />
+                          <Route path="/privacy" element={<Privacy />} />
+                          <Route path="/messages" element={<Messages />} />
+                          <Route path="/trust-badges" element={<TrustBadges />} />
+                          <Route path="/points" element={<PointsShop />} />
+                          <Route path="/dashboard" element={<SellerDashboard />} />
+                          <Route path="/pro-subscription" element={<ProSubscription />} />
+                          <Route path="/contact" element={<Contact />} />
+                          <Route path="/blocked-users" element={<BlockedUsers />} />
+                          <Route path="/business-services" element={<BusinessServices />} />
+                          <Route path="/faq" element={<FAQ />} />
+                          <Route path="/coming-soon" element={<ComingSoon />} />
+                          <Route path="/seller/:id" element={<SellerProfile />} />
+                          <Route path="/business/:id" element={<BusinessPage />} />
+                          <Route path="*" element={<NotFound />} />
+                        </Route>
+                      </Routes>
+                    </Suspense>
+                  </ErrorBoundary>
+                </BrowserRouter>
+              </TooltipProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
