@@ -101,3 +101,6 @@ verify_jwt = false
 
 [functions.push-engagement]
 verify_jwt = false
+
+[functions.admin-user-actions]
+verify_jwt = false
