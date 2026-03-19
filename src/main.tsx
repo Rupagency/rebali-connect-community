@@ -55,17 +55,24 @@ async function restoreAuthSessionFromUrl(url: string): Promise<boolean> {
   return false;
 }
 
+async function handleIncomingAuthUrl(url: string, closeBrowser: boolean): Promise<void> {
+  if (closeBrowser) {
+    await Browser.close().catch(() => undefined);
+  }
+
+  const restored = await restoreAuthSessionFromUrl(url);
+  if (restored) {
+    window.history.replaceState(null, '', '/');
+  }
+
+  if (closeBrowser) {
+    await Browser.close().catch(() => undefined);
+  }
+}
+
 if (isNativePlatform) {
   CapacitorApp.addListener('appUrlOpen', async ({ url }) => {
-    const restored = await restoreAuthSessionFromUrl(url);
-
-    if (restored) {
-      window.history.replaceState(null, '', '/');
-    }
-
-    // Always close SFSafariViewController when returning to app,
-    // even if auth restore failed, to avoid getting stuck on callback page.
-    await Browser.close().catch(() => undefined);
+    await handleIncomingAuthUrl(url, true);
   });
 }
 
@@ -74,11 +81,20 @@ async function restoreSessionAndRender() {
   // Hydrate native storage cache so Supabase can read persisted session
   await hydrateCache();
 
-  const restored = await restoreAuthSessionFromUrl(window.location.href);
-  if (restored) {
-    // Clean the hash/query so tokens don't leak in the URL
-    window.history.replaceState(null, '', window.location.pathname);
+  let authUrl = window.location.href;
+
+  if (isNativePlatform) {
+    const launchUrl = await CapacitorApp.getLaunchUrl().catch((error) => {
+      console.error('Launch URL read error:', error);
+      return undefined;
+    });
+
+    if (launchUrl?.url) {
+      authUrl = launchUrl.url;
+    }
   }
+
+  await handleIncomingAuthUrl(authUrl, isNativePlatform);
 
   const root = document.getElementById("root");
   if (root) {

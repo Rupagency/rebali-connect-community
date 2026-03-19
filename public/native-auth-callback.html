@@ -90,11 +90,23 @@
         const finalDeepLink = deepLinkUrl.toString();
         const openButton = document.getElementById('open-app');
 
+        const openApp = () => {
+          window.location.replace(finalDeepLink);
+          setTimeout(() => {
+            window.location.href = finalDeepLink;
+          }, 120);
+        };
+
         if (openButton) {
           openButton.setAttribute('href', finalDeepLink);
+          openButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            openApp();
+          });
         }
 
-        window.location.href = finalDeepLink;
+        openApp();
+        setTimeout(openApp, 500);
       })();
     </script>
   </body>
