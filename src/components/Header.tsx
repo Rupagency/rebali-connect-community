@@ -29,6 +29,7 @@ export default function Header() {
   const { user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [headerSearch, setHeaderSearch] = useState('');
+  const [indexOpen, setIndexOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
   const authGuard = (path: string) => () => {
