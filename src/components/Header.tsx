@@ -62,7 +62,7 @@ export default function Header() {
                 <nav className="flex flex-col gap-1 text-sm">
                   <p className="font-semibold text-xs text-muted-foreground uppercase tracking-wide mb-1">{t('nav.trustAndPoints') || 'Confiance, Badges & Points'}</p>
                   <Link to="/trust-badges" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.trustBadges')}</Link>
-                  <Link to="/points-shop" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.pointsShop')}</Link>
+                  
 
                   <div className="border-t my-1.5" />
                   <Link to="/about" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.about')}</Link>
