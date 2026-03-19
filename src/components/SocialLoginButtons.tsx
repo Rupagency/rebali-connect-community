@@ -37,7 +37,7 @@ export function SocialLoginButtons() {
     setLoading(provider);
     try {
       const redirectTo = isNative
-        ? 'https://re-bali.com/native-auth-callback'
+        ? 'https://re-bali.com/native-auth-callback.html'
         : 'https://re-bali.com';
 
       if (isNative) {
