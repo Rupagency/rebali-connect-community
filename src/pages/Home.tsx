@@ -102,89 +102,50 @@ function useRecommendedListings(userId: string | undefined) {
     queryFn: async () => {
       if (!userId) return [];
 
-      // 1. Get user's favorite listing categories
-      const { data: favs } = await supabase
-        .from('favorites')
-        .select('listing_id')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(50);
+      // Parallel: fetch favorites + search logs at the same time
+      const [favsRes, searchRes] = await Promise.all([
+        supabase
+          .from('favorites')
+          .select('listing_id, listings!inner(category)')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(50),
+        supabase
+          .from('search_logs')
+          .select('term')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(20),
+      ]);
 
-      const favIds = (favs || []).map(f => f.listing_id);
-
-      // 2. Get categories from favorited listings
-      let favCategories: string[] = [];
-      if (favIds.length > 0) {
-        const { data: favListings } = await supabase
-          .from('listings')
-          .select('category')
-          .in('id', favIds);
-        favCategories = [...new Set((favListings || []).map(l => l.category))];
-      }
-
-      // 3. Get search terms from recent search logs
-      const { data: searchLogs } = await supabase
-        .from('search_logs')
-        .select('term')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      const searchTerms = [...new Set((searchLogs || []).map(s => s.term.toLowerCase().trim()).filter(t => t.length >= 2))];
+      const favRows = favsRes.data || [];
+      const favIds = new Set(favRows.map((f: any) => f.listing_id));
+      const favCategories = [...new Set(favRows.map((f: any) => (f.listings as any)?.category).filter(Boolean))];
+      const searchTerms = [...new Set((searchRes.data || []).map((s: any) => s.term.toLowerCase().trim()).filter((t: string) => t.length >= 2))];
 
       if (favCategories.length === 0 && searchTerms.length === 0) return [];
 
-      const favIdSet = new Set(favIds);
+      // Single query: fetch listings from favorite categories
+      const { data } = await supabase
+        .from('listings')
+        .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
+        .eq('status', 'active')
+        .neq('seller_id', userId)
+        .in('category', favCategories.length > 0 ? favCategories : ['__none__'])
+        .order('created_at', { ascending: false })
+        .limit(40);
 
-      // 4. Fetch from favorite categories (batch 1)
-      let catResults: any[] = [];
-      if (favCategories.length > 0) {
-        const { data } = await supabase
-          .from('listings')
-          .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
-          .eq('status', 'active')
-          .neq('seller_id', userId)
-          .in('category', favCategories)
-          .order('created_at', { ascending: false })
-          .limit(30);
-        catResults = (data || []).filter((l: any) => !favIdSet.has(l.id));
-      }
+      const results = (data || []).filter((l: any) => !favIds.has(l.id));
 
-      // 5. Search-term based: fetch broader pool and score by keyword match
-      let searchResults: any[] = [];
-      if (searchTerms.length > 0) {
-        const { data } = await supabase
-          .from('listings')
-          .select('*, listing_images(storage_path, sort_order), listing_translations(lang, title), profiles:seller_id(user_type, is_verified_seller)')
-          .eq('status', 'active')
-          .neq('seller_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(60);
-        searchResults = (data || []).filter((l: any) => !favIdSet.has(l.id));
-      }
-
-      // 6. Merge and deduplicate
-      const seenIds = new Set<string>();
-      const merged: any[] = [];
-      for (const l of [...catResults, ...searchResults]) {
-        if (!seenIds.has(l.id)) {
-          seenIds.add(l.id);
-          merged.push(l);
-        }
-      }
-
-      // 7. Score by search term matches
-      const scored = merged.map((l: any) => {
-        const text = `${l.title_original} ${l.description_original} ${l.category} ${l.subcategory || ''}`.toLowerCase();
+      // Score by search term matches
+      const scored = results.map((l: any) => {
+        const text = `${l.title_original} ${l.category} ${l.subcategory || ''}`.toLowerCase();
         const matchCount = searchTerms.filter(t => text.includes(t)).length;
-        const isFavCat = favCategories.includes(l.category) ? 1 : 0;
-        return { ...l, _score: matchCount * 2 + isFavCat };
+        return { ...l, _score: matchCount * 2 + 1 };
       });
 
-      // Only keep items with some relevance signal
-      const relevant = scored.filter((l: any) => l._score > 0);
-      relevant.sort((a: any, b: any) => b._score - a._score);
-      return relevant.slice(0, 20);
+      scored.sort((a: any, b: any) => b._score - a._score);
+      return scored.slice(0, 20);
     },
     enabled: !!userId,
     staleTime: 5 * 60 * 1000,

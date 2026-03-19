@@ -11,9 +11,21 @@ export function cn(...inputs: ClassValue[]) {
  * If the path is already a full URL (e.g. Unsplash), return it as-is.
  * Otherwise, build a Supabase Storage public URL.
  */
-export function getListingImageUrl(storagePath: string, bucket = "listings"): string {
+export function getListingImageUrl(
+  storagePath: string,
+  bucket = "listings",
+  /** Optional: request a resized version via Supabase Image Transformation */
+  transform?: { width?: number; height?: number; quality?: number }
+): string {
   if (storagePath.startsWith("http://") || storagePath.startsWith("https://")) {
     return storagePath;
+  }
+
+  if (transform) {
+    return supabase.storage
+      .from(bucket)
+      .getPublicUrl(storagePath, { transform })
+      .data.publicUrl;
   }
 
   return supabase.storage.from(bucket).getPublicUrl(storagePath).data.publicUrl;
