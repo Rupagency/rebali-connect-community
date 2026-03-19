@@ -46,7 +46,15 @@
     "searches": "搜索",
     "favorites": "收藏",
     "messages": "消息",
-    "loginSignup": "登录"
+    "loginSignup": "登录",
+    "trustAndPoints": "信任、徽章与积分",
+    "trustBadges": "信任与徽章",
+    "pointsShop": "积分商店",
+    "faq": "常见问题",
+    "terms": "使用条款",
+    "privacy": "隐私政策",
+    "pdpl": "PDPL（数据保护）",
+    "contact": "联系客服"
   },
   "home": {
     "hero": "在巴厘岛买卖",

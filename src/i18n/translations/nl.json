@@ -18,7 +18,15 @@
     "searches": "Zoekopdrachten",
     "favorites": "Favorieten",
     "messages": "Berichten",
-    "loginSignup": "Inloggen"
+    "loginSignup": "Inloggen",
+    "trustAndPoints": "Vertrouwen, Badges & Punten",
+    "trustBadges": "Vertrouwen & Badges",
+    "pointsShop": "Puntenwinkel",
+    "faq": "FAQ",
+    "terms": "Gebruiksvoorwaarden",
+    "privacy": "Privacybeleid",
+    "pdpl": "PDPL (Gegevensbescherming)",
+    "contact": "Contact opnemen"
   },
   "search": {
     "placeholder": "Waar ben je naar op zoek?",

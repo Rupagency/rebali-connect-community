@@ -18,7 +18,15 @@
     "searches": "検索",
     "favorites": "お気に入り",
     "messages": "メッセージ",
-    "loginSignup": "ログイン"
+    "loginSignup": "ログイン",
+    "trustAndPoints": "信頼、バッジ＆ポイント",
+    "trustBadges": "信頼＆バッジ",
+    "pointsShop": "ポイントショップ",
+    "faq": "よくある質問",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "pdpl": "PDPL（データ保護）",
+    "contact": "サポートに連絡"
   },
   "sellerStatus": {
     "active": "有効",

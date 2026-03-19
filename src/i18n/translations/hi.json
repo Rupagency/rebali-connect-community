@@ -46,7 +46,15 @@
     "searches": "खोज",
     "favorites": "पसंदीदा",
     "messages": "संदेश",
-    "loginSignup": "लॉग इन"
+    "loginSignup": "लॉग इन",
+    "trustAndPoints": "विश्वास, बैज और अंक",
+    "trustBadges": "विश्वास और बैज",
+    "pointsShop": "अंक की दुकान",
+    "faq": "अक्सर पूछे जाने वाले प्रश्न",
+    "terms": "उपयोग की शर्तें",
+    "privacy": "गोपनीयता नीति",
+    "pdpl": "PDPL (डेटा सुरक्षा)",
+    "contact": "सहायता से संपर्क करें"
   },
   "home": {
     "hero": "बाली में खरीदें और बेचें",

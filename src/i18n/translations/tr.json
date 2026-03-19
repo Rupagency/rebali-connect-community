@@ -46,7 +46,15 @@
     "searches": "Aramalar",
     "favorites": "Favoriler",
     "messages": "Mesajlar",
-    "loginSignup": "Giriş yap"
+    "loginSignup": "Giriş yap",
+    "trustAndPoints": "Güven, Rozetler ve Puanlar",
+    "trustBadges": "Güven ve Rozetler",
+    "pointsShop": "Puan Mağazası",
+    "faq": "SSS",
+    "terms": "Kullanım Koşulları",
+    "privacy": "Gizlilik Politikası",
+    "pdpl": "PDPL (Veri Koruma)",
+    "contact": "Destek ile İletişim"
   },
   "home": {
     "hero": "Bali'de Al & Sat",

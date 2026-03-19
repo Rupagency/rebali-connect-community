@@ -46,7 +46,15 @@
     "searches": "Pencarian",
     "favorites": "Favorit",
     "messages": "Pesan",
-    "loginSignup": "Masuk"
+    "loginSignup": "Masuk",
+    "trustAndPoints": "Kepercayaan, Lencana & Poin",
+    "trustBadges": "Kepercayaan & Lencana",
+    "pointsShop": "Toko Poin",
+    "faq": "FAQ",
+    "terms": "Ketentuan Penggunaan",
+    "privacy": "Kebijakan Privasi",
+    "pdpl": "PDPL (Perlindungan Data)",
+    "contact": "Hubungi Dukungan"
   },
   "home": {
     "hero": "Jual Beli di Bali",
