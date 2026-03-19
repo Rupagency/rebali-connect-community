@@ -87,6 +87,22 @@ export default function Browse() {
     setRadiusKm(25);
   };
 
+  // Fetch user's favorite categories for recommended sort
+  const { data: userFavCategories } = useQuery({
+    queryKey: ['user-fav-categories', user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('favorites')
+        .select('listing_id, listings!inner(category)')
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false })
+        .limit(50);
+      return [...new Set((data || []).map((f: any) => (f.listings as any)?.category).filter(Boolean))] as string[];
+    },
+    enabled: !!user && sort === 'recommended',
+    staleTime: 5 * 60 * 1000,
+  });
+
   // Infinite query
   const {
     data,
@@ -95,7 +111,7 @@ export default function Browse() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice],
+    queryKey: ['listings', debouncedSearch, category, subcategory, location, condition, sort, listingType, minPrice, maxPrice, userFavCategories],
     queryFn: async ({ pageParam = 0 }) => {
       // If searching, use multilingual search RPC to get matching IDs first
       let matchingIds: string[] | null = null;
@@ -119,7 +135,12 @@ export default function Browse() {
       if (minPrice) query = query.gte('price', Number(minPrice));
       if (maxPrice) query = query.lte('price', Number(maxPrice));
 
-      if (sort === 'newest') query = query.order('created_at', { ascending: false });
+      // For recommended sort, filter by fav categories and exclude own listings
+      if (sort === 'recommended' && userFavCategories && userFavCategories.length > 0 && user) {
+        query = query.in('category', userFavCategories).neq('seller_id', user.id);
+      }
+
+      if (sort === 'newest' || sort === 'recommended') query = query.order('created_at', { ascending: false });
       else if (sort === 'price_low') query = query.order('price', { ascending: true });
       else if (sort === 'price_high') query = query.order('price', { ascending: false });
       else if (sort === 'most_viewed') query = query.order('views_count', { ascending: false });
