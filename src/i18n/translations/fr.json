@@ -46,7 +46,15 @@
     "searches": "Recherches",
     "favorites": "Favoris",
     "messages": "Messages",
-    "loginSignup": "Se connecter"
+    "loginSignup": "Se connecter",
+    "trustAndPoints": "Confiance, Badges & Points",
+    "trustBadges": "Confiance & Badges",
+    "pointsShop": "Boutique de points",
+    "faq": "FAQ",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "pdpl": "PDPL (Protection des données)",
+    "contact": "Contacter le support"
   },
   "home": {
     "hero": "Achetez & Vendez à Bali",
