@@ -145,7 +145,7 @@ export default function CreateListing() {
     if (step === 0) return !!form.category && !!form.subcategory;
     if (step === 1) {
       const isNegotiable = form.category === 'emploi' && extraFields.salary_negotiable === 'true';
-      return form.title && form.description && (isNegotiable || form.price !== '') && form.location;
+      return form.title && form.description && (isNegotiable || form.price !== '') && form.location && !checkContent(form.title) && !checkContent(form.description);
     }
     if (step === 2) return photos.length > 0 || existingImageUrls.length > 0;
     return true;
@@ -159,17 +159,21 @@ export default function CreateListing() {
 
   // Phone detection: match phone-like patterns but exclude Indonesian prices (e.g. 28.000.000)
   const PHONE_PATTERN = /(\+?\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]\d{3,4}[\s-]\d{3,5}/;
-  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/;
+  const RAW_DIGITS_PATTERN = /\b\d{8,15}\b/;
+  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/g;
 
   const looksLikePhone = (text: string): boolean => {
     // Remove Indonesian-format prices before checking for phone numbers
     const cleaned = text.replace(INDONESIAN_PRICE_PATTERN, '');
-    return PHONE_PATTERN.test(cleaned);
+    return PHONE_PATTERN.test(cleaned) || RAW_DIGITS_PATTERN.test(cleaned);
   };
 
   const checkContent = (text: string): boolean => {
     return SUSPICIOUS_PATTERNS.some(p => p.test(text)) || looksLikePhone(text);
   };
+
+  const titleHasProhibited = checkContent(form.title);
+  const descHasProhibited = checkContent(form.description);
 
   // Watermark function — diagonal repeating pattern for uniform coverage
   const addWatermark = async (file: File | Blob, username: string): Promise<Blob> => {
@@ -627,11 +631,13 @@ export default function CreateListing() {
         <div className="space-y-4">
           <div>
             <Label>{t('createListing.titleLabel')} *</Label>
-            <Input placeholder={t('createListing.titlePlaceholder')} value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+            <Input placeholder={t('createListing.titlePlaceholder')} value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className={titleHasProhibited ? 'border-destructive' : ''} />
+            {titleHasProhibited && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
           </div>
           <div>
             <Label>{t('createListing.descriptionLabel')} *</Label>
-            <Textarea placeholder={t('createListing.descriptionPlaceholder')} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={5} />
+            <Textarea placeholder={t('createListing.descriptionPlaceholder')} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={5} className={descHasProhibited ? 'border-destructive' : ''} />
+            {descHasProhibited && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
           </div>
           {form.category === 'emploi' && (
             <div className="flex items-center gap-2">

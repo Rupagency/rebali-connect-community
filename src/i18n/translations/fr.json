@@ -853,6 +853,7 @@
     "phoneAlreadyUsed": "Ce numéro est déjà utilisé par un autre compte",
     "phoneBanned": "Ce numéro de téléphone a été banni",
     "contentBlocked": "Les liens externes, numéros de téléphone et références aux apps de messagerie ne sont pas autorisés dans les descriptions",
+    "noPhoneOrLinks": "Les numéros de téléphone, liens et références aux apps de messagerie ne sont pas autorisés",
     "newAccountLimit": "Les nouveaux comptes (< 7 jours) sont limités à 3 annonces actives",
     "verifiedSeller": "Vendeur Vérifié",
     "trustScore": "Score de confiance",
