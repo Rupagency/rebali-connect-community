@@ -303,6 +303,14 @@ export default function Browse() {
             <SelectItem value="price_high">{t('filters.sortPriceHigh')}</SelectItem>
             <SelectItem value="most_viewed">{t('filters.sortMostViewed')}</SelectItem>
             <SelectItem value="most_liked">{t('filters.sortMostLiked')}</SelectItem>
+            {user && (
+              <SelectItem value="recommended">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {t('filters.sortRecommended') || 'Recommended'}
+                </span>
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
         {showListingTypeFilter && (
