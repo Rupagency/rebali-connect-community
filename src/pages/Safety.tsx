@@ -1,17 +1,20 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import SEOHead from '@/components/SEOHead';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Eye, CreditCard, AlertTriangle, UserCheck } from 'lucide-react';
+import { MapPin, Eye, CreditCard, AlertTriangle, UserCheck, Phone, ShieldAlert, Lock } from 'lucide-react';
 
 export default function Safety() {
   const { t } = useLanguage();
 
   const tips = [
-    { icon: MapPin, title: t('safety.tip1Title'), desc: t('safety.tip1Desc') },
-    { icon: Eye, title: t('safety.tip2Title'), desc: t('safety.tip2Desc') },
-    { icon: CreditCard, title: t('safety.tip3Title'), desc: t('safety.tip3Desc') },
-    { icon: AlertTriangle, title: t('safety.tip4Title'), desc: t('safety.tip4Desc') },
-    { icon: UserCheck, title: t('safety.tip5Title'), desc: t('safety.tip5Desc') },
+    { icon: MapPin, key: 'meetPublic' },
+    { icon: Eye, key: 'inspectFirst' },
+    { icon: CreditCard, key: 'securePayment' },
+    { icon: AlertTriangle, key: 'tooGoodToBeTrue' },
+    { icon: UserCheck, key: 'verifyIdentity' },
+    { icon: Phone, key: 'keepCommsOnPlatform' },
+    { icon: ShieldAlert, key: 'reportSuspicious' },
+    { icon: Lock, key: 'protectPersonalInfo' },
   ];
 
   return (
@@ -24,7 +27,9 @@ export default function Safety() {
           { "@type": "ListItem", position: 2, name: t('safety.title') },
         ],
       }} />
-      <h1 className="text-4xl font-bold mb-8">{t('safety.title')}</h1>
+      <h1 className="text-4xl font-bold mb-4">{t('safety.title')}</h1>
+      <p className="text-muted-foreground mb-8">{t('safety.intro')}</p>
+
       <div className="space-y-4">
         {tips.map((tip, i) => (
           <Card key={i}>
@@ -33,15 +38,22 @@ export default function Safety() {
                 <tip.icon className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold mb-1" style={{ fontFamily: 'DM Sans' }}>{tip.title}</h3>
-                <p className="text-sm text-muted-foreground">{tip.desc}</p>
+                <h3 className="font-semibold mb-1">{t(`safety.${tip.key}Title`)}</h3>
+                <p className="text-sm text-muted-foreground">{t(`safety.${tip.key}Desc`)}</p>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
-      {/* Legal disclaimer */}
+
       <Card className="mt-8 border-primary/20 bg-primary/5">
+        <CardContent className="p-5">
+          <h3 className="font-semibold mb-2">{t('safety.emergencyTitle')}</h3>
+          <p className="text-sm text-muted-foreground">{t('safety.emergencyText')}</p>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-4 border-primary/20 bg-primary/5">
         <CardContent className="p-5">
           <p className="text-sm text-muted-foreground italic">{t('security.disclaimer')}</p>
         </CardContent>
