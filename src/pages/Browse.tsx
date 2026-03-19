@@ -1,7 +1,7 @@
 import SEOHead from '@/components/SEOHead';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useListingBoosts, useListingFavCounts } from '@/hooks/useListingEnrichment';
 import { supabase } from '@/integrations/supabase/client';
 import ListingCard from '@/components/ListingCard';
