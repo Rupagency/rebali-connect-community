@@ -1,12 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+
+/** Stable stringified key from an array of IDs (avoids unnecessary refetches) */
+function useStableKey(ids: string[]): string {
+  return useMemo(() => {
+    if (ids.length === 0) return '';
+    const sorted = [...ids].sort();
+    return sorted.join(',');
+  }, [ids.length > 0 ? ids.join(',') : '']);
+}
 
 /**
  * Batch-fetch active boosts for a list of listing IDs (1 query instead of N)
  */
 export function useListingBoosts(listingIds: string[]) {
+  const key = useStableKey(listingIds);
   return useQuery({
-    queryKey: ['listing-boosts-batch', listingIds.sort().join(',')],
+    queryKey: ['listing-boosts-batch', key],
     queryFn: async () => {
       if (listingIds.length === 0) return new Map<string, string[]>();
       const { data } = await supabase.rpc('get_active_boosts', {
@@ -21,7 +32,7 @@ export function useListingBoosts(listingIds: string[]) {
       return map;
     },
     staleTime: 2 * 60 * 1000,
-    enabled: listingIds.length > 0,
+    enabled: key.length > 0,
   });
 }
 
@@ -29,8 +40,9 @@ export function useListingBoosts(listingIds: string[]) {
  * Batch-fetch favorites counts for a list of listing IDs (1 query instead of N)
  */
 export function useListingFavCounts(listingIds: string[]) {
+  const key = useStableKey(listingIds);
   return useQuery({
-    queryKey: ['listing-fav-counts-batch', listingIds.sort().join(',')],
+    queryKey: ['listing-fav-counts-batch', key],
     queryFn: async () => {
       if (listingIds.length === 0) return new Map<string, number>();
       const { data } = await supabase.rpc('get_listing_fav_counts', {
@@ -43,6 +55,6 @@ export function useListingFavCounts(listingIds: string[]) {
       return map;
     },
     staleTime: 60 * 1000,
-    enabled: listingIds.length > 0,
+    enabled: key.length > 0,
   });
 }
