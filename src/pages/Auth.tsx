@@ -270,11 +270,11 @@ export default function Auth() {
               <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : emailMfaPending ? 'Un code a été envoyé à votre adresse email' : t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
-              {mfaChallenge ? (
+               {mfaChallenge ? (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    <span>Code à 6 chiffres requis</span>
+                    <span>Code à 6 chiffres requis (Authenticator)</span>
                   </div>
                   <div className="flex justify-center">
                     <InputOTP maxLength={6} value={mfaCode} onChange={setMfaCode}>
@@ -294,6 +294,37 @@ export default function Auth() {
                   <Button variant="ghost" size="sm" className="w-full" onClick={() => { setMfaChallenge(null); setMfaCode(''); }}>
                     {t('common.back')}
                   </Button>
+                </div>
+              ) : emailMfaPending ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Mail className="h-4 w-4 text-primary" />
+                    <span>Code à 6 chiffres envoyé par email</span>
+                  </div>
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} value={emailMfaCode} onChange={setEmailMfaCode}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                  <Button onClick={handleEmailMfaVerify} className="w-full" disabled={loading || emailMfaCode.length !== 6}>
+                    {loading ? t('common.loading') : 'Vérifier'}
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" className="flex-1" onClick={handleResendEmailMfa} disabled={emailMfaSending}>
+                      {emailMfaSending ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" /> : null}
+                      Renvoyer le code
+                    </Button>
+                    <Button variant="ghost" size="sm" className="flex-1" onClick={() => { setEmailMfaPending(false); setEmailMfaCode(''); }}>
+                      {t('common.back')}
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <>
