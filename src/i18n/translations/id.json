@@ -1443,5 +1443,77 @@
       "translating": "Menerjemahkan ke 12 bahasa...",
       "done": "Hampir selesai!"
     }
+  },
+  "footer": {
+    "tagline": "Marketplace terpercaya untuk jual beli di Bali",
+    "explore": "Marketplace",
+    "company": "Perusahaan",
+    "legal": "Hukum",
+    "terms": "Syarat Penggunaan",
+    "privacy": "Kebijakan Privasi",
+    "pdpl": "PDPL (Perlindungan Data)",
+    "contact": "Hubungi Dukungan",
+    "copyright": "Hak cipta dilindungi.",
+    "trustBadgesPoints": "Kepercayaan, Lencana & Poin",
+    "faq": "FAQ"
+  },
+  "faq": {
+    "title": "Pertanyaan yang Sering Diajukan",
+    "subtitle": "Semua yang perlu Anda ketahui tentang marketplace Re-Bali",
+    "howItWorks": {
+      "title": "Cara Kerja",
+      "q1": { "q": "Apa itu Re-Bali?", "a": "Re-Bali adalah marketplace terpercaya dan gratis untuk jual beli barang dan jasa di Bali, Indonesia. Kami menghubungkan ekspatriat, warga lokal, dan bisnis melalui pesan dalam aplikasi yang aman." },
+      "q2": { "q": "Bagaimana cara memasang iklan?", "a": "Daftar, verifikasi WhatsApp Anda, klik 'Terbitkan', isi detail, unggah foto, dan iklan Anda langsung tayang. Akun gratis bisa memasang hingga 5 iklan." },
+      "q3": { "q": "Bagaimana pembeli menghubungi saya?", "a": "Pembeli mengirim pesan melalui chat bawaan kami. Nomor telepon Anda tetap privat sampai Anda secara eksplisit membagikannya." },
+      "q4": { "q": "Bagaimana deal diselesaikan?", "a": "Setujui harga, bertemu langsung, tukar barang dan pembayaran. Penjual menutup deal di aplikasi, pembeli mengkonfirmasi, dan kedua pihak bisa memberikan ulasan." },
+      "q5": { "q": "Apakah Re-Bali gratis?", "a": "Ya! Memasang iklan dan mengirim pesan 100% gratis. Fitur premium opsional (boost, paket Pro) bisa dibeli dengan poin atau IDR." }
+    },
+    "safety": {
+      "title": "Keamanan & Kepercayaan",
+      "q1": { "q": "Bagaimana cara kerja skor kepercayaan?", "a": "Skor kepercayaan Anda (0-100) dihitung dari usia akun, deal selesai, ulasan positif, dan status verifikasi. Penalti berlaku untuk laporan, penyalahgunaan VPN, dan multi-akun." },
+      "q2": { "q": "Bagaimana penipuan dicegah?", "a": "Kami menggunakan moderasi konten, deteksi gambar duplikat, verifikasi telepon/ID, sidik jari perangkat, deteksi VPN, dan penandaan otomatis. Iklan dengan 3+ laporan penipuan otomatis diarsipkan." },
+      "q3": { "q": "Bisakah saya memblokir pengguna?", "a": "Ya. Kunjungi profil mereka dan ketuk 'Blokir'. Iklan dan pesan mereka akan disembunyikan. Anda bisa membuka blokir dari Pengaturan." },
+      "q4": { "q": "Bagaimana cara melaporkan iklan mencurigakan?", "a": "Ketuk tombol 'Laporkan' pada iklan. Pilih alasan dan berikan detail. Tim kami meninjau semua laporan dalam 24 jam." }
+    },
+    "payments": {
+      "title": "Pembayaran & Poin",
+      "q1": { "q": "Bagaimana pembayaran bekerja?", "a": "Re-Bali tidak memproses pembayaran antar pengguna. Anda mengatur pembayaran langsung (tunai, transfer bank, e-wallet). Kami menyarankan bertemu langsung sebelum membayar." },
+      "q2": { "q": "Apa itu poin?", "a": "Poin adalah mata uang hadiah yang diperoleh melalui lencana, deal selesai, dan ulasan. Belanjakan untuk boost, status penjual, dan slot iklan tambahan." },
+      "q3": { "q": "Bisakah saya membeli poin dengan uang sungguhan?", "a": "Ya! Paket poin tersedia melalui Xendit (transfer bank, e-wallet, QRIS). Harga dalam IDR." }
+    },
+    "verification": {
+      "title": "Verifikasi",
+      "q1": { "q": "Bagaimana cara memverifikasi WhatsApp saya?", "a": "Buka Profil > Keamanan, masukkan nomor WhatsApp Anda, dan verifikasi dengan kode 6 digit. Ini memberikan badge WhatsApp Terverifikasi dan 20 poin." },
+      "q2": { "q": "Bagaimana verifikasi identitas bekerja?", "a": "Unggah KTP atau paspor dan selfie. Tim kami meninjau dalam 48 jam. Dokumen dienkripsi dan otomatis dihapus setelah ditinjau." },
+      "q3": { "q": "Apakah data pribadi saya aman?", "a": "Ya. Kami mematuhi UU Pelindungan Data Pribadi Indonesia (UU PDP). Dokumen dienkripsi (AES-256), otomatis dihapus setelah ditinjau, dan tidak pernah dibagikan. Lihat Kebijakan Privasi dan halaman PDPL kami." }
+    },
+    "account": {
+      "title": "Akun Saya",
+      "q1": { "q": "Bagaimana mengubah nama tampilan atau avatar?", "a": "Buka Profil > Informasi Pribadi dan perbarui nama atau unggah foto baru." },
+      "q2": { "q": "Apa perbedaan akun Pribadi dan Bisnis?", "a": "Akun Pribadi untuk individu (hingga 5 iklan). Akun Bisnis (Pro) mendapat lebih banyak iklan, analitik, halaman bisnis, dan verifikasi NPWP opsional." },
+      "q3": { "q": "Bagaimana cara menghapus akun saya?", "a": "Buka Profil > Keamanan > Hapus Akun. Semua data Anda akan dihapus permanen dalam 30 hari, sesuai UU PDP Indonesia." }
+    },
+    "legal": {
+      "title": "Hukum & Kepatuhan",
+      "q1": { "q": "Hukum apa yang mengatur Re-Bali?", "a": "Re-Bali beroperasi di bawah hukum Indonesia, termasuk UU ITE (Informasi dan Transaksi Elektronik), UU PDP (Pelindungan Data Pribadi), dan UU Perlindungan Konsumen No. 8/1999." },
+      "q2": { "q": "Apa itu PDPL/UU PDP?", "a": "UU PDP (UU No. 27/2022) adalah Undang-Undang Pelindungan Data Pribadi Indonesia, mirip GDPR. Ini memberikan hak atas data Anda termasuk akses, koreksi, penghapusan, dan portabilitas. Lihat halaman PDPL kami." },
+      "q3": { "q": "Bagaimana cara menggunakan hak data saya?", "a": "Kunjungi Profil > Keamanan atau halaman Kontak. Anda bisa meminta akses data, koreksi, ekspor, atau penghapusan. Kami merespons dalam 14 hari kerja." }
+    }
+  },
+  "pdpl": {
+    "title": "Kepatuhan PDPL (UU PDP)",
+    "intro": "Halaman ini menjelaskan bagaimana Re-Bali mematuhi Undang-Undang Pelindungan Data Pribadi Indonesia (UU PDP No. 27/2022), yang merupakan padanan GDPR Eropa di Indonesia.",
+    "lawReference": "Referensi: UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP), disahkan 17 Oktober 2022, berlaku penuh 17 Oktober 2024.",
+    "overview": { "title": "Gambaran Umum", "text": "Re-Bali berkomitmen untuk melindungi data pribadi semua pengguna sesuai dengan UU PDP No. 27/2022. Halaman ini melengkapi Kebijakan Privasi kami dengan informasi spesifik tentang kepatuhan kami terhadap hukum perlindungan data Indonesia." },
+    "scope": { "title": "Ruang Lingkup Penerapan", "text": "UU PDP berlaku untuk semua pemrosesan data pribadi yang dilakukan oleh atau untuk Re-Bali, baik subjek data berlokasi di Indonesia maupun di luar negeri." },
+    "dataController": { "title": "Pengendali Data", "text": "Re-Bali bertindak sebagai Pengendali Data Pribadi untuk semua data pribadi yang diproses melalui platform. Sebagai Pengendali Data, kami menentukan tujuan dan cara pemrosesan data dan bertanggung jawab memastikan kepatuhan terhadap UU PDP." },
+    "dataCollected": { "title": "Data Pribadi yang Dikumpulkan", "text": "Kami mengumpulkan dan memproses kategori data pribadi berikut sesuai UU PDP:\n\n• Data Pribadi Umum: nama, email, nomor telepon, foto profil, konten iklan, informasi perangkat, data penggunaan.\n• Data Pribadi Spesifik: dokumen identitas (KTP, paspor) yang diserahkan untuk verifikasi identitas — diklasifikasikan sebagai data sensitif berdasarkan UU PDP dan tunduk pada langkah perlindungan yang ditingkatkan." },
+    "processingBasis": { "title": "Dasar Hukum Pemrosesan", "text": "Berdasarkan Pasal 20 UU PDP, kami memproses data pribadi Anda berdasarkan:\n\n• Persetujuan Eksplisit (Pasal 20(a)): diperoleh saat membuat akun dan menerima Syarat Penggunaan.\n• Pelaksanaan Kontrak (Pasal 20(b)): diperlukan untuk menyediakan layanan.\n• Kewajiban Hukum (Pasal 20(c)): kepatuhan terhadap hukum pajak dan anti pencucian uang.\n• Kepentingan Sah (Pasal 20(d)): pencegahan penipuan dan keamanan platform." },
+    "dataSubjectRights": { "title": "Hak Anda Berdasarkan UU PDP", "text": "Sebagai Subjek Data Pribadi, Anda memiliki hak berikut berdasarkan UU PDP:\n\n• Hak Informasi (Pasal 5-6): mengetahui data apa yang kami kumpulkan.\n• Hak Akses (Pasal 7): meminta salinan data pribadi Anda.\n• Hak Koreksi (Pasal 8): memperbarui data yang tidak akurat.\n• Hak Penghapusan (Pasal 9): meminta penghapusan data.\n• Hak Penarikan Persetujuan (Pasal 10): menarik persetujuan kapan saja.\n• Hak Keberatan (Pasal 11): menolak pemrosesan.\n• Hak Portabilitas (Pasal 12): menerima data dalam format terstruktur.\n• Hak Kompensasi (Pasal 12): mengklaim kompensasi atas pelanggaran.\n\nUntuk menggunakan hak-hak ini, kunjungi Profil > Keamanan atau hubungi kami. Kami merespons dalam 3×24 jam dan memenuhi permintaan dalam 14 hari kerja." },
+    "retention": { "title": "Retensi Data", "text": "Sesuai Pasal 25 UU PDP, kami menyimpan data pribadi hanya selama diperlukan:\n\n• Data akun: disimpan selama akun aktif, dihapus dalam 30 hari setelah penghapusan.\n• Dokumen verifikasi: dienkripsi, otomatis dihapus dalam 30 hari setelah ditinjau.\n• Data transaksi: disimpan 5 tahun sesuai hukum pajak.\n• Log keamanan: disimpan 1 tahun.\n• Analitik anonim: disimpan tanpa batas waktu." },
+    "crossBorder": { "title": "Transfer Data Lintas Batas", "text": "Berdasarkan Pasal 56 UU PDP, transfer data lintas batas memerlukan perlindungan yang memadai. Kami memastikan semua transfer mematuhi persyaratan UU PDP melalui perjanjian pemrosesan data kontraktual dan langkah teknis (enkripsi)." },
+    "breach": { "title": "Pemberitahuan Pelanggaran Data", "text": "Sesuai Pasal 46 UU PDP, jika terjadi pelanggaran data pribadi, kami akan:\n\n• Memberitahu subjek data yang terdampak dalam 3×24 jam.\n• Memberitahu otoritas pengawas dalam jangka waktu yang sama.\n• Memberikan detail pelanggaran, dampak potensial, dan tindakan perbaikan.\n• Mengambil langkah segera untuk memitigasi dampak." },
+    "dpo": { "title": "Petugas Perlindungan Data", "text": "Sesuai persyaratan UU PDP, Re-Bali telah menunjuk Petugas Perlindungan Data (DPO) yang bertanggung jawab memantau kepatuhan, memberi saran tentang penilaian dampak, dan menangani pertanyaan perlindungan data." },
+    "contact": { "title": "Kontak & Pengaduan", "text": "Untuk pertanyaan perlindungan data atau mengajukan pengaduan:\n\n• Dalam aplikasi: Kunjungi Profil > Keamanan atau halaman Kontak.\n• Waktu respons: 3×24 jam untuk pengakuan, 14 hari kerja untuk pemenuhan.\n\nJika Anda tidak puas dengan respons kami, Anda berhak mengajukan pengaduan kepada otoritas pengawas Indonesia sesuai UU PDP." }
   }
 }
