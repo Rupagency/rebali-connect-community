@@ -79,12 +79,56 @@ export default function Auth() {
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
       setLoading(false);
-    } else {
-      // logDevice fire-and-forget
+    } else if (data?.session) {
+      // Normal login (no MFA)
       if (data?.user) logDevice(data.user.id);
-      // Navigate immediately — don't wait for useEffect
+      navigate('/', { replace: true });
+    } else {
+      // MFA required — no session returned
+      // Check for MFA factors
+      try {
+        const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
+        if (factorsError) throw factorsError;
+        const totpFactor = factorsData?.totp?.find(f => f.status === 'verified');
+        if (totpFactor) {
+          const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId: totpFactor.id });
+          if (challengeError) throw challengeError;
+          setMfaChallenge({ factorId: totpFactor.id, challengeId: challenge.id });
+          setLoading(false);
+          return;
+        }
+      } catch (err: any) {
+        console.error('[Auth] MFA challenge error:', err);
+      }
+      // Fallback: navigate anyway
       navigate('/', { replace: true });
     }
+  };
+
+  const handleMfaVerify = async () => {
+    if (!mfaChallenge || mfaCode.length !== 6) return;
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.mfa.verify({
+        factorId: mfaChallenge.factorId,
+        challengeId: mfaChallenge.challengeId,
+        code: mfaCode,
+      });
+      if (error) throw error;
+      // Get user for device logging
+      const { data: { user: mfaUser } } = await supabase.auth.getUser();
+      if (mfaUser) logDevice(mfaUser.id);
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      toast({ title: 'Code invalide', description: err.message, variant: 'destructive' });
+      setMfaCode('');
+      // Re-create challenge for retry
+      try {
+        const { data: challenge } = await supabase.auth.mfa.challenge({ factorId: mfaChallenge.factorId });
+        if (challenge) setMfaChallenge({ factorId: mfaChallenge.factorId, challengeId: challenge.id });
+      } catch {}
+    }
+    setLoading(false);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
