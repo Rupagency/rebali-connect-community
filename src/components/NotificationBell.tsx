@@ -49,7 +49,7 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
 
   // Unread message count
   const { data: unreadMsgCount = 0 } = useQuery({
-    queryKey: ['unread-msg-count', user?.id],
+    queryKey: ['unread-total', user?.id],
     queryFn: async () => {
       const { data } = await supabase.rpc('get_total_unread_messages', { _user_id: user!.id });
       return data || 0;

@@ -14,7 +14,7 @@ export default function BottomNav() {
 
   // Fetch total unread message count (single RPC call instead of N+1)
   const { data: totalUnread = 0 } = useQuery({
-    queryKey: ['total-unread', user?.id],
+    queryKey: ['unread-total', user?.id],
     queryFn: async () => {
       const { data } = await supabase.rpc('get_total_unread_messages', {
         _user_id: user!.id,

@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   const { data: unreadCount = 0 } = useQuery({
-    queryKey: ['unread-messages-count', user?.id],
+    queryKey: ['unread-total', user?.id],
     queryFn: async () => {
       const { data } = await supabase.rpc('get_total_unread_messages', { _user_id: user!.id });
       return (data as number) || 0;
