@@ -51,6 +51,7 @@ const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
 const BusinessServices = lazy(() => import("./pages/BusinessServices"));
 const BusinessPage = lazy(() => import("./pages/BusinessPage"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const PDPL = lazy(() => import("./pages/PDPL"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NativeAuthCallback = lazy(() => import("./pages/NativeAuthCallback"));
 
@@ -138,6 +139,7 @@ const App = () => {
                           <Route path="/blocked-users" element={<BlockedUsers />} />
                           <Route path="/business-services" element={<BusinessServices />} />
                           <Route path="/faq" element={<FAQ />} />
+                          <Route path="/pdpl" element={<PDPL />} />
                           <Route path="/coming-soon" element={<ComingSoon />} />
                           <Route path="/seller/:id" element={<SellerProfile />} />
                           <Route path="/business/:id" element={<BusinessPage />} />

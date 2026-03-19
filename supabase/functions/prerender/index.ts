@@ -81,6 +81,11 @@ const PAGES: Record<string, PageMeta> = {
     description: 'How Re-Bali collects, uses, and protects your personal data.',
     canonical: '/privacy',
   },
+  '/pdpl': {
+    title: `PDPL Compliance (UU PDP) — ${SITE_NAME}`,
+    description: 'Re-Bali compliance with Indonesia Personal Data Protection Law (UU PDP / PDPL).',
+    canonical: '/pdpl',
+  },
   '/vip': {
     title: `VIP & Pro Plans — ${SITE_NAME}`,
     description: 'Upgrade to Re-Bali Pro for more listings, priority support, and premium features.',
@@ -90,6 +95,11 @@ const PAGES: Record<string, PageMeta> = {
     title: `Trust & Verification — ${SITE_NAME}`,
     description: 'Build trust on Re-Bali with verified badges, phone verification, and seller ratings.',
     canonical: '/trust-badges',
+  },
+  '/faq': {
+    title: `FAQ — ${SITE_NAME}`,
+    description: 'Frequently asked questions about Re-Bali marketplace.',
+    canonical: '/faq',
   },
 };
 

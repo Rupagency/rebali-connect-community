@@ -438,38 +438,78 @@
     "title": "About Re-Bali",
     "description": "Re-Bali is Bali's trusted classifieds platform for buying and selling second-hand goods. Whether you're an expat relocating, a local entrepreneur, or a business upgrading equipment — Re-Bali connects you with the right people.",
     "mission": "Our Mission",
-    "missionText": "To create a sustainable, trusted, and inclusive platform for the Bali community, reducing waste and making quality goods accessible to everyone.",
+    "missionText": "To create a sustainable, trusted, and inclusive marketplace for the Bali community — reducing waste, making quality goods accessible, and connecting people across cultures.",
+    "whatWeDo": "What We Do",
+    "whatWeDoText": "Re-Bali is a free online classifieds platform serving the island of Bali and surrounding areas. We enable individuals and businesses to list items for sale or rent, discover goods and services, and communicate safely through our built-in messaging system. We do not participate in or facilitate payments between users.",
+    "whoWeServe": "Who We Serve",
+    "whoWeServeText": "Our community includes expats, digital nomads, local Balinese residents, and businesses of all sizes. Whether you're furnishing a new villa, selling a scooter before leaving the island, or growing your business — Re-Bali is here for you.",
     "values": "Our Values",
     "trust": "Trust & Safety",
-    "trustText": "Every transaction is between real people. We encourage meeting in safe public places.",
+    "trustText": "Verified sellers, trust scores, and community moderation keep transactions safe. We encourage meeting in public places and inspecting items before purchase.",
     "sustainability": "Sustainability",
-    "sustainabilityText": "Giving items a second life reduces waste and supports a circular economy in Bali.",
+    "sustainabilityText": "Giving items a second life reduces waste and supports a circular economy in Bali. Every resale is one less item in a landfill.",
     "community": "Community",
-    "communityText": "Built by and for the diverse Bali community — locals, expats, and businesses alike."
+    "communityText": "Built by and for the diverse Bali community — locals, expats, and businesses collaborating across cultures.",
+    "inclusivity": "Inclusivity",
+    "inclusivityText": "Available in 12 languages with support for all currencies. Everyone is welcome regardless of nationality, language, or background.",
+    "transparency": "Transparency",
+    "transparencyText": "No hidden fees, no commissions. Our platform is 100% free to use for basic listings. We are clear about what data we collect and why.",
+    "fairTrade": "Fair Trade",
+    "fairTradeText": "We enforce honest pricing, accurate descriptions, and penalize deceptive practices. Bait pricing and misleading listings are strictly prohibited.",
+    "legalEntity": "Legal Information",
+    "legalEntityText": "Re-Bali is operated as a digital platform serving the Bali community. For legal inquiries, please contact us through our Contact page. Re-Bali complies with Indonesian law, including the Personal Data Protection Law (UU PDP No. 27/2022)."
   },
   "safety": {
     "title": "Safety Tips",
-    "tip1Title": "Meet in public places",
-    "tip1Desc": "Always meet buyers/sellers in well-lit, public areas. Coffee shops and co-working spaces are great options.",
-    "tip2Title": "Inspect before paying",
-    "tip2Desc": "Always check the item in person before completing the transaction.",
-    "tip3Title": "Use secure payment methods",
-    "tip3Desc": "Prefer bank transfers or trusted e-wallets. Avoid sending money upfront to strangers.",
-    "tip4Title": "Trust your instincts",
-    "tip4Desc": "If a deal seems too good to be true, it probably is. Report suspicious listings.",
-    "tip5Title": "Verify seller identity",
-    "tip5Desc": "Check the seller's profile, join date, and other listings before transacting."
+    "intro": "Your safety is our priority. Follow these guidelines to protect yourself when buying or selling on Re-Bali.",
+    "meetPublicTitle": "Meet in public places",
+    "meetPublicDesc": "Always meet buyers or sellers in well-lit, public areas such as coffee shops, co-working spaces, or shopping centers. Avoid isolated locations and never invite strangers to your home for a first meeting.",
+    "inspectFirstTitle": "Inspect before paying",
+    "inspectFirstDesc": "Always check the item in person before completing any payment. Test electronics, check for damage, and verify that the item matches the listing description and photos.",
+    "securePaymentTitle": "Use secure payment methods",
+    "securePaymentDesc": "Prefer bank transfers (BCA, Mandiri, BNI) or trusted e-wallets (GoPay, OVO, Dana). Never send money in advance to someone you haven't met. Be wary of requests for cryptocurrency or wire transfers.",
+    "tooGoodToBeTrueTitle": "Trust your instincts",
+    "tooGoodToBeTrueDesc": "If a deal seems too good to be true, it probably is. Extremely low prices, pressure to act quickly, or requests to move communication off-platform are red flags. Report suspicious listings immediately.",
+    "verifyIdentityTitle": "Verify seller identity",
+    "verifyIdentityDesc": "Check the seller's profile for verification badges, account age, completed deals, and reviews. Sellers with higher trust scores and verified phone numbers are more reliable.",
+    "keepCommsOnPlatformTitle": "Keep communication on-platform",
+    "keepCommsOnPlatformDesc": "Use Re-Bali's built-in messaging system for all initial communication. This protects your privacy and allows us to help resolve disputes if needed.",
+    "reportSuspiciousTitle": "Report suspicious activity",
+    "reportSuspiciousDesc": "If you encounter a scam, fake listing, or abusive behavior, use the Report button on the listing or user profile. Our moderation team reviews all reports within 24 hours.",
+    "protectPersonalInfoTitle": "Protect your personal information",
+    "protectPersonalInfoDesc": "Never share your password, bank account details, or personal documents with other users. Re-Bali staff will never ask for your password or financial information.",
+    "emergencyTitle": "Emergency Contacts",
+    "emergencyText": "In case of fraud or criminal activity, contact Indonesian police (110) or the nearest police station. For consumer protection issues, contact BPKN (National Consumer Protection Agency). You can also report to us via the Contact page."
   },
   "rules": {
-    "title": "Platform Rules",
-    "rule1": "Be honest in your listings. Describe items accurately.",
-    "rule2": "No illegal, counterfeit, or prohibited items.",
-    "rule3": "No spam or duplicate listings.",
-    "rule4": "Respect other users. No harassment or discrimination.",
-    "rule5": "Maximum 5 active listings per user (MVP).",
-    "rule6": "Listings must include at least one photo.",
-    "rule7": "Prices must be fair and accurate. Bait pricing is not allowed.",
-    "rule8": "Re-Bali reserves the right to remove listings or ban users who violate these rules."
+    "title": "Community Rules",
+    "intro": "These rules ensure Re-Bali remains a safe, fair, and trusted marketplace for everyone. Violations may result in listing removal, account suspension, or permanent ban.",
+    "rule1Title": "Honest Listings",
+    "rule1Desc": "Describe items accurately and honestly. Include the real condition, any defects, and all relevant details. Misleading descriptions are grounds for removal.",
+    "rule2Title": "No Prohibited Items",
+    "rule2Desc": "Do not list illegal, counterfeit, stolen, or prohibited items. This includes drugs, weapons, endangered species products, and items violating Indonesian law.",
+    "rule3Title": "No Spam or Duplicates",
+    "rule3Desc": "Do not post duplicate listings or spam the platform. Each item should have a single listing. Repeated violations will result in account suspension.",
+    "rule4Title": "Respect Others",
+    "rule4Desc": "Treat all users with respect. Harassment, hate speech, discrimination, threats, or abusive language are strictly prohibited and will result in an immediate ban.",
+    "rule5Title": "Listing Limits",
+    "rule5Desc": "Free accounts are limited to 5 active listings (3 for accounts less than 7 days old). Professional accounts have higher limits based on their plan.",
+    "rule6Title": "Photo Requirements",
+    "rule6Desc": "All listings must include at least one real photo of the actual item. Stock photos, screenshots from other platforms, and photos with added text overlays are not allowed.",
+    "rule7Title": "Fair Pricing",
+    "rule7Desc": "Prices must be accurate and reflect the actual asking price. Bait pricing (advertising a low price to attract buyers then demanding more) is prohibited.",
+    "rule8Title": "No External Links",
+    "rule8Desc": "Listing descriptions must not contain external URLs, phone numbers, WhatsApp numbers, or references to other platforms. Use the built-in contact system.",
+    "rule9Title": "Accurate Categories",
+    "rule9Desc": "List items in the correct category and subcategory. Intentionally miscategorizing items to gain visibility is not allowed.",
+    "rule10Title": "No Scams or Fraud",
+    "rule10Desc": "Any attempt to defraud other users — including fake listings, advance-fee scams, phishing, or impersonation — will result in an immediate permanent ban and may be reported to law enforcement.",
+    "rule11Title": "Account Integrity",
+    "rule11Desc": "Each person may have only one account. Creating multiple accounts to circumvent bans, listing limits, or gain unfair advantages is prohibited.",
+    "rule12Title": "Compliance with Law",
+    "rule12Desc": "All users must comply with Indonesian law, including tax obligations (NPWP for professional sellers), consumer protection regulations, and the Personal Data Protection Law (UU PDP).",
+    "consequencesTitle": "Consequences of Violations",
+    "consequencesText": "Violations are handled progressively: first offense results in a warning and listing removal, second offense in a temporary suspension (7-30 days), and third offense in a permanent ban. Severe violations (fraud, illegal items, threats) result in an immediate permanent ban. Re-Bali cooperates with Indonesian law enforcement when criminal activity is detected."
   },
   "vip": {
     "title": "VIP Coming Soon",
@@ -1044,38 +1084,108 @@
     "termsTitle": "Terms of Use",
     "privacyTitle": "Privacy Policy",
     "lastUpdated": "Last updated",
-    "termsAcceptance": "Acceptance of Terms",
-    "termsAcceptanceText": "By accessing and using Re-Bali, you accept and agree to be bound by these Terms of Use. If you do not agree, please do not use our platform. These terms apply to all users, whether buyers or sellers.",
-    "termsDescription": "Service Description",
-    "termsDescriptionText": "Re-Bali is a free online classifieds platform connecting buyers and sellers in Bali. We provide a platform for listing and discovering items, services, and opportunities. Re-Bali does not participate in transactions between users and is not responsible for the quality, safety, or legality of items listed.",
-    "termsAccount": "User Accounts",
-    "termsAccountText": "You must provide accurate information when creating an account. You are responsible for maintaining the confidentiality of your credentials and for all activities under your account. Phone verification via WhatsApp is required to post listings. Re-Bali reserves the right to suspend or terminate accounts that violate these terms.",
-    "termsListings": "Listing Rules",
-    "termsListingsText": "Listings must be accurate, honest, and comply with Indonesian law. You may not post prohibited items including but not limited to: drugs, weapons, counterfeit goods, stolen property, or any illegal items. Photos must represent the actual item being sold. Maximum 5 active listings per user (3 for accounts less than 7 days old).",
-    "termsProhibited": "Prohibited Conduct",
-    "termsProhibitedText": "Users must not: post misleading or fraudulent content, harass other users, attempt to circumvent platform security, use the platform for money laundering, post external links or contact information in listing descriptions, create multiple accounts, or engage in any activity that violates local or international laws.",
-    "termsLiability": "Limitation of Liability",
-    "termsLiabilityText": "Re-Bali is provided \"as is\" without warranties. We are not liable for any direct, indirect, or consequential damages arising from the use of our platform. We do not guarantee the accuracy of listings or the reliability of users. All transactions are conducted at your own risk. We strongly recommend meeting in public places and inspecting items before purchase.",
-    "termsModification": "Modifications",
-    "termsModificationText": "Re-Bali reserves the right to modify these terms at any time. Changes will be posted on this page with an updated date. Continued use of the platform after changes constitutes acceptance of the new terms.",
-    "termsContact": "Contact",
-    "termsContactText": "For questions about these Terms of Use, please contact us through our platform or visit the About page for more information.",
-    "privacyCollection": "Information We Collect",
-    "privacyCollectionText": "We collect information you provide directly: email address, display name, phone number (for WhatsApp verification), profile photo, and listing content (photos, descriptions, prices). We also automatically collect device information, browser type, IP address, and usage data to improve security and user experience.",
-    "privacyUse": "How We Use Your Information",
-    "privacyUseText": "Your information is used to: provide and maintain the platform, verify your identity, display your listings, enable communication between buyers and sellers, detect and prevent fraud, calculate trust scores, send important notifications, and improve our services. We never sell your personal data to third parties.",
-    "privacyStorage": "Data Storage & Retention",
-    "privacyStorageText": "Your data is stored securely on Supabase infrastructure with encryption at rest and in transit. Listing data is retained as long as your account is active. ID verification documents are automatically purged after review. You may request deletion of your account and associated data at any time.",
-    "privacySharing": "Information Sharing",
-    "privacySharingText": "We share limited information publicly: your display name, profile photo, and listing details are visible to all users. Your phone number is shared only when you choose to be contacted via WhatsApp. We may share information with law enforcement when required by Indonesian law or to protect the safety of our users.",
-    "privacyCookies": "Cookies & Tracking",
-    "privacyCookiesText": "We use essential cookies to maintain your login session and preferences (language, theme). We do not use third-party advertising cookies. Analytics data is collected anonymously to understand platform usage and improve the service.",
-    "privacyRights": "Your Rights",
-    "privacyRightsText": "You have the right to: access your personal data, correct inaccurate information, delete your account and data, export your data, withdraw consent for data processing, and lodge a complaint. To exercise these rights, visit your Profile page or contact us.",
-    "privacySecurity": "Security Measures",
-    "privacySecurityText": "We implement multiple security measures including: encrypted data storage, device fingerprinting for fraud detection, content filtering, automated trust scoring, VPN detection, and watermarking of listing photos. Despite these measures, no system is 100% secure.",
-    "privacyContact": "Contact Us",
-    "privacyContactText": "For privacy-related questions or to exercise your data rights, please contact us through our platform or visit the About page."
+    "termsIntro": "These Terms of Use govern your access to and use of the Re-Bali platform. By creating an account or using our services, you agree to be bound by these terms. Please read them carefully.",
+    "privacyIntro": "This Privacy Policy explains how Re-Bali collects, uses, stores, and protects your personal data in compliance with Indonesian law, including the Personal Data Protection Law (UU PDP No. 27/2022).",
+    "terms": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "text": "By accessing or using Re-Bali, you accept and agree to be bound by these Terms of Use and our Privacy Policy. If you do not agree, you must not use the platform. These terms apply to all users — buyers, sellers, and visitors — regardless of location or account type."
+      },
+      "description": {
+        "title": "Service Description",
+        "text": "Re-Bali is a free online classifieds platform that connects buyers and sellers in Bali, Indonesia. We provide tools for listing items, discovering goods and services, and communicating between users. Re-Bali does not participate in, facilitate, or guarantee transactions between users. We are not a party to any sale, purchase, rental, or exchange conducted through the platform."
+      },
+      "eligibility": {
+        "title": "Eligibility",
+        "text": "You must be at least 18 years old to use Re-Bali. By creating an account, you represent that you are of legal age and have the legal capacity to enter into binding agreements under Indonesian law. Minors may not create accounts or use the platform without parental supervision."
+      },
+      "account": {
+        "title": "User Accounts",
+        "text": "You must provide accurate, current, and complete information when creating an account. You are responsible for maintaining the security of your credentials and for all activities conducted under your account. Each person may have only one account. Phone verification via WhatsApp is required to post listings. Re-Bali reserves the right to suspend or terminate accounts that violate these terms, without prior notice."
+      },
+      "listings": {
+        "title": "Listing Rules",
+        "text": "Listings must be accurate, honest, and comply with Indonesian law (including Law No. 8/1999 on Consumer Protection). Prohibited items include but are not limited to: illegal drugs, weapons, counterfeit goods, stolen property, endangered species products, pornographic material, and any items prohibited under Indonesian regulations. Photos must represent the actual item. Maximum listing limits apply based on account type and age."
+      },
+      "prohibited": {
+        "title": "Prohibited Conduct",
+        "text": "Users must not: post misleading or fraudulent content; harass, threaten, or discriminate against other users; attempt to circumvent platform security measures; use the platform for money laundering or terrorist financing; post external links, phone numbers, or contact information in listing descriptions; create multiple accounts; engage in price manipulation or bait-and-switch tactics; or violate any applicable local, national, or international law."
+      },
+      "intellectual": {
+        "title": "Intellectual Property",
+        "text": "All content on Re-Bali (logos, design, code, text) is protected by intellectual property laws. Users retain ownership of content they upload but grant Re-Bali a non-exclusive, worldwide license to display, reproduce, and distribute such content on the platform. Users must not upload content that infringes third-party intellectual property rights."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "text": "Re-Bali is provided \"as is\" without warranties of any kind, express or implied. To the maximum extent permitted by Indonesian law, Re-Bali shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from the use of the platform, including but not limited to: loss of profits, data, or goodwill; damages resulting from transactions between users; or unauthorized access to user accounts. All transactions are conducted at the user's own risk."
+      },
+      "indemnification": {
+        "title": "Indemnification",
+        "text": "You agree to indemnify, defend, and hold harmless Re-Bali, its operators, employees, and partners from any claims, damages, losses, or expenses (including legal fees) arising from your use of the platform, your violation of these terms, or your violation of any third-party rights."
+      },
+      "governing": {
+        "title": "Governing Law & Jurisdiction",
+        "text": "These Terms are governed by and construed in accordance with the laws of the Republic of Indonesia. Any disputes arising from these terms or your use of Re-Bali shall be subject to the exclusive jurisdiction of the courts located in Denpasar, Bali, Indonesia. Before filing any legal action, the parties agree to attempt resolution through good-faith negotiation for a period of 30 days."
+      },
+      "modification": {
+        "title": "Modifications",
+        "text": "Re-Bali reserves the right to modify these terms at any time. Material changes will be announced via email or in-app notification at least 14 days before taking effect. Continued use of the platform after the effective date constitutes acceptance of the updated terms. If you disagree with any changes, you must stop using the platform and delete your account."
+      },
+      "contact": {
+        "title": "Contact",
+        "text": "For questions about these Terms of Use, please contact us through our Contact page or email us. Response times are typically within 48 business hours."
+      }
+    },
+    "privacy": {
+      "collection": {
+        "title": "Information We Collect",
+        "text": "We collect the following categories of personal data:\n\n• Account data: email address, display name, profile photo, account type, preferred language.\n• Verification data: phone number (for WhatsApp verification), government-issued ID and selfie (for identity verification, encrypted and auto-purged after review).\n• Listing data: photos, descriptions, prices, location, category.\n• Communication data: messages exchanged through the platform.\n• Device data: IP address, browser type, operating system, device fingerprint (for security).\n• Usage data: pages visited, search queries, interaction timestamps."
+      },
+      "usage": {
+        "title": "How We Use Your Data",
+        "text": "Your data is processed for the following purposes:\n\n• Providing and maintaining the platform and its features.\n• Verifying your identity and building trust (trust scores, badges).\n• Displaying your listings and enabling communication between users.\n• Detecting and preventing fraud, scams, and platform abuse.\n• Sending important notifications (deal updates, security alerts).\n• Improving our services through anonymized analytics.\n• Complying with legal obligations under Indonesian law."
+      },
+      "legalBasis": {
+        "title": "Legal Basis for Processing",
+        "text": "Under the Indonesian Personal Data Protection Law (UU PDP No. 27/2022), we process your data based on:\n\n• Consent: provided when you create an account and accept these terms.\n• Contractual necessity: to provide the services you requested.\n• Legitimate interest: fraud prevention, platform security, and service improvement.\n• Legal obligation: compliance with Indonesian law, tax regulations, and law enforcement requests."
+      },
+      "storage": {
+        "title": "Data Storage & Retention",
+        "text": "Your data is stored securely on Supabase infrastructure with encryption at rest (AES-256) and in transit (TLS 1.3). Data centers are located in Southeast Asia. Account data is retained as long as your account is active. ID verification documents are automatically purged within 30 days of review. After account deletion, personal data is removed within 30 days, except where retention is required by law."
+      },
+      "sharing": {
+        "title": "Data Sharing",
+        "text": "We share your data only in the following circumstances:\n\n• Public profile: display name, avatar, and listing details are visible to all platform users.\n• WhatsApp number: shared only when you explicitly choose to reveal it to another user.\n• Service providers: Supabase (hosting), Xendit (payments) — under strict data processing agreements.\n• Law enforcement: when required by Indonesian law, court order, or to protect user safety.\n\nWe never sell your personal data to third parties for marketing purposes."
+      },
+      "cookies": {
+        "title": "Cookies & Tracking",
+        "text": "We use essential cookies only:\n\n• Authentication cookies to maintain your login session.\n• Preference cookies to store your language and theme settings.\n\nWe do not use third-party advertising cookies or tracking pixels. Analytics data is collected anonymously and cannot be used to identify individual users."
+      },
+      "rights": {
+        "title": "Your Rights (UU PDP)",
+        "text": "Under the Indonesian Personal Data Protection Law, you have the right to:\n\n• Access: request a copy of your personal data.\n• Correction: update or correct inaccurate data.\n• Deletion: request deletion of your account and associated data.\n• Portability: export your data in a machine-readable format.\n• Withdrawal: withdraw consent for data processing at any time.\n• Objection: object to processing based on legitimate interest.\n• Complaint: lodge a complaint with the relevant Indonesian authority.\n\nTo exercise these rights, visit your Profile page or contact us through the Contact page."
+      },
+      "children": {
+        "title": "Children's Privacy",
+        "text": "Re-Bali is not intended for users under 18 years of age. We do not knowingly collect personal data from minors. If we discover that a minor has created an account, we will immediately delete the account and all associated data."
+      },
+      "security": {
+        "title": "Security Measures",
+        "text": "We implement comprehensive security measures including:\n\n• AES-256 encryption at rest for all sensitive data.\n• TLS 1.3 encryption for all data in transit.\n• Device fingerprinting and VPN detection for fraud prevention.\n• Automated content moderation and image hashing.\n• Rate limiting and brute-force protection.\n• Two-factor authentication (TOTP or email).\n• Regular security audits and vulnerability assessments.\n\nDespite these measures, no system is 100% secure. We encourage users to use strong passwords and enable 2FA."
+      },
+      "international": {
+        "title": "International Data Transfers",
+        "text": "Your data may be processed in countries outside Indonesia for hosting and infrastructure purposes. In such cases, we ensure appropriate safeguards are in place as required by UU PDP, including contractual data processing agreements with all third-party providers."
+      },
+      "changes": {
+        "title": "Changes to This Policy",
+        "text": "We may update this Privacy Policy periodically. Material changes will be notified via email or in-app notification at least 14 days before taking effect. The 'Last updated' date at the top reflects the most recent revision."
+      },
+      "contact": {
+        "title": "Contact & Data Protection",
+        "text": "For privacy-related questions, data access requests, or to exercise your rights under UU PDP, please contact us through our Contact page. We aim to respond to all data protection inquiries within 14 business days."
+      }
+    }
   },
   "share": {
     "copyLink": "Copy link",
@@ -1317,8 +1427,9 @@
     "explore": "Marketplace",
     "company": "Company",
     "legal": "Legal",
-    "terms": "Terms of Service",
+    "terms": "Terms of Use",
     "privacy": "Privacy Policy",
+    "pdpl": "PDPL (Data Protection)",
     "contact": "Contact Support",
     "copyright": "All rights reserved.",
     "trustBadgesPoints": "Trust, Badges & Points",
@@ -1430,90 +1541,91 @@
     "subtitle": "Everything you need to know about Re-Bali marketplace",
     "howItWorks": {
       "title": "How It Works",
-      "q1": {
-        "q": "What is Re-Bali?",
-        "a": "Re-Bali is a trusted marketplace for buying and selling goods and services in Bali, Indonesia. All transactions happen through our secure in-app chat system."
-      },
-      "q2": {
-        "q": "How do I post a listing?",
-        "a": "Sign up, click 'Publish', fill in your item details, upload photos, and your listing goes live after a quick review. You can post up to 3-5 listings depending on your account age."
-      },
-      "q3": {
-        "q": "How do buyers contact me?",
-        "a": "Buyers send messages through our built-in chat. Your personal phone number stays private until you decide to share it."
-      },
-      "q4": {
-        "q": "How are deals completed?",
-        "a": "When you agree on a price, the seller closes the deal, and the buyer confirms. Both parties can then leave reviews. Payments happen directly between buyer and seller."
-      },
-      "q5": {
-        "q": "Is Re-Bali free to use?",
-        "a": "Yes! Posting listings and messaging is free. Optional premium features like boosts and VIP status can be purchased with points or IDR."
-      }
+      "q1": { "q": "What is Re-Bali?", "a": "Re-Bali is a trusted, free marketplace for buying and selling goods and services in Bali, Indonesia. We connect expats, locals, and businesses through secure in-app messaging." },
+      "q2": { "q": "How do I post a listing?", "a": "Sign up, verify your WhatsApp, click 'Publish', fill in details, upload photos, and your listing goes live instantly. Free accounts can post up to 5 listings." },
+      "q3": { "q": "How do buyers contact me?", "a": "Buyers send messages through our built-in chat. Your phone number stays private until you explicitly share it." },
+      "q4": { "q": "How are deals completed?", "a": "Agree on a price, meet in person, exchange the item and payment. The seller then closes the deal in-app, the buyer confirms, and both parties can leave reviews." },
+      "q5": { "q": "Is Re-Bali free to use?", "a": "Yes! Posting listings and messaging is 100% free. Optional premium features (boosts, Pro plans) can be purchased with points or IDR." }
     },
     "safety": {
       "title": "Safety & Trust",
-      "q1": {
-        "q": "How does the trust score work?",
-        "a": "Your trust score is calculated from account age, completed deals, positive reviews, and verification status. Higher scores unlock badges like 'Safe Seller' and 'Trusted Pro'."
-      },
-      "q2": {
-        "q": "How are scams prevented?",
-        "a": "We use content moderation, image duplicate detection, phone verification, identity verification, and automatic flagging of suspicious accounts. Listings with 3+ scam reports are auto-archived."
-      },
-      "q3": {
-        "q": "Can I block a user?",
-        "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden from you. You can unblock anytime from your Blocked Users page."
-      },
-      "q4": {
-        "q": "How do I report a suspicious listing?",
-        "a": "Tap the 'Report' button on any listing. Choose a reason (scam, prohibited, spam, etc.) and we'll review it within 24 hours."
-      }
+      "q1": { "q": "How does the trust score work?", "a": "Your trust score (0-100) is calculated from account age, completed deals, positive reviews, and verification status. Penalties apply for reports, VPN abuse, and multi-accounting." },
+      "q2": { "q": "How are scams prevented?", "a": "We use content moderation, duplicate image detection, phone/ID verification, device fingerprinting, VPN detection, and automated flagging. Listings with 3+ scam reports are auto-archived." },
+      "q3": { "q": "Can I block a user?", "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden. You can unblock from Settings > Blocked Users." },
+      "q4": { "q": "How do I report a suspicious listing?", "a": "Tap the 'Report' button on any listing. Choose a reason and provide details. Our team reviews all reports within 24 hours." }
     },
     "payments": {
       "title": "Payments & Points",
-      "q1": {
-        "q": "How do payments work?",
-        "a": "Re-Bali does not process payments between buyers and sellers. You arrange payment directly (cash, bank transfer, etc.). We provide the secure communication channel."
-      },
-      "q2": {
-        "q": "What are points?",
-        "a": "Points are earned by completing deals, getting reviews, and earning badges. Spend them on boosts, VIP status, and extra listing slots in the Points Shop."
-      },
-      "q3": {
-        "q": "Can I buy points with real money?",
-        "a": "Yes! Point packs are available for purchase in IDR through our secure payment system powered by Xendit."
-      }
+      "q1": { "q": "How do payments work?", "a": "Re-Bali does not process payments between users. You arrange payment directly (cash, bank transfer, e-wallet). We recommend meeting in person before paying." },
+      "q2": { "q": "What are points?", "a": "Points are a reward currency earned through badges, completed deals, and reviews. Spend them on boosts, seller status upgrades, and extra listing slots." },
+      "q3": { "q": "Can I buy points with real money?", "a": "Yes! Point packs are available via Xendit (bank transfer, e-wallet, QRIS). Prices are in IDR." }
     },
     "verification": {
       "title": "Verification",
-      "q1": {
-        "q": "How do I verify my WhatsApp?",
-        "a": "Go to your Profile, enter your WhatsApp number, and we'll send a verification code via WhatsApp. Once verified, you earn the WhatsApp Verified badge and 20 points."
-      },
-      "q2": {
-        "q": "How does identity verification work?",
-        "a": "Upload a government-issued ID (KTP, passport, or driving license) and a selfie. Our team reviews it within 48 hours. You earn the Identity Verified badge and 40 points."
-      },
-      "q3": {
-        "q": "Is my personal data safe?",
-        "a": "Yes. Verification documents are encrypted at rest, automatically purged after review, and never shared with other users. Only our admin team can access them during verification."
-      }
+      "q1": { "q": "How do I verify my WhatsApp?", "a": "Go to Profile > Security, enter your WhatsApp number, and verify with the 6-digit code sent to you. This earns the WhatsApp Verified badge and 20 points." },
+      "q2": { "q": "How does identity verification work?", "a": "Upload a government-issued ID (KTP, passport) and a selfie. Our team reviews it within 48 hours. Documents are encrypted and auto-deleted after review." },
+      "q3": { "q": "Is my personal data safe?", "a": "Yes. We comply with Indonesia's Personal Data Protection Law (UU PDP). Documents are encrypted (AES-256), auto-purged after review, and never shared. See our Privacy Policy and PDPL page." }
     },
     "account": {
       "title": "My Account",
-      "q1": {
-        "q": "How do I change my display name or avatar?",
-        "a": "Go to Profile, tap Edit, and update your display name or upload a new avatar photo."
-      },
-      "q2": {
-        "q": "What's the difference between Private and Business accounts?",
-        "a": "Private accounts are for individuals (3-5 listings). Business (Pro) accounts get more listings, analytics, a business page, and priority support."
-      },
-      "q3": {
-        "q": "How do I delete my account?",
-        "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
-      }
+      "q1": { "q": "How do I change my display name or avatar?", "a": "Go to Profile > Personal Information and update your name or upload a new photo." },
+      "q2": { "q": "What's the difference between Private and Business accounts?", "a": "Private accounts are for individuals (up to 5 listings). Business (Pro) accounts get more listings, analytics, a business page, and optional NPWP verification." },
+      "q3": { "q": "How do I delete my account?", "a": "Go to Profile > Security > Delete Account. All your data will be permanently removed within 30 days, as required by Indonesian PDP law." }
+    },
+    "legal": {
+      "title": "Legal & Compliance",
+      "q1": { "q": "What laws govern Re-Bali?", "a": "Re-Bali operates under Indonesian law, including UU ITE (Electronic Information and Transactions), UU PDP (Personal Data Protection), and Consumer Protection Law No. 8/1999." },
+      "q2": { "q": "What is PDPL/UU PDP?", "a": "UU PDP (Law No. 27/2022) is Indonesia's Personal Data Protection Law, similar to GDPR. It gives you rights over your data including access, correction, deletion, and portability. See our PDPL page for details." },
+      "q3": { "q": "How do I exercise my data rights?", "a": "Visit Profile > Security or our Contact page. You can request data access, correction, export, or deletion. We respond within 14 business days." }
+    }
+  },
+  "pdpl": {
+    "title": "PDPL Compliance (UU PDP)",
+    "intro": "This page explains how Re-Bali complies with Indonesia's Personal Data Protection Law (Undang-Undang Perlindungan Data Pribadi — UU PDP No. 27/2022), which is the Indonesian equivalent of the European GDPR.",
+    "lawReference": "Reference: Law No. 27 of 2022 on Personal Data Protection (UU PDP), enacted October 17, 2022, with full enforcement effective October 17, 2024.",
+    "overview": {
+      "title": "Overview",
+      "text": "Re-Bali is committed to protecting the personal data of all users in accordance with UU PDP No. 27/2022. This page supplements our Privacy Policy with specific information about our compliance with Indonesian data protection law."
+    },
+    "scope": {
+      "title": "Scope of Application",
+      "text": "UU PDP applies to all processing of personal data conducted by or for Re-Bali, whether the data subjects are located in Indonesia or abroad. This includes data processed through our website, mobile application, and any third-party services we use."
+    },
+    "dataController": {
+      "title": "Data Controller",
+      "text": "Re-Bali acts as the Data Controller (Pengendali Data Pribadi) for all personal data processed through the platform. As Data Controller, we determine the purposes and means of data processing and are responsible for ensuring compliance with UU PDP."
+    },
+    "dataCollected": {
+      "title": "Personal Data Collected",
+      "text": "We collect and process the following categories of personal data as defined by UU PDP:\n\n• General Personal Data: name, email address, phone number, profile photo, listing content, device information, usage data.\n• Specific Personal Data: government-issued identification documents (KTP, passport) submitted for identity verification — classified as sensitive data under UU PDP and subject to enhanced protection measures."
+    },
+    "processingBasis": {
+      "title": "Legal Basis for Processing",
+      "text": "Under Article 20 of UU PDP, we process your personal data based on:\n\n• Explicit Consent (Art. 20(a)): obtained when you create an account, accept our Terms of Use, and submit verification documents.\n• Contractual Performance (Art. 20(b)): necessary to provide the services you requested.\n• Legal Obligation (Art. 20(c)): compliance with Indonesian tax law, anti-money laundering regulations, and law enforcement requests.\n• Legitimate Interest (Art. 20(d)): fraud prevention, platform security, and service improvement, balanced against your rights and freedoms."
+    },
+    "dataSubjectRights": {
+      "title": "Your Rights Under UU PDP",
+      "text": "As a data subject (Subjek Data Pribadi), you have the following rights under UU PDP:\n\n• Right to Information (Art. 5-6): know what data we collect, why, and how it is processed.\n• Right to Access (Art. 7): request a copy of your personal data.\n• Right to Correction (Art. 8): update or correct inaccurate data.\n• Right to Deletion (Art. 9): request deletion of your data when it is no longer necessary.\n• Right to Withdraw Consent (Art. 10): withdraw your consent at any time.\n• Right to Object (Art. 11): object to processing based on legitimate interest.\n• Right to Portability (Art. 12): receive your data in a structured, machine-readable format.\n• Right to Compensation (Art. 12): claim compensation for damages caused by data protection violations.\n\nTo exercise these rights, visit Profile > Security or contact us via the Contact page. We will respond within 3×24 hours and fulfill requests within 14 business days."
+    },
+    "retention": {
+      "title": "Data Retention",
+      "text": "In accordance with UU PDP Article 25, we retain personal data only as long as necessary:\n\n• Account data: retained while your account is active. Deleted within 30 days of account deletion.\n• Verification documents: encrypted at rest, auto-purged within 30 days of review completion.\n• Transaction data: retained for 5 years as required by Indonesian tax law.\n• Security logs: retained for 1 year for fraud prevention purposes.\n• Anonymized analytics: retained indefinitely (cannot identify individuals)."
+    },
+    "crossBorder": {
+      "title": "Cross-Border Data Transfer",
+      "text": "Under UU PDP Article 56, cross-border transfer of personal data requires adequate protection. Our infrastructure provider (Supabase) processes data in Southeast Asian data centers. We ensure all cross-border transfers comply with UU PDP requirements through:\n\n• Contractual safeguards (Data Processing Agreements).\n• Verification that the receiving country provides adequate data protection.\n• Technical measures (encryption) to protect data during transfer."
+    },
+    "breach": {
+      "title": "Data Breach Notification",
+      "text": "In accordance with UU PDP Article 46, in the event of a personal data breach that may affect your rights and freedoms, we will:\n\n• Notify affected data subjects within 3×24 hours of becoming aware of the breach.\n• Notify the relevant supervisory authority within the same timeframe.\n• Provide details of the breach, potential impact, and remedial actions taken.\n• Take immediate steps to mitigate the impact and prevent recurrence."
+    },
+    "dpo": {
+      "title": "Data Protection Officer",
+      "text": "In accordance with UU PDP requirements, Re-Bali has designated a Data Protection Officer (DPO) responsible for:\n\n• Monitoring compliance with UU PDP and internal data protection policies.\n• Advising on data protection impact assessments.\n• Serving as a point of contact for data subjects and supervisory authorities.\n• Handling data protection inquiries and complaints."
+    },
+    "contact": {
+      "title": "Contact & Complaints",
+      "text": "For data protection inquiries, to exercise your rights, or to file a complaint:\n\n• In-app: Visit Profile > Security or use our Contact page.\n• Response time: 3×24 hours for acknowledgment, 14 business days for fulfillment.\n\nIf you are not satisfied with our response, you have the right to file a complaint with the relevant Indonesian supervisory authority as established under UU PDP."
     }
   },
   "comingSoon": {
