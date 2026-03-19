@@ -849,6 +849,7 @@
     "phoneAlreadyUsed": "This number is already used by another account",
     "phoneBanned": "This phone number has been banned",
     "contentBlocked": "External links, phone numbers and messaging app references are not allowed in descriptions",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed",
     "newAccountLimit": "New accounts (< 7 days) are limited to 3 active listings",
     "verifiedSeller": "Verified Seller",
     "trustScore": "Trust Score",
