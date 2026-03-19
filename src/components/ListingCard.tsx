@@ -59,7 +59,7 @@ const ListingCard = memo(function ListingCard({ listing, boostTypes, favCount: f
 
   const fallbackImage = CATEGORY_PLACEHOLDERS[listing.category] || '/placeholder.svg';
   const imageCandidates = useMemo(
-    () => getListingImageCandidates(listing.listing_images, fallbackImage),
+    () => getListingImageCandidates(listing.listing_images, fallbackImage, 'listings', { width: 400, height: 300, quality: 75 }),
     [listing.listing_images, fallbackImage]
   );
   const [imageIndex, setImageIndex] = useState(0);
