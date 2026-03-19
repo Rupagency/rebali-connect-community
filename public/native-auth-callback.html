@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Re-Bali OAuth Callback</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+      main {
+        width: min(92vw, 420px);
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12);
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+      }
+      p {
+        margin: 0 0 16px;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        color: #334155;
+      }
+      a {
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+        text-decoration: none;
+        background: #0f766e;
+        color: #ffffff;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Retour à Re-Bali…</h1>
+      <p>Si l’ouverture automatique ne fonctionne pas, appuie sur le bouton.</p>
+      <a id="open-app" href="#">Ouvrir Re-Bali</a>
+    </main>
+
+    <script>
+      (function () {
+        const deepLinkUrl = new URL('com.rebali.app://auth/callback');
+
+        const search = new URLSearchParams(window.location.search);
+        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+
+        const keys = [
+          'code',
+          'state',
+          'access_token',
+          'refresh_token',
+          'expires_in',
+          'expires_at',
+          'token_type',
+          'type',
+          'provider_token',
+          'provider_refresh_token',
+        ];
+
+        for (const key of keys) {
+          const value = search.get(key) || hash.get(key);
+          if (value) deepLinkUrl.searchParams.set(key, value);
+        }
+
+        const finalDeepLink = deepLinkUrl.toString();
+        const openButton = document.getElementById('open-app');
+
+        if (openButton) {
+          openButton.setAttribute('href', finalDeepLink);
+        }
+
+        window.location.href = finalDeepLink;
+      })();
+    </script>
+  </body>
+</html>
