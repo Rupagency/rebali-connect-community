@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -5,7 +6,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Loader2, ShieldCheck, ShieldAlert, AlertTriangle, Phone, UserCheck, Clock, Package, Handshake, Star, Wifi, Fingerprint } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/hooks/use-toast';
+import { Loader2, ShieldCheck, ShieldAlert, AlertTriangle, Phone, UserCheck, Clock, Package, Handshake, Star, Wifi, Fingerprint, Mail, KeyRound, ShieldOff } from 'lucide-react';
 
 interface UserDetailDialogProps {
   userId: string | null;
@@ -15,6 +18,7 @@ interface UserDetailDialogProps {
 
 export default function UserDetailDialog({ userId, profile, onClose }: UserDetailDialogProps) {
   const { t } = useLanguage();
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const FACTOR_LABELS: Record<string, { label: string; icon: any }> = {
     whatsapp_verified: { label: t('adminPage.whatsappVerified'), icon: Phone },
@@ -34,7 +38,7 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
     enabled: !!userId,
     staleTime: 30_000,
     queryFn: async () => {
-      const [trustRes, listingsRes] = await Promise.all([
+      const [trustRes, listingsRes, userInfoRes] = await Promise.all([
         supabase.from('trust_scores').select('*').eq('user_id', userId!).maybeSingle(),
         supabase
           .from('listings')
@@ -42,6 +46,9 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
           .eq('seller_id', userId!)
           .order('created_at', { ascending: false })
           .limit(20),
+        supabase.functions.invoke('admin-user-actions', {
+          body: { action: 'get_user_info', user_id: userId },
+        }),
       ]);
 
       if (trustRes.error) console.error('Failed to load trust score details:', trustRes.error);
@@ -50,12 +57,14 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
       return {
         trustData: trustRes.data ?? null,
         listings: listingsRes.data || [],
+        userInfo: userInfoRes.data ?? null,
       };
     },
   });
 
   const trustData = data?.trustData ?? null;
   const listings = data?.listings ?? [];
+  const userInfo = data?.userInfo ?? null;
   const loading = !!userId && isLoading;
 
   if (!userId || !profile) return null;
@@ -65,6 +74,36 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
 
   const scoreColor = score < 30 ? 'text-destructive' : score < 60 ? 'text-amber-500' : 'text-primary';
   const riskBadge = profile.risk_level === 'high' ? 'destructive' : profile.risk_level === 'medium' ? 'outline' : 'secondary';
+
+  const handleResetPassword = async () => {
+    if (!confirm(`Envoyer un email de reset de mot de passe à ${userInfo?.email || 'cet utilisateur'} ?`)) return;
+    setActionLoading('reset_password');
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-user-actions', {
+        body: { action: 'reset_password', user_id: userId },
+      });
+      if (error || data?.error) throw new Error(data?.error || error?.message);
+      toast({ title: 'Email de reset envoyé', description: `Envoyé à ${data.email}` });
+    } catch (err: any) {
+      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+    }
+    setActionLoading(null);
+  };
+
+  const handleDisableMfa = async () => {
+    if (!confirm('Supprimer la double authentification de cet utilisateur ?')) return;
+    setActionLoading('disable_mfa');
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-user-actions', {
+        body: { action: 'disable_mfa', user_id: userId },
+      });
+      if (error || data?.error) throw new Error(data?.error || error?.message);
+      toast({ title: '2FA désactivée', description: `${data.factors_removed || 0} facteur(s) supprimé(s)` });
+    } catch (err: any) {
+      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+    }
+    setActionLoading(null);
+  };
 
   return (
     <Dialog open={!!userId} onOpenChange={() => onClose()}>
@@ -92,6 +131,55 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
           <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
         ) : (
           <div className="space-y-5">
+            {/* Email & Auth Info */}
+            {userInfo && (
+              <Card>
+                <CardContent className="p-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium">{userInfo.email || 'No email'}</span>
+                    {userInfo.email_confirmed && (
+                      <Badge variant="secondary" className="text-xs">Confirmé</Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                    <span>2FA : {userInfo.mfa_enabled ? (
+                      <Badge variant="default" className="text-xs">Activée</Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-xs">Désactivée</Badge>
+                    )}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Admin Actions */}
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleResetPassword}
+                disabled={!!actionLoading}
+                className="gap-1.5"
+              >
+                {actionLoading === 'reset_password' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <KeyRound className="h-3.5 w-3.5" />}
+                Reset mot de passe
+              </Button>
+              {userInfo?.mfa_enabled && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDisableMfa}
+                  disabled={!!actionLoading}
+                  className="gap-1.5 text-destructive hover:text-destructive"
+                >
+                  {actionLoading === 'disable_mfa' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShieldOff className="h-3.5 w-3.5" />}
+                  Supprimer 2FA
+                </Button>
+              )}
+            </div>
+
             <div className="grid grid-cols-3 gap-3 text-center">
               <Card><CardContent className="p-3">
                 <p className={`text-2xl font-bold ${scoreColor}`}>{score}</p>
