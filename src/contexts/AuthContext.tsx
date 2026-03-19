@@ -71,6 +71,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setProfile(safeProfile);
       setIsAdmin(rolesData?.some((r: any) => r.role === 'admin') || false);
+
+      // Notify LanguageContext of the loaded profile (avoids duplicate profile fetch)
+      window.dispatchEvent(new CustomEvent('rebali-profile-loaded', { detail: safeProfile }));
     } catch (err: any) {
       console.error('[Auth] fetchProfile catch:', err?.message);
       setProfile(buildProfileFallback(authUser, null));
