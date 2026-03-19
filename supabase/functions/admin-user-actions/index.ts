@@ -45,12 +45,21 @@ Deno.serve(async (req) => {
         const { data: { user }, error } = await adminClient.auth.admin.getUserById(user_id);
         if (error) throw error;
         const factors = user?.factors || [];
+
+        // Check email MFA
+        const { data: emailMfa } = await adminClient
+          .from("email_mfa")
+          .select("enabled")
+          .eq("user_id", user_id)
+          .single();
+
         return new Response(
           JSON.stringify({
             email: user?.email || null,
             phone: user?.phone || null,
             email_confirmed: !!user?.email_confirmed_at,
-            mfa_enabled: factors.some((f: any) => f.status === "verified"),
+            mfa_enabled: factors.some((f: any) => f.status === "verified") || !!emailMfa?.enabled,
+            mfa_method: emailMfa?.enabled ? 'email' : factors.some((f: any) => f.status === "verified") ? 'totp' : null,
             mfa_factors: factors.map((f: any) => ({
               id: f.id,
               type: f.factor_type,
