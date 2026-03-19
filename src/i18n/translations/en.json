@@ -48,7 +48,15 @@
     "searches": "Searches",
     "favorites": "Favorites",
     "messages": "Messages",
-    "loginSignup": "Log in"
+    "loginSignup": "Log in",
+    "trustAndPoints": "Trust, Badges & Points",
+    "trustBadges": "Trust & Badges",
+    "pointsShop": "Points Shop",
+    "faq": "FAQ",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "pdpl": "PDPL (Data Protection)",
+    "contact": "Contact Support"
   },
   "home": {
     "hero": "Buy & Sell in Bali",
