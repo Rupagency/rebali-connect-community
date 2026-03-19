@@ -159,17 +159,21 @@ export default function CreateListing() {
 
   // Phone detection: match phone-like patterns but exclude Indonesian prices (e.g. 28.000.000)
   const PHONE_PATTERN = /(\+?\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]\d{3,4}[\s-]\d{3,5}/;
-  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/;
+  const RAW_DIGITS_PATTERN = /\b\d{8,15}\b/;
+  const INDONESIAN_PRICE_PATTERN = /\b\d{1,3}(\.\d{3}){1,4}\b/g;
 
   const looksLikePhone = (text: string): boolean => {
     // Remove Indonesian-format prices before checking for phone numbers
     const cleaned = text.replace(INDONESIAN_PRICE_PATTERN, '');
-    return PHONE_PATTERN.test(cleaned);
+    return PHONE_PATTERN.test(cleaned) || RAW_DIGITS_PATTERN.test(cleaned);
   };
 
   const checkContent = (text: string): boolean => {
     return SUSPICIOUS_PATTERNS.some(p => p.test(text)) || looksLikePhone(text);
   };
+
+  const titleHasProhibited = checkContent(form.title);
+  const descHasProhibited = checkContent(form.description);
 
   // Watermark function — diagonal repeating pattern for uniform coverage
   const addWatermark = async (file: File | Blob, username: string): Promise<Blob> => {
