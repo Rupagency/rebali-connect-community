@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { User, Camera, Shield, Star, BarChart3, Eye, ShoppingBag, Package, Mail, Lock, Trash2, ExternalLink, MessageCircle, CheckCircle, ShieldCheck, Clock, Upload, LogOut, Coins, FileText, ShieldAlert, Ban, RotateCcw } from 'lucide-react';
 import UserBadges from '@/components/UserBadges';
+import TwoFactorSetup from '@/components/TwoFactorSetup';
 import TrustIndicator from '@/components/TrustIndicator';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
 import SavedSearches from '@/components/SavedSearches';
