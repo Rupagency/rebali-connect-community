@@ -32,6 +32,7 @@ export default function Browse() {
   const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const blockedIds = useBlockedUsers();
+  const { user } = useAuth();
 
   // Initialize all filters from URL params
   const [search, setSearch] = useState(searchParams.get('q') || '');
