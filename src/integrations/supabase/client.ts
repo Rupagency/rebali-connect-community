@@ -19,6 +19,7 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     ...(isNative ? { storage: capacitorStorage } : {}),
     persistSession: true,
     autoRefreshToken: true,
+    flowType: 'pkce',
     // Disable navigator.locks to prevent internal deadlocks that block all queries
     lock: async (_name: string, _acquireTimeout: number, fn: () => Promise<any>) => {
       return await fn();

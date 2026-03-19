@@ -61,8 +61,11 @@ if (isNativePlatform) {
 
     if (restored) {
       window.history.replaceState(null, '', '/');
-      await Browser.close().catch(() => undefined);
     }
+
+    // Always close SFSafariViewController when returning to app,
+    // even if auth restore failed, to avoid getting stuck on callback page.
+    await Browser.close().catch(() => undefined);
   });
 }
 

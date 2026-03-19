@@ -62,22 +62,29 @@
         const search = new URLSearchParams(window.location.search);
         const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
 
-        const keys = [
-          'code',
-          'state',
-          'access_token',
-          'refresh_token',
-          'expires_in',
-          'expires_at',
-          'token_type',
-          'type',
-          'provider_token',
-          'provider_refresh_token',
-        ];
+        const code = search.get('code') || hash.get('code');
+        const state = search.get('state') || hash.get('state');
 
-        for (const key of keys) {
-          const value = search.get(key) || hash.get(key);
-          if (value) deepLinkUrl.searchParams.set(key, value);
+        if (code) {
+          deepLinkUrl.searchParams.set('code', code);
+          if (state) deepLinkUrl.searchParams.set('state', state);
+        } else {
+          // Fallback for implicit flow responses
+          const keys = [
+            'access_token',
+            'refresh_token',
+            'expires_in',
+            'expires_at',
+            'token_type',
+            'type',
+            'provider_token',
+            'provider_refresh_token',
+          ];
+
+          for (const key of keys) {
+            const value = search.get(key) || hash.get(key);
+            if (value) deepLinkUrl.searchParams.set(key, value);
+          }
         }
 
         const finalDeepLink = deepLinkUrl.toString();
