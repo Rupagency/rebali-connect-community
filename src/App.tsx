@@ -51,6 +51,7 @@ const BlockedUsers = lazy(() => import("./pages/BlockedUsers"));
 const BusinessServices = lazy(() => import("./pages/BusinessServices"));
 const BusinessPage = lazy(() => import("./pages/BusinessPage"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const PDPL = lazy(() => import("./pages/PDPL"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NativeAuthCallback = lazy(() => import("./pages/NativeAuthCallback"));
 
