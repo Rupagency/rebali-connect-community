@@ -1088,38 +1088,108 @@
     "termsTitle": "Conditions d'utilisation",
     "privacyTitle": "Politique de confidentialité",
     "lastUpdated": "Dernière mise à jour",
-    "termsAcceptance": "Acceptation des conditions",
-    "termsAcceptanceText": "En accédant et en utilisant Re-Bali, vous acceptez d'être lié par ces Conditions d'utilisation. Si vous n'êtes pas d'accord, veuillez ne pas utiliser notre plateforme. Ces conditions s'appliquent à tous les utilisateurs, acheteurs comme vendeurs.",
-    "termsDescription": "Description du service",
-    "termsDescriptionText": "Re-Bali est une plateforme gratuite de petites annonces en ligne connectant acheteurs et vendeurs à Bali. Nous fournissons une plateforme pour publier et découvrir des articles, services et opportunités. Re-Bali ne participe pas aux transactions entre utilisateurs et n'est pas responsable de la qualité, sécurité ou légalité des articles publiés.",
-    "termsAccount": "Comptes utilisateurs",
-    "termsAccountText": "Vous devez fournir des informations exactes lors de la création de votre compte. Vous êtes responsable de la confidentialité de vos identifiants et de toutes les activités sous votre compte. La vérification du téléphone via WhatsApp est requise pour publier des annonces. Re-Bali se réserve le droit de suspendre ou supprimer les comptes en infraction.",
-    "termsListings": "Règles des annonces",
-    "termsListingsText": "Les annonces doivent être exactes, honnêtes et conformes au droit indonésien. Il est interdit de publier des articles prohibés incluant mais sans s'y limiter : drogues, armes, contrefaçons, biens volés ou tout article illégal. Les photos doivent représenter l'article réellement vendu. Maximum 5 annonces actives par utilisateur (3 pour les comptes de moins de 7 jours).",
-    "termsProhibited": "Conduites interdites",
-    "termsProhibitedText": "Les utilisateurs ne doivent pas : publier du contenu trompeur ou frauduleux, harceler d'autres utilisateurs, tenter de contourner la sécurité de la plateforme, utiliser la plateforme pour du blanchiment d'argent, poster des liens externes ou informations de contact dans les descriptions, créer plusieurs comptes, ou s'engager dans toute activité violant les lois locales ou internationales.",
-    "termsLiability": "Limitation de responsabilité",
-    "termsLiabilityText": "Re-Bali est fourni \"tel quel\" sans garanties. Nous ne sommes pas responsables des dommages directs, indirects ou consécutifs découlant de l'utilisation de notre plateforme. Nous ne garantissons pas l'exactitude des annonces ni la fiabilité des utilisateurs. Toutes les transactions sont effectuées à vos propres risques. Nous recommandons fortement de se rencontrer dans des lieux publics.",
-    "termsModification": "Modifications",
-    "termsModificationText": "Re-Bali se réserve le droit de modifier ces conditions à tout moment. Les changements seront publiés sur cette page avec une date mise à jour. L'utilisation continue de la plateforme après les modifications constitue une acceptation des nouvelles conditions.",
-    "termsContact": "Contact",
-    "termsContactText": "Pour toute question sur ces Conditions d'utilisation, veuillez nous contacter via notre plateforme ou visiter la page À propos.",
-    "privacyCollection": "Informations collectées",
-    "privacyCollectionText": "Nous collectons les informations que vous fournissez : adresse email, nom d'affichage, numéro de téléphone (pour la vérification WhatsApp), photo de profil et contenu des annonces (photos, descriptions, prix). Nous collectons aussi automatiquement des informations sur l'appareil, le navigateur, l'adresse IP et les données d'utilisation pour améliorer la sécurité.",
-    "privacyUse": "Utilisation de vos informations",
-    "privacyUseText": "Vos informations sont utilisées pour : fournir et maintenir la plateforme, vérifier votre identité, afficher vos annonces, permettre la communication entre acheteurs et vendeurs, détecter et prévenir la fraude, calculer les scores de confiance, envoyer des notifications importantes et améliorer nos services. Nous ne vendons jamais vos données personnelles.",
-    "privacyStorage": "Stockage et conservation des données",
-    "privacyStorageText": "Vos données sont stockées de manière sécurisée sur l'infrastructure Supabase avec chiffrement au repos et en transit. Les données d'annonces sont conservées tant que votre compte est actif. Les documents de vérification d'identité sont automatiquement purgés après examen. Vous pouvez demander la suppression de votre compte à tout moment.",
-    "privacySharing": "Partage d'informations",
-    "privacySharingText": "Nous partageons des informations limitées publiquement : votre nom d'affichage, photo de profil et détails des annonces sont visibles par tous. Votre numéro de téléphone n'est partagé que lorsque vous choisissez d'être contacté via WhatsApp. Nous pouvons partager des informations avec les forces de l'ordre lorsque la loi indonésienne l'exige.",
-    "privacyCookies": "Cookies et suivi",
-    "privacyCookiesText": "Nous utilisons des cookies essentiels pour maintenir votre session et vos préférences (langue, thème). Nous n'utilisons pas de cookies publicitaires tiers. Les données analytiques sont collectées de manière anonyme pour comprendre l'utilisation de la plateforme.",
-    "privacyRights": "Vos droits",
-    "privacyRightsText": "Vous avez le droit de : accéder à vos données personnelles, corriger les informations inexactes, supprimer votre compte et vos données, exporter vos données, retirer votre consentement et déposer une plainte. Pour exercer ces droits, visitez votre page Profil ou contactez-nous.",
-    "privacySecurity": "Mesures de sécurité",
-    "privacySecurityText": "Nous mettons en œuvre plusieurs mesures de sécurité : stockage chiffré, empreinte digitale des appareils pour la détection de fraude, filtrage du contenu, score de confiance automatisé, détection VPN et filigrane des photos. Malgré ces mesures, aucun système n'est sûr à 100%.",
-    "privacyContact": "Nous contacter",
-    "privacyContactText": "Pour toute question relative à la confidentialité ou pour exercer vos droits, contactez-nous via notre plateforme ou visitez la page À propos."
+    "termsIntro": "Les présentes Conditions d'utilisation régissent votre accès et utilisation de la plateforme Re-Bali. En créant un compte ou en utilisant nos services, vous acceptez d'être lié par ces conditions. Veuillez les lire attentivement.",
+    "privacyIntro": "Cette Politique de confidentialité explique comment Re-Bali collecte, utilise, stocke et protège vos données personnelles conformément au droit indonésien, y compris la Loi sur la Protection des Données Personnelles (UU PDP n° 27/2022).",
+    "terms": {
+      "acceptance": {
+        "title": "Acceptation des conditions",
+        "text": "En accédant ou en utilisant Re-Bali, vous acceptez et convenez d'être lié par ces Conditions d'utilisation et notre Politique de confidentialité. Si vous n'êtes pas d'accord, vous ne devez pas utiliser la plateforme. Ces conditions s'appliquent à tous les utilisateurs — acheteurs, vendeurs et visiteurs — quel que soit leur lieu de résidence ou type de compte."
+      },
+      "description": {
+        "title": "Description du service",
+        "text": "Re-Bali est une plateforme gratuite de petites annonces en ligne connectant acheteurs et vendeurs à Bali, Indonésie. Nous fournissons des outils pour publier des annonces, découvrir des biens et services, et communiquer entre utilisateurs. Re-Bali ne participe pas, ne facilite pas et ne garantit pas les transactions entre utilisateurs. Nous ne sommes partie à aucune vente, achat, location ou échange effectué via la plateforme."
+      },
+      "eligibility": {
+        "title": "Éligibilité",
+        "text": "Vous devez avoir au moins 18 ans pour utiliser Re-Bali. En créant un compte, vous déclarez être majeur et avoir la capacité juridique de conclure des accords contraignants en vertu du droit indonésien. Les mineurs ne peuvent pas créer de compte ni utiliser la plateforme sans supervision parentale."
+      },
+      "account": {
+        "title": "Comptes utilisateurs",
+        "text": "Vous devez fournir des informations exactes, actuelles et complètes lors de la création d'un compte. Vous êtes responsable de la sécurité de vos identifiants et de toutes les activités effectuées sous votre compte. Chaque personne ne peut avoir qu'un seul compte. La vérification téléphonique via WhatsApp est requise pour publier des annonces. Re-Bali se réserve le droit de suspendre ou supprimer les comptes en infraction, sans préavis."
+      },
+      "listings": {
+        "title": "Règles des annonces",
+        "text": "Les annonces doivent être exactes, honnêtes et conformes au droit indonésien (y compris la Loi n° 8/1999 sur la Protection du Consommateur). Les articles interdits incluent notamment : drogues illicites, armes, contrefaçons, biens volés, produits d'espèces menacées, matériel pornographique et tout article interdit par la réglementation indonésienne. Les photos doivent représenter l'article réel. Des limites maximales d'annonces s'appliquent selon le type et l'ancienneté du compte."
+      },
+      "prohibited": {
+        "title": "Conduites interdites",
+        "text": "Les utilisateurs ne doivent pas : publier du contenu trompeur ou frauduleux ; harceler, menacer ou discriminer d'autres utilisateurs ; tenter de contourner les mesures de sécurité de la plateforme ; utiliser la plateforme pour le blanchiment d'argent ou le financement du terrorisme ; publier des liens externes, numéros de téléphone ou informations de contact dans les descriptions d'annonces ; créer plusieurs comptes ; pratiquer la manipulation de prix ; ou violer toute loi locale, nationale ou internationale applicable."
+      },
+      "intellectual": {
+        "title": "Propriété intellectuelle",
+        "text": "Tout le contenu de Re-Bali (logos, design, code, texte) est protégé par les lois sur la propriété intellectuelle. Les utilisateurs conservent la propriété du contenu qu'ils téléchargent mais accordent à Re-Bali une licence non exclusive, mondiale, pour afficher, reproduire et distribuer ce contenu sur la plateforme. Les utilisateurs ne doivent pas télécharger de contenu portant atteinte aux droits de propriété intellectuelle de tiers."
+      },
+      "liability": {
+        "title": "Limitation de responsabilité",
+        "text": "Re-Bali est fourni « tel quel » sans garanties d'aucune sorte, expresses ou implicites. Dans la limite maximale autorisée par le droit indonésien, Re-Bali ne sera pas responsable de tout dommage direct, indirect, accessoire, spécial ou consécutif découlant de l'utilisation de la plateforme, y compris : perte de profits, de données ou de clientèle ; dommages résultant de transactions entre utilisateurs ; ou accès non autorisé aux comptes utilisateurs. Toutes les transactions sont effectuées aux risques de l'utilisateur."
+      },
+      "indemnification": {
+        "title": "Indemnisation",
+        "text": "Vous acceptez d'indemniser, défendre et dégager de toute responsabilité Re-Bali, ses opérateurs, employés et partenaires contre toute réclamation, dommage, perte ou dépense (y compris les frais juridiques) découlant de votre utilisation de la plateforme, de votre violation de ces conditions ou de toute atteinte aux droits de tiers."
+      },
+      "governing": {
+        "title": "Loi applicable et juridiction",
+        "text": "Les présentes Conditions sont régies et interprétées conformément aux lois de la République d'Indonésie. Tout litige découlant de ces conditions ou de votre utilisation de Re-Bali sera soumis à la juridiction exclusive des tribunaux de Denpasar, Bali, Indonésie. Avant toute action en justice, les parties s'engagent à tenter une résolution amiable de bonne foi pendant une période de 30 jours."
+      },
+      "modification": {
+        "title": "Modifications",
+        "text": "Re-Bali se réserve le droit de modifier ces conditions à tout moment. Les changements importants seront annoncés par email ou notification in-app au moins 14 jours avant leur entrée en vigueur. L'utilisation continue de la plateforme après la date d'effet constitue l'acceptation des conditions mises à jour. Si vous n'êtes pas d'accord avec les modifications, vous devez cesser d'utiliser la plateforme et supprimer votre compte."
+      },
+      "contact": {
+        "title": "Contact",
+        "text": "Pour toute question concernant ces Conditions d'utilisation, veuillez nous contacter via notre page Contact ou par email. Les délais de réponse sont généralement de 48 heures ouvrées."
+      }
+    },
+    "privacy": {
+      "collection": {
+        "title": "Informations collectées",
+        "text": "Nous collectons les catégories suivantes de données personnelles :\n\n• Données de compte : adresse email, nom d'affichage, photo de profil, type de compte, langue préférée.\n• Données de vérification : numéro de téléphone (vérification WhatsApp), pièce d'identité et selfie (vérification d'identité, chiffrés et purgés automatiquement après examen).\n• Données d'annonces : photos, descriptions, prix, localisation, catégorie.\n• Données de communication : messages échangés via la plateforme.\n• Données de l'appareil : adresse IP, type de navigateur, système d'exploitation, empreinte digitale de l'appareil (sécurité).\n• Données d'utilisation : pages visitées, recherches, horodatages d'interaction."
+      },
+      "usage": {
+        "title": "Utilisation de vos données",
+        "text": "Vos données sont traitées aux fins suivantes :\n\n• Fournir et maintenir la plateforme et ses fonctionnalités.\n• Vérifier votre identité et établir la confiance (scores de confiance, badges).\n• Afficher vos annonces et permettre la communication entre utilisateurs.\n• Détecter et prévenir la fraude, les arnaques et les abus.\n• Envoyer des notifications importantes (mises à jour de transactions, alertes de sécurité).\n• Améliorer nos services par des analyses anonymisées.\n• Respecter nos obligations légales en vertu du droit indonésien."
+      },
+      "legalBasis": {
+        "title": "Base juridique du traitement",
+        "text": "En vertu de la Loi indonésienne sur la Protection des Données Personnelles (UU PDP n° 27/2022), nous traitons vos données sur la base de :\n\n• Consentement : fourni lors de la création de votre compte et l'acceptation de ces conditions.\n• Nécessité contractuelle : pour fournir les services que vous avez demandés.\n• Intérêt légitime : prévention de la fraude, sécurité de la plateforme et amélioration des services.\n• Obligation légale : conformité au droit indonésien, à la réglementation fiscale et aux demandes des autorités."
+      },
+      "storage": {
+        "title": "Stockage et conservation des données",
+        "text": "Vos données sont stockées de manière sécurisée sur l'infrastructure Supabase avec chiffrement au repos (AES-256) et en transit (TLS 1.3). Les centres de données sont situés en Asie du Sud-Est. Les données de compte sont conservées tant que votre compte est actif. Les documents de vérification d'identité sont automatiquement purgés dans les 30 jours suivant l'examen. Après la suppression du compte, les données personnelles sont supprimées dans les 30 jours, sauf obligation légale de conservation."
+      },
+      "sharing": {
+        "title": "Partage des données",
+        "text": "Nous partageons vos données uniquement dans les cas suivants :\n\n• Profil public : nom d'affichage, avatar et détails des annonces visibles par tous les utilisateurs.\n• Numéro WhatsApp : partagé uniquement lorsque vous choisissez explicitement de le révéler à un autre utilisateur.\n• Prestataires de services : Supabase (hébergement), Xendit (paiements) — sous accords stricts de traitement des données.\n• Forces de l'ordre : lorsque la loi indonésienne, une décision de justice ou la protection de la sécurité des utilisateurs l'exige.\n\nNous ne vendons jamais vos données personnelles à des tiers à des fins marketing."
+      },
+      "cookies": {
+        "title": "Cookies et suivi",
+        "text": "Nous utilisons uniquement des cookies essentiels :\n\n• Cookies d'authentification pour maintenir votre session de connexion.\n• Cookies de préférences pour stocker vos paramètres de langue et de thème.\n\nNous n'utilisons pas de cookies publicitaires tiers ni de pixels de suivi. Les données analytiques sont collectées de manière anonyme et ne permettent pas d'identifier des utilisateurs individuels."
+      },
+      "rights": {
+        "title": "Vos droits (UU PDP)",
+        "text": "En vertu de la Loi indonésienne sur la Protection des Données Personnelles, vous avez le droit de :\n\n• Accès : demander une copie de vos données personnelles.\n• Correction : mettre à jour ou corriger les données inexactes.\n• Suppression : demander la suppression de votre compte et des données associées.\n• Portabilité : exporter vos données dans un format lisible par machine.\n• Retrait : retirer votre consentement au traitement à tout moment.\n• Opposition : vous opposer au traitement basé sur l'intérêt légitime.\n• Plainte : déposer une plainte auprès de l'autorité indonésienne compétente.\n\nPour exercer ces droits, visitez votre page Profil ou contactez-nous via la page Contact."
+      },
+      "children": {
+        "title": "Protection des mineurs",
+        "text": "Re-Bali n'est pas destiné aux utilisateurs de moins de 18 ans. Nous ne collectons pas sciemment de données personnelles de mineurs. Si nous découvrons qu'un mineur a créé un compte, nous supprimerons immédiatement le compte et toutes les données associées."
+      },
+      "security": {
+        "title": "Mesures de sécurité",
+        "text": "Nous mettons en œuvre des mesures de sécurité complètes incluant :\n\n• Chiffrement AES-256 au repos pour toutes les données sensibles.\n• Chiffrement TLS 1.3 pour toutes les données en transit.\n• Empreinte digitale des appareils et détection VPN pour la prévention de la fraude.\n• Modération automatisée du contenu et hachage des images.\n• Limitation de débit et protection contre la force brute.\n• Authentification à deux facteurs (TOTP ou email).\n• Audits de sécurité et évaluations de vulnérabilités réguliers.\n\nMalgré ces mesures, aucun système n'est sécurisé à 100%. Nous encourageons les utilisateurs à utiliser des mots de passe forts et à activer la 2FA."
+      },
+      "international": {
+        "title": "Transferts internationaux de données",
+        "text": "Vos données peuvent être traitées dans des pays en dehors de l'Indonésie à des fins d'hébergement et d'infrastructure. Dans ce cas, nous garantissons des garanties appropriées conformément à l'UU PDP, y compris des accords contractuels de traitement des données avec tous les prestataires tiers."
+      },
+      "changes": {
+        "title": "Modifications de cette politique",
+        "text": "Nous pouvons mettre à jour cette Politique de confidentialité périodiquement. Les changements importants seront notifiés par email ou notification in-app au moins 14 jours avant leur entrée en vigueur. La date de « Dernière mise à jour » en haut reflète la révision la plus récente."
+      },
+      "contact": {
+        "title": "Contact et protection des données",
+        "text": "Pour les questions relatives à la confidentialité, les demandes d'accès aux données ou pour exercer vos droits en vertu de l'UU PDP, veuillez nous contacter via notre page Contact. Nous nous efforçons de répondre à toutes les demandes de protection des données dans un délai de 14 jours ouvrés."
+      }
+    }
   },
   "share": {
     "copyLink": "Copier le lien",
@@ -1597,7 +1667,29 @@
         "q": "Comment supprimer mon compte ?",
         "a": "Contactez notre support via la page Contact. Nous traiterons votre demande et supprimerons vos données sous 30 jours."
       }
+    },
+    "legal": {
+      "title": "Juridique & Conformité",
+      "q1": { "q": "Quelles lois régissent Re-Bali ?", "a": "Re-Bali opère sous le droit indonésien, incluant l'UU ITE (Transactions Électroniques), l'UU PDP (Protection des Données Personnelles) et la Loi de Protection du Consommateur n° 8/1999." },
+      "q2": { "q": "Qu'est-ce que la PDPL/UU PDP ?", "a": "L'UU PDP (Loi n° 27/2022) est la Loi indonésienne sur la Protection des Données Personnelles, similaire au RGPD. Elle vous confère des droits sur vos données. Consultez notre page PDPL pour plus de détails." },
+      "q3": { "q": "Comment exercer mes droits sur mes données ?", "a": "Visitez Profil > Sécurité ou notre page Contact. Vous pouvez demander l'accès, la correction, l'export ou la suppression de vos données. Nous répondons sous 14 jours ouvrés." }
     }
+  },
+  "pdpl": {
+    "title": "Conformité PDPL (UU PDP)",
+    "intro": "Cette page explique comment Re-Bali se conforme à la Loi indonésienne sur la Protection des Données Personnelles (Undang-Undang Perlindungan Data Pribadi — UU PDP n° 27/2022), équivalent indonésien du RGPD européen.",
+    "lawReference": "Référence : Loi n° 27 de 2022 sur la Protection des Données Personnelles (UU PDP), promulguée le 17 octobre 2022, pleinement applicable à partir du 17 octobre 2024.",
+    "overview": { "title": "Vue d'ensemble", "text": "Re-Bali s'engage à protéger les données personnelles de tous les utilisateurs conformément à l'UU PDP n° 27/2022. Cette page complète notre Politique de confidentialité avec des informations spécifiques sur notre conformité au droit indonésien de protection des données." },
+    "scope": { "title": "Champ d'application", "text": "L'UU PDP s'applique à tout traitement de données personnelles effectué par ou pour Re-Bali, que les personnes concernées soient situées en Indonésie ou à l'étranger." },
+    "dataController": { "title": "Responsable du traitement", "text": "Re-Bali agit en tant que Responsable du traitement (Pengendali Data Pribadi) pour toutes les données personnelles traitées via la plateforme." },
+    "dataCollected": { "title": "Données personnelles collectées", "text": "Nous collectons et traitons les catégories suivantes :\n\n• Données personnelles générales : nom, email, téléphone, photo de profil, contenu des annonces, informations sur l'appareil, données d'utilisation.\n• Données personnelles spécifiques : documents d'identité officiels (KTP, passeport) soumis pour la vérification d'identité — classés comme données sensibles sous l'UU PDP et soumis à des mesures de protection renforcées." },
+    "processingBasis": { "title": "Base juridique du traitement", "text": "Conformément à l'Article 20 de l'UU PDP, nous traitons vos données sur la base de :\n\n• Consentement explicite (Art. 20(a)) : obtenu lors de la création du compte.\n• Exécution contractuelle (Art. 20(b)) : nécessaire pour fournir les services.\n• Obligation légale (Art. 20(c)) : conformité au droit fiscal et réglementaire.\n• Intérêt légitime (Art. 20(d)) : prévention de la fraude, sécurité, amélioration." },
+    "dataSubjectRights": { "title": "Vos droits sous l'UU PDP", "text": "En tant que personne concernée (Subjek Data Pribadi), vous disposez des droits suivants :\n\n• Droit à l'information (Art. 5-6)\n• Droit d'accès (Art. 7)\n• Droit de rectification (Art. 8)\n• Droit à l'effacement (Art. 9)\n• Droit de retrait du consentement (Art. 10)\n• Droit d'opposition (Art. 11)\n• Droit à la portabilité (Art. 12)\n• Droit à réparation (Art. 12)\n\nPour exercer ces droits, visitez Profil > Sécurité ou contactez-nous. Nous répondons sous 3×24 heures et traitons les demandes sous 14 jours ouvrés." },
+    "retention": { "title": "Conservation des données", "text": "Conformément à l'Article 25 de l'UU PDP :\n\n• Données de compte : conservées tant que le compte est actif, supprimées sous 30 jours après suppression.\n• Documents de vérification : chiffrés, purgés sous 30 jours après examen.\n• Données de transactions : conservées 5 ans (obligation fiscale).\n• Journaux de sécurité : conservés 1 an.\n• Analyses anonymisées : conservées indéfiniment." },
+    "crossBorder": { "title": "Transfert transfrontalier", "text": "Conformément à l'Article 56 de l'UU PDP, les transferts transfrontaliers nécessitent une protection adéquate. Nous garantissons la conformité via des accords contractuels, la vérification du niveau de protection du pays destinataire et des mesures techniques (chiffrement)." },
+    "breach": { "title": "Notification de violation de données", "text": "Conformément à l'Article 46 de l'UU PDP, en cas de violation, nous :\n\n• Notifions les personnes concernées sous 3×24 heures.\n• Notifions l'autorité de contrôle compétente.\n• Fournissons les détails de la violation et les mesures correctives.\n• Prenons des mesures immédiates pour atténuer l'impact." },
+    "dpo": { "title": "Délégué à la protection des données", "text": "Conformément à l'UU PDP, Re-Bali a désigné un Délégué à la Protection des Données (DPO) chargé de surveiller la conformité, conseiller sur les évaluations d'impact et gérer les demandes de protection des données." },
+    "contact": { "title": "Contact et réclamations", "text": "Pour les demandes de protection des données, l'exercice de vos droits ou le dépôt d'une réclamation :\n\n• In-app : Profil > Sécurité ou page Contact.\n• Délai de réponse : 3×24 heures pour l'accusé de réception, 14 jours ouvrés pour le traitement.\n\nSi vous n'êtes pas satisfait, vous pouvez déposer une plainte auprès de l'autorité de contrôle indonésienne." }
   },
   "comingSoon": {
     "tagline": "La marketplace de confiance pour Bali arrive bientôt",
