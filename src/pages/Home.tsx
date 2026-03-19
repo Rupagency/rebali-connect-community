@@ -404,7 +404,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl md:text-2xl font-extrabold">{t('home.latest')}</h2>
           <Button variant="ghost" size="sm" asChild className="gap-1 text-primary hover:text-primary font-bold">
-            <Link to="/browse">
+            <Link to="/browse?sort=newest">
               {t('common.viewAll')}
               <ArrowRight className="h-4 w-4" />
             </Link>
