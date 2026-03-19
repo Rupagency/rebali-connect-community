@@ -74,6 +74,9 @@ export default function VisitorOnboarding() {
         <div className="relative">
         {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
+        <div className="absolute top-3 right-3 z-10">
+          <LanguageSwitcher />
+        </div>
 
         <div className="p-6 pt-4 flex flex-col items-center text-center gap-4 min-h-[320px]">
           <div className="flex gap-1.5 mb-1">
