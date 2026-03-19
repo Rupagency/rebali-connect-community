@@ -29,22 +29,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback((key: string) => getTranslation(language, key), [language]);
 
-  // Sync language from profile on login
+  // Sync language from profile on login — use a deferred check to avoid duplicate profile fetches
+  // The AuthContext already fetches the full profile; we listen for a custom event it dispatches
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('preferred_lang')
-          .eq('id', session.user.id)
-          .single();
-        if (data?.preferred_lang && data.preferred_lang !== language) {
-          setLanguageState(data.preferred_lang as LanguageCode);
-          localStorage.setItem('rebali-lang', data.preferred_lang);
-        }
+    const handleProfileLoaded = (e: Event) => {
+      const lang = (e as CustomEvent).detail?.preferred_lang;
+      if (lang && lang !== language) {
+        setLanguageState(lang as LanguageCode);
+        localStorage.setItem('rebali-lang', lang);
       }
-    });
-    return () => subscription.unsubscribe();
+    };
+    window.addEventListener('rebali-profile-loaded', handleProfileLoaded);
+    return () => window.removeEventListener('rebali-profile-loaded', handleProfileLoaded);
   }, []);
 
   useEffect(() => {
