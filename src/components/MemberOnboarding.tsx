@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Camera, MessageCircle, UserCircle, Phone } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -81,6 +82,9 @@ export default function MemberOnboarding() {
         <div className="relative">
         {isLast && <ConfettiEffect />}
         <Progress value={progress} className="h-1 rounded-none" />
+        <div className="absolute top-3 right-3 z-10">
+          <LanguageSwitcher />
+        </div>
 
         <div className="p-6 pt-4 flex flex-col items-center text-center gap-4 min-h-[320px]">
           <div className="flex gap-1.5 mb-1">
