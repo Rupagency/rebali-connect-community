@@ -104,3 +104,9 @@ verify_jwt = false
 
 [functions.admin-user-actions]
 verify_jwt = false
+
+[functions.send-mfa-email]
+verify_jwt = false
+
+[functions.verify-mfa-email]
+verify_jwt = false

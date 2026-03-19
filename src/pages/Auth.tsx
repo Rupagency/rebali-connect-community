@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
-import { User, Briefcase, Gift, ClipboardPaste, ShieldCheck } from 'lucide-react';
+import { User, Briefcase, Gift, ClipboardPaste, ShieldCheck, Mail, Loader2 } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { PasswordInput } from '@/components/PasswordInput';
 import { PasswordStrength } from '@/components/PasswordStrength';
@@ -44,6 +44,9 @@ export default function Auth() {
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
   const [mfaChallenge, setMfaChallenge] = useState<{ factorId: string; challengeId: string } | null>(null);
   const [mfaCode, setMfaCode] = useState('');
+  const [emailMfaPending, setEmailMfaPending] = useState(false);
+  const [emailMfaCode, setEmailMfaCode] = useState('');
+  const [emailMfaSending, setEmailMfaSending] = useState(false);
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
@@ -80,12 +83,40 @@ export default function Auth() {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
       setLoading(false);
     } else if (data?.session) {
-      // Normal login (no MFA)
+      // Session returned — check for email MFA before completing login
+      try {
+        const { data: emailMfa } = await supabase
+          .from('email_mfa')
+          .select('enabled')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (emailMfa?.enabled) {
+          // Send email MFA code
+          setEmailMfaSending(true);
+          const { error: sendErr } = await supabase.functions.invoke('send-mfa-email', {
+            body: { action: 'send_code' },
+          });
+          setEmailMfaSending(false);
+          if (sendErr) {
+            console.error('[Auth] Email MFA send error:', sendErr);
+            // Still allow login if email MFA fails to send
+            if (data?.user) logDevice(data.user.id);
+            navigate('/', { replace: true });
+          } else {
+            setEmailMfaPending(true);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // No email MFA row — continue normally
+      }
+
       if (data?.user) logDevice(data.user.id);
       navigate('/', { replace: true });
     } else {
-      // MFA required — no session returned
-      // Check for MFA factors
+      // MFA required — no session returned (TOTP)
       try {
         const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
         if (factorsError) throw factorsError;
@@ -100,9 +131,41 @@ export default function Auth() {
       } catch (err: any) {
         console.error('[Auth] MFA challenge error:', err);
       }
-      // Fallback: navigate anyway
       navigate('/', { replace: true });
     }
+  };
+
+  const handleEmailMfaVerify = async () => {
+    if (emailMfaCode.length !== 6) return;
+    setLoading(true);
+    try {
+      const { data: result, error } = await supabase.functions.invoke('verify-mfa-email', {
+        body: { code: emailMfaCode },
+      });
+      if (error) throw error;
+      if (!result?.verified) throw new Error(result?.error || 'Code invalide');
+
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) logDevice(currentUser.id);
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      toast({ title: 'Code invalide', description: err.message, variant: 'destructive' });
+      setEmailMfaCode('');
+    }
+    setLoading(false);
+  };
+
+  const handleResendEmailMfa = async () => {
+    setEmailMfaSending(true);
+    try {
+      await supabase.functions.invoke('send-mfa-email', {
+        body: { action: 'send_code' },
+      });
+      toast({ title: 'Code renvoyé', description: 'Vérifiez votre boîte email.' });
+    } catch {
+      toast({ title: 'Erreur', description: 'Impossible de renvoyer le code.', variant: 'destructive' });
+    }
+    setEmailMfaSending(false);
   };
 
   const handleMfaVerify = async () => {
@@ -203,15 +266,15 @@ export default function Auth() {
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle>{mfaChallenge ? '🔐 Double authentification' : t('auth.loginTitle')}</CardTitle>
-              <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : t('auth.loginSubtitle')}</CardDescription>
+              <CardTitle>{mfaChallenge ? '🔐 Authenticator' : emailMfaPending ? '🔐 Vérification par email' : t('auth.loginTitle')}</CardTitle>
+              <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : emailMfaPending ? 'Un code a été envoyé à votre adresse email' : t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
-              {mfaChallenge ? (
+               {mfaChallenge ? (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    <span>Code à 6 chiffres requis</span>
+                    <span>Code à 6 chiffres requis (Authenticator)</span>
                   </div>
                   <div className="flex justify-center">
                     <InputOTP maxLength={6} value={mfaCode} onChange={setMfaCode}>
@@ -231,6 +294,37 @@ export default function Auth() {
                   <Button variant="ghost" size="sm" className="w-full" onClick={() => { setMfaChallenge(null); setMfaCode(''); }}>
                     {t('common.back')}
                   </Button>
+                </div>
+              ) : emailMfaPending ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Mail className="h-4 w-4 text-primary" />
+                    <span>Code à 6 chiffres envoyé par email</span>
+                  </div>
+                  <div className="flex justify-center">
+                    <InputOTP maxLength={6} value={emailMfaCode} onChange={setEmailMfaCode}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                  <Button onClick={handleEmailMfaVerify} className="w-full" disabled={loading || emailMfaCode.length !== 6}>
+                    {loading ? t('common.loading') : 'Vérifier'}
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" className="flex-1" onClick={handleResendEmailMfa} disabled={emailMfaSending}>
+                      {emailMfaSending ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" /> : null}
+                      Renvoyer le code
+                    </Button>
+                    <Button variant="ghost" size="sm" className="flex-1" onClick={() => { setEmailMfaPending(false); setEmailMfaCode(''); }}>
+                      {t('common.back')}
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <>
