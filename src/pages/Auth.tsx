@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/hooks/use-toast';
-import { User, Briefcase, Gift, ClipboardPaste, ShieldCheck } from 'lucide-react';
+import { User, Briefcase, Gift, ClipboardPaste, ShieldCheck, Mail, Loader2 } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { PasswordInput } from '@/components/PasswordInput';
 import { PasswordStrength } from '@/components/PasswordStrength';
