@@ -1450,10 +1450,42 @@
         "q": "How do I delete my account?",
         "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
       }
+    },
+    "legal": {
+      "title": "Recht & Compliance",
+      "q1": { "q": "Welche Gesetze gelten für Re-Bali?", "a": "Re-Bali unterliegt indonesischem Recht, einschließlich UU ITE (Elektronische Transaktionen), UU PDP (Datenschutz) und Verbraucherschutzgesetz Nr. 8/1999." },
+      "q2": { "q": "Was ist PDPL/UU PDP?", "a": "UU PDP (Gesetz Nr. 27/2022) ist Indonesiens Datenschutzgesetz, vergleichbar mit der DSGVO. Es gibt Ihnen Rechte über Ihre Daten. Weitere Details auf unserer PDPL-Seite." },
+      "q3": { "q": "Wie übe ich meine Datenrechte aus?", "a": "Besuchen Sie Profil > Sicherheit oder unsere Kontaktseite. Sie können Zugang, Berichtigung, Export oder Löschung Ihrer Daten anfordern. Antwort innerhalb von 14 Werktagen." }
     }
   },
   "footer": {
+    "tagline": "Der vertrauenswürdige Marktplatz für Bali",
+    "explore": "Marktplatz",
+    "company": "Unternehmen",
+    "legal": "Rechtliches",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "pdpl": "PDPL (Datenschutz)",
+    "contact": "Support kontaktieren",
+    "copyright": "Alle Rechte vorbehalten.",
+    "trustBadgesPoints": "Vertrauen, Abzeichen & Punkte",
     "faq": "FAQ"
+  },
+  "pdpl": {
+    "title": "PDPL-Konformität (UU PDP)",
+    "intro": "Diese Seite erläutert, wie Re-Bali das indonesische Datenschutzgesetz (UU PDP Nr. 27/2022) einhält, das indonesische Pendant zur europäischen DSGVO.",
+    "lawReference": "Referenz: Gesetz Nr. 27 von 2022 zum Schutz personenbezogener Daten (UU PDP), erlassen am 17. Oktober 2022, vollständig durchsetzbar seit dem 17. Oktober 2024.",
+    "overview": { "title": "Überblick", "text": "Re-Bali verpflichtet sich zum Schutz personenbezogener Daten aller Nutzer gemäß UU PDP Nr. 27/2022." },
+    "scope": { "title": "Anwendungsbereich", "text": "UU PDP gilt für alle Verarbeitungen personenbezogener Daten durch oder für Re-Bali, unabhängig davon, ob sich die Betroffenen in Indonesien oder im Ausland befinden." },
+    "dataController": { "title": "Verantwortlicher", "text": "Re-Bali agiert als Verantwortlicher (Pengendali Data Pribadi) für alle über die Plattform verarbeiteten personenbezogenen Daten." },
+    "dataCollected": { "title": "Erhobene Daten", "text": "Wir erheben:\n\n• Allgemeine personenbezogene Daten: Name, E-Mail, Telefon, Profilbild, Anzeigeninhalte, Geräteinformationen.\n• Besondere personenbezogene Daten: amtliche Ausweisdokumente (KTP, Reisepass) zur Identitätsprüfung — als sensible Daten unter UU PDP eingestuft." },
+    "processingBasis": { "title": "Rechtsgrundlage der Verarbeitung", "text": "Gemäß Artikel 20 UU PDP:\n\n• Ausdrückliche Einwilligung (Art. 20(a)).\n• Vertragserfüllung (Art. 20(b)).\n• Rechtliche Verpflichtung (Art. 20(c)).\n• Berechtigtes Interesse (Art. 20(d))." },
+    "dataSubjectRights": { "title": "Ihre Rechte unter UU PDP", "text": "Als Betroffener haben Sie das Recht auf:\n\n• Information (Art. 5-6)\n• Auskunft (Art. 7)\n• Berichtigung (Art. 8)\n• Löschung (Art. 9)\n• Widerruf der Einwilligung (Art. 10)\n• Widerspruch (Art. 11)\n• Datenübertragbarkeit (Art. 12)\n• Schadensersatz (Art. 12)\n\nAntwort innerhalb von 3×24 Stunden, Bearbeitung innerhalb von 14 Werktagen." },
+    "retention": { "title": "Datenspeicherung", "text": "Gemäß Artikel 25 UU PDP:\n\n• Kontodaten: solange aktiv, Löschung innerhalb von 30 Tagen.\n• Verifizierungsdokumente: verschlüsselt, nach 30 Tagen gelöscht.\n• Transaktionsdaten: 5 Jahre (Steuerrecht).\n• Sicherheitsprotokolle: 1 Jahr.\n• Anonyme Analysen: unbegrenzt." },
+    "crossBorder": { "title": "Grenzüberschreitende Übertragung", "text": "Gemäß Artikel 56 UU PDP gewährleisten wir Schutz durch vertragliche Vereinbarungen und technische Maßnahmen." },
+    "breach": { "title": "Meldung von Datenschutzverletzungen", "text": "Gemäß Artikel 46 UU PDP benachrichtigen wir Betroffene und die Aufsichtsbehörde innerhalb von 3×24 Stunden." },
+    "dpo": { "title": "Datenschutzbeauftragter", "text": "Re-Bali hat einen Datenschutzbeauftragten (DPO) benannt, der für die Überwachung der UU PDP-Konformität zuständig ist." },
+    "contact": { "title": "Kontakt und Beschwerden", "text": "Für Datenschutzanfragen nutzen Sie Profil > Sicherheit oder die Kontaktseite. Antwort: 3×24 Stunden für Bestätigung, 14 Werktage für Bearbeitung." }
   },
   "comingSoon": {
     "tagline": "Der vertrauenswürdige Marktplatz für Bali kommt bald",

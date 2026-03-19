@@ -1448,10 +1448,42 @@
         "q": "How do I delete my account?",
         "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
       }
+    },
+    "legal": {
+      "title": "Legal y Cumplimiento",
+      "q1": { "q": "¿Qué leyes rigen Re-Bali?", "a": "Re-Bali opera bajo la legislación indonesia, incluidas la UU ITE (Transacciones Electrónicas), UU PDP (Protección de Datos Personales) y la Ley de Protección del Consumidor n.° 8/1999." },
+      "q2": { "q": "¿Qué es PDPL/UU PDP?", "a": "La UU PDP (Ley n.° 27/2022) es la Ley indonesia de Protección de Datos Personales, similar al RGPD. Le otorga derechos sobre sus datos. Consulte nuestra página PDPL para más detalles." },
+      "q3": { "q": "¿Cómo ejerzo mis derechos sobre mis datos?", "a": "Visite Perfil > Seguridad o nuestra página de Contacto. Puede solicitar acceso, corrección, exportación o eliminación de sus datos. Respondemos en 14 días hábiles." }
     }
   },
   "footer": {
+    "tagline": "El marketplace de confianza para comprar y vender en Bali",
+    "explore": "Marketplace",
+    "company": "Empresa",
+    "legal": "Legal",
+    "terms": "Condiciones de uso",
+    "privacy": "Política de privacidad",
+    "pdpl": "PDPL (Protección de datos)",
+    "contact": "Contactar soporte",
+    "copyright": "Todos los derechos reservados.",
+    "trustBadgesPoints": "Confianza, Insignias y Puntos",
     "faq": "FAQ"
+  },
+  "pdpl": {
+    "title": "Cumplimiento PDPL (UU PDP)",
+    "intro": "Esta página explica cómo Re-Bali cumple con la Ley indonesia de Protección de Datos Personales (UU PDP n.° 27/2022), equivalente indonesio del RGPD europeo.",
+    "lawReference": "Referencia: Ley n.° 27 de 2022 sobre Protección de Datos Personales (UU PDP), promulgada el 17 de octubre de 2022, plenamente vigente desde el 17 de octubre de 2024.",
+    "overview": { "title": "Descripción general", "text": "Re-Bali se compromete a proteger los datos personales de todos los usuarios de acuerdo con la UU PDP n.° 27/2022." },
+    "scope": { "title": "Ámbito de aplicación", "text": "La UU PDP se aplica a todo tratamiento de datos personales realizado por o para Re-Bali, ya sea que los interesados estén en Indonesia o en el extranjero." },
+    "dataController": { "title": "Responsable del tratamiento", "text": "Re-Bali actúa como Responsable del tratamiento (Pengendali Data Pribadi) para todos los datos personales procesados a través de la plataforma." },
+    "dataCollected": { "title": "Datos personales recopilados", "text": "Recopilamos:\n\n• Datos personales generales: nombre, email, teléfono, foto de perfil, contenido de anuncios, información del dispositivo.\n• Datos personales específicos: documentos de identidad (KTP, pasaporte) para verificación — clasificados como datos sensibles bajo la UU PDP." },
+    "processingBasis": { "title": "Base legal del tratamiento", "text": "Según el Artículo 20 de la UU PDP:\n\n• Consentimiento explícito (Art. 20(a)).\n• Ejecución contractual (Art. 20(b)).\n• Obligación legal (Art. 20(c)).\n• Interés legítimo (Art. 20(d))." },
+    "dataSubjectRights": { "title": "Sus derechos bajo la UU PDP", "text": "Como titular de datos tiene derecho a:\n\n• Información (Art. 5-6)\n• Acceso (Art. 7)\n• Rectificación (Art. 8)\n• Supresión (Art. 9)\n• Retirada del consentimiento (Art. 10)\n• Oposición (Art. 11)\n• Portabilidad (Art. 12)\n• Indemnización (Art. 12)\n\nResponderemos en 3×24 horas y cumpliremos las solicitudes en 14 días hábiles." },
+    "retention": { "title": "Retención de datos", "text": "Según el Artículo 25 de la UU PDP:\n\n• Datos de cuenta: mientras esté activa, eliminados en 30 días tras la supresión.\n• Documentos de verificación: cifrados, purgados en 30 días tras revisión.\n• Datos de transacciones: 5 años (obligación fiscal).\n• Registros de seguridad: 1 año.\n• Análisis anónimos: indefinidamente." },
+    "crossBorder": { "title": "Transferencia transfronteriza", "text": "Según el Artículo 56 de la UU PDP, garantizamos la conformidad mediante acuerdos contractuales y medidas técnicas de cifrado." },
+    "breach": { "title": "Notificación de violación de datos", "text": "Según el Artículo 46 de la UU PDP, notificaremos a los afectados y a la autoridad competente en 3×24 horas." },
+    "dpo": { "title": "Delegado de protección de datos", "text": "Re-Bali ha designado un DPO responsable de supervisar el cumplimiento de la UU PDP." },
+    "contact": { "title": "Contacto y reclamaciones", "text": "Para consultas de protección de datos o reclamaciones, utilice Perfil > Seguridad o la página de Contacto. Tiempo de respuesta: 3×24 horas para acuse de recibo, 14 días hábiles para resolución." }
   },
   "comingSoon": {
     "tagline": "El marketplace de confianza para Bali llega pronto",

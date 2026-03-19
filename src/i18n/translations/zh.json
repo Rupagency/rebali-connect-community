@@ -1448,10 +1448,42 @@
         "q": "How do I delete my account?",
         "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
       }
+    },
+    "legal": {
+      "title": "法律与合规",
+      "q1": { "q": "Re-Bali受哪些法律管辖？", "a": "Re-Bali依据印度尼西亚法律运营，包括UU ITE（电子信息和交易法）、UU PDP（个人数据保护法）和《消费者保护法》第8/1999号。" },
+      "q2": { "q": "什么是PDPL/UU PDP？", "a": "UU PDP（第27/2022号法律）是印度尼西亚的个人数据保护法，类似于GDPR。它赋予您对数据的权利。详见我们的PDPL页面。" },
+      "q3": { "q": "如何行使我的数据权利？", "a": "访问个人资料 > 安全或联系页面。您可以请求数据访问、更正、导出或删除。我们在14个工作日内回复。" }
     }
   },
   "footer": {
-    "faq": "FAQ"
+    "tagline": "巴厘岛值得信赖的买卖平台",
+    "explore": "市场",
+    "company": "公司",
+    "legal": "法律",
+    "terms": "使用条款",
+    "privacy": "隐私政策",
+    "pdpl": "PDPL（数据保护）",
+    "contact": "联系支持",
+    "copyright": "版权所有。",
+    "trustBadgesPoints": "信任、徽章与积分",
+    "faq": "常见问题"
+  },
+  "pdpl": {
+    "title": "PDPL合规（UU PDP）",
+    "intro": "本页说明Re-Bali如何遵守印度尼西亚《个人数据保护法》（UU PDP第27/2022号法律），该法律相当于欧洲的GDPR。",
+    "lawReference": "参考：2022年第27号《个人数据保护法》（UU PDP），2022年10月17日颁布，2024年10月17日起全面施行。",
+    "overview": { "title": "概述", "text": "Re-Bali致力于依据UU PDP第27/2022号法律保护所有用户的个人数据。" },
+    "scope": { "title": "适用范围", "text": "UU PDP适用于Re-Bali进行的所有个人数据处理，无论数据主体位于印度尼西亚境内还是境外。" },
+    "dataController": { "title": "数据控制者", "text": "Re-Bali作为数据控制者（Pengendali Data Pribadi）对通过平台处理的所有个人数据负责。" },
+    "dataCollected": { "title": "收集的个人数据", "text": "我们收集：\n\n• 一般个人数据：姓名、电子邮件、电话、头像、广告内容、设备信息。\n• 特定个人数据：身份证件（KTP、护照）用于身份验证——在UU PDP下归类为敏感数据。" },
+    "processingBasis": { "title": "处理的法律依据", "text": "根据UU PDP第20条：\n\n• 明确同意（第20(a)条）。\n• 合同履行（第20(b)条）。\n• 法律义务（第20(c)条）。\n• 合法利益（第20(d)条）。" },
+    "dataSubjectRights": { "title": "您在UU PDP下的权利", "text": "作为数据主体，您有权：\n\n• 知情权（第5-6条）\n• 访问权（第7条）\n• 更正权（第8条）\n• 删除权（第9条）\n• 撤回同意权（第10条）\n• 反对权（第11条）\n• 可移植权（第12条）\n• 赔偿权（第12条）\n\n我们在3×24小时内确认收到，14个工作日内完成处理。" },
+    "retention": { "title": "数据保留", "text": "根据UU PDP第25条：\n\n• 账户数据：账户活跃期间保留，删除后30天内清除。\n• 验证文件：加密，审核后30天内清除。\n• 交易数据：5年（税法要求）。\n• 安全日志：1年。\n• 匿名分析：无限期。" },
+    "crossBorder": { "title": "跨境数据传输", "text": "根据UU PDP第56条，我们通过合同协议和技术措施确保跨境传输的合规性。" },
+    "breach": { "title": "数据泄露通知", "text": "根据UU PDP第46条，我们将在3×24小时内通知受影响的数据主体和监管机构。" },
+    "dpo": { "title": "数据保护官", "text": "Re-Bali已指定数据保护官（DPO），负责监督UU PDP合规性。" },
+    "contact": { "title": "联系与投诉", "text": "如需数据保护咨询，请使用个人资料 > 安全或联系页面。回复时间：3×24小时确认，14个工作日内处理。" }
   },
   "comingSoon": {
     "tagline": "巴厘岛的可信赖市场即将上线",

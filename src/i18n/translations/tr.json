@@ -1500,7 +1500,29 @@
         "q": "How do I delete my account?",
         "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
       }
+    },
+    "legal": {
+      "title": "Hukuk ve Uyumluluk",
+      "q1": { "q": "Re-Bali hangi yasalara tabidir?", "a": "Re-Bali, UU ITE (Elektronik İşlemler), UU PDP (Kişisel Veri Koruma) ve Tüketici Koruma Yasası No. 8/1999 dahil Endonezya yasalarına tabidir." },
+      "q2": { "q": "PDPL/UU PDP nedir?", "a": "UU PDP (Yasa No. 27/2022), Endonezya'nın GDPR'ye benzer Kişisel Veri Koruma Yasasıdır. Verileriniz üzerinde haklar verir. Detaylar için PDPL sayfamıza bakın." },
+      "q3": { "q": "Veri haklarımı nasıl kullanırım?", "a": "Profil > Güvenlik veya İletişim sayfasını ziyaret edin. Erişim, düzeltme, dışa aktarma veya silme talep edebilirsiniz. 14 iş günü içinde yanıt veriyoruz." }
     }
+  },
+  "pdpl": {
+    "title": "PDPL Uyumluluğu (UU PDP)",
+    "intro": "Bu sayfa, Re-Bali'nin Endonezya Kişisel Veri Koruma Yasası'na (UU PDP No. 27/2022) nasıl uyum sağladığını açıklar. Bu yasa, Avrupa GDPR'sinin Endonezya eşdeğeridir.",
+    "lawReference": "Referans: 2022 tarihli 27 Numaralı Kişisel Veri Koruma Yasası (UU PDP), 17 Ekim 2022'de yürürlüğe girmiş, 17 Ekim 2024'ten itibaren tam olarak uygulanmaktadır.",
+    "overview": { "title": "Genel Bakış", "text": "Re-Bali, UU PDP No. 27/2022 uyarınca tüm kullanıcıların kişisel verilerini korumayı taahhüt eder." },
+    "scope": { "title": "Uygulama Kapsamı", "text": "UU PDP, veri sahiplerinin Endonezya'da veya yurt dışında olup olmadığına bakılmaksızın, Re-Bali tarafından gerçekleştirilen tüm kişisel veri işleme faaliyetlerine uygulanır." },
+    "dataController": { "title": "Veri Sorumlusu", "text": "Re-Bali, platform üzerinden işlenen tüm kişisel veriler için Veri Sorumlusu (Pengendali Data Pribadi) olarak hareket eder." },
+    "dataCollected": { "title": "Toplanan Kişisel Veriler", "text": "Topluyoruz:\n\n• Genel kişisel veriler: ad, e-posta, telefon, profil fotoğrafı, ilan içeriği, cihaz bilgileri.\n• Özel kişisel veriler: kimlik belgeleri (KTP, pasaport) — UU PDP kapsamında hassas veri olarak sınıflandırılır." },
+    "processingBasis": { "title": "İşlemenin Hukuki Dayanağı", "text": "UU PDP Madde 20 uyarınca:\n\n• Açık onay (Md. 20(a)).\n• Sözleşme gerekliliği (Md. 20(b)).\n• Yasal zorunluluk (Md. 20(c)).\n• Meşru menfaat (Md. 20(d))." },
+    "dataSubjectRights": { "title": "UU PDP Kapsamındaki Haklarınız", "text": "Veri sahibi olarak haklarınız:\n\n• Bilgilendirilme (Md. 5-6)\n• Erişim (Md. 7)\n• Düzeltme (Md. 8)\n• Silme (Md. 9)\n• Onay geri çekme (Md. 10)\n• İtiraz (Md. 11)\n• Taşınabilirlik (Md. 12)\n• Tazminat (Md. 12)\n\n3×24 saat içinde yanıt, 14 iş günü içinde işlem." },
+    "retention": { "title": "Veri Saklama", "text": "UU PDP Madde 25 uyarınca:\n\n• Hesap verileri: aktif olduğu sürece, silinmeden sonra 30 gün.\n• Doğrulama belgeleri: şifreli, incelemeden sonra 30 gün.\n• İşlem verileri: 5 yıl (vergi yasası).\n• Güvenlik kayıtları: 1 yıl.\n• Anonim analizler: süresiz." },
+    "crossBorder": { "title": "Sınır Ötesi Transfer", "text": "UU PDP Madde 56 uyarınca sözleşmesel ve teknik önlemlerle uyum sağlıyoruz." },
+    "breach": { "title": "Veri İhlali Bildirimi", "text": "UU PDP Madde 46 uyarınca etkilenen kişilere ve yetkili makama 3×24 saat içinde bildirim yapılır." },
+    "dpo": { "title": "Veri Koruma Görevlisi", "text": "Re-Bali, UU PDP uyumluluğunu denetlemekten sorumlu bir Veri Koruma Görevlisi (DPO) atamıştır." },
+    "contact": { "title": "İletişim ve Şikayetler", "text": "Veri koruma soruları için Profil > Güvenlik veya İletişim sayfasını kullanın. Yanıt: 3×24 saat onay, 14 iş günü işlem." }
   },
   "comingSoon": {
     "tagline": "Bali'nin güvenilir pazaryeri çok yakında",
