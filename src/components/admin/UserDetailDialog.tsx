@@ -145,7 +145,9 @@ export default function UserDetailDialog({ userId, profile, onClose }: UserDetai
                   <div className="flex items-center gap-2 text-sm">
                     <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                     <span>2FA : {userInfo.mfa_enabled ? (
-                      <Badge variant="default" className="text-xs">Activée</Badge>
+                      <Badge variant="default" className="text-xs">
+                        {userInfo.mfa_method === 'email' ? '📧 Email' : '📱 Authenticator'}
+                      </Badge>
                     ) : (
                       <Badge variant="outline" className="text-xs">Désactivée</Badge>
                     )}</span>
