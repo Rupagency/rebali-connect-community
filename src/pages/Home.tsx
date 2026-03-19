@@ -439,7 +439,7 @@ export default function Home() {
               {t('home.recommended')}
             </h2>
             <Button variant="ghost" size="sm" asChild className="gap-1 text-primary hover:text-primary font-bold">
-              <Link to="/browse">
+              <Link to="/browse?sort=recommended">
                 {t('common.viewAll')}
                 <ArrowRight className="h-4 w-4" />
               </Link>
