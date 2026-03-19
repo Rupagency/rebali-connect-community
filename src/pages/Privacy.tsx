@@ -4,6 +4,12 @@ import SEOHead from '@/components/SEOHead';
 export default function Privacy() {
   const { t } = useLanguage();
 
+  const sections = [
+    'collection', 'usage', 'legalBasis', 'storage', 'sharing',
+    'cookies', 'rights', 'children', 'security', 'international',
+    'changes', 'contact'
+  ];
+
   return (
     <div className="container mx-auto px-4 py-10 max-w-3xl">
       <SEOHead title={t('legal.privacyTitle')} url="/privacy" jsonLd={{
@@ -14,49 +20,17 @@ export default function Privacy() {
           { "@type": "ListItem", position: 2, name: t('legal.privacyTitle') },
         ],
       }} />
-      <h1 className="text-3xl font-bold mb-8">{t('legal.privacyTitle')}</h1>
-      <p className="text-sm text-muted-foreground mb-6">{t('legal.lastUpdated')}: 21/02/2026</p>
+      <h1 className="text-3xl font-bold mb-4">{t('legal.privacyTitle')}</h1>
+      <p className="text-sm text-muted-foreground mb-2">{t('legal.lastUpdated')}: 19/03/2026</p>
+      <p className="text-sm text-muted-foreground mb-8">{t('legal.privacyIntro')}</p>
 
       <div className="prose prose-sm dark:prose-invert max-w-none space-y-6">
-        <section>
-          <h2 className="text-xl font-semibold mb-2">1. {t('legal.privacyCollection')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyCollectionText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">2. {t('legal.privacyUse')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyUseText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">3. {t('legal.privacyStorage')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyStorageText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">4. {t('legal.privacySharing')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacySharingText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">5. {t('legal.privacyCookies')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyCookiesText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">6. {t('legal.privacyRights')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyRightsText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">7. {t('legal.privacySecurity')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacySecurityText')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">8. {t('legal.privacyContact')}</h2>
-          <p className="text-muted-foreground">{t('legal.privacyContactText')}</p>
-        </section>
+        {sections.map((key, i) => (
+          <section key={key}>
+            <h2 className="text-xl font-semibold mb-2">{i + 1}. {t(`legal.privacy.${key}.title`)}</h2>
+            <p className="text-muted-foreground whitespace-pre-line">{t(`legal.privacy.${key}.text`)}</p>
+          </section>
+        ))}
       </div>
     </div>
   );
