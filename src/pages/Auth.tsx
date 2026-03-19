@@ -266,8 +266,8 @@ export default function Auth() {
         <TabsContent value="login">
           <Card>
             <CardHeader>
-              <CardTitle>{mfaChallenge ? '🔐 Double authentification' : t('auth.loginTitle')}</CardTitle>
-              <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : t('auth.loginSubtitle')}</CardDescription>
+              <CardTitle>{mfaChallenge ? '🔐 Authenticator' : emailMfaPending ? '🔐 Vérification par email' : t('auth.loginTitle')}</CardTitle>
+              <CardDescription>{mfaChallenge ? 'Entrez le code de votre application d\'authentification' : emailMfaPending ? 'Un code a été envoyé à votre adresse email' : t('auth.loginSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               {mfaChallenge ? (
