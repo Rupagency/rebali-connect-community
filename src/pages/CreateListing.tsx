@@ -145,7 +145,7 @@ export default function CreateListing() {
     if (step === 0) return !!form.category && !!form.subcategory;
     if (step === 1) {
       const isNegotiable = form.category === 'emploi' && extraFields.salary_negotiable === 'true';
-      return form.title && form.description && (isNegotiable || form.price !== '') && form.location;
+      return form.title && form.description && (isNegotiable || form.price !== '') && form.location && !checkContent(form.title) && !checkContent(form.description);
     }
     if (step === 2) return photos.length > 0 || existingImageUrls.length > 0;
     return true;
