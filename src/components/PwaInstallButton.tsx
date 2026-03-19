@@ -53,7 +53,7 @@ export default function PwaInstallButton() {
     return () => document.removeEventListener('mousedown', handler);
   }, [showIOSTip]);
 
-  if (!isMobile || isStandalone || dismissed) return null;
+  if (!isMobile || isStandalone || dismissed || isNativePlatform) return null;
   if (!deferredPrompt && !isIOS) return null;
 
   const handleClick = async () => {
