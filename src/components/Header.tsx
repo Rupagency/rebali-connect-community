@@ -4,7 +4,12 @@ import logo from '@/assets/logo.png';
 import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { Button } from '@/components/ui/button';
-import { Plus, User, LogOut, Shield, Search, Heart, Bell, Sun, Moon, MessageCircle } from 'lucide-react';
+import { Plus, User, LogOut, Shield, Search, Heart, Bell, Sun, Moon, MessageCircle, BookOpen } from 'lucide-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import NotificationBell from './NotificationBell';
 import { Input } from '@/components/ui/input';
 import {
