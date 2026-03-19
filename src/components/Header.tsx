@@ -53,7 +53,7 @@ export default function Header() {
         <div className="flex sm:hidden items-center justify-between w-full">
           <div className="flex items-center gap-1">
             <LanguageSwitcher />
-            <Popover>
+            <Popover open={indexOpen} onOpenChange={setIndexOpen}>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9">
                   <BookOpen className="h-4 w-4" />
@@ -62,20 +62,20 @@ export default function Header() {
               <PopoverContent align="start" className="w-56 p-3">
                 <nav className="flex flex-col gap-1 text-sm">
                   <p className="font-semibold text-xs text-muted-foreground uppercase tracking-wide mb-1">{t('nav.trustAndPoints') || 'Confiance, Badges & Points'}</p>
-                  <Link to="/trust-badges" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.trustBadges')}</Link>
+                  <Link to="/trust-badges" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.trustBadges')}</Link>
                   
 
                   <div className="border-t my-1.5" />
-                  <Link to="/about" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.about')}</Link>
-                  <Link to="/safety" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.safety')}</Link>
-                  <Link to="/rules" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.rules')}</Link>
-                  <Link to="/faq" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.faq') || 'FAQ'}</Link>
+                  <Link to="/about" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.about')}</Link>
+                  <Link to="/safety" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.safety')}</Link>
+                  <Link to="/rules" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.rules')}</Link>
+                  <Link to="/faq" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.faq') || 'FAQ'}</Link>
 
                   <div className="border-t my-1.5" />
-                  <Link to="/terms" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.terms')}</Link>
-                  <Link to="/privacy" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.privacy')}</Link>
-                  <Link to="/pdpl" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.pdpl') || 'PDPL'}</Link>
-                  <Link to="/contact" className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.contact')}</Link>
+                  <Link to="/terms" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.terms')}</Link>
+                  <Link to="/privacy" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.privacy')}</Link>
+                  <Link to="/pdpl" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.pdpl') || 'PDPL'}</Link>
+                  <Link to="/contact" onClick={() => setIndexOpen(false)} className="px-2 py-1.5 rounded-md hover:bg-accent">{t('nav.contact')}</Link>
                 </nav>
               </PopoverContent>
             </Popover>
