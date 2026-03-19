@@ -44,6 +44,9 @@ export default function Auth() {
   const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
   const [mfaChallenge, setMfaChallenge] = useState<{ factorId: string; challengeId: string } | null>(null);
   const [mfaCode, setMfaCode] = useState('');
+  const [emailMfaPending, setEmailMfaPending] = useState(false);
+  const [emailMfaCode, setEmailMfaCode] = useState('');
+  const [emailMfaSending, setEmailMfaSending] = useState(false);
 
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
