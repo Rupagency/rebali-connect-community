@@ -5,9 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Re-Bali',
   webDir: 'dist',
   server: {
-    url: 'https://rebali-connect-community.lovable.app',
     androidScheme: 'https',
-    iosScheme: 'com.rebali.app',
+    iosScheme: 'https',
   },
   plugins: {
     SplashScreen: {
