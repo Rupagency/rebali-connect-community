@@ -631,11 +631,13 @@ export default function CreateListing() {
         <div className="space-y-4">
           <div>
             <Label>{t('createListing.titleLabel')} *</Label>
-            <Input placeholder={t('createListing.titlePlaceholder')} value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+            <Input placeholder={t('createListing.titlePlaceholder')} value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className={titleHasProhibited ? 'border-destructive' : ''} />
+            {titleHasProhibited && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
           </div>
           <div>
             <Label>{t('createListing.descriptionLabel')} *</Label>
-            <Textarea placeholder={t('createListing.descriptionPlaceholder')} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={5} />
+            <Textarea placeholder={t('createListing.descriptionPlaceholder')} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={5} className={descHasProhibited ? 'border-destructive' : ''} />
+            {descHasProhibited && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
           </div>
           {form.category === 'emploi' && (
             <div className="flex items-center gap-2">
