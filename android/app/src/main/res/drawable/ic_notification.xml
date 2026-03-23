@@ -1,30 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Monochrome notification icon: recycling arrows from Re-Bali logo -->
+<!-- Monochrome notification icon: recycling symbol from Re-Bali logo -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-  <!-- Recycling triangle arrow 1 (top) -->
+  <!-- Standard 3-arrow recycling symbol (Mobius loop) -->
   <path
       android:fillColor="#FFFFFF"
-      android:pathData="M12,3L8.5,9h2.1l1.4,-2.4L13.4,9h2.1L12,3zM12,5.5L13,7.3h-2L12,5.5z"/>
-  <!-- Recycling triangle arrow 2 (bottom-left) -->
-  <path
-      android:fillColor="#FFFFFF"
-      android:pathData="M5.5,18.5l3.5,-6H7L5,16l-2,-3.5H1L5.5,18.5zM4,14.5l1,-1.7l1,1.7H4z"/>
-  <!-- Recycling triangle arrow 3 (bottom-right) -->
-  <path
-      android:fillColor="#FFFFFF"
-      android:pathData="M18.5,18.5L23,12.5h-2L19,16l-2,-3.5h-2L18.5,18.5zM18,14.5l1,-1.7l1,1.7h-2z"/>
-  <!-- Connecting arrow heads -->
-  <path
-      android:fillColor="#FFFFFF"
-      android:pathData="M9.5,9.5L7,14h1.5l1,-1.8L11,14h1.5L9.5,9.5z"/>
-  <path
-      android:fillColor="#FFFFFF"
-      android:pathData="M14.5,9.5L17,14h-1.5l-1,-1.8L13,14h-1.5L14.5,9.5z"/>
-  <path
-      android:fillColor="#FFFFFF"
-      android:pathData="M12,16l-2.5,4.5h5L12,16z"/>
+      android:pathData="M12,2L9,7l1.5,0.9L12,5.3l1.5,2.6L15,7L12,2z
+M7.1,10.1L4,15.5h3v2h2.5L9,15.5L7,15.5l1.5,-2.7l-1.4,-0.9L5.7,14.5
+M15.5,15.5h-2l0.5,2H11.5l3,5l3,-5h-2.5l0.5,-2h-2l1.5,-2.7L14.6,12L13,14.6
+M16.9,10.1l-1.4,0.9L17,13.7l-1.5,0L15.5,15.5H18l0,-2h3l-3,-5.4z"/>
 </vector>
