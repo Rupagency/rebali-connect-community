@@ -142,20 +142,23 @@ export default function CreateListing() {
       const image = await Camera.getPhoto({
         quality: 85,
         allowEditing: false,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Prompt, // Shows both Camera & Gallery
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
         width: 1200,
         height: 1200,
         promptLabelHeader: t('createListing.photoSource') || 'Photo',
         promptLabelPhoto: t('createListing.gallery') || 'Gallery',
         promptLabelPicture: t('createListing.camera') || 'Camera',
       });
-      if (image.dataUrl) {
-        const res = await fetch(image.dataUrl);
+
+      // webPath is always available and avoids native file permission issues
+      const webPath = image.webPath;
+      if (webPath) {
+        const res = await fetch(webPath);
         const blob = await res.blob();
         const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
         setPhotos(prev => [...prev, file]);
-        setPreviews(prev => [...prev, image.dataUrl!]);
+        setPreviews(prev => [...prev, webPath]);
       }
     } catch (err: any) {
       if (err?.message !== 'User cancelled photos app') {
