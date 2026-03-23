@@ -21,6 +21,7 @@ import { LOCATION_COORDS, getDistanceKm } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
 import { useEffectiveListingLimit } from '@/hooks/useEffectiveListingLimit';
 import { isNativePlatform } from '@/capacitor';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { openExternal } from '@/lib/openExternal';
 import { trackEvent } from '@/lib/analytics';
 
