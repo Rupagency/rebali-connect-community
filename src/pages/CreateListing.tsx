@@ -137,6 +137,33 @@ export default function CreateListing() {
     });
   }, [photos]);
 
+  const handleNativePhoto = useCallback(async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 85,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt, // Shows both Camera & Gallery
+        width: 1200,
+        height: 1200,
+        promptLabelHeader: t('createListing.photoSource') || 'Photo',
+        promptLabelPhoto: t('createListing.gallery') || 'Gallery',
+        promptLabelPicture: t('createListing.camera') || 'Camera',
+      });
+      if (image.dataUrl) {
+        const res = await fetch(image.dataUrl);
+        const blob = await res.blob();
+        const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+        setPhotos(prev => [...prev, file]);
+        setPreviews(prev => [...prev, image.dataUrl!]);
+      }
+    } catch (err: any) {
+      if (err?.message !== 'User cancelled photos app') {
+        console.error('Camera error:', err);
+      }
+    }
+  }, [t]);
+
   const removePhoto = (i: number) => {
     setPhotos(prev => prev.filter((_, idx) => idx !== i));
     setPreviews(prev => prev.filter((_, idx) => idx !== i));
