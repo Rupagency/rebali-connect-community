@@ -858,11 +858,22 @@ export default function CreateListing() {
               </div>
             ))}
             {(photos.length + existingImageUrls.length) < 10 && (
-              <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                <span className="text-xs text-muted-foreground">{t('createListing.dragOrClick')}</span>
-                <input type="file" accept="image/*" multiple onChange={handlePhotoUpload} className="hidden" />
-              </label>
+              isNativePlatform ? (
+                <button
+                  type="button"
+                  onClick={handleNativePhoto}
+                  className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors"
+                >
+                  <Upload className="h-6 w-6 text-muted-foreground mb-1" />
+                  <span className="text-xs text-muted-foreground">{t('createListing.dragOrClick')}</span>
+                </button>
+              ) : (
+                <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
+                  <Upload className="h-6 w-6 text-muted-foreground mb-1" />
+                  <span className="text-xs text-muted-foreground">{t('createListing.dragOrClick')}</span>
+                  <input type="file" accept="image/*" multiple onChange={handlePhotoUpload} className="hidden" />
+                </label>
+              )
             )}
           </div>
           <p className="text-sm text-muted-foreground">{photos.length + existingImageUrls.length}/10 — {t('createListing.maxPhotos')}</p>
