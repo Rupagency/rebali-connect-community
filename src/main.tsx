@@ -79,7 +79,11 @@ if (isNativePlatform) {
 // Restore session from deep-link hash tokens BEFORE rendering
 async function restoreSessionAndRender() {
   // Hydrate native storage cache so Supabase can read persisted session
-  await hydrateCache();
+  try {
+    await hydrateCache();
+  } catch (e) {
+    console.error('hydrateCache error (non-fatal):', e);
+  }
 
   let authUrl = window.location.href;
 
@@ -94,7 +98,11 @@ async function restoreSessionAndRender() {
     }
   }
 
-  await handleIncomingAuthUrl(authUrl, isNativePlatform);
+  try {
+    await handleIncomingAuthUrl(authUrl, isNativePlatform);
+  } catch (e) {
+    console.error('Auth URL handling error (non-fatal):', e);
+  }
 
   const root = document.getElementById("root");
   if (root) {
@@ -104,4 +112,7 @@ async function restoreSessionAndRender() {
   }
 }
 
-restoreSessionAndRender();
+restoreSessionAndRender().catch((e) => {
+  console.error('Fatal render error:', e);
+  // Le fallback HTML dans index.html reste visible
+});
