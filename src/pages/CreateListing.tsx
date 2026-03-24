@@ -122,7 +122,7 @@ export default function CreateListing() {
 
   // Photo limit based on account type and subscription tier
   const { maxPhotos: proStatusMaxPhotos } = useProStatus();
-  const proMaxPhotos = profile?.user_type === 'business' ? proStatusMaxPhotos : 10;
+  const proMaxPhotos = profile?.user_type === 'business' ? proStatusMaxPhotos : 3;
 
   const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
