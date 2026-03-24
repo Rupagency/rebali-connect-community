@@ -245,6 +245,19 @@ export default function Messages() {
     }
   }, [activeConvId, user, convMessages]);
 
+  // Track visual viewport height for keyboard avoidance on mobile/native
+  useEffect(() => {
+    if (!isMobile) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const onResize = () => {
+      setViewportHeight(vv.height);
+    };
+    vv.addEventListener('resize', onResize);
+    onResize();
+    return () => vv.removeEventListener('resize', onResize);
+  }, [isMobile]);
+
   // Lock body scroll on mobile
   useEffect(() => {
     if (isMobile) {
