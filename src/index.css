@@ -131,6 +131,11 @@ body.capacitor-android main {
   padding-bottom: 5rem !important;
 }
 
+/* Android: offset the listing CTA bar above the taller bottom nav */
+body.capacitor-android .safe-area-listing-cta {
+  bottom: calc(2.5rem + var(--android-nav-height, 48px)) !important;
+}
+
 body.keyboard-open main {
   padding-bottom: 0 !important;
 }
