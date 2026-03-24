@@ -14,13 +14,16 @@ import { useOfflineStatus } from '@/hooks/useOfflineStatus';
 export default function Layout() {
   const { user, loading } = useAuth();
   const isOffline = useOfflineStatus();
+  const location = useLocation();
   useNativePushNotifications();
+
+  const isMessagesPage = location.pathname === '/messages';
 
   return (
     <div className="min-h-screen flex flex-col">
       <OfflineBanner />
       <Header />
-      <main className="flex-1 pb-12 md:pb-0">
+      <main className={`flex-1 ${isMessagesPage ? 'pb-0' : 'pb-12'} md:pb-0`}>
         {isOffline ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
             <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
