@@ -52,6 +52,7 @@
     --sidebar-accent-foreground: 220 20% 10%;
     --sidebar-border: 220 13% 90%;
     --sidebar-ring: 174 62% 38%;
+    --keyboard-height: 0px;
 
     font-family: 'Nunito', system-ui, sans-serif;
   }
@@ -128,6 +129,16 @@ body.capacitor-android .safe-area-bottom {
 
 body.capacitor-android main {
   padding-bottom: 5rem !important;
+}
+
+body.keyboard-open main {
+  padding-bottom: 0 !important;
+}
+
+body.keyboard-open .keyboard-hide-when-open {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Category marquee animation */
