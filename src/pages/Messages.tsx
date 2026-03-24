@@ -277,6 +277,13 @@ export default function Messages() {
     }
   }, [convMessages, viewportHeight]);
 
+  const handleComposerFocus = useCallback(() => {
+    if (!isMobile) return;
+    window.setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    }, 120);
+  }, [isMobile]);
+
   const sendMessage = async () => {
     if (!message.trim() || !activeConvId || !user) return;
     if (!profile?.phone_verified) {
@@ -420,13 +427,6 @@ export default function Messages() {
         maxHeight: viewportHeight ? `${viewportHeight}px` : '100%',
       }
     : undefined;
-
-  const handleComposerFocus = useCallback(() => {
-    if (!isMobile) return;
-    window.setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
-    }, 120);
-  }, [isMobile]);
 
   return (
     <div
