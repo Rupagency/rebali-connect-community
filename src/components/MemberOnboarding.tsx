@@ -9,8 +9,9 @@ import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { capacitorStorage } from '@/lib/capacitorStorage';
 
-const MEMBER_ONBOARDING_KEY = 'rebali-member-onboarding-done';
+const MEMBER_ONBOARDING_PREFIX = 'rebali-member-onboarding-done-';
 
 const steps = [
   { icon: UserCircle, translationKey: 'setupProfile', color: 'bg-primary/10 text-primary', action: '/profile' },
