@@ -376,17 +376,8 @@ export default function Auth() {
               <CardDescription>{t('auth.signupSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <SocialLoginButtons />
-                <div className="relative">
-                  <Separator />
-                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
-                    {t('auth.orContinueWith')}
-                  </span>
-                </div>
-              </div>
-              <form onSubmit={handleSignup} className="space-y-4">
-                {/* User type selector */}
+              {/* User type selector - BEFORE social buttons so OAuth gets the right type */}
+              <div className="space-y-4 mb-4">
                 <div>
                   <Label>{t('auth.accountType')}</Label>
                   <div className="grid grid-cols-2 gap-3 mt-2">
@@ -418,6 +409,15 @@ export default function Auth() {
                     </button>
                   </div>
                 </div>
+                <SocialLoginButtons userType={userType} />
+                <div className="relative">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                    {t('auth.orContinueWith')}
+                  </span>
+                </div>
+              </div>
+              <form onSubmit={handleSignup} className="space-y-4">
                 <div>
                   <Label>{t('auth.displayName')}</Label>
                   <Input value={displayName} onChange={e => setDisplayName(e.target.value)} required />
