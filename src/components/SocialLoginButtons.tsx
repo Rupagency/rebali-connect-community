@@ -25,7 +25,11 @@ function AppleIcon() {
   );
 }
 
-export function SocialLoginButtons() {
+interface SocialLoginButtonsProps {
+  userType?: 'private' | 'business';
+}
+
+export function SocialLoginButtons({ userType }: SocialLoginButtonsProps) {
   const { t } = useLanguage();
   const [loading, setLoading] = useState<'google' | 'apple' | null>(null);
   
@@ -40,13 +44,19 @@ export function SocialLoginButtons() {
         ? 'https://re-bali.com/native-auth-callback.html'
         : 'https://re-bali.com';
 
+      // Pass user_type in metadata so the handle_new_user trigger picks it up
+      const queryParams: Record<string, string> = {};
+      if (userType) {
+        queryParams.data = JSON.stringify({ user_type: userType });
+      }
+
       if (isNative) {
-        // On native: get the OAuth URL, open in system browser, then deep-link back
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider,
           options: {
             redirectTo,
-            skipBrowserRedirect: true, // Don't redirect the WebView
+            skipBrowserRedirect: true,
+            ...(userType ? { queryParams: { data: JSON.stringify({ user_type: userType }) } } : {}),
           },
         });
 
@@ -56,14 +66,15 @@ export function SocialLoginButtons() {
         }
 
         if (data?.url) {
-          // Open OAuth flow in system browser (not in-app WebView)
           await Browser.open({ url: data.url });
         }
       } else {
-        // On web: normal OAuth flow
         const { error } = await supabase.auth.signInWithOAuth({
           provider,
-          options: { redirectTo },
+          options: {
+            redirectTo,
+            ...(userType ? { queryParams: { data: JSON.stringify({ user_type: userType }) } } : {}),
+          },
         });
 
         if (error) {
