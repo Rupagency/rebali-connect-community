@@ -800,7 +800,7 @@ export default function ListingDetail() {
       </div>
 
       {/* Mobile bottom bar with Drawer */}
-      <div className="lg:hidden fixed bottom-16 left-0 right-0 box-border max-w-full bg-card border-t border-border px-4 py-3 flex gap-2 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+      <div className="lg:hidden fixed bottom-10 left-0 right-0 box-border max-w-full bg-card border-t border-border px-4 py-3 flex gap-2 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] safe-area-listing-cta">
         <button
           onClick={toggleFavorite}
           className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0"
