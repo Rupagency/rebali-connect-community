@@ -17,13 +17,14 @@ export default function Layout() {
   const location = useLocation();
   useNativePushNotifications();
 
-  const isMessagesPage = location.pathname === '/messages';
+  const isMessagesConversationView =
+    location.pathname === '/messages' && new URLSearchParams(location.search).has('conv');
 
   return (
     <div className="min-h-screen flex flex-col">
       <OfflineBanner />
       <Header />
-      <main className={`flex-1 ${isMessagesPage ? 'pb-0' : 'pb-12'} md:pb-0`}>
+      <main className={`flex-1 ${isMessagesConversationView ? 'pb-0' : 'pb-12'} md:pb-0`}>
         {isOffline ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
             <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
@@ -33,7 +34,7 @@ export default function Layout() {
                 <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" />
                 <path d="M10.71 5.05A16 16 0 0 1 22.56 9" />
                 <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88" />
-                <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                <path d="8.53 16.11a6 6 0 0 1 6.95 0" />
                 <line x1="12" y1="20" x2="12.01" y2="20" />
               </svg>
             </div>
@@ -54,7 +55,7 @@ export default function Layout() {
         )}
       </main>
       <Footer className="hidden md:block" />
-      <BottomNav />
+      {!isMessagesConversationView && <BottomNav />}
       <PwaInstallButton />
       {!isOffline && <NewListingNotification />}
       {!loading && !user && <VisitorOnboarding />}
