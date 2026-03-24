@@ -240,11 +240,24 @@ async function sendFCM(
           data,
           android: {
             notification: {
-              sound: channel === "rebali_messages" ? "notif_message" : "default",
+              sound: channel === "rebali_messages" ? "notif_message"
+                   : channel === "rebali_alerts" ? "notif_alert"
+                   : channel === "rebali_reminders" ? "notif_reminder"
+                   : "default",
               channel_id: channel || "rebali_default",
             },
           },
-          apns: { payload: { aps: { sound: channel === "rebali_messages" ? "notif_message.wav" : "default", badge: 1 } } },
+          apns: {
+            payload: {
+              aps: {
+                sound: channel === "rebali_messages" ? "notif_message.wav"
+                     : channel === "rebali_alerts" ? "notif_alert.wav"
+                     : channel === "rebali_reminders" ? "notif_reminder.wav"
+                     : "default",
+                badge: 1,
+              },
+            },
+          },
         },
       }),
     }
