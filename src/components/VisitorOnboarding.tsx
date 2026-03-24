@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { capacitorStorage } from '@/lib/capacitorStorage';
 
 const VISITOR_ONBOARDING_KEY = 'rebali-visitor-onboarding-done';
 
