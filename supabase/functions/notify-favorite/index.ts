@@ -99,6 +99,7 @@ Deno.serve(async (req) => {
         url: `/listing/${listing_id}`,
         tag: `fav-${listing_id}`,
         data: { type: "favorite", listing_id },
+        channel: "rebali_alerts",
       }),
     });
 

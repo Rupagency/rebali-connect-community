@@ -152,6 +152,7 @@ Deno.serve(async (req) => {
             body: `${title} — ${new Intl.NumberFormat("id-ID").format(price)} IDR`,
             url: `/listing/${listing_id}`,
             tag: `search-${search.id}`,
+            channel: "rebali_alerts",
           }),
         });
       } catch (pushErr) {
