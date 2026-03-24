@@ -294,7 +294,7 @@ export default function Messages() {
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
-  }, [convMessages]);
+  }, [convMessages, viewportHeight]);
 
   const sendMessage = async () => {
     if (!message.trim() || !activeConvId || !user) return;
