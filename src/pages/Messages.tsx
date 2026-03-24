@@ -29,6 +29,7 @@ export default function Messages() {
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const chatPageRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
@@ -245,48 +246,28 @@ export default function Messages() {
     }
   }, [activeConvId, user, convMessages]);
 
-  // Track visual viewport height for keyboard avoidance on mobile/native
+  // Track available chat height based on visualViewport + actual component top offset
   useEffect(() => {
     if (!isMobile) return;
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const onResize = () => {
-      setViewportHeight(vv.height);
-    };
-    vv.addEventListener('resize', onResize);
-    onResize();
-    return () => vv.removeEventListener('resize', onResize);
-  }, [isMobile]);
 
-  // Lock body scroll on mobile
-  useEffect(() => {
-    if (isMobile) {
-      const html = document.documentElement;
-      const body = document.body;
-      const origStyles = {
-        bodyOverflow: body.style.overflow, bodyPosition: body.style.position,
-        bodyWidth: body.style.width, bodyHeight: body.style.height,
-        bodyTouchAction: body.style.touchAction, bodyOverscroll: body.style.overscrollBehavior,
-        htmlOverflow: html.style.overflow, htmlOverscroll: html.style.overscrollBehavior,
-      };
-      body.style.overflow = 'hidden'; body.style.position = 'fixed';
-      body.style.width = '100%'; body.style.height = '100%';
-      body.style.touchAction = 'none'; body.style.overscrollBehavior = 'none';
-      html.style.overflow = 'hidden'; html.style.overscrollBehavior = 'none';
-      const preventScroll = (e: TouchEvent) => {
-        const target = e.target as HTMLElement;
-        if (!target.closest('.messages-scroll-area')) e.preventDefault();
-      };
-      document.addEventListener('touchmove', preventScroll, { passive: false });
-      return () => {
-        body.style.overflow = origStyles.bodyOverflow; body.style.position = origStyles.bodyPosition;
-        body.style.width = origStyles.bodyWidth; body.style.height = origStyles.bodyHeight;
-        body.style.touchAction = origStyles.bodyTouchAction; body.style.overscrollBehavior = origStyles.bodyOverscroll;
-        html.style.overflow = origStyles.htmlOverflow; html.style.overscrollBehavior = origStyles.htmlOverscroll;
-        document.removeEventListener('touchmove', preventScroll);
-      };
-    }
-  }, [isMobile]);
+    const vv = window.visualViewport;
+
+    const updateAvailableHeight = () => {
+      const viewportH = vv?.height ?? window.innerHeight;
+      const topOffset = chatPageRef.current?.getBoundingClientRect().top ?? 0;
+      const availableHeight = Math.max(320, viewportH - topOffset);
+      setViewportHeight(availableHeight);
+    };
+
+    updateAvailableHeight();
+    vv?.addEventListener('resize', updateAvailableHeight);
+    window.addEventListener('resize', updateAvailableHeight);
+
+    return () => {
+      vv?.removeEventListener('resize', updateAvailableHeight);
+      window.removeEventListener('resize', updateAvailableHeight);
+    };
+  }, [isMobile, activeConvId]);
 
   // Scroll to bottom of messages container only (not the whole page)
   useEffect(() => {
@@ -432,22 +413,18 @@ export default function Messages() {
     (isDealClosed && !isBuyerConfirmed) // deal closed but buyer hasn't confirmed yet, allow discussion
   ) && !hasRated; // once you rated, no more messages
 
-  // Mobile height: when keyboard is open, visualViewport shrinks so we follow it.
-  // Otherwise use pure CSS with dvh units.
+  // Mobile height follows the real visible viewport segment available under the app header.
   const mobileStyle: React.CSSProperties | undefined = isMobile
     ? {
-        height: viewportHeight
-          ? `${viewportHeight - 56}px`   // keyboard open: viewport minus header only
-          : 'calc(100dvh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))',
-        maxHeight: viewportHeight
-          ? `${viewportHeight - 56}px`
-          : 'calc(100dvh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))',
+        height: viewportHeight ? `${viewportHeight}px` : '100%',
+        maxHeight: viewportHeight ? `${viewportHeight}px` : '100%',
       }
     : undefined;
 
   return (
     <div
-      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden !pb-0' : 'py-8'}`}
+      ref={chatPageRef}
+      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden !pb-0 min-h-0' : 'py-8'}`}
       style={mobileStyle}
     >
       {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
