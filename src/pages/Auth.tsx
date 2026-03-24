@@ -48,6 +48,18 @@ export default function Auth() {
   const [emailMfaCode, setEmailMfaCode] = useState('');
   const [emailMfaSending, setEmailMfaSending] = useState(false);
 
+  const handleFieldFocusCapture = (event: React.FocusEvent<HTMLDivElement>) => {
+    if (window.innerWidth >= 768) return;
+    const target = event.target as HTMLElement;
+    const tag = target.tagName;
+    const isField = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
+    if (!isField) return;
+
+    window.setTimeout(() => {
+      target.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
+    }, 150);
+  };
+
   // Device fingerprinting
   const getDeviceHash = async (): Promise<string> => {
     const raw = [
@@ -255,7 +267,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-md">
+    <div className="container mx-auto px-4 py-12 max-w-md" onFocusCapture={handleFieldFocusCapture}>
       <SEOHead title={t('common.login')} noindex />
       <Tabs defaultValue={defaultTab}>
         <TabsList className="grid w-full grid-cols-2 mb-6">
