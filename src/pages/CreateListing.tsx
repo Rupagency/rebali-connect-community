@@ -120,11 +120,9 @@ export default function CreateListing() {
     loadListing();
   }, [editId, user]);
 
-  // Photo limit based on account type (Free Pro = 3, others = 10)
-  const proMaxPhotos = profile?.user_type === 'business' ? (() => {
-    // Will be refined by useProStatus in the future, for now use simple check
-    return 3; // Default for Free Pro, will be overridden by subscription
-  })() : 10;
+  // Photo limit based on account type and subscription tier
+  const { maxPhotos: proStatusMaxPhotos } = useProStatus();
+  const proMaxPhotos = profile?.user_type === 'business' ? proStatusMaxPhotos : 10;
 
   const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
