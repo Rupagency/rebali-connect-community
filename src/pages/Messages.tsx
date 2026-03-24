@@ -432,8 +432,13 @@ export default function Messages() {
     (isDealClosed && !isBuyerConfirmed) // deal closed but buyer hasn't confirmed yet, allow discussion
   ) && !hasRated; // once you rated, no more messages
 
+  const mobileHeight = viewportHeight ? `${viewportHeight - 104}px` : 'calc(100dvh - 6.5rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))';
+
   return (
-    <div className={`container mx-auto px-4 ${isMobile ? 'h-[calc(100dvh-6.5rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] flex flex-col overflow-hidden' : 'py-8'}`}>
+    <div
+      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden' : 'py-8'}`}
+      style={isMobile ? { height: mobileHeight } : undefined}
+    >
       {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
       <div className={`flex gap-4 ${isMobile ? 'flex-1 min-h-0' : 'h-[calc(100vh-12rem)]'}`}>
         {/* Conversation List */}
