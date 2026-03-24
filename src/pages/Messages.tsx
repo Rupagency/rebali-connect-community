@@ -421,6 +421,13 @@ export default function Messages() {
       }
     : undefined;
 
+  const handleComposerFocus = useCallback(() => {
+    if (!isMobile) return;
+    window.setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    }, 120);
+  }, [isMobile]);
+
   return (
     <div
       ref={chatPageRef}
@@ -720,6 +727,7 @@ export default function Messages() {
                       placeholder={t('messages.ratingPlaceholder')}
                       value={inlineComment}
                       onChange={e => setInlineComment(e.target.value)}
+                      onFocus={handleComposerFocus}
                       className="mb-2 text-sm h-16"
                     />
                     <Button size="sm" onClick={handleSubmitRating} className="w-full">
@@ -754,6 +762,7 @@ export default function Messages() {
                         value={message}
                         onChange={e => setMessage(e.target.value)}
                         placeholder={t('messages.placeholder')}
+                        onFocus={handleComposerFocus}
                         onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                         className="flex-1 h-9 text-sm"
                       />
