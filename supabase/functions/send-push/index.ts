@@ -244,7 +244,7 @@ async function sendFCM(
               channel_id: channel || "rebali_default",
             },
           },
-          apns: { payload: { aps: { sound: "default", badge: 1 } } },
+          apns: { payload: { aps: { sound: channel === "rebali_messages" ? "notif_message.wav" : "default", badge: 1 } } },
         },
       }),
     }
