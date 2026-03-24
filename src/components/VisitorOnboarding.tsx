@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import { capacitorStorage } from '@/lib/capacitorStorage';
 
 const VISITOR_ONBOARDING_KEY = 'rebali-visitor-onboarding-done';
 
@@ -33,7 +34,7 @@ export default function VisitorOnboarding() {
   const isLast = step === steps.length - 1;
 
   useEffect(() => {
-    const done = localStorage.getItem(VISITOR_ONBOARDING_KEY);
+    const done = capacitorStorage.getItem(VISITOR_ONBOARDING_KEY);
     if (!done) {
       const timer = setTimeout(() => setOpen(true), 1200);
       return () => clearTimeout(timer);
@@ -41,7 +42,7 @@ export default function VisitorOnboarding() {
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem(VISITOR_ONBOARDING_KEY, 'true');
+    capacitorStorage.setItem(VISITOR_ONBOARDING_KEY, 'true');
     setOpen(false);
     setStep(0);
   };
