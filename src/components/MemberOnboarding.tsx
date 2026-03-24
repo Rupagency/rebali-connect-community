@@ -37,7 +37,8 @@ export default function MemberOnboarding() {
 
   useEffect(() => {
     if (!user) return;
-    const done = localStorage.getItem(MEMBER_ONBOARDING_KEY);
+    const key = MEMBER_ONBOARDING_PREFIX + user.id;
+    const done = capacitorStorage.getItem(key);
     if (!done) {
       const timer = setTimeout(() => setOpen(true), 800);
       return () => clearTimeout(timer);
@@ -45,7 +46,9 @@ export default function MemberOnboarding() {
   }, [user]);
 
   const handleClose = () => {
-    localStorage.setItem(MEMBER_ONBOARDING_KEY, 'true');
+    if (user) {
+      capacitorStorage.setItem(MEMBER_ONBOARDING_PREFIX + user.id, 'true');
+    }
     setOpen(false);
     setStep(0);
   };
