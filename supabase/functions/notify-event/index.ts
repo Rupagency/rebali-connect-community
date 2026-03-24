@@ -260,7 +260,11 @@ Deno.serve(async (req) => {
         body,
         url,
         tag: `rebali_${event_type}`,
-        channel: event_type === "deal_reminder" ? "rebali_messages" : "rebali_default",
+        channel: ["deal_closed", "deal_confirmed", "deal_expired", "new_conversation", "new_review", "listing_expired"].includes(event_type)
+          ? "rebali_alerts"
+          : ["deal_reminder", "welcome_back", "inactive_seller", "profile_incomplete"].includes(event_type)
+          ? "rebali_reminders"
+          : "rebali_default",
       }),
     });
 
