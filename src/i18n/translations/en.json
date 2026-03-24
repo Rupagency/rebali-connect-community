@@ -1083,7 +1083,7 @@
       "extraListings": "+7 Listing Slots",
       "extraListingsDesc": "Get 7 additional listing slots for 30 days (max 2 packs)",
       "expert_seller": "Expert Seller",
-      "expert_sellerDesc": "Expert badge + 30% visibility + 5 boosts + analytics (30 days)"
+"expert_sellerDesc": "Expert badge + 30% visibility + 10 photos + 5 boosts + analytics (30 days)"
     },
     "pointsNote": "Important notes:",
     "pointsNote1": "Points are a one-time use currency — they are permanently deducted upon purchase.",
@@ -1231,7 +1231,7 @@
       "extra_listings": "+7 Listing Slots",
       "extra_listingsDesc": "Unlock 7 extra listing slots for 30 days",
       "expert_seller": "Expert Seller",
-      "expert_sellerDesc": "Expert badge + 30% visibility + 5 boosts + analytics (30 days)"
+      "expert_sellerDesc": "Expert badge + 30% visibility + 10 photos + 5 boosts + analytics (30 days)"
     },
     "dynamic": {
       "completed_deal": "Completed deal",
