@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Navigate, useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,6 +31,7 @@ export default function Messages() {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const [dealClosedDialogOpen, setDealClosedDialogOpen] = useState(false);
   const [inlineRating, setInlineRating] = useState(5);
   const [inlineHoverRating, setInlineHoverRating] = useState(0);
@@ -244,6 +245,19 @@ export default function Messages() {
     }
   }, [activeConvId, user, convMessages]);
 
+  // Track visual viewport height for keyboard avoidance on mobile/native
+  useEffect(() => {
+    if (!isMobile) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const onResize = () => {
+      setViewportHeight(vv.height);
+    };
+    vv.addEventListener('resize', onResize);
+    onResize();
+    return () => vv.removeEventListener('resize', onResize);
+  }, [isMobile]);
+
   // Lock body scroll on mobile
   useEffect(() => {
     if (isMobile) {
@@ -280,7 +294,7 @@ export default function Messages() {
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
-  }, [convMessages]);
+  }, [convMessages, viewportHeight]);
 
   const sendMessage = async () => {
     if (!message.trim() || !activeConvId || !user) return;
@@ -418,8 +432,13 @@ export default function Messages() {
     (isDealClosed && !isBuyerConfirmed) // deal closed but buyer hasn't confirmed yet, allow discussion
   ) && !hasRated; // once you rated, no more messages
 
+  const mobileHeight = viewportHeight ? `${viewportHeight - 104}px` : 'calc(100dvh - 6.5rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))';
+
   return (
-    <div className={`container mx-auto px-4 ${isMobile ? 'h-[calc(100dvh-6.5rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] flex flex-col overflow-hidden' : 'py-8'}`}>
+    <div
+      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden' : 'py-8'}`}
+      style={isMobile ? { height: mobileHeight } : undefined}
+    >
       {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
       <div className={`flex gap-4 ${isMobile ? 'flex-1 min-h-0' : 'h-[calc(100vh-12rem)]'}`}>
         {/* Conversation List */}
