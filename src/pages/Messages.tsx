@@ -432,11 +432,16 @@ export default function Messages() {
     (isDealClosed && !isBuyerConfirmed) // deal closed but buyer hasn't confirmed yet, allow discussion
   ) && !hasRated; // once you rated, no more messages
 
-  const mobileHeight = viewportHeight ? `${viewportHeight - 104}px` : 'calc(100dvh - 6.5rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))';
+  // On mobile: use visualViewport height minus header (~56px) and bottom nav (~56px + safe area)
+  // When keyboard is open, viewportHeight shrinks automatically so input stays visible
+  const headerAndNav = 112; // header ~56px + bottom nav ~56px
+  const mobileHeight = viewportHeight
+    ? `${viewportHeight - 56}px` // subtract only header; bottom nav is outside viewport when keyboard open
+    : `calc(100dvh - ${headerAndNav}px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))`;
 
   return (
     <div
-      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden' : 'py-8'}`}
+      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden -mb-12' : 'py-8'}`}
       style={isMobile ? { height: mobileHeight } : undefined}
     >
       {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
