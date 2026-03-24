@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+rebali-upload-key.jks
+rebali-upload-cert.pem
