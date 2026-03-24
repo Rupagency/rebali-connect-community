@@ -31,6 +31,7 @@ export default function Messages() {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const [dealClosedDialogOpen, setDealClosedDialogOpen] = useState(false);
   const [inlineRating, setInlineRating] = useState(5);
   const [inlineHoverRating, setInlineHoverRating] = useState(0);
