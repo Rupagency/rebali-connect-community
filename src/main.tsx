@@ -62,7 +62,14 @@ async function handleIncomingAuthUrl(url: string, closeBrowser: boolean): Promis
 
   const restored = await restoreAuthSessionFromUrl(url);
   if (restored) {
-    window.history.replaceState(null, '', '/');
+    // Preserve the original path so the user lands on the correct page
+    try {
+      const parsed = new URL(url);
+      const cleanPath = parsed.pathname + parsed.search.replace(/[?&]?source=native/, '').replace(/^\?$/, '');
+      window.history.replaceState(null, '', cleanPath || '/');
+    } catch {
+      window.history.replaceState(null, '', '/');
+    }
   }
 
   if (closeBrowser) {
