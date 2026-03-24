@@ -122,7 +122,25 @@ export default function CreateListing() {
 
   // Photo limit based on account type and subscription tier
   const { maxPhotos: proStatusMaxPhotos } = useProStatus();
-  const proMaxPhotos = profile?.user_type === 'business' ? proStatusMaxPhotos : 3;
+
+  // Check if private user has expert_seller status (unlocks 10 photos)
+  const { data: hasExpertStatus } = useQuery({
+    queryKey: ['expert-seller-photos', user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('user_addons')
+        .select('id')
+        .eq('user_id', user!.id)
+        .eq('addon_type', 'expert_seller')
+        .eq('active', true)
+        .gt('expires_at', new Date().toISOString())
+        .limit(1);
+      return (data && data.length > 0);
+    },
+    enabled: !!user && profile?.user_type !== 'business',
+  });
+
+  const proMaxPhotos = profile?.user_type === 'business' ? proStatusMaxPhotos : (hasExpertStatus ? 10 : 3);
 
   const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
