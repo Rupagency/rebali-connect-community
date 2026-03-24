@@ -432,17 +432,23 @@ export default function Messages() {
     (isDealClosed && !isBuyerConfirmed) // deal closed but buyer hasn't confirmed yet, allow discussion
   ) && !hasRated; // once you rated, no more messages
 
-  // On mobile: use visualViewport height minus header (~56px) and bottom nav (~56px + safe area)
-  // When keyboard is open, viewportHeight shrinks automatically so input stays visible
-  const headerAndNav = 112; // header ~56px + bottom nav ~56px
-  const mobileHeight = viewportHeight
-    ? `${viewportHeight - 56}px` // subtract only header; bottom nav is outside viewport when keyboard open
-    : `calc(100dvh - ${headerAndNav}px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))`;
+  // Mobile height: when keyboard is open, visualViewport shrinks so we follow it.
+  // Otherwise use pure CSS with dvh units.
+  const mobileStyle: React.CSSProperties | undefined = isMobile
+    ? {
+        height: viewportHeight
+          ? `${viewportHeight - 56}px`   // keyboard open: viewport minus header only
+          : 'calc(100dvh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))',
+        maxHeight: viewportHeight
+          ? `${viewportHeight - 56}px`
+          : 'calc(100dvh - 7rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))',
+      }
+    : undefined;
 
   return (
     <div
-      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden -mb-12' : 'py-8'}`}
-      style={isMobile ? { height: mobileHeight } : undefined}
+      className={`container mx-auto px-4 ${isMobile ? 'flex flex-col overflow-hidden !pb-0' : 'py-8'}`}
+      style={mobileStyle}
     >
       {!isMobile && <h1 className="text-2xl font-extrabold mb-4">{t('messages.title')}</h1>}
       <div className={`flex gap-4 ${isMobile ? 'flex-1 min-h-0' : 'h-[calc(100vh-12rem)]'}`}>
