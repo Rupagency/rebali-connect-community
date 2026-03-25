@@ -24,7 +24,7 @@ export default function ReferralWidget() {
   const [loading, setLoading] = useState(true);
 
   const referralCode = profile?.referral_code || '';
-  const referralLink = `${window.location.origin}/auth?tab=signup&ref=${referralCode}`;
+  const referralLink = `https://re-bali.com/auth?tab=signup&ref=${referralCode}`;
 
   useEffect(() => {
     if (!user) return;
