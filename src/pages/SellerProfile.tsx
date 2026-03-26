@@ -76,6 +76,21 @@ export default function SellerProfile() {
     enabled: !!id,
   });
 
+  const { data: trustData } = useQuery({
+    queryKey: ['seller-trust', id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('trust_scores')
+        .select('score, risk_level')
+        .eq('user_id', id!)
+        .order('last_calculated', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!id,
+  });
+
   const avgRating = reviews && reviews.length > 0
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
     : 0;
@@ -154,7 +169,7 @@ export default function SellerProfile() {
                 />
               </div>
               <UserBadges userId={id!} profile={seller} />
-              <TrustIndicator score={(seller as any).trust_score ?? 50} riskLevel={((seller as any).risk_level as 'low' | 'medium' | 'high') ?? 'low'} />
+              <TrustIndicator score={trustData?.score ?? 50} riskLevel={(trustData?.risk_level as 'low' | 'medium' | 'high') ?? 'low'} />
               <BlockUserButton
                 targetUserId={id!}
                 targetDisplayName={seller.display_name || undefined}
