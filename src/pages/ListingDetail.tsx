@@ -635,7 +635,7 @@ export default function ListingDetail() {
                 <div className="mt-3 space-y-2">
                   <ActiveSellerStatus userId={seller.id} showStock={false} />
                   <UserBadges userId={seller.id} profile={seller} compact />
-                  <TrustIndicator score={seller.trust_score ?? 50} riskLevel={(seller.risk_level as 'low' | 'medium' | 'high') || 'low'} />
+                   <TrustIndicator score={sellerTrustScore?.score ?? 50} riskLevel={(sellerTrustScore?.risk_level as 'low' | 'medium' | 'high') || 'low'} />
                 </div>
               )}
             </div>
@@ -758,7 +758,7 @@ export default function ListingDetail() {
                     <div className="mb-3 space-y-2">
                       <ActiveSellerStatus userId={seller.id} showStock={false} />
                       <UserBadges userId={seller.id} profile={seller} compact />
-                      <TrustIndicator score={seller.trust_score ?? 50} riskLevel={(seller.risk_level as 'low' | 'medium' | 'high') || 'low'} />
+                      <TrustIndicator score={sellerTrustScore?.score ?? 50} riskLevel={(sellerTrustScore?.risk_level as 'low' | 'medium' | 'high') || 'low'} />
                     </div>
                   )}
 
