@@ -76,6 +76,21 @@ export default function SellerProfile() {
     enabled: !!id,
   });
 
+  const { data: trustData } = useQuery({
+    queryKey: ['seller-trust', id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('trust_scores')
+        .select('score, risk_level')
+        .eq('user_id', id!)
+        .order('last_calculated', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!id,
+  });
+
   const avgRating = reviews && reviews.length > 0
     ? reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length
     : 0;
