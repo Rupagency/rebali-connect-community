@@ -714,19 +714,76 @@ export default function Messages() {
                       );
                     }
 
+                    const isLastSent = isMine && msg.id === lastSentMessageId;
+                    const isEditing = editingMessageId === msg.id;
+
                     return (
                       <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${isMine ? 'bg-primary text-primary-foreground rounded-br-md' : 'bg-muted rounded-bl-md'}`}>
-                          <p className="text-sm whitespace-pre-line">{translated || msg.content}</p>
-                          {translated && (
-                            <p className="text-[10px] mt-1 text-muted-foreground/70 italic flex items-center gap-1">
-                              <Languages className="h-3 w-3 inline" />
-                              {msg.content}
-                            </p>
+                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${isMine ? 'bg-primary text-primary-foreground rounded-br-md' : 'bg-muted rounded-bl-md'} group relative`}>
+                          {isEditing ? (
+                            <div className="space-y-2">
+                              <Input
+                                value={editContent}
+                                onChange={e => setEditContent(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') handleEditMessage(); if (e.key === 'Escape') { setEditingMessageId(null); setEditContent(''); } }}
+                                className="text-sm h-8 bg-background text-foreground"
+                                autoFocus
+                              />
+                              <div className="flex gap-1 justify-end">
+                                <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => { setEditingMessageId(null); setEditContent(''); }}>
+                                  <X className="h-3 w-3 mr-1" />{t('messages.cancelEdit')}
+                                </Button>
+                                <Button size="sm" className="h-6 px-2 text-xs" onClick={handleEditMessage} disabled={!editContent.trim()}>
+                                  <Check className="h-3 w-3 mr-1" />{t('messages.saveEdit')}
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <p className="text-sm whitespace-pre-line">{translated || msg.content}</p>
+                              {translated && (
+                                <p className="text-[10px] mt-1 text-muted-foreground/70 italic flex items-center gap-1">
+                                  <Languages className="h-3 w-3 inline" />
+                                  {msg.content}
+                                </p>
+                              )}
+                              <div className={`flex items-center gap-1.5 mt-1 ${isMine ? 'justify-end' : ''}`}>
+                                {msg.edited_at && (
+                                  <span className={`text-[10px] italic ${isMine ? 'text-primary-foreground/50' : 'text-muted-foreground/70'}`}>
+                                    {t('messages.edited')}
+                                  </span>
+                                )}
+                                <span className={`text-[10px] ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>
+                                  {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true, locale: DATE_LOCALES[language] })}
+                                </span>
+                                {/* Read receipt on last sent message */}
+                                {isLastSent && (
+                                  msg.read ? (
+                                    <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} title={msg.read_at ? t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) : ''}>
+                                      <CheckCheck className="h-3 w-3" />
+                                      {msg.read_at && (
+                                        <span>{t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}</span>
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/40' : 'text-muted-foreground/60'}`}>
+                                      <Check className="h-3 w-3" />
+                                      {t('messages.unread')}
+                                    </span>
+                                  )
+                                )}
+                              </div>
+                              {/* Edit button - only on last sent message */}
+                              {isLastSent && !isDealClosed && (
+                                <button
+                                  onClick={() => { setEditingMessageId(msg.id); setEditContent(msg.content); }}
+                                  className={`absolute -top-2 ${isMine ? '-left-8' : '-right-8'} opacity-0 group-hover:opacity-100 transition-opacity bg-background border border-border rounded-full p-1 shadow-sm`}
+                                >
+                                  <Pencil className="h-3 w-3 text-muted-foreground" />
+                                </button>
+                              )}
+                            </>
                           )}
-                          <p className={`text-[10px] mt-1 ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>
-                            {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true, locale: DATE_LOCALES[language] })}
-                          </p>
                         </div>
                       </div>
                     );
