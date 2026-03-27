@@ -156,10 +156,14 @@ export default function CreateListing() {
 
   const handleNativePhoto = useCallback(async () => {
     try {
+      const isAndroid = (await import('@capacitor/core')).Capacitor.getPlatform() === 'android';
+
       const image = await Camera.getPhoto({
         quality: 85,
         allowEditing: false,
-        resultType: CameraResultType.Uri,
+        // Android: use DataUrl to avoid content:// permission expiry errors
+        // iOS: use Uri for better performance
+        resultType: isAndroid ? CameraResultType.DataUrl : CameraResultType.Uri,
         source: CameraSource.Prompt,
         width: 1200,
         height: 1200,
@@ -168,14 +172,19 @@ export default function CreateListing() {
         promptLabelPicture: t('createListing.camera') || 'Camera',
       });
 
-      // webPath is always available and avoids native file permission issues
-      const webPath = image.webPath;
-      if (webPath) {
-        const res = await fetch(webPath);
+      if (isAndroid && image.dataUrl) {
+        // Convert data URL to File
+        const res = await fetch(image.dataUrl);
         const blob = await res.blob();
         const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
         setPhotos(prev => [...prev, file]);
-        setPreviews(prev => [...prev, webPath]);
+        setPreviews(prev => [...prev, image.dataUrl!]);
+      } else if (image.webPath) {
+        const res = await fetch(image.webPath);
+        const blob = await res.blob();
+        const file = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+        setPhotos(prev => [...prev, file]);
+        setPreviews(prev => [...prev, image.webPath!]);
       }
     } catch (err: any) {
       if (err?.message !== 'User cancelled photos app') {
