@@ -522,27 +522,33 @@ export type Database = {
           content: string
           conversation_id: string
           created_at: string
+          edited_at: string | null
           from_role: string | null
           id: string
           read: boolean
+          read_at: string | null
           sender_id: string
         }
         Insert: {
           content: string
           conversation_id: string
           created_at?: string
+          edited_at?: string | null
           from_role?: string | null
           id?: string
           read?: boolean
+          read_at?: string | null
           sender_id: string
         }
         Update: {
           content?: string
           conversation_id?: string
           created_at?: string
+          edited_at?: string | null
           from_role?: string | null
           id?: string
           read?: boolean
+          read_at?: string | null
           sender_id?: string
         }
         Relationships: [
