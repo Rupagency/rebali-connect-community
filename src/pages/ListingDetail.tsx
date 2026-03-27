@@ -2,7 +2,7 @@ import SEOHead from '@/components/SEOHead';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getListingImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
