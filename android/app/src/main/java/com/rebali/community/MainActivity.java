@@ -14,6 +14,7 @@ public class MainActivity extends BridgeActivity {
     private static final String CHANNEL_MESSAGES  = "rebali_messages";
     private static final String CHANNEL_ALERTS    = "rebali_alerts";
     private static final String CHANNEL_REMINDERS = "rebali_reminders";
+    private static final String CHANNEL_JINGLE    = "rebali_jingle";
     private static final String CHANNEL_DEFAULT   = "rebali_default";
 
     @Override
@@ -69,7 +70,20 @@ public class MainActivity extends BridgeActivity {
                 .setVibrationPattern(new long[]{0, 300, 200, 300})
                 .build();
 
-        // 4. Default channel
+        // 4. Jingle channel — stats, milestones, engagement
+        Uri jingleSound = Uri.parse(
+            "android.resource://" + getPackageName() + "/raw/notif_jingle"
+        );
+        NotificationChannelCompat jingleChannel =
+            new NotificationChannelCompat.Builder(CHANNEL_JINGLE, NotificationManagerCompat.IMPORTANCE_HIGH)
+                .setName("Stats & Engagement")
+                .setDescription("Views milestones, welcome back, and engagement notifications")
+                .setSound(jingleSound, notifAudioAttrs)
+                .setVibrationEnabled(true)
+                .setVibrationPattern(new long[]{0, 100, 50, 100, 50, 200})
+                .build();
+
+        // 5. Default channel
         NotificationChannelCompat defaultChannel =
             new NotificationChannelCompat.Builder(CHANNEL_DEFAULT, NotificationManagerCompat.IMPORTANCE_DEFAULT)
                 .setName("General")
@@ -79,6 +93,7 @@ public class MainActivity extends BridgeActivity {
         mgr.createNotificationChannel(messagesChannel);
         mgr.createNotificationChannel(alertsChannel);
         mgr.createNotificationChannel(remindersChannel);
+        mgr.createNotificationChannel(jingleChannel);
         mgr.createNotificationChannel(defaultChannel);
     }
 }

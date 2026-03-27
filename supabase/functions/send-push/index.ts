@@ -243,6 +243,7 @@ async function sendFCM(
               sound: channel === "rebali_messages" ? "notif_message"
                    : channel === "rebali_alerts" ? "notif_alert"
                    : channel === "rebali_reminders" ? "notif_reminder"
+                   : channel === "rebali_jingle" ? "notif_jingle"
                    : "default",
               channel_id: channel || "rebali_default",
             },
@@ -251,9 +252,10 @@ async function sendFCM(
             payload: {
               aps: {
                 sound: channel === "rebali_messages" ? "notif_message.wav"
-                     : channel === "rebali_alerts" ? "notif_alert.wav"
-                     : channel === "rebali_reminders" ? "notif_reminder.wav"
-                     : "default",
+                      : channel === "rebali_alerts" ? "notif_alert.wav"
+                      : channel === "rebali_reminders" ? "notif_reminder.wav"
+                      : channel === "rebali_jingle" ? "notif_jingle.wav"
+                      : "default",
                 badge: 1,
               },
             },

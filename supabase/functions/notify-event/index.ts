@@ -262,8 +262,10 @@ Deno.serve(async (req) => {
         tag: `rebali_${event_type}`,
         channel: ["deal_closed", "deal_confirmed", "deal_expired", "new_conversation", "new_review", "listing_expired"].includes(event_type)
           ? "rebali_alerts"
-          : ["deal_reminder", "welcome_back", "inactive_seller", "profile_incomplete"].includes(event_type)
+          : ["deal_reminder", "inactive_seller", "profile_incomplete"].includes(event_type)
           ? "rebali_reminders"
+          : ["listing_views_milestone", "welcome_back", "whatsapp_verified"].includes(event_type)
+          ? "rebali_jingle"
           : "rebali_default",
       }),
     });
