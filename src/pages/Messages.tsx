@@ -125,6 +125,13 @@ export default function Messages() {
 
   // Check if current user already rated this conversation
   const activeConv = conversations?.find((c: any) => c.id === activeConvId);
+
+  // Auto-refetch conversations if activeConvId is set but not found (e.g. just created)
+  useEffect(() => {
+    if (activeConvId && conversations && !conversations.find((c: any) => c.id === activeConvId)) {
+      queryClient.invalidateQueries({ queryKey: ['conversations', user?.id] });
+    }
+  }, [activeConvId, conversations, user?.id, queryClient]);
   const { data: myReview } = useQuery({
     queryKey: ['my-review', activeConvId, user?.id],
     queryFn: async () => {

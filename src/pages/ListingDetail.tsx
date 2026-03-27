@@ -2,7 +2,7 @@ import SEOHead from '@/components/SEOHead';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getListingImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -60,6 +60,7 @@ export default function ListingDetail() {
   const { t, language } = useLanguage();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [currentImage, setCurrentImage] = useState(0);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
@@ -337,6 +338,7 @@ export default function ListingDetail() {
             console.error('notify-realestate-services error:', e);
           }
         }
+        await queryClient.invalidateQueries({ queryKey: ['conversations'] });
         navigate(`/messages?conv=${newConv.id}`);
       }
     }
