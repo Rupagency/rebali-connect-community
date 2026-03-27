@@ -337,7 +337,7 @@ export default function Messages() {
     return userMsgs.length > 0 ? userMsgs[userMsgs.length - 1].id : null;
   }, [convMessages, user]);
 
-
+  const handleBuyerConfirm = async () => {
     if (!activeConvId || !user) return;
     const { error } = await supabase.rpc('confirm_deal', { _conversation_id: activeConvId });
     if (error) {
