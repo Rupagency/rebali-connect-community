@@ -338,6 +338,7 @@ export default function ListingDetail() {
             console.error('notify-realestate-services error:', e);
           }
         }
+        await queryClient.invalidateQueries({ queryKey: ['conversations'] });
         navigate(`/messages?conv=${newConv.id}`);
       }
     }
