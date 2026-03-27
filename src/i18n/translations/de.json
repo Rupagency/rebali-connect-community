@@ -886,7 +886,14 @@
     "waitingRatings": "Bewerten Sie diese Transaktion, um das Geschäft abzuschließen",
     "submitRating": "Meine Bewertung absenden",
     "youRated": "Sie haben diese Transaktion bewertet",
-    "ratedBySystem": "{name} hat eine Bewertung hinterlassen"
+    "ratedBySystem": "{name} hat eine Bewertung hinterlassen",
+    "read": "Gelesen",
+    "unread": "Gesendet",
+    "readAt": "Gelesen am {date} um {time}",
+    "edited": "bearbeitet",
+    "editMessage": "Bearbeiten",
+    "saveEdit": "Speichern",
+    "cancelEdit": "Abbrechen"
   },
   "extraFields": {
     "contractType": "Vertragsart",

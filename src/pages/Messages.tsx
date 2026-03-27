@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Send, ArrowLeft, MessageCircle, User, Languages, Share2, AlertTriangle, Handshake, CheckCircle2, Star } from 'lucide-react';
+import { Send, ArrowLeft, MessageCircle, User, Languages, Share2, AlertTriangle, Handshake, CheckCircle2, Star, Check, CheckCheck, Pencil, X } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -38,6 +38,8 @@ export default function Messages() {
   const [inlineHoverRating, setInlineHoverRating] = useState(0);
   const [inlineComment, setInlineComment] = useState('');
   const blockedIds = useBlockedUsers();
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
 
   // Fetch conversations (without profiles join - use public_profiles separately)
   const { data: conversations, isLoading: convsLoading } = useQuery({
@@ -168,6 +170,17 @@ export default function Messages() {
           return [...old, payload.new];
         });
       })
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'messages',
+        filter: `conversation_id=eq.${activeConvId}`,
+      }, (payload) => {
+        queryClient.setQueryData(['messages', activeConvId], (old: any[] | undefined) => {
+          if (!old) return old;
+          return old.map((m: any) => m.id === payload.new.id ? { ...m, ...payload.new } : m);
+        });
+      })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [activeConvId, queryClient]);
@@ -236,7 +249,7 @@ export default function Messages() {
     if (activeConvId && user) {
       supabase
         .from('messages')
-        .update({ read: true })
+        .update({ read: true, read_at: new Date().toISOString() } as any)
         .eq('conversation_id', activeConvId)
         .neq('sender_id', user.id)
         .eq('read', false)
@@ -304,6 +317,25 @@ export default function Messages() {
       body: { conversation_id: activeConvId, sender_id: user.id, message_preview: content },
     }).catch(() => {});
   };
+
+  const handleEditMessage = async () => {
+    if (!editingMessageId || !editContent.trim()) return;
+    await supabase.from('messages').update({
+      content: editContent.trim(),
+      edited_at: new Date().toISOString(),
+    } as any).eq('id', editingMessageId);
+    setEditingMessageId(null);
+    setEditContent('');
+    queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+    queryClient.invalidateQueries({ queryKey: ['last-messages'] });
+  };
+
+  // Find the last message sent by current user (for edit button)
+  const lastSentMessageId = useMemo(() => {
+    if (!convMessages || !user) return null;
+    const userMsgs = convMessages.filter((m: any) => m.sender_id === user.id && m.from_role !== 'system');
+    return userMsgs.length > 0 ? userMsgs[userMsgs.length - 1].id : null;
+  }, [convMessages, user]);
 
   const handleBuyerConfirm = async () => {
     if (!activeConvId || !user) return;
@@ -682,19 +714,76 @@ export default function Messages() {
                       );
                     }
 
+                    const isLastSent = isMine && msg.id === lastSentMessageId;
+                    const isEditing = editingMessageId === msg.id;
+
                     return (
                       <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${isMine ? 'bg-primary text-primary-foreground rounded-br-md' : 'bg-muted rounded-bl-md'}`}>
-                          <p className="text-sm whitespace-pre-line">{translated || msg.content}</p>
-                          {translated && (
-                            <p className="text-[10px] mt-1 text-muted-foreground/70 italic flex items-center gap-1">
-                              <Languages className="h-3 w-3 inline" />
-                              {msg.content}
-                            </p>
+                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${isMine ? 'bg-primary text-primary-foreground rounded-br-md' : 'bg-muted rounded-bl-md'} group relative`}>
+                          {isEditing ? (
+                            <div className="space-y-2">
+                              <Input
+                                value={editContent}
+                                onChange={e => setEditContent(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') handleEditMessage(); if (e.key === 'Escape') { setEditingMessageId(null); setEditContent(''); } }}
+                                className="text-sm h-8 bg-background text-foreground"
+                                autoFocus
+                              />
+                              <div className="flex gap-1 justify-end">
+                                <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => { setEditingMessageId(null); setEditContent(''); }}>
+                                  <X className="h-3 w-3 mr-1" />{t('messages.cancelEdit')}
+                                </Button>
+                                <Button size="sm" className="h-6 px-2 text-xs" onClick={handleEditMessage} disabled={!editContent.trim()}>
+                                  <Check className="h-3 w-3 mr-1" />{t('messages.saveEdit')}
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <p className="text-sm whitespace-pre-line">{translated || msg.content}</p>
+                              {translated && (
+                                <p className="text-[10px] mt-1 text-muted-foreground/70 italic flex items-center gap-1">
+                                  <Languages className="h-3 w-3 inline" />
+                                  {msg.content}
+                                </p>
+                              )}
+                              <div className={`flex items-center gap-1.5 mt-1 ${isMine ? 'justify-end' : ''}`}>
+                                {msg.edited_at && (
+                                  <span className={`text-[10px] italic ${isMine ? 'text-primary-foreground/50' : 'text-muted-foreground/70'}`}>
+                                    {t('messages.edited')}
+                                  </span>
+                                )}
+                                <span className={`text-[10px] ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>
+                                  {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true, locale: DATE_LOCALES[language] })}
+                                </span>
+                                {/* Read receipt on last sent message */}
+                                {isLastSent && (
+                                  msg.read ? (
+                                    <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} title={msg.read_at ? t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) : ''}>
+                                      <CheckCheck className="h-3 w-3" />
+                                      {msg.read_at && (
+                                        <span>{t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}</span>
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/40' : 'text-muted-foreground/60'}`}>
+                                      <Check className="h-3 w-3" />
+                                      {t('messages.unread')}
+                                    </span>
+                                  )
+                                )}
+                              </div>
+                              {/* Edit button - only on last sent message */}
+                              {isLastSent && !isDealClosed && (
+                                <button
+                                  onClick={() => { setEditingMessageId(msg.id); setEditContent(msg.content); }}
+                                  className={`absolute -top-2 ${isMine ? '-left-8' : '-right-8'} opacity-0 group-hover:opacity-100 transition-opacity bg-background border border-border rounded-full p-1 shadow-sm`}
+                                >
+                                  <Pencil className="h-3 w-3 text-muted-foreground" />
+                                </button>
+                              )}
+                            </>
                           )}
-                          <p className={`text-[10px] mt-1 ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>
-                            {formatDistanceToNow(new Date(msg.created_at), { addSuffix: true, locale: DATE_LOCALES[language] })}
-                          </p>
                         </div>
                       </div>
                     );

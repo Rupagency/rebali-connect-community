@@ -939,7 +939,14 @@
     "waitingRatings": "Rate this transaction to close the deal",
     "submitRating": "Submit my rating",
     "youRated": "You have rated this transaction",
-    "ratedBySystem": "{name} left a review"
+    "ratedBySystem": "{name} left a review",
+    "read": "Read",
+    "unread": "Sent",
+    "readAt": "Read {date} at {time}",
+    "edited": "edited",
+    "editMessage": "Edit",
+    "saveEdit": "Save",
+    "cancelEdit": "Cancel"
   },
   "extraFields": {
     "contractType": "Contract Type",

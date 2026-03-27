@@ -884,7 +884,14 @@
     "waitingRatings": "Nilai transaksi ini untuk menutup deal",
     "submitRating": "Kirim penilaian saya",
     "youRated": "Anda telah menilai transaksi ini",
-    "ratedBySystem": "{name} meninggalkan ulasan"
+    "ratedBySystem": "{name} meninggalkan ulasan",
+    "read": "Dibaca",
+    "unread": "Terkirim",
+    "readAt": "Dibaca {date} pukul {time}",
+    "edited": "diedit",
+    "editMessage": "Edit",
+    "saveEdit": "Simpan",
+    "cancelEdit": "Batal"
   },
   "extraFields": {
     "contractType": "Jenis Kontrak",

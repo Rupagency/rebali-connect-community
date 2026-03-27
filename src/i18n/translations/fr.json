@@ -943,7 +943,14 @@
     "waitingRatings": "Notez cette transaction pour clôturer le deal",
     "submitRating": "Envoyer ma note",
     "youRated": "Vous avez noté cette transaction",
-    "ratedBySystem": "{name} a laissé un avis"
+    "ratedBySystem": "{name} a laissé un avis",
+    "read": "Lu",
+    "unread": "Envoyé",
+    "readAt": "Lu le {date} à {time}",
+    "edited": "modifié",
+    "editMessage": "Modifier",
+    "saveEdit": "Enregistrer",
+    "cancelEdit": "Annuler"
   },
   "extraFields": {
     "contractType": "Type de contrat",

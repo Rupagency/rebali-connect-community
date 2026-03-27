@@ -884,7 +884,14 @@
     "waitingRatings": "评价此交易以结束",
     "submitRating": "提交我的评价",
     "youRated": "您已评价此交易",
-    "ratedBySystem": "{name}留下了评价"
+    "ratedBySystem": "{name}留下了评价",
+    "read": "已读",
+    "unread": "已发送",
+    "readAt": "{date} {time} 已读",
+    "edited": "已编辑",
+    "editMessage": "编辑",
+    "saveEdit": "保存",
+    "cancelEdit": "取消"
   },
   "extraFields": {
     "contractType": "合同类型",

@@ -884,7 +884,14 @@
     "waitingRatings": "Valora esta transacción para cerrar el trato",
     "submitRating": "Enviar mi valoración",
     "youRated": "Has valorado esta transacción",
-    "ratedBySystem": "{name} dejó una reseña"
+    "ratedBySystem": "{name} dejó una reseña",
+    "read": "Leído",
+    "unread": "Enviado",
+    "readAt": "Leído el {date} a las {time}",
+    "edited": "editado",
+    "editMessage": "Editar",
+    "saveEdit": "Guardar",
+    "cancelEdit": "Cancelar"
   },
   "extraFields": {
     "contractType": "Tipo de contrato",
