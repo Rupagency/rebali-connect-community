@@ -170,6 +170,17 @@ export default function Messages() {
           return [...old, payload.new];
         });
       })
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'messages',
+        filter: `conversation_id=eq.${activeConvId}`,
+      }, (payload) => {
+        queryClient.setQueryData(['messages', activeConvId], (old: any[] | undefined) => {
+          if (!old) return old;
+          return old.map((m: any) => m.id === payload.new.id ? { ...m, ...payload.new } : m);
+        });
+      })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [activeConvId, queryClient]);
