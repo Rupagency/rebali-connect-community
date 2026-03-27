@@ -318,7 +318,26 @@ export default function Messages() {
     }).catch(() => {});
   };
 
-  const handleBuyerConfirm = async () => {
+  const handleEditMessage = async () => {
+    if (!editingMessageId || !editContent.trim()) return;
+    await supabase.from('messages').update({
+      content: editContent.trim(),
+      edited_at: new Date().toISOString(),
+    } as any).eq('id', editingMessageId);
+    setEditingMessageId(null);
+    setEditContent('');
+    queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+    queryClient.invalidateQueries({ queryKey: ['last-messages'] });
+  };
+
+  // Find the last message sent by current user (for edit button)
+  const lastSentMessageId = useMemo(() => {
+    if (!convMessages || !user) return null;
+    const userMsgs = convMessages.filter((m: any) => m.sender_id === user.id && m.from_role !== 'system');
+    return userMsgs.length > 0 ? userMsgs[userMsgs.length - 1].id : null;
+  }, [convMessages, user]);
+
+
     if (!activeConvId || !user) return;
     const { error } = await supabase.rpc('confirm_deal', { _conversation_id: activeConvId });
     if (error) {
