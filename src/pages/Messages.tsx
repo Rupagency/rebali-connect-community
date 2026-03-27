@@ -238,7 +238,7 @@ export default function Messages() {
     if (activeConvId && user) {
       supabase
         .from('messages')
-        .update({ read: true })
+        .update({ read: true, read_at: new Date().toISOString() } as any)
         .eq('conversation_id', activeConvId)
         .neq('sender_id', user.id)
         .eq('read', false)
