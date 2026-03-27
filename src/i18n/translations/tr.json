@@ -925,7 +925,14 @@
     "waitingRatings": "Anlaşmayı kapatmak için bu işlemi değerlendirin",
     "submitRating": "Değerlendirmemi gönder",
     "youRated": "Bu işlemi değerlendirdiniz",
-    "ratedBySystem": "{name} bir değerlendirme bıraktı"
+    "ratedBySystem": "{name} bir değerlendirme bıraktı",
+    "read": "Okundu",
+    "unread": "Gönderildi",
+    "readAt": "{date} {time} okundu",
+    "edited": "düzenlendi",
+    "editMessage": "Düzenle",
+    "saveEdit": "Kaydet",
+    "cancelEdit": "İptal"
   },
   "extraFields": {
     "contractType": "Sözleşme Türü",

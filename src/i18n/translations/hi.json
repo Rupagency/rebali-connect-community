@@ -925,7 +925,14 @@
     "waitingRatings": "सौदा बंद करने के लिए इस लेनदेन को रेट करें",
     "submitRating": "मेरी रेटिंग भेजें",
     "youRated": "आपने इस लेनदेन को रेट किया है",
-    "ratedBySystem": "{name} ने एक समीक्षा छोड़ी"
+    "ratedBySystem": "{name} ने एक समीक्षा छोड़ी",
+    "read": "पढ़ा गया",
+    "unread": "भेजा गया",
+    "readAt": "{date} को {time} बजे पढ़ा",
+    "edited": "संपादित",
+    "editMessage": "संपादित करें",
+    "saveEdit": "सहेजें",
+    "cancelEdit": "रद्द करें"
   },
   "extraFields": {
     "contractType": "अनुबंध प्रकार",
