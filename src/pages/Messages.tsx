@@ -246,14 +246,30 @@ export default function Messages() {
 
   // Mark messages as read when opening conversation
   useEffect(() => {
-    if (activeConvId && user) {
+    if (activeConvId && user && convMessages) {
+      const unreadMessages = convMessages.filter((m: any) => m.sender_id !== user.id && !m.read);
+      if (unreadMessages.length === 0) return;
+      const now = new Date().toISOString();
       supabase
         .from('messages')
-        .update({ read: true, read_at: new Date().toISOString() } as any)
+        .update({ read: true, read_at: now })
         .eq('conversation_id', activeConvId)
         .neq('sender_id', user.id)
         .eq('read', false)
-        .then(() => {
+        .then(({ error }) => {
+          if (error) {
+            console.error('Mark as read error:', error);
+            return;
+          }
+          // Update local cache immediately so sender sees read status via realtime
+          queryClient.setQueryData(['messages', activeConvId], (old: any[] | undefined) => {
+            if (!old) return old;
+            return old.map((m: any) => 
+              m.sender_id !== user.id && !m.read 
+                ? { ...m, read: true, read_at: now } 
+                : m
+            );
+          });
           queryClient.invalidateQueries({ queryKey: ['unread-counts'] });
         });
     }
@@ -320,13 +336,22 @@ export default function Messages() {
 
   const handleEditMessage = async () => {
     if (!editingMessageId || !editContent.trim()) return;
-    await supabase.from('messages').update({
+    const { error } = await supabase.from('messages').update({
       content: editContent.trim(),
       edited_at: new Date().toISOString(),
-    } as any).eq('id', editingMessageId);
+    }).eq('id', editingMessageId).eq('sender_id', user!.id);
+    if (error) {
+      console.error('Edit message error:', error);
+      toast({ title: 'Error editing message', description: error.message, variant: 'destructive' });
+      return;
+    }
+    // Optimistically update cache
+    queryClient.setQueryData(['messages', activeConvId], (old: any[] | undefined) => {
+      if (!old) return old;
+      return old.map((m: any) => m.id === editingMessageId ? { ...m, content: editContent.trim(), edited_at: new Date().toISOString() } : m);
+    });
     setEditingMessageId(null);
     setEditContent('');
-    queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
     queryClient.invalidateQueries({ queryKey: ['last-messages'] });
   };
 
