@@ -60,6 +60,7 @@ export default function ListingDetail() {
   const { t, language } = useLanguage();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [currentImage, setCurrentImage] = useState(0);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
