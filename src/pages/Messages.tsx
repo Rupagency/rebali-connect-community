@@ -38,6 +38,8 @@ export default function Messages() {
   const [inlineHoverRating, setInlineHoverRating] = useState(0);
   const [inlineComment, setInlineComment] = useState('');
   const blockedIds = useBlockedUsers();
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
 
   // Fetch conversations (without profiles join - use public_profiles separately)
   const { data: conversations, isLoading: convsLoading } = useQuery({
