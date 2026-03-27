@@ -92,6 +92,8 @@ export default function Messages() {
       return data || [];
     },
     enabled: !!activeConvId,
+    refetchInterval: activeConvId ? 3000 : false,
+    refetchIntervalInBackground: true,
   });
 
   // Translate received messages to user's preferred language
@@ -786,9 +788,11 @@ export default function Messages() {
                                   msg.read ? (
                                     <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} title={msg.read_at ? t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) : ''}>
                                       <CheckCheck className="h-3 w-3" />
-                                      {msg.read_at && (
-                                        <span>{t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))}</span>
-                                      )}
+                                      <span>
+                                        {msg.read_at
+                                          ? t('messages.readAt').replace('{date}', new Date(msg.read_at).toLocaleDateString()).replace('{time}', new Date(msg.read_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                                          : t('messages.read')}
+                                      </span>
                                     </span>
                                   ) : (
                                     <span className={`text-[10px] flex items-center gap-0.5 ${isMine ? 'text-primary-foreground/40' : 'text-muted-foreground/60'}`}>
