@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    const stats = { profile_incomplete: 0, inactive_seller: 0, welcome_back: 0, views_milestone: 0 };
+    const stats = { profile_incomplete: 0, inactive_seller: 0, welcome_back: 0, views_milestone: 0, daily_engagement: 0 };
 
     // Helper to call notify-event
     async function notifyEvent(event_type: string, user_id: string, data: Record<string, any> = {}) {
@@ -170,6 +170,43 @@ Deno.serve(async (req) => {
           });
           stats.views_milestone++;
         }
+      }
+    }
+
+    // 5. Daily engagement jingle notification — rotated message per day
+    const DAILY_EVENTS = [
+      "daily_discover",
+      "daily_trending",
+      "daily_sell_tip",
+      "daily_community",
+      "daily_deals_alert",
+      "daily_bargain",
+      "daily_safety",
+    ];
+    const dayIndex = Math.floor(Date.now() / (24 * 60 * 60 * 1000)) % DAILY_EVENTS.length;
+    const todayEvent = DAILY_EVENTS[dayIndex];
+
+    // Get all users with push subscriptions (excluding those already notified above)
+    const { data: allPushUsers } = await supabase
+      .from("push_subscriptions")
+      .select("user_id")
+      .limit(200);
+
+    if (allPushUsers && allPushUsers.length > 0) {
+      const uniqueUserIds = [...new Set(allPushUsers.map((s) => s.user_id))];
+
+      // Filter to non-banned users
+      const { data: activeProfiles } = await supabase
+        .from("profiles")
+        .select("id")
+        .in("id", uniqueUserIds)
+        .eq("is_banned", false);
+
+      const activeIds = (activeProfiles || []).map((p) => p.id);
+
+      for (const uid of activeIds.slice(0, 100)) {
+        await notifyEvent(todayEvent, uid);
+        stats.daily_engagement++;
       }
     }
 
