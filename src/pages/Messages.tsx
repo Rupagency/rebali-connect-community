@@ -341,6 +341,7 @@ export default function Messages() {
     supabase.functions.invoke('notify-whatsapp', {
       body: { conversation_id: activeConvId, sender_id: user.id, message_preview: content },
     }).catch(() => {});
+    // Push notification only — WhatsApp removed
   };
 
   const handleEditMessage = async () => {
