@@ -1090,7 +1090,7 @@
       "extraListings": "+7 Listing Slots",
       "extraListingsDesc": "Get 7 additional listing slots for 30 days (max 2 packs)",
       "expert_seller": "Expert Seller",
-"expert_sellerDesc": "Expert badge + 30% visibility + 10 photos + 5 boosts + analytics (30 days)"
+      "expert_sellerDesc": "Expert badge + 30% visibility + 10 photos + 5 boosts + analytics (30 days)"
     },
     "pointsNote": "Important notes:",
     "pointsNote1": "Points are a one-time use currency — they are permanently deducted upon purchase.",
@@ -1558,42 +1558,105 @@
     "subtitle": "Everything you need to know about Re-Bali marketplace",
     "howItWorks": {
       "title": "How It Works",
-      "q1": { "q": "What is Re-Bali?", "a": "Re-Bali is a trusted, free marketplace for buying and selling goods and services in Bali, Indonesia. We connect expats, locals, and businesses through secure in-app messaging." },
-      "q2": { "q": "How do I post a listing?", "a": "Sign up, verify your WhatsApp, click 'Publish', fill in details, upload photos, and your listing goes live instantly. Free accounts can post up to 5 listings." },
-      "q3": { "q": "How do buyers contact me?", "a": "Buyers send messages through our built-in chat. Your phone number stays private until you explicitly share it." },
-      "q4": { "q": "How are deals completed?", "a": "Agree on a price, meet in person, exchange the item and payment. The seller then closes the deal in-app, the buyer confirms, and both parties can leave reviews." },
-      "q5": { "q": "Is Re-Bali free to use?", "a": "Yes! Posting listings and messaging is 100% free. Optional premium features (boosts, Pro plans) can be purchased with points or IDR." }
+      "q1": {
+        "q": "What is Re-Bali?",
+        "a": "Re-Bali is a trusted, free marketplace for buying and selling goods and services in Bali, Indonesia. We connect expats, locals, and businesses through secure in-app messaging."
+      },
+      "q2": {
+        "q": "How do I post a listing?",
+        "a": "Sign up, verify your WhatsApp, click 'Publish', fill in details, upload photos, and your listing goes live instantly. Free accounts can post up to 5 listings."
+      },
+      "q3": {
+        "q": "How do buyers contact me?",
+        "a": "Buyers send messages through our built-in chat. Your phone number stays private until you explicitly share it."
+      },
+      "q4": {
+        "q": "How are deals completed?",
+        "a": "Agree on a price, meet in person, exchange the item and payment. The seller then closes the deal in-app, the buyer confirms, and both parties can leave reviews."
+      },
+      "q5": {
+        "q": "Is Re-Bali free to use?",
+        "a": "Yes! Posting listings and messaging is 100% free. Optional premium features (boosts, Pro plans) can be purchased with points or IDR."
+      }
     },
     "safety": {
       "title": "Safety & Trust",
-      "q1": { "q": "How does the trust score work?", "a": "Your trust score (0-100) is calculated from account age, completed deals, positive reviews, and verification status. Penalties apply for reports, VPN abuse, and multi-accounting." },
-      "q2": { "q": "How are scams prevented?", "a": "We use content moderation, duplicate image detection, phone/ID verification, device fingerprinting, VPN detection, and automated flagging. Listings with 3+ scam reports are auto-archived." },
-      "q3": { "q": "Can I block a user?", "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden. You can unblock from Settings > Blocked Users." },
-      "q4": { "q": "How do I report a suspicious listing?", "a": "Tap the 'Report' button on any listing. Choose a reason and provide details. Our team reviews all reports within 24 hours." }
+      "q1": {
+        "q": "How does the trust score work?",
+        "a": "Your trust score (0-100) is calculated from account age, completed deals, positive reviews, and verification status. Penalties apply for reports, VPN abuse, and multi-accounting."
+      },
+      "q2": {
+        "q": "How are scams prevented?",
+        "a": "We use content moderation, duplicate image detection, phone/ID verification, device fingerprinting, VPN detection, and automated flagging. Listings with 3+ scam reports are auto-archived."
+      },
+      "q3": {
+        "q": "Can I block a user?",
+        "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden. You can unblock from Settings > Blocked Users."
+      },
+      "q4": {
+        "q": "How do I report a suspicious listing?",
+        "a": "Tap the 'Report' button on any listing. Choose a reason and provide details. Our team reviews all reports within 24 hours."
+      }
     },
     "payments": {
       "title": "Payments & Points",
-      "q1": { "q": "How do payments work?", "a": "Re-Bali does not process payments between users. You arrange payment directly (cash, bank transfer, e-wallet). We recommend meeting in person before paying." },
-      "q2": { "q": "What are points?", "a": "Points are a reward currency earned through badges, completed deals, and reviews. Spend them on boosts, seller status upgrades, and extra listing slots." },
-      "q3": { "q": "Can I buy points with real money?", "a": "Yes! Point packs are available via Xendit (bank transfer, e-wallet, QRIS). Prices are in IDR." }
+      "q1": {
+        "q": "How do payments work?",
+        "a": "Re-Bali does not process payments between users. You arrange payment directly (cash, bank transfer, e-wallet). We recommend meeting in person before paying."
+      },
+      "q2": {
+        "q": "What are points?",
+        "a": "Points are a reward currency earned through badges, completed deals, and reviews. Spend them on boosts, seller status upgrades, and extra listing slots."
+      },
+      "q3": {
+        "q": "Can I buy points with real money?",
+        "a": "Yes! Point packs are available via Xendit (bank transfer, e-wallet, QRIS). Prices are in IDR."
+      }
     },
     "verification": {
       "title": "Verification",
-      "q1": { "q": "How do I verify my WhatsApp?", "a": "Go to Profile > Security, enter your WhatsApp number, and verify with the 6-digit code sent to you. This earns the WhatsApp Verified badge and 20 points." },
-      "q2": { "q": "How does identity verification work?", "a": "Upload a government-issued ID (KTP, passport) and a selfie. Our team reviews it within 48 hours. Documents are encrypted and auto-deleted after review." },
-      "q3": { "q": "Is my personal data safe?", "a": "Yes. We comply with Indonesia's Personal Data Protection Law (UU PDP). Documents are encrypted (AES-256), auto-purged after review, and never shared. See our Privacy Policy and PDPL page." }
+      "q1": {
+        "q": "How do I verify my WhatsApp?",
+        "a": "Go to Profile > Security, enter your WhatsApp number, and verify with the 6-digit code sent to you. This earns the WhatsApp Verified badge and 20 points."
+      },
+      "q2": {
+        "q": "How does identity verification work?",
+        "a": "Upload a government-issued ID (KTP, passport) and a selfie. Our team reviews it within 48 hours. Documents are encrypted and auto-deleted after review."
+      },
+      "q3": {
+        "q": "Is my personal data safe?",
+        "a": "Yes. We comply with Indonesia's Personal Data Protection Law (UU PDP). Documents are encrypted (AES-256), auto-purged after review, and never shared. See our Privacy Policy and PDPL page."
+      }
     },
     "account": {
       "title": "My Account",
-      "q1": { "q": "How do I change my display name or avatar?", "a": "Go to Profile > Personal Information and update your name or upload a new photo." },
-      "q2": { "q": "What's the difference between Private and Business accounts?", "a": "Private accounts are for individuals (up to 5 listings). Business (Pro) accounts get more listings, analytics, a business page, and optional NPWP verification." },
-      "q3": { "q": "How do I delete my account?", "a": "Go to Profile > Security > Delete Account. All your data will be permanently removed within 30 days, as required by Indonesian PDP law." }
+      "q1": {
+        "q": "How do I change my display name or avatar?",
+        "a": "Go to Profile > Personal Information and update your name or upload a new photo."
+      },
+      "q2": {
+        "q": "What's the difference between Private and Business accounts?",
+        "a": "Private accounts are for individuals (up to 5 listings). Business (Pro) accounts get more listings, analytics, a business page, and optional NPWP verification."
+      },
+      "q3": {
+        "q": "How do I delete my account?",
+        "a": "Go to Profile > Security > Delete Account. All your data will be permanently removed within 30 days, as required by Indonesian PDP law."
+      }
     },
     "legal": {
       "title": "Legal & Compliance",
-      "q1": { "q": "What laws govern Re-Bali?", "a": "Re-Bali operates under Indonesian law, including UU ITE (Electronic Information and Transactions), UU PDP (Personal Data Protection), and Consumer Protection Law No. 8/1999." },
-      "q2": { "q": "What is PDPL/UU PDP?", "a": "UU PDP (Law No. 27/2022) is Indonesia's Personal Data Protection Law, similar to GDPR. It gives you rights over your data including access, correction, deletion, and portability. See our PDPL page for details." },
-      "q3": { "q": "How do I exercise my data rights?", "a": "Visit Profile > Security or our Contact page. You can request data access, correction, export, or deletion. We respond within 14 business days." }
+      "q1": {
+        "q": "What laws govern Re-Bali?",
+        "a": "Re-Bali operates under Indonesian law, including UU ITE (Electronic Information and Transactions), UU PDP (Personal Data Protection), and Consumer Protection Law No. 8/1999."
+      },
+      "q2": {
+        "q": "What is PDPL/UU PDP?",
+        "a": "UU PDP (Law No. 27/2022) is Indonesia's Personal Data Protection Law, similar to GDPR. It gives you rights over your data including access, correction, deletion, and portability. See our PDPL page for details."
+      },
+      "q3": {
+        "q": "How do I exercise my data rights?",
+        "a": "Visit Profile > Security or our Contact page. You can request data access, correction, export, or deletion. We respond within 14 business days."
+      }
     }
   },
   "pdpl": {
@@ -1688,5 +1751,30 @@
       "translating": "Translating to 12 languages...",
       "done": "Almost there!"
     }
+  },
+  "twoFactor": {
+    "title": "Two-Factor Authentication (2FA)",
+    "protectedByApp": "Protected by authenticator app.",
+    "protectedByEmail": "Protected by email code at each login.",
+    "disable": "Disable",
+    "addSecurity": "Add an extra layer of security to your account.",
+    "enable2FA": "Enable 2FA",
+    "chooseMethod": "Choose your method:",
+    "authenticator": "Authenticator",
+    "authenticatorDesc": "Google Authenticator, Authy…",
+    "email": "Email",
+    "emailDesc": "Code sent by email",
+    "cancel": "Cancel",
+    "scanQR": "Scan this QR code with your authenticator app.",
+    "enterCode": "Enter the 6-digit code:",
+    "verifyAndActivate": "Verify and activate",
+    "activated": "2FA activated ✅",
+    "activatedAppDesc": "Authenticator activated on your account.",
+    "activatedEmailDesc": "A code will be sent to your email at each login.",
+    "deactivated": "2FA deactivated",
+    "invalidCode": "Invalid code",
+    "error": "Error",
+    "confirmDisableApp": "Disable 2FA via authenticator?",
+    "confirmDisableEmail": "Disable 2FA via email?"
   }
 }

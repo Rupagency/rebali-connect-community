@@ -157,96 +157,121 @@
   },
   "faq": {
     "title": "よくある質問",
-    "subtitle": "Re-Baliマーケットプレイスについて",
+    "subtitle": "Re-Baliマーケットプレイスについて知っておくべきすべて",
     "howItWorks": {
-      "title": "How It Works",
+      "title": "使い方",
       "q1": {
-        "q": "What is Re-Bali?",
-        "a": "Re-Bali is a trusted marketplace for buying and selling goods and services in Bali, Indonesia. All transactions happen through our secure in-app chat system."
+        "q": "Re-Baliとは？",
+        "a": "Re-Baliは、バリ島での商品・サービスの売買のための信頼できる無料マーケットプレイスです。"
       },
       "q2": {
-        "q": "How do I post a listing?",
-        "a": "Sign up, click 'Publish', fill in your item details, upload photos, and your listing goes live after a quick review. You can post up to 3-5 listings depending on your account age."
+        "q": "リスティングの投稿方法は？",
+        "a": "登録し、WhatsAppを認証し、「投稿」をクリックして詳細を入力。無料アカウントは最大5件。"
       },
       "q3": {
-        "q": "How do buyers contact me?",
-        "a": "Buyers send messages through our built-in chat. Your personal phone number stays private until you decide to share it."
+        "q": "買い手からの連絡方法は？",
+        "a": "内蔵チャットでメッセージが届きます。電話番号は共有するまでプライベートです。"
       },
       "q4": {
-        "q": "How are deals completed?",
-        "a": "When you agree on a price, the seller closes the deal, and the buyer confirms. Both parties can then leave reviews. Payments happen directly between buyer and seller."
+        "q": "取引の完了方法は？",
+        "a": "価格を合意し、対面で会い、商品と支払いを交換。売り手が取引を閉じ、買い手が確認します。"
       },
       "q5": {
-        "q": "Is Re-Bali free to use?",
-        "a": "Yes! Posting listings and messaging is free. Optional premium features like boosts and VIP status can be purchased with points or IDR."
+        "q": "Re-Baliは無料ですか？",
+        "a": "はい！出品とメッセージングは100%無料です。オプションのプレミアム機能はポイントまたはIDRで購入可能。"
       }
     },
     "safety": {
-      "title": "Safety & Trust",
+      "title": "安全と信頼",
       "q1": {
-        "q": "How does the trust score work?",
-        "a": "Your trust score is calculated from account age, completed deals, positive reviews, and verification status. Higher scores unlock badges like 'Safe Seller' and 'Trusted Pro'."
+        "q": "信頼スコアの仕組みは？",
+        "a": "スコア（0-100）はアカウント年齢、完了取引、レビュー、認証状況から計算されます。"
       },
       "q2": {
-        "q": "How are scams prevented?",
-        "a": "We use content moderation, image duplicate detection, phone verification, identity verification, and automatic flagging of suspicious accounts. Listings with 3+ scam reports are auto-archived."
+        "q": "詐欺の防止方法は？",
+        "a": "コンテンツモデレーション、画像重複検出、電話/ID認証、デバイスフィンガープリンティング、VPN検出を使用。"
       },
       "q3": {
-        "q": "Can I block a user?",
-        "a": "Yes. Visit their profile and tap 'Block'. Their listings and messages will be hidden from you. You can unblock anytime from your Blocked Users page."
+        "q": "ユーザーをブロックできますか？",
+        "a": "はい。プロフィールにアクセスして「ブロック」をタップ。コンテンツが非表示になります。"
       },
       "q4": {
-        "q": "How do I report a suspicious listing?",
-        "a": "Tap the 'Report' button on any listing. Choose a reason (scam, prohibited, spam, etc.) and we'll review it within 24 hours."
+        "q": "不審なリスティングの報告方法は？",
+        "a": "「報告」ボタンを使用してください。24時間以内にすべてのレポートを確認します。"
       }
     },
     "payments": {
-      "title": "Payments & Points",
+      "title": "支払いとポイント",
       "q1": {
-        "q": "How do payments work?",
-        "a": "Re-Bali does not process payments between buyers and sellers. You arrange payment directly (cash, bank transfer, etc.). We provide the secure communication channel."
+        "q": "支払いの仕組みは？",
+        "a": "Re-Baliはユーザー間の支払いを処理しません。直接取り決めてください（現金、振込、e-ウォレット）。"
       },
       "q2": {
-        "q": "What are points?",
-        "a": "Points are earned by completing deals, getting reviews, and earning badges. Spend them on boosts, VIP status, and extra listing slots in the Points Shop."
+        "q": "ポイントとは？",
+        "a": "バッジ、取引完了、レビューで獲得する報酬通貨です。ブーストやアップグレードに使えます。"
       },
       "q3": {
-        "q": "Can I buy points with real money?",
-        "a": "Yes! Point packs are available for purchase in IDR through our secure payment system powered by Xendit."
+        "q": "ポイントを購入できますか？",
+        "a": "はい！Xendit（銀行振込、e-ウォレット、QRIS）でIDR建てで購入可能です。"
       }
     },
     "verification": {
-      "title": "Verification",
+      "title": "認証",
       "q1": {
-        "q": "How do I verify my WhatsApp?",
-        "a": "Go to your Profile, enter your WhatsApp number, and we'll send a verification code via WhatsApp. Once verified, you earn the WhatsApp Verified badge and 20 points."
+        "q": "WhatsAppの認証方法は？",
+        "a": "プロフィール > セキュリティで番号を入力し、コードで認証。バッジと20ポイント獲得。"
       },
       "q2": {
-        "q": "How does identity verification work?",
-        "a": "Upload a government-issued ID (KTP, passport, or driving license) and a selfie. Our team reviews it within 48 hours. You earn the Identity Verified badge and 40 points."
+        "q": "本人確認の仕組みは？",
+        "a": "身分証明書（KTP、パスポート）とセルフィーをアップロード。48時間以内に審査。暗号化後自動削除。"
       },
       "q3": {
-        "q": "Is my personal data safe?",
-        "a": "Yes. Verification documents are encrypted at rest, automatically purged after review, and never shared with other users. Only our admin team can access them during verification."
+        "q": "個人データは安全ですか？",
+        "a": "はい。UU PDPに準拠。文書はAES-256で暗号化、審査後に自動削除、他者に共有されません。"
       }
     },
     "account": {
-      "title": "My Account",
+      "title": "マイアカウント",
       "q1": {
-        "q": "How do I change my display name or avatar?",
-        "a": "Go to Profile, tap Edit, and update your display name or upload a new avatar photo."
+        "q": "名前やアバターの変更方法は？",
+        "a": "プロフィール > 個人情報から更新してください。"
       },
       "q2": {
-        "q": "What's the difference between Private and Business accounts?",
-        "a": "Private accounts are for individuals (3-5 listings). Business (Pro) accounts get more listings, analytics, a business page, and priority support."
+        "q": "個人アカウントとビジネスアカウントの違いは？",
+        "a": "個人は最大5件。ビジネス（Pro）はより多くのリスティング、分析、ビジネスページが利用可能。"
       },
       "q3": {
-        "q": "How do I delete my account?",
-        "a": "Contact our support team through the Contact page. We'll process your request and delete all your data within 30 days, as required by Indonesian PDP law."
+        "q": "アカウントの削除方法は？",
+        "a": "プロフィール > セキュリティ > アカウント削除。UU PDPに基づき30日以内にデータが削除されます。"
+      }
+    },
+    "legal": {
+      "title": "法的事項",
+      "q1": {
+        "q": "Re-Baliを規定する法律は？",
+        "a": "インドネシアの法律：UU ITE、UU PDP（データ保護）、消費者保護法No. 8/1999に基づきます。"
+      },
+      "q2": {
+        "q": "PDPL/UU PDPとは？",
+        "a": "UU PDP（法律No. 27/2022）はインドネシアの個人データ保護法で、GDPRに相当します。詳細はPDPLページをご覧ください。"
+      },
+      "q3": {
+        "q": "データ権利の行使方法は？",
+        "a": "プロフィール > セキュリティまたはお問い合わせページ。14営業日以内に対応します。"
       }
     }
   },
   "footer": {
+    "tagline": "バリ島の信頼できるマーケットプレイス",
+    "explore": "マーケット",
+    "company": "会社情報",
+    "legal": "法的事項",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "pdpl": "PDPL（データ保護）",
+    "contact": "サポート",
+    "copyright": "全著作権所有。",
+    "trustBadgesPoints": "信頼、バッジ＆ポイント",
     "faq": "FAQ"
   },
   "notifications": {
@@ -548,105 +573,154 @@
     "termsIntro": "この利用規約は、Re-Baliプラットフォームへのアクセスと使用を規定します。アカウントを作成することで、これらの規約に同意するものとします。",
     "privacyIntro": "このプライバシーポリシーは、Re-Baliがインドネシアの法律（UU PDP No. 27/2022）に準拠して個人データをどのように収集、使用、保存、保護するかを説明します。",
     "terms": {
-      "acceptance": { "title": "規約の承諾", "text": "Re-Baliを使用することにより、この利用規約とプライバシーポリシーに同意するものとします。" },
-      "description": { "title": "サービスの説明", "text": "Re-Baliは、バリ島で買い手と売り手をつなぐ無料のオンラインクラシファイドプラットフォームです。Re-Baliはユーザー間の取引に参加しません。" },
-      "eligibility": { "title": "資格要件", "text": "Re-Baliの使用には18歳以上である必要があります。" },
-      "account": { "title": "ユーザーアカウント", "text": "正確な情報を提供する必要があります。各個人は1つのアカウントのみです。WhatsApp認証がリスティング投稿に必要です。" },
-      "listings": { "title": "リスティング規則", "text": "リスティングは正確で、インドネシアの法律に準拠する必要があります。禁止品目：薬物、武器、偽造品、盗品。" },
-      "prohibited": { "title": "禁止行為", "text": "詐欺コンテンツ、嫌がらせ、セキュリティ回避、マネーロンダリング、外部リンクの投稿、複数アカウントの作成は禁止です。" },
-      "intellectual": { "title": "知的財産", "text": "Re-Baliのコンテンツは知的財産法で保護されています。ユーザーはアップロードしたコンテンツの所有権を保持しますが、Re-Baliに表示ライセンスを付与します。" },
-      "liability": { "title": "責任の制限", "text": "Re-Baliは「現状のまま」提供されます。インドネシアの法律で許可される最大限度において、Re-Baliはプラットフォームの使用から生じる損害について責任を負いません。" },
-      "indemnification": { "title": "補償", "text": "ユーザーは、プラットフォームの使用またはこれらの規約の違反から生じる請求からRe-Baliを免責することに同意します。" },
-      "governing": { "title": "準拠法", "text": "この規約はインドネシア共和国の法律に準拠します。紛争はデンパサール、バリの裁判所の管轄となります。" },
-      "modification": { "title": "変更", "text": "Re-Baliはこれらの規約を変更する権利を留保します。重要な変更は14日前に通知されます。" },
-      "contact": { "title": "お問い合わせ", "text": "利用規約に関する質問は、お問い合わせページからご連絡ください。" }
+      "acceptance": {
+        "title": "規約の承諾",
+        "text": "Re-Baliを使用することにより、この利用規約とプライバシーポリシーに同意するものとします。"
+      },
+      "description": {
+        "title": "サービスの説明",
+        "text": "Re-Baliは、バリ島で買い手と売り手をつなぐ無料のオンラインクラシファイドプラットフォームです。Re-Baliはユーザー間の取引に参加しません。"
+      },
+      "eligibility": {
+        "title": "資格要件",
+        "text": "Re-Baliの使用には18歳以上である必要があります。"
+      },
+      "account": {
+        "title": "ユーザーアカウント",
+        "text": "正確な情報を提供する必要があります。各個人は1つのアカウントのみです。WhatsApp認証がリスティング投稿に必要です。"
+      },
+      "listings": {
+        "title": "リスティング規則",
+        "text": "リスティングは正確で、インドネシアの法律に準拠する必要があります。禁止品目：薬物、武器、偽造品、盗品。"
+      },
+      "prohibited": {
+        "title": "禁止行為",
+        "text": "詐欺コンテンツ、嫌がらせ、セキュリティ回避、マネーロンダリング、外部リンクの投稿、複数アカウントの作成は禁止です。"
+      },
+      "intellectual": {
+        "title": "知的財産",
+        "text": "Re-Baliのコンテンツは知的財産法で保護されています。ユーザーはアップロードしたコンテンツの所有権を保持しますが、Re-Baliに表示ライセンスを付与します。"
+      },
+      "liability": {
+        "title": "責任の制限",
+        "text": "Re-Baliは「現状のまま」提供されます。インドネシアの法律で許可される最大限度において、Re-Baliはプラットフォームの使用から生じる損害について責任を負いません。"
+      },
+      "indemnification": {
+        "title": "補償",
+        "text": "ユーザーは、プラットフォームの使用またはこれらの規約の違反から生じる請求からRe-Baliを免責することに同意します。"
+      },
+      "governing": {
+        "title": "準拠法",
+        "text": "この規約はインドネシア共和国の法律に準拠します。紛争はデンパサール、バリの裁判所の管轄となります。"
+      },
+      "modification": {
+        "title": "変更",
+        "text": "Re-Baliはこれらの規約を変更する権利を留保します。重要な変更は14日前に通知されます。"
+      },
+      "contact": {
+        "title": "お問い合わせ",
+        "text": "利用規約に関する質問は、お問い合わせページからご連絡ください。"
+      }
     },
     "privacy": {
-      "collection": { "title": "収集する情報", "text": "アカウントデータ（メール、名前、写真）、認証データ（電話番号、ID）、リスティングデータ、メッセージ、デバイスデータ、利用データを収集します。" },
-      "usage": { "title": "データの使用方法", "text": "サービスの提供、本人確認、リスティング表示、詐欺防止、通知、分析、法的義務の遵守のために処理します。" },
-      "legalBasis": { "title": "処理の法的根拠", "text": "UU PDP No. 27/2022に基づき：同意、契約上の必要性、正当な利益（セキュリティ）、法的義務。" },
-      "storage": { "title": "データの保存", "text": "AES-256暗号化とTLS 1.3でSupabaseインフラに安全に保存されます。アカウント削除後30日以内にデータが削除されます。" },
-      "sharing": { "title": "データの共有", "text": "公開プロフィール（全ユーザーに表示）、WhatsApp（ユーザーの選択時のみ）、サービスプロバイダー（Supabase、Xendit）、法執行機関（法律で要求される場合）にのみ共有します。" },
-      "cookies": { "title": "Cookie", "text": "認証と設定のためのエッセンシャルCookieのみ使用します。広告トラッカーは使用しません。" },
-      "rights": { "title": "あなたの権利（UU PDP）", "text": "アクセス権、訂正権、削除権、ポータビリティ権、同意撤回権、異議権、苦情権があります。プロフィールまたはお問い合わせページからご連絡ください。" },
-      "children": { "title": "子供のプライバシー", "text": "Re-Baliは18歳未満を対象としていません。未成年者のデータを意図的に収集しません。" },
-      "security": { "title": "セキュリティ対策", "text": "AES-256暗号化、TLS 1.3、デバイスフィンガープリンティング、VPN検出、コンテンツモデレーション、二要素認証を実施しています。" },
-      "international": { "title": "国際データ転送", "text": "データはインドネシア国外で処理される場合があります。UU PDPに準拠した適切な保護措置を確保しています。" },
-      "changes": { "title": "ポリシーの変更", "text": "このポリシーを定期的に更新する場合があります。重要な変更は14日前に通知します。" },
-      "contact": { "title": "お問い合わせとデータ保護", "text": "プライバシーに関するお問い合わせは、お問い合わせページからご連絡ください。14営業日以内に対応します。" }
-    }
-  },
-  "faq": {
-    "title": "よくある質問",
-    "subtitle": "Re-Baliマーケットプレイスについて知っておくべきすべて",
-    "howItWorks": {
-      "title": "使い方",
-      "q1": { "q": "Re-Baliとは？", "a": "Re-Baliは、バリ島での商品・サービスの売買のための信頼できる無料マーケットプレイスです。" },
-      "q2": { "q": "リスティングの投稿方法は？", "a": "登録し、WhatsAppを認証し、「投稿」をクリックして詳細を入力。無料アカウントは最大5件。" },
-      "q3": { "q": "買い手からの連絡方法は？", "a": "内蔵チャットでメッセージが届きます。電話番号は共有するまでプライベートです。" },
-      "q4": { "q": "取引の完了方法は？", "a": "価格を合意し、対面で会い、商品と支払いを交換。売り手が取引を閉じ、買い手が確認します。" },
-      "q5": { "q": "Re-Baliは無料ですか？", "a": "はい！出品とメッセージングは100%無料です。オプションのプレミアム機能はポイントまたはIDRで購入可能。" }
-    },
-    "safety": {
-      "title": "安全と信頼",
-      "q1": { "q": "信頼スコアの仕組みは？", "a": "スコア（0-100）はアカウント年齢、完了取引、レビュー、認証状況から計算されます。" },
-      "q2": { "q": "詐欺の防止方法は？", "a": "コンテンツモデレーション、画像重複検出、電話/ID認証、デバイスフィンガープリンティング、VPN検出を使用。" },
-      "q3": { "q": "ユーザーをブロックできますか？", "a": "はい。プロフィールにアクセスして「ブロック」をタップ。コンテンツが非表示になります。" },
-      "q4": { "q": "不審なリスティングの報告方法は？", "a": "「報告」ボタンを使用してください。24時間以内にすべてのレポートを確認します。" }
-    },
-    "payments": {
-      "title": "支払いとポイント",
-      "q1": { "q": "支払いの仕組みは？", "a": "Re-Baliはユーザー間の支払いを処理しません。直接取り決めてください（現金、振込、e-ウォレット）。" },
-      "q2": { "q": "ポイントとは？", "a": "バッジ、取引完了、レビューで獲得する報酬通貨です。ブーストやアップグレードに使えます。" },
-      "q3": { "q": "ポイントを購入できますか？", "a": "はい！Xendit（銀行振込、e-ウォレット、QRIS）でIDR建てで購入可能です。" }
-    },
-    "verification": {
-      "title": "認証",
-      "q1": { "q": "WhatsAppの認証方法は？", "a": "プロフィール > セキュリティで番号を入力し、コードで認証。バッジと20ポイント獲得。" },
-      "q2": { "q": "本人確認の仕組みは？", "a": "身分証明書（KTP、パスポート）とセルフィーをアップロード。48時間以内に審査。暗号化後自動削除。" },
-      "q3": { "q": "個人データは安全ですか？", "a": "はい。UU PDPに準拠。文書はAES-256で暗号化、審査後に自動削除、他者に共有されません。" }
-    },
-    "account": {
-      "title": "マイアカウント",
-      "q1": { "q": "名前やアバターの変更方法は？", "a": "プロフィール > 個人情報から更新してください。" },
-      "q2": { "q": "個人アカウントとビジネスアカウントの違いは？", "a": "個人は最大5件。ビジネス（Pro）はより多くのリスティング、分析、ビジネスページが利用可能。" },
-      "q3": { "q": "アカウントの削除方法は？", "a": "プロフィール > セキュリティ > アカウント削除。UU PDPに基づき30日以内にデータが削除されます。" }
-    },
-    "legal": {
-      "title": "法的事項",
-      "q1": { "q": "Re-Baliを規定する法律は？", "a": "インドネシアの法律：UU ITE、UU PDP（データ保護）、消費者保護法No. 8/1999に基づきます。" },
-      "q2": { "q": "PDPL/UU PDPとは？", "a": "UU PDP（法律No. 27/2022）はインドネシアの個人データ保護法で、GDPRに相当します。詳細はPDPLページをご覧ください。" },
-      "q3": { "q": "データ権利の行使方法は？", "a": "プロフィール > セキュリティまたはお問い合わせページ。14営業日以内に対応します。" }
+      "collection": {
+        "title": "収集する情報",
+        "text": "アカウントデータ（メール、名前、写真）、認証データ（電話番号、ID）、リスティングデータ、メッセージ、デバイスデータ、利用データを収集します。"
+      },
+      "usage": {
+        "title": "データの使用方法",
+        "text": "サービスの提供、本人確認、リスティング表示、詐欺防止、通知、分析、法的義務の遵守のために処理します。"
+      },
+      "legalBasis": {
+        "title": "処理の法的根拠",
+        "text": "UU PDP No. 27/2022に基づき：同意、契約上の必要性、正当な利益（セキュリティ）、法的義務。"
+      },
+      "storage": {
+        "title": "データの保存",
+        "text": "AES-256暗号化とTLS 1.3でSupabaseインフラに安全に保存されます。アカウント削除後30日以内にデータが削除されます。"
+      },
+      "sharing": {
+        "title": "データの共有",
+        "text": "公開プロフィール（全ユーザーに表示）、WhatsApp（ユーザーの選択時のみ）、サービスプロバイダー（Supabase、Xendit）、法執行機関（法律で要求される場合）にのみ共有します。"
+      },
+      "cookies": {
+        "title": "Cookie",
+        "text": "認証と設定のためのエッセンシャルCookieのみ使用します。広告トラッカーは使用しません。"
+      },
+      "rights": {
+        "title": "あなたの権利（UU PDP）",
+        "text": "アクセス権、訂正権、削除権、ポータビリティ権、同意撤回権、異議権、苦情権があります。プロフィールまたはお問い合わせページからご連絡ください。"
+      },
+      "children": {
+        "title": "子供のプライバシー",
+        "text": "Re-Baliは18歳未満を対象としていません。未成年者のデータを意図的に収集しません。"
+      },
+      "security": {
+        "title": "セキュリティ対策",
+        "text": "AES-256暗号化、TLS 1.3、デバイスフィンガープリンティング、VPN検出、コンテンツモデレーション、二要素認証を実施しています。"
+      },
+      "international": {
+        "title": "国際データ転送",
+        "text": "データはインドネシア国外で処理される場合があります。UU PDPに準拠した適切な保護措置を確保しています。"
+      },
+      "changes": {
+        "title": "ポリシーの変更",
+        "text": "このポリシーを定期的に更新する場合があります。重要な変更は14日前に通知します。"
+      },
+      "contact": {
+        "title": "お問い合わせとデータ保護",
+        "text": "プライバシーに関するお問い合わせは、お問い合わせページからご連絡ください。14営業日以内に対応します。"
+      }
     }
   },
   "pdpl": {
     "title": "PDPL準拠（UU PDP）",
     "intro": "このページは、Re-Baliがインドネシアの個人データ保護法（UU PDP No. 27/2022）にどのように準拠しているかを説明します。",
     "lawReference": "参照：2022年法律第27号 個人データ保護法（UU PDP）、2024年10月17日完全施行。",
-    "overview": { "title": "概要", "text": "Re-Baliは、UU PDP No. 27/2022に従い、すべてのユーザーの個人データを保護することに尽力しています。" },
-    "scope": { "title": "適用範囲", "text": "UU PDPは、データ主体の所在地に関係なく、Re-Baliが行うすべての個人データ処理に適用されます。" },
-    "dataController": { "title": "データ管理者", "text": "Re-Baliは、プラットフォームで処理されるすべての個人データのデータ管理者（Pengendali Data Pribadi）です。" },
-    "dataCollected": { "title": "収集する個人データ", "text": "一般的な個人データ：名前、メール、電話番号、プロフィール写真、リスティング内容、デバイス情報。\n\n特定の個人データ：本人確認のための政府発行の身分証明書（KTP、パスポート）— UU PDPの下で機密データとして分類。" },
-    "processingBasis": { "title": "処理の法的根拠", "text": "UU PDP第20条に基づく：明示的な同意、契約履行、法的義務、正当な利益（詐欺防止）。" },
-    "dataSubjectRights": { "title": "UU PDPに基づくあなたの権利", "text": "情報権、アクセス権、訂正権、削除権、同意撤回権、異議権、ポータビリティ権、補償権。対応：3×24時間以内に確認、14営業日以内に履行。" },
-    "retention": { "title": "データ保持", "text": "アカウントデータ：アカウントが有効な間保持。認証文書：審査後30日以内に削除。取引データ：税法に基づき5年間。セキュリティログ：1年間。" },
-    "crossBorder": { "title": "越境データ転送", "text": "Supabaseインフラは東南アジアにあります。UU PDPの要件に従い、契約上の保護措置と暗号化で越境転送を保護しています。" },
-    "breach": { "title": "データ侵害通知", "text": "UU PDP第46条に基づき、個人データ侵害が発生した場合、3×24時間以内に影響を受けるデータ主体と監督当局に通知します。" },
-    "dpo": { "title": "データ保護責任者", "text": "Re-BaliはUU PDPの遵守を監督するデータ保護責任者（DPO）を任命しています。" },
-    "contact": { "title": "お問い合わせと苦情", "text": "データ保護に関するお問い合わせは、プロフィール > セキュリティまたはお問い合わせページをご利用ください。確認：3×24時間、履行：14営業日。" }
-  },
-  "footer": {
-    "tagline": "バリ島の信頼できるマーケットプレイス",
-    "explore": "マーケット",
-    "company": "会社情報",
-    "legal": "法的事項",
-    "terms": "利用規約",
-    "privacy": "プライバシーポリシー",
-    "pdpl": "PDPL（データ保護）",
-    "contact": "サポート",
-    "copyright": "全著作権所有。",
-    "trustBadgesPoints": "信頼、バッジ＆ポイント",
-    "faq": "FAQ"
+    "overview": {
+      "title": "概要",
+      "text": "Re-Baliは、UU PDP No. 27/2022に従い、すべてのユーザーの個人データを保護することに尽力しています。"
+    },
+    "scope": {
+      "title": "適用範囲",
+      "text": "UU PDPは、データ主体の所在地に関係なく、Re-Baliが行うすべての個人データ処理に適用されます。"
+    },
+    "dataController": {
+      "title": "データ管理者",
+      "text": "Re-Baliは、プラットフォームで処理されるすべての個人データのデータ管理者（Pengendali Data Pribadi）です。"
+    },
+    "dataCollected": {
+      "title": "収集する個人データ",
+      "text": "一般的な個人データ：名前、メール、電話番号、プロフィール写真、リスティング内容、デバイス情報。\n\n特定の個人データ：本人確認のための政府発行の身分証明書（KTP、パスポート）— UU PDPの下で機密データとして分類。"
+    },
+    "processingBasis": {
+      "title": "処理の法的根拠",
+      "text": "UU PDP第20条に基づく：明示的な同意、契約履行、法的義務、正当な利益（詐欺防止）。"
+    },
+    "dataSubjectRights": {
+      "title": "UU PDPに基づくあなたの権利",
+      "text": "情報権、アクセス権、訂正権、削除権、同意撤回権、異議権、ポータビリティ権、補償権。対応：3×24時間以内に確認、14営業日以内に履行。"
+    },
+    "retention": {
+      "title": "データ保持",
+      "text": "アカウントデータ：アカウントが有効な間保持。認証文書：審査後30日以内に削除。取引データ：税法に基づき5年間。セキュリティログ：1年間。"
+    },
+    "crossBorder": {
+      "title": "越境データ転送",
+      "text": "Supabaseインフラは東南アジアにあります。UU PDPの要件に従い、契約上の保護措置と暗号化で越境転送を保護しています。"
+    },
+    "breach": {
+      "title": "データ侵害通知",
+      "text": "UU PDP第46条に基づき、個人データ侵害が発生した場合、3×24時間以内に影響を受けるデータ主体と監督当局に通知します。"
+    },
+    "dpo": {
+      "title": "データ保護責任者",
+      "text": "Re-BaliはUU PDPの遵守を監督するデータ保護責任者（DPO）を任命しています。"
+    },
+    "contact": {
+      "title": "お問い合わせと苦情",
+      "text": "データ保護に関するお問い合わせは、プロフィール > セキュリティまたはお問い合わせページをご利用ください。確認：3×24時間、履行：14営業日。"
+    }
   },
   "publish": {
     "progress": {
@@ -704,5 +778,30 @@
     "editMessage": "編集",
     "saveEdit": "保存",
     "cancelEdit": "キャンセル"
+  },
+  "twoFactor": {
+    "title": "二段階認証 (2FA)",
+    "protectedByApp": "認証アプリで保護されています。",
+    "protectedByEmail": "ログインごとにメールコードで保護されています。",
+    "disable": "無効にする",
+    "addSecurity": "アカウントにセキュリティの追加レイヤーを追加します。",
+    "enable2FA": "2FAを有効にする",
+    "chooseMethod": "方法を選択してください：",
+    "authenticator": "認証アプリ",
+    "authenticatorDesc": "Google Authenticator、Authy…",
+    "email": "メール",
+    "emailDesc": "メールでコードを送信",
+    "cancel": "キャンセル",
+    "scanQR": "認証アプリでこのQRコードをスキャンしてください。",
+    "enterCode": "6桁のコードを入力してください：",
+    "verifyAndActivate": "確認して有効化",
+    "activated": "2FA有効化完了 ✅",
+    "activatedAppDesc": "アカウントで認証アプリが有効化されました。",
+    "activatedEmailDesc": "ログインごとにメールにコードが送信されます。",
+    "deactivated": "2FAが無効化されました",
+    "invalidCode": "無効なコード",
+    "error": "エラー",
+    "confirmDisableApp": "認証アプリの2FAを無効にしますか？",
+    "confirmDisableEmail": "メールの2FAを無効にしますか？"
   }
 }
