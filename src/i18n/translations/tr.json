@@ -1007,32 +1007,104 @@
     "termsIntro": "Bu Kullanım Koşulları, Re-Bali platformuna erişiminizi ve kullanımınızı düzenler. Hesap oluşturarak veya hizmetlerimizi kullanarak bu koşullara bağlı olmayı kabul edersiniz.",
     "privacyIntro": "Bu Gizlilik Politikası, Re-Bali'nin Endonezya yasalarına (UU PDP No. 27/2022 dahil) uygun olarak kişisel verilerinizi nasıl topladığını, kullandığını, sakladığını ve koruduğunu açıklar.",
     "terms": {
-      "acceptance": { "title": "Koşulların Kabulü", "text": "Re-Bali'ye erişerek veya kullanarak bu Kullanım Koşullarını ve Gizlilik Politikamızı kabul edersiniz. Kabul etmiyorsanız platformu kullanmamalısınız. Bu koşullar tüm kullanıcılara uygulanır — alıcılar, satıcılar ve ziyaretçiler — konum veya hesap türünden bağımsız olarak." },
-      "description": { "title": "Hizmet Açıklaması", "text": "Re-Bali, Bali, Endonezya'da alıcıları ve satıcıları birbirine bağlayan ücretsiz bir çevrimiçi ilan platformudur. İlan oluşturma, mal ve hizmet keşfetme ve kullanıcılar arası iletişim araçları sağlıyoruz. Re-Bali kullanıcılar arasındaki işlemlere katılmaz, bunları kolaylaştırmaz veya garanti etmez." },
-      "eligibility": { "title": "Uygunluk", "text": "Re-Bali'yi kullanmak için en az 18 yaşında olmalısınız. Hesap oluşturarak yasal yaşta olduğunuzu ve Endonezya hukuku kapsamında bağlayıcı anlaşmalar yapma ehliyetine sahip olduğunuzu beyan edersiniz." },
-      "account": { "title": "Kullanıcı Hesapları", "text": "Hesap oluştururken doğru, güncel ve eksiksiz bilgi sağlamalısınız. Kimlik bilgilerinizin güvenliğinden ve hesabınız altındaki tüm faaliyetlerden siz sorumlusunuz. Her kişi yalnızca bir hesaba sahip olabilir. İlan yayınlamak için WhatsApp ile telefon doğrulaması gereklidir." },
-      "listings": { "title": "İlan Kuralları", "text": "İlanlar doğru, dürüst ve Endonezya yasalarına uygun olmalıdır (Tüketici Koruma Yasası No. 8/1999 dahil). Yasak ürünler: uyuşturucular, silahlar, sahte ürünler, çalıntı mallar, nesli tükenen tür ürünleri, pornografik materyal. Fotoğraflar gerçek ürünü yansıtmalıdır." },
-      "prohibited": { "title": "Yasaklanan Davranışlar", "text": "Kullanıcılar: yanıltıcı veya dolandırıcı içerik yayınlamamalı; diğer kullanıcıları taciz etmemeli; güvenlik önlemlerini atlatmaya çalışmamalı; platformu kara para aklama için kullanmamalı; açıklamalarda harici bağlantı veya iletişim bilgisi yayınlamamalı; birden fazla hesap oluşturmamalı; fiyat manipülasyonu yapmamalı; veya yasaları ihlal etmemelidir." },
-      "intellectual": { "title": "Fikri Mülkiyet", "text": "Re-Bali'deki tüm içerikler (logolar, tasarım, kod, metin) fikri mülkiyet yasalarıyla korunmaktadır. Kullanıcılar yükledikleri içeriğin sahipliğini korur ancak Re-Bali'ye platformda gösterme, çoğaltma ve dağıtma konusunda münhasır olmayan, dünya çapında bir lisans verir." },
-      "liability": { "title": "Sorumluluk Sınırlaması", "text": "Re-Bali hiçbir garanti olmaksızın \"olduğu gibi\" sunulmaktadır. Endonezya hukuku kapsamında izin verilen azami ölçüde, Re-Bali platformun kullanımından kaynaklanan doğrudan, dolaylı veya sonuç olarak ortaya çıkan zararlardan sorumlu değildir." },
-      "indemnification": { "title": "Tazminat", "text": "Platformu kullanımınızdan, bu koşulları ihlal etmenizden veya üçüncü taraf haklarını ihlal etmenizden kaynaklanan her türlü talep, zarar, kayıp veya masrafa karşı Re-Bali'yi tazmin etmeyi kabul edersiniz." },
-      "governing": { "title": "Uygulanacak Hukuk ve Yetki Alanı", "text": "Bu Koşullar Endonezya Cumhuriyeti yasalarına tabidir. Her türlü anlaşmazlık Denpasar, Bali, Endonezya mahkemelerinin münhasır yetki alanına tabidir. Yasal işlem başlatmadan önce taraflar 30 günlük iyi niyetli müzakere yapmayı kabul eder." },
-      "modification": { "title": "Değişiklikler", "text": "Re-Bali bu koşulları herhangi bir zamanda değiştirme hakkını saklı tutar. Önemli değişiklikler yürürlüğe girmeden en az 14 gün önce e-posta veya uygulama içi bildirimle duyurulacaktır." },
-      "contact": { "title": "İletişim", "text": "Bu Kullanım Koşulları hakkında sorularınız için lütfen İletişim sayfamız üzerinden bize ulaşın. Yanıt süreleri genellikle 48 iş saatidir." }
+      "acceptance": {
+        "title": "Koşulların Kabulü",
+        "text": "Re-Bali'ye erişerek veya kullanarak bu Kullanım Koşullarını ve Gizlilik Politikamızı kabul edersiniz. Kabul etmiyorsanız platformu kullanmamalısınız. Bu koşullar tüm kullanıcılara uygulanır — alıcılar, satıcılar ve ziyaretçiler — konum veya hesap türünden bağımsız olarak."
+      },
+      "description": {
+        "title": "Hizmet Açıklaması",
+        "text": "Re-Bali, Bali, Endonezya'da alıcıları ve satıcıları birbirine bağlayan ücretsiz bir çevrimiçi ilan platformudur. İlan oluşturma, mal ve hizmet keşfetme ve kullanıcılar arası iletişim araçları sağlıyoruz. Re-Bali kullanıcılar arasındaki işlemlere katılmaz, bunları kolaylaştırmaz veya garanti etmez."
+      },
+      "eligibility": {
+        "title": "Uygunluk",
+        "text": "Re-Bali'yi kullanmak için en az 18 yaşında olmalısınız. Hesap oluşturarak yasal yaşta olduğunuzu ve Endonezya hukuku kapsamında bağlayıcı anlaşmalar yapma ehliyetine sahip olduğunuzu beyan edersiniz."
+      },
+      "account": {
+        "title": "Kullanıcı Hesapları",
+        "text": "Hesap oluştururken doğru, güncel ve eksiksiz bilgi sağlamalısınız. Kimlik bilgilerinizin güvenliğinden ve hesabınız altındaki tüm faaliyetlerden siz sorumlusunuz. Her kişi yalnızca bir hesaba sahip olabilir. İlan yayınlamak için WhatsApp ile telefon doğrulaması gereklidir."
+      },
+      "listings": {
+        "title": "İlan Kuralları",
+        "text": "İlanlar doğru, dürüst ve Endonezya yasalarına uygun olmalıdır (Tüketici Koruma Yasası No. 8/1999 dahil). Yasak ürünler: uyuşturucular, silahlar, sahte ürünler, çalıntı mallar, nesli tükenen tür ürünleri, pornografik materyal. Fotoğraflar gerçek ürünü yansıtmalıdır."
+      },
+      "prohibited": {
+        "title": "Yasaklanan Davranışlar",
+        "text": "Kullanıcılar: yanıltıcı veya dolandırıcı içerik yayınlamamalı; diğer kullanıcıları taciz etmemeli; güvenlik önlemlerini atlatmaya çalışmamalı; platformu kara para aklama için kullanmamalı; açıklamalarda harici bağlantı veya iletişim bilgisi yayınlamamalı; birden fazla hesap oluşturmamalı; fiyat manipülasyonu yapmamalı; veya yasaları ihlal etmemelidir."
+      },
+      "intellectual": {
+        "title": "Fikri Mülkiyet",
+        "text": "Re-Bali'deki tüm içerikler (logolar, tasarım, kod, metin) fikri mülkiyet yasalarıyla korunmaktadır. Kullanıcılar yükledikleri içeriğin sahipliğini korur ancak Re-Bali'ye platformda gösterme, çoğaltma ve dağıtma konusunda münhasır olmayan, dünya çapında bir lisans verir."
+      },
+      "liability": {
+        "title": "Sorumluluk Sınırlaması",
+        "text": "Re-Bali hiçbir garanti olmaksızın \"olduğu gibi\" sunulmaktadır. Endonezya hukuku kapsamında izin verilen azami ölçüde, Re-Bali platformun kullanımından kaynaklanan doğrudan, dolaylı veya sonuç olarak ortaya çıkan zararlardan sorumlu değildir."
+      },
+      "indemnification": {
+        "title": "Tazminat",
+        "text": "Platformu kullanımınızdan, bu koşulları ihlal etmenizden veya üçüncü taraf haklarını ihlal etmenizden kaynaklanan her türlü talep, zarar, kayıp veya masrafa karşı Re-Bali'yi tazmin etmeyi kabul edersiniz."
+      },
+      "governing": {
+        "title": "Uygulanacak Hukuk ve Yetki Alanı",
+        "text": "Bu Koşullar Endonezya Cumhuriyeti yasalarına tabidir. Her türlü anlaşmazlık Denpasar, Bali, Endonezya mahkemelerinin münhasır yetki alanına tabidir. Yasal işlem başlatmadan önce taraflar 30 günlük iyi niyetli müzakere yapmayı kabul eder."
+      },
+      "modification": {
+        "title": "Değişiklikler",
+        "text": "Re-Bali bu koşulları herhangi bir zamanda değiştirme hakkını saklı tutar. Önemli değişiklikler yürürlüğe girmeden en az 14 gün önce e-posta veya uygulama içi bildirimle duyurulacaktır."
+      },
+      "contact": {
+        "title": "İletişim",
+        "text": "Bu Kullanım Koşulları hakkında sorularınız için lütfen İletişim sayfamız üzerinden bize ulaşın. Yanıt süreleri genellikle 48 iş saatidir."
+      }
     },
     "privacy": {
-      "collection": { "title": "Topladığımız Bilgiler", "text": "Aşağıdaki kişisel veri kategorilerini topluyoruz:\n\n• Hesap verileri: e-posta, görüntülenen ad, profil fotoğrafı, hesap türü, tercih edilen dil.\n• Doğrulama verileri: telefon numarası (WhatsApp), kimlik belgesi ve selfie (şifreli, incelemeden sonra otomatik silinen).\n• İlan verileri: fotoğraflar, açıklamalar, fiyatlar, konum, kategori.\n• İletişim verileri: platform üzerinden gönderilen mesajlar.\n• Cihaz verileri: IP adresi, tarayıcı, işletim sistemi, cihaz parmak izi.\n• Kullanım verileri: ziyaret edilen sayfalar, aramalar, zaman damgaları." },
-      "usage": { "title": "Verilerinizi Nasıl Kullanıyoruz", "text": "Verileriniz şu amaçlarla işlenir:\n\n• Platformu sağlamak ve sürdürmek.\n• Kimliğinizi doğrulamak ve güven oluşturmak.\n• İlanlarınızı göstermek ve iletişimi sağlamak.\n• Dolandırıcılığı tespit etmek ve önlemek.\n• Önemli bildirimleri göndermek.\n• Anonim analizlerle hizmetleri iyileştirmek.\n• Yasal yükümlülükleri yerine getirmek." },
-      "legalBasis": { "title": "İşlemenin Hukuki Dayanağı", "text": "UU PDP No. 27/2022 kapsamında verilerinizi şu temellerde işliyoruz:\n\n• Onay: hesap oluşturma ve koşulları kabul etme sırasında sağlanan.\n• Sözleşme gerekliliği: talep ettiğiniz hizmetleri sunmak için.\n• Meşru menfaat: dolandırıcılık önleme, güvenlik ve iyileştirme.\n• Yasal zorunluluk: Endonezya yasaları ve yetkili makam talepleri." },
-      "storage": { "title": "Veri Saklama ve Muhafaza", "text": "Verileriniz Supabase altyapısında AES-256 şifreleme ile güvenle saklanır. Hesap verileri hesabınız aktif olduğu sürece saklanır. Doğrulama belgeleri incelemeden sonra 30 gün içinde otomatik silinir." },
-      "sharing": { "title": "Veri Paylaşımı", "text": "Verilerinizi yalnızca şu durumlarda paylaşırız:\n\n• Herkese açık profil: ad, avatar ve ilan detayları herkes tarafından görülebilir.\n• WhatsApp: yalnızca açıkça paylaşmayı seçtiğinizde.\n• Hizmet sağlayıcılar: Supabase (barındırma), Xendit (ödemeler) — katı anlaşmalar altında.\n• Kolluk kuvvetleri: Endonezya yasalarının gerektirdiğinde.\n\nKişisel verilerinizi pazarlama amacıyla üçüncü taraflara asla satmayız." },
-      "cookies": { "title": "Çerezler ve İzleme", "text": "Yalnızca temel çerezler kullanıyoruz:\n\n• Oturum açma için kimlik doğrulama çerezleri.\n• Dil ve tema ayarları için tercih çerezleri.\n\nÜçüncü taraf reklam çerezleri veya izleme pikselleri kullanılmaz." },
-      "rights": { "title": "Haklarınız (UU PDP)", "text": "Endonezya Kişisel Veri Koruma Yasası kapsamında haklarınız:\n\n• Erişim: kişisel verilerinizin kopyasını talep etme.\n• Düzeltme: yanlış verileri güncelleme.\n• Silme: hesap ve veri silme talebi.\n• Taşınabilirlik: makine tarafından okunabilir formatta dışa aktarma.\n• Geri çekme: onayınızı istediğiniz zaman geri çekme.\n• İtiraz: meşru menfaate dayalı işlemeye itiraz.\n• Şikayet: yetkili Endonezya makamına başvuru.\n\nBu hakları kullanmak için Profil sayfanızı ziyaret edin veya İletişim sayfasından bize ulaşın." },
-      "children": { "title": "Çocuk Gizliliği", "text": "Re-Bali 18 yaşın altındaki kullanıcılara yönelik değildir. Bilerek çocuklardan kişisel veri toplamayız. Bir çocuğun hesap oluşturduğunu tespit edersek hesabı derhal sileriz." },
-      "security": { "title": "Güvenlik Önlemleri", "text": "Kapsamlı güvenlik önlemleri uyguluyoruz:\n\n• AES-256 şifreleme.\n• TLS 1.3 aktarım şifrelemesi.\n• Cihaz parmak izi ve VPN tespiti.\n• Otomatik içerik moderasyonu.\n• Hız sınırlama ve kaba kuvvet koruması.\n• İki faktörlü kimlik doğrulama (TOTP veya e-posta).\n• Düzenli güvenlik denetimleri." },
-      "international": { "title": "Uluslararası Veri Transferleri", "text": "Verileriniz barındırma ve altyapı amaçları için Endonezya dışında işlenebilir. UU PDP gerekliliklerine uygun güvenceler sağlıyoruz." },
-      "changes": { "title": "Bu Politikadaki Değişiklikler", "text": "Bu Gizlilik Politikasını periyodik olarak güncelleyebiliriz. Önemli değişiklikler yürürlüğe girmeden en az 14 gün önce bildirilecektir." },
-      "contact": { "title": "İletişim ve Veri Koruma", "text": "Gizlilik soruları, veri erişim talepleri veya UU PDP kapsamındaki haklarınızı kullanmak için İletişim sayfamız üzerinden bize ulaşın. 14 iş günü içinde yanıt veriyoruz." }
+      "collection": {
+        "title": "Topladığımız Bilgiler",
+        "text": "Aşağıdaki kişisel veri kategorilerini topluyoruz:\n\n• Hesap verileri: e-posta, görüntülenen ad, profil fotoğrafı, hesap türü, tercih edilen dil.\n• Doğrulama verileri: telefon numarası (WhatsApp), kimlik belgesi ve selfie (şifreli, incelemeden sonra otomatik silinen).\n• İlan verileri: fotoğraflar, açıklamalar, fiyatlar, konum, kategori.\n• İletişim verileri: platform üzerinden gönderilen mesajlar.\n• Cihaz verileri: IP adresi, tarayıcı, işletim sistemi, cihaz parmak izi.\n• Kullanım verileri: ziyaret edilen sayfalar, aramalar, zaman damgaları."
+      },
+      "usage": {
+        "title": "Verilerinizi Nasıl Kullanıyoruz",
+        "text": "Verileriniz şu amaçlarla işlenir:\n\n• Platformu sağlamak ve sürdürmek.\n• Kimliğinizi doğrulamak ve güven oluşturmak.\n• İlanlarınızı göstermek ve iletişimi sağlamak.\n• Dolandırıcılığı tespit etmek ve önlemek.\n• Önemli bildirimleri göndermek.\n• Anonim analizlerle hizmetleri iyileştirmek.\n• Yasal yükümlülükleri yerine getirmek."
+      },
+      "legalBasis": {
+        "title": "İşlemenin Hukuki Dayanağı",
+        "text": "UU PDP No. 27/2022 kapsamında verilerinizi şu temellerde işliyoruz:\n\n• Onay: hesap oluşturma ve koşulları kabul etme sırasında sağlanan.\n• Sözleşme gerekliliği: talep ettiğiniz hizmetleri sunmak için.\n• Meşru menfaat: dolandırıcılık önleme, güvenlik ve iyileştirme.\n• Yasal zorunluluk: Endonezya yasaları ve yetkili makam talepleri."
+      },
+      "storage": {
+        "title": "Veri Saklama ve Muhafaza",
+        "text": "Verileriniz Supabase altyapısında AES-256 şifreleme ile güvenle saklanır. Hesap verileri hesabınız aktif olduğu sürece saklanır. Doğrulama belgeleri incelemeden sonra 30 gün içinde otomatik silinir."
+      },
+      "sharing": {
+        "title": "Veri Paylaşımı",
+        "text": "Verilerinizi yalnızca şu durumlarda paylaşırız:\n\n• Herkese açık profil: ad, avatar ve ilan detayları herkes tarafından görülebilir.\n• WhatsApp: yalnızca açıkça paylaşmayı seçtiğinizde.\n• Hizmet sağlayıcılar: Supabase (barındırma), Xendit (ödemeler) — katı anlaşmalar altında.\n• Kolluk kuvvetleri: Endonezya yasalarının gerektirdiğinde.\n\nKişisel verilerinizi pazarlama amacıyla üçüncü taraflara asla satmayız."
+      },
+      "cookies": {
+        "title": "Çerezler ve İzleme",
+        "text": "Yalnızca temel çerezler kullanıyoruz:\n\n• Oturum açma için kimlik doğrulama çerezleri.\n• Dil ve tema ayarları için tercih çerezleri.\n\nÜçüncü taraf reklam çerezleri veya izleme pikselleri kullanılmaz."
+      },
+      "rights": {
+        "title": "Haklarınız (UU PDP)",
+        "text": "Endonezya Kişisel Veri Koruma Yasası kapsamında haklarınız:\n\n• Erişim: kişisel verilerinizin kopyasını talep etme.\n• Düzeltme: yanlış verileri güncelleme.\n• Silme: hesap ve veri silme talebi.\n• Taşınabilirlik: makine tarafından okunabilir formatta dışa aktarma.\n• Geri çekme: onayınızı istediğiniz zaman geri çekme.\n• İtiraz: meşru menfaate dayalı işlemeye itiraz.\n• Şikayet: yetkili Endonezya makamına başvuru.\n\nBu hakları kullanmak için Profil sayfanızı ziyaret edin veya İletişim sayfasından bize ulaşın."
+      },
+      "children": {
+        "title": "Çocuk Gizliliği",
+        "text": "Re-Bali 18 yaşın altındaki kullanıcılara yönelik değildir. Bilerek çocuklardan kişisel veri toplamayız. Bir çocuğun hesap oluşturduğunu tespit edersek hesabı derhal sileriz."
+      },
+      "security": {
+        "title": "Güvenlik Önlemleri",
+        "text": "Kapsamlı güvenlik önlemleri uyguluyoruz:\n\n• AES-256 şifreleme.\n• TLS 1.3 aktarım şifrelemesi.\n• Cihaz parmak izi ve VPN tespiti.\n• Otomatik içerik moderasyonu.\n• Hız sınırlama ve kaba kuvvet koruması.\n• İki faktörlü kimlik doğrulama (TOTP veya e-posta).\n• Düzenli güvenlik denetimleri."
+      },
+      "international": {
+        "title": "Uluslararası Veri Transferleri",
+        "text": "Verileriniz barındırma ve altyapı amaçları için Endonezya dışında işlenebilir. UU PDP gerekliliklerine uygun güvenceler sağlıyoruz."
+      },
+      "changes": {
+        "title": "Bu Politikadaki Değişiklikler",
+        "text": "Bu Gizlilik Politikasını periyodik olarak güncelleyebiliriz. Önemli değişiklikler yürürlüğe girmeden en az 14 gün önce bildirilecektir."
+      },
+      "contact": {
+        "title": "İletişim ve Veri Koruma",
+        "text": "Gizlilik soruları, veri erişim talepleri veya UU PDP kapsamındaki haklarınızı kullanmak için İletişim sayfamız üzerinden bize ulaşın. 14 iş günü içinde yanıt veriyoruz."
+      }
     }
   },
   "badges": {
@@ -1111,7 +1183,7 @@
       "extraListings": "+7 İlan Yeri",
       "extraListingsDesc": "30 gün boyunca 7 ek ilan yeri (maks 2 paket)",
       "expert_seller": "Uzman Satıcı",
-"expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 10 fotoğraf + 5 boost + istatistik (30 gün)"
+      "expert_sellerDesc": "Uzman rozeti + %30 görünürlük + 10 fotoğraf + 5 boost + istatistik (30 gün)"
     },
     "pointsNote": "Önemli notlar:",
     "pointsNote1": "Puanlar tek kullanımlıktır — satın alınca kalıcı olarak düşürülür.",
@@ -1431,59 +1503,155 @@
     "subtitle": "Re-Bali pazaryeri hakkında her şey",
     "howItWorks": {
       "title": "Nasıl Çalışır",
-      "q1": { "q": "Re-Bali nedir?", "a": "Re-Bali, Bali'de mal ve hizmet alıp satmak için güvenilir bir pazaryeridir. Tüm işlemler güvenli uygulama içi sohbet sistemimiz üzerinden gerçekleşir." },
-      "q2": { "q": "Nasıl ilan yayınlarım?", "a": "Kaydolun, 'Yayınla'ya tıklayın, detayları doldurun, fotoğraf yükleyin ve ilanınız hızlı inceleme sonrası yayına alınır. Hesap yaşınıza göre 3-5 ilan yayınlayabilirsiniz." },
-      "q3": { "q": "Alıcılar benimle nasıl iletişime geçer?", "a": "Alıcılar yerleşik sohbet sistemimiz üzerinden mesaj gönderir. Kişisel telefon numaranız paylaşmaya karar verene kadar gizli kalır." },
-      "q4": { "q": "Anlaşmalar nasıl tamamlanır?", "a": "Fiyatta anlaştığınızda, satıcı anlaşmayı kapatır ve alıcı onaylar. Her iki taraf da değerlendirme bırakabilir. Ödemeler doğrudan alıcı ve satıcı arasında yapılır." },
-      "q5": { "q": "Re-Bali ücretsiz mi?", "a": "Evet! İlan yayınlamak ve mesajlaşmak ücretsizdir. Boost ve VIP gibi opsiyonel premium özellikler puanlar veya IDR ile satın alınabilir." }
+      "q1": {
+        "q": "Re-Bali nedir?",
+        "a": "Re-Bali, Bali'de mal ve hizmet alıp satmak için güvenilir bir pazaryeridir. Tüm işlemler güvenli uygulama içi sohbet sistemimiz üzerinden gerçekleşir."
+      },
+      "q2": {
+        "q": "Nasıl ilan yayınlarım?",
+        "a": "Kaydolun, 'Yayınla'ya tıklayın, detayları doldurun, fotoğraf yükleyin ve ilanınız hızlı inceleme sonrası yayına alınır. Hesap yaşınıza göre 3-5 ilan yayınlayabilirsiniz."
+      },
+      "q3": {
+        "q": "Alıcılar benimle nasıl iletişime geçer?",
+        "a": "Alıcılar yerleşik sohbet sistemimiz üzerinden mesaj gönderir. Kişisel telefon numaranız paylaşmaya karar verene kadar gizli kalır."
+      },
+      "q4": {
+        "q": "Anlaşmalar nasıl tamamlanır?",
+        "a": "Fiyatta anlaştığınızda, satıcı anlaşmayı kapatır ve alıcı onaylar. Her iki taraf da değerlendirme bırakabilir. Ödemeler doğrudan alıcı ve satıcı arasında yapılır."
+      },
+      "q5": {
+        "q": "Re-Bali ücretsiz mi?",
+        "a": "Evet! İlan yayınlamak ve mesajlaşmak ücretsizdir. Boost ve VIP gibi opsiyonel premium özellikler puanlar veya IDR ile satın alınabilir."
+      }
     },
     "safety": {
       "title": "Güvenlik ve Güven",
-      "q1": { "q": "Güven puanı nasıl çalışır?", "a": "Güven puanınız hesap yaşı, tamamlanan anlaşmalar, olumlu değerlendirmeler ve doğrulama durumundan hesaplanır. Daha yüksek puanlar 'Güvenli Satıcı' ve 'Trusted Pro' gibi rozetleri açar." },
-      "q2": { "q": "Dolandırıcılık nasıl önlenir?", "a": "İçerik moderasyonu, görüntü kopya tespiti, telefon doğrulama, kimlik doğrulama ve şüpheli hesapların otomatik işaretlenmesini kullanıyoruz. 3+ dolandırıcılık bildirimi alan ilanlar otomatik arşivlenir." },
-      "q3": { "q": "Bir kullanıcıyı engelleyebilir miyim?", "a": "Evet. Profilini ziyaret edin ve 'Engelle'ye dokunun. İlanları ve mesajları sizden gizlenir. Engellenen Kullanıcılar sayfasından istediğiniz zaman engeli kaldırabilirsiniz." },
-      "q4": { "q": "Şüpheli bir ilanı nasıl bildiririm?", "a": "Herhangi bir ilanda 'Bildir' düğmesine dokunun. Bir neden seçin (dolandırıcılık, yasak, spam vb.) ve 24 saat içinde inceleyeceğiz." }
+      "q1": {
+        "q": "Güven puanı nasıl çalışır?",
+        "a": "Güven puanınız hesap yaşı, tamamlanan anlaşmalar, olumlu değerlendirmeler ve doğrulama durumundan hesaplanır. Daha yüksek puanlar 'Güvenli Satıcı' ve 'Trusted Pro' gibi rozetleri açar."
+      },
+      "q2": {
+        "q": "Dolandırıcılık nasıl önlenir?",
+        "a": "İçerik moderasyonu, görüntü kopya tespiti, telefon doğrulama, kimlik doğrulama ve şüpheli hesapların otomatik işaretlenmesini kullanıyoruz. 3+ dolandırıcılık bildirimi alan ilanlar otomatik arşivlenir."
+      },
+      "q3": {
+        "q": "Bir kullanıcıyı engelleyebilir miyim?",
+        "a": "Evet. Profilini ziyaret edin ve 'Engelle'ye dokunun. İlanları ve mesajları sizden gizlenir. Engellenen Kullanıcılar sayfasından istediğiniz zaman engeli kaldırabilirsiniz."
+      },
+      "q4": {
+        "q": "Şüpheli bir ilanı nasıl bildiririm?",
+        "a": "Herhangi bir ilanda 'Bildir' düğmesine dokunun. Bir neden seçin (dolandırıcılık, yasak, spam vb.) ve 24 saat içinde inceleyeceğiz."
+      }
     },
     "payments": {
       "title": "Ödemeler ve Puanlar",
-      "q1": { "q": "Ödemeler nasıl çalışır?", "a": "Re-Bali alıcılar ve satıcılar arasında ödeme işlemi yapmaz. Ödemeyi doğrudan siz ayarlarsınız (nakit, banka havalesi vb.). Biz güvenli iletişim kanalı sağlarız." },
-      "q2": { "q": "Puanlar nedir?", "a": "Puanlar anlaşma tamamlayarak, değerlendirme alarak ve rozet kazanarak elde edilir. Puan Mağazası'nda boost, VIP statüsü ve ekstra ilan yerleri için harcayın." },
-      "q3": { "q": "Gerçek parayla puan satın alabilir miyim?", "a": "Evet! Puan paketleri Xendit destekli güvenli ödeme sistemimiz üzerinden IDR ile satın alınabilir." }
+      "q1": {
+        "q": "Ödemeler nasıl çalışır?",
+        "a": "Re-Bali alıcılar ve satıcılar arasında ödeme işlemi yapmaz. Ödemeyi doğrudan siz ayarlarsınız (nakit, banka havalesi vb.). Biz güvenli iletişim kanalı sağlarız."
+      },
+      "q2": {
+        "q": "Puanlar nedir?",
+        "a": "Puanlar anlaşma tamamlayarak, değerlendirme alarak ve rozet kazanarak elde edilir. Puan Mağazası'nda boost, VIP statüsü ve ekstra ilan yerleri için harcayın."
+      },
+      "q3": {
+        "q": "Gerçek parayla puan satın alabilir miyim?",
+        "a": "Evet! Puan paketleri Xendit destekli güvenli ödeme sistemimiz üzerinden IDR ile satın alınabilir."
+      }
     },
     "verification": {
       "title": "Doğrulama",
-      "q1": { "q": "WhatsApp'ımı nasıl doğrularım?", "a": "Profilinize gidin, WhatsApp numaranızı girin, doğrulama kodu göndereceğiz. Doğrulandıktan sonra WhatsApp Doğrulanmış rozeti ve 20 puan kazanırsınız." },
-      "q2": { "q": "Kimlik doğrulama nasıl çalışır?", "a": "Resmi kimlik belgesi (KTP, pasaport veya ehliyet) ve bir selfie yükleyin. Ekibimiz 48 saat içinde inceler. Kimlik Doğrulanmış rozeti ve 40 puan kazanırsınız." },
-      "q3": { "q": "Kişisel verilerim güvende mi?", "a": "Evet. Doğrulama belgeleri şifrelenir, inceleme sonrası otomatik silinir ve diğer kullanıcılarla asla paylaşılmaz." }
+      "q1": {
+        "q": "WhatsApp'ımı nasıl doğrularım?",
+        "a": "Profilinize gidin, WhatsApp numaranızı girin, doğrulama kodu göndereceğiz. Doğrulandıktan sonra WhatsApp Doğrulanmış rozeti ve 20 puan kazanırsınız."
+      },
+      "q2": {
+        "q": "Kimlik doğrulama nasıl çalışır?",
+        "a": "Resmi kimlik belgesi (KTP, pasaport veya ehliyet) ve bir selfie yükleyin. Ekibimiz 48 saat içinde inceler. Kimlik Doğrulanmış rozeti ve 40 puan kazanırsınız."
+      },
+      "q3": {
+        "q": "Kişisel verilerim güvende mi?",
+        "a": "Evet. Doğrulama belgeleri şifrelenir, inceleme sonrası otomatik silinir ve diğer kullanıcılarla asla paylaşılmaz."
+      }
     },
     "account": {
       "title": "Hesabım",
-      "q1": { "q": "Adımı veya avatarımı nasıl değiştiririm?", "a": "Profil'e gidin, Düzenle'ye dokunun ve görünen adınızı güncelleyin veya yeni bir avatar fotoğrafı yükleyin." },
-      "q2": { "q": "Bireysel ve İşletme hesapları arasındaki fark nedir?", "a": "Bireysel hesaplar kişiler içindir (3-5 ilan). İşletme (Pro) hesapları daha fazla ilan, analitik, işletme sayfası ve öncelikli destek sunar." },
-      "q3": { "q": "Hesabımı nasıl silerim?", "a": "İletişim sayfası üzerinden destek ekibimizle iletişime geçin. Talebinizi işleme alacak ve tüm verilerinizi Endonezya PDP yasasına uygun olarak 30 gün içinde sileceğiz." }
+      "q1": {
+        "q": "Adımı veya avatarımı nasıl değiştiririm?",
+        "a": "Profil'e gidin, Düzenle'ye dokunun ve görünen adınızı güncelleyin veya yeni bir avatar fotoğrafı yükleyin."
+      },
+      "q2": {
+        "q": "Bireysel ve İşletme hesapları arasındaki fark nedir?",
+        "a": "Bireysel hesaplar kişiler içindir (3-5 ilan). İşletme (Pro) hesapları daha fazla ilan, analitik, işletme sayfası ve öncelikli destek sunar."
+      },
+      "q3": {
+        "q": "Hesabımı nasıl silerim?",
+        "a": "İletişim sayfası üzerinden destek ekibimizle iletişime geçin. Talebinizi işleme alacak ve tüm verilerinizi Endonezya PDP yasasına uygun olarak 30 gün içinde sileceğiz."
+      }
     },
     "legal": {
       "title": "Hukuk ve Uyumluluk",
-      "q1": { "q": "Re-Bali hangi yasalara tabidir?", "a": "Re-Bali, UU ITE (Elektronik İşlemler), UU PDP (Kişisel Veri Koruma) ve Tüketici Koruma Yasası No. 8/1999 dahil Endonezya yasalarına tabidir." },
-      "q2": { "q": "PDPL/UU PDP nedir?", "a": "UU PDP (Yasa No. 27/2022), Endonezya'nın GDPR'ye benzer Kişisel Veri Koruma Yasasıdır. Verileriniz üzerinde haklar verir. Detaylar için PDPL sayfamıza bakın." },
-      "q3": { "q": "Veri haklarımı nasıl kullanırım?", "a": "Profil > Güvenlik veya İletişim sayfasını ziyaret edin. Erişim, düzeltme, dışa aktarma veya silme talep edebilirsiniz. 14 iş günü içinde yanıt veriyoruz." }
+      "q1": {
+        "q": "Re-Bali hangi yasalara tabidir?",
+        "a": "Re-Bali, UU ITE (Elektronik İşlemler), UU PDP (Kişisel Veri Koruma) ve Tüketici Koruma Yasası No. 8/1999 dahil Endonezya yasalarına tabidir."
+      },
+      "q2": {
+        "q": "PDPL/UU PDP nedir?",
+        "a": "UU PDP (Yasa No. 27/2022), Endonezya'nın GDPR'ye benzer Kişisel Veri Koruma Yasasıdır. Verileriniz üzerinde haklar verir. Detaylar için PDPL sayfamıza bakın."
+      },
+      "q3": {
+        "q": "Veri haklarımı nasıl kullanırım?",
+        "a": "Profil > Güvenlik veya İletişim sayfasını ziyaret edin. Erişim, düzeltme, dışa aktarma veya silme talep edebilirsiniz. 14 iş günü içinde yanıt veriyoruz."
+      }
     }
   },
   "pdpl": {
     "title": "PDPL Uyumluluğu (UU PDP)",
     "intro": "Bu sayfa, Re-Bali'nin Endonezya Kişisel Veri Koruma Yasası'na (UU PDP No. 27/2022) nasıl uyum sağladığını açıklar. Bu yasa, Avrupa GDPR'sinin Endonezya eşdeğeridir.",
     "lawReference": "Referans: 2022 tarihli 27 Numaralı Kişisel Veri Koruma Yasası (UU PDP), 17 Ekim 2022'de yürürlüğe girmiş, 17 Ekim 2024'ten itibaren tam olarak uygulanmaktadır.",
-    "overview": { "title": "Genel Bakış", "text": "Re-Bali, UU PDP No. 27/2022 uyarınca tüm kullanıcıların kişisel verilerini korumayı taahhüt eder." },
-    "scope": { "title": "Uygulama Kapsamı", "text": "UU PDP, veri sahiplerinin Endonezya'da veya yurt dışında olup olmadığına bakılmaksızın, Re-Bali tarafından gerçekleştirilen tüm kişisel veri işleme faaliyetlerine uygulanır." },
-    "dataController": { "title": "Veri Sorumlusu", "text": "Re-Bali, platform üzerinden işlenen tüm kişisel veriler için Veri Sorumlusu (Pengendali Data Pribadi) olarak hareket eder." },
-    "dataCollected": { "title": "Toplanan Kişisel Veriler", "text": "Topluyoruz:\n\n• Genel kişisel veriler: ad, e-posta, telefon, profil fotoğrafı, ilan içeriği, cihaz bilgileri.\n• Özel kişisel veriler: kimlik belgeleri (KTP, pasaport) — UU PDP kapsamında hassas veri olarak sınıflandırılır." },
-    "processingBasis": { "title": "İşlemenin Hukuki Dayanağı", "text": "UU PDP Madde 20 uyarınca:\n\n• Açık onay (Md. 20(a)).\n• Sözleşme gerekliliği (Md. 20(b)).\n• Yasal zorunluluk (Md. 20(c)).\n• Meşru menfaat (Md. 20(d))." },
-    "dataSubjectRights": { "title": "UU PDP Kapsamındaki Haklarınız", "text": "Veri sahibi olarak haklarınız:\n\n• Bilgilendirilme (Md. 5-6)\n• Erişim (Md. 7)\n• Düzeltme (Md. 8)\n• Silme (Md. 9)\n• Onay geri çekme (Md. 10)\n• İtiraz (Md. 11)\n• Taşınabilirlik (Md. 12)\n• Tazminat (Md. 12)\n\n3×24 saat içinde yanıt, 14 iş günü içinde işlem." },
-    "retention": { "title": "Veri Saklama", "text": "UU PDP Madde 25 uyarınca:\n\n• Hesap verileri: aktif olduğu sürece, silinmeden sonra 30 gün.\n• Doğrulama belgeleri: şifreli, incelemeden sonra 30 gün.\n• İşlem verileri: 5 yıl (vergi yasası).\n• Güvenlik kayıtları: 1 yıl.\n• Anonim analizler: süresiz." },
-    "crossBorder": { "title": "Sınır Ötesi Transfer", "text": "UU PDP Madde 56 uyarınca sözleşmesel ve teknik önlemlerle uyum sağlıyoruz." },
-    "breach": { "title": "Veri İhlali Bildirimi", "text": "UU PDP Madde 46 uyarınca etkilenen kişilere ve yetkili makama 3×24 saat içinde bildirim yapılır." },
-    "dpo": { "title": "Veri Koruma Görevlisi", "text": "Re-Bali, UU PDP uyumluluğunu denetlemekten sorumlu bir Veri Koruma Görevlisi (DPO) atamıştır." },
-    "contact": { "title": "İletişim ve Şikayetler", "text": "Veri koruma soruları için Profil > Güvenlik veya İletişim sayfasını kullanın. Yanıt: 3×24 saat onay, 14 iş günü işlem." }
+    "overview": {
+      "title": "Genel Bakış",
+      "text": "Re-Bali, UU PDP No. 27/2022 uyarınca tüm kullanıcıların kişisel verilerini korumayı taahhüt eder."
+    },
+    "scope": {
+      "title": "Uygulama Kapsamı",
+      "text": "UU PDP, veri sahiplerinin Endonezya'da veya yurt dışında olup olmadığına bakılmaksızın, Re-Bali tarafından gerçekleştirilen tüm kişisel veri işleme faaliyetlerine uygulanır."
+    },
+    "dataController": {
+      "title": "Veri Sorumlusu",
+      "text": "Re-Bali, platform üzerinden işlenen tüm kişisel veriler için Veri Sorumlusu (Pengendali Data Pribadi) olarak hareket eder."
+    },
+    "dataCollected": {
+      "title": "Toplanan Kişisel Veriler",
+      "text": "Topluyoruz:\n\n• Genel kişisel veriler: ad, e-posta, telefon, profil fotoğrafı, ilan içeriği, cihaz bilgileri.\n• Özel kişisel veriler: kimlik belgeleri (KTP, pasaport) — UU PDP kapsamında hassas veri olarak sınıflandırılır."
+    },
+    "processingBasis": {
+      "title": "İşlemenin Hukuki Dayanağı",
+      "text": "UU PDP Madde 20 uyarınca:\n\n• Açık onay (Md. 20(a)).\n• Sözleşme gerekliliği (Md. 20(b)).\n• Yasal zorunluluk (Md. 20(c)).\n• Meşru menfaat (Md. 20(d))."
+    },
+    "dataSubjectRights": {
+      "title": "UU PDP Kapsamındaki Haklarınız",
+      "text": "Veri sahibi olarak haklarınız:\n\n• Bilgilendirilme (Md. 5-6)\n• Erişim (Md. 7)\n• Düzeltme (Md. 8)\n• Silme (Md. 9)\n• Onay geri çekme (Md. 10)\n• İtiraz (Md. 11)\n• Taşınabilirlik (Md. 12)\n• Tazminat (Md. 12)\n\n3×24 saat içinde yanıt, 14 iş günü içinde işlem."
+    },
+    "retention": {
+      "title": "Veri Saklama",
+      "text": "UU PDP Madde 25 uyarınca:\n\n• Hesap verileri: aktif olduğu sürece, silinmeden sonra 30 gün.\n• Doğrulama belgeleri: şifreli, incelemeden sonra 30 gün.\n• İşlem verileri: 5 yıl (vergi yasası).\n• Güvenlik kayıtları: 1 yıl.\n• Anonim analizler: süresiz."
+    },
+    "crossBorder": {
+      "title": "Sınır Ötesi Transfer",
+      "text": "UU PDP Madde 56 uyarınca sözleşmesel ve teknik önlemlerle uyum sağlıyoruz."
+    },
+    "breach": {
+      "title": "Veri İhlali Bildirimi",
+      "text": "UU PDP Madde 46 uyarınca etkilenen kişilere ve yetkili makama 3×24 saat içinde bildirim yapılır."
+    },
+    "dpo": {
+      "title": "Veri Koruma Görevlisi",
+      "text": "Re-Bali, UU PDP uyumluluğunu denetlemekten sorumlu bir Veri Koruma Görevlisi (DPO) atamıştır."
+    },
+    "contact": {
+      "title": "İletişim ve Şikayetler",
+      "text": "Veri koruma soruları için Profil > Güvenlik veya İletişim sayfasını kullanın. Yanıt: 3×24 saat onay, 14 iş günü işlem."
+    }
   },
   "comingSoon": {
     "tagline": "Bali'nin güvenilir pazaryeri çok yakında",
@@ -1528,5 +1696,30 @@
       "translating": "12 dile çevriliyor...",
       "done": "Neredeyse hazır!"
     }
+  },
+  "twoFactor": {
+    "title": "İki Faktörlü Kimlik Doğrulama (2FA)",
+    "protectedByApp": "Doğrulayıcı uygulama ile korunuyor.",
+    "protectedByEmail": "Her girişte e-posta koduyla korunuyor.",
+    "disable": "Devre dışı bırak",
+    "addSecurity": "Hesabınıza ekstra bir güvenlik katmanı ekleyin.",
+    "enable2FA": "2FA etkinleştir",
+    "chooseMethod": "Yönteminizi seçin:",
+    "authenticator": "Doğrulayıcı",
+    "authenticatorDesc": "Google Authenticator, Authy…",
+    "email": "E-posta",
+    "emailDesc": "E-posta ile kod gönderilir",
+    "cancel": "İptal",
+    "scanQR": "Bu QR kodu doğrulayıcı uygulamanızla tarayın.",
+    "enterCode": "6 haneli kodu girin:",
+    "verifyAndActivate": "Doğrula ve etkinleştir",
+    "activated": "2FA etkinleştirildi ✅",
+    "activatedAppDesc": "Doğrulayıcı hesabınızda etkinleştirildi.",
+    "activatedEmailDesc": "Her girişte e-postanıza bir kod gönderilecektir.",
+    "deactivated": "2FA devre dışı bırakıldı",
+    "invalidCode": "Geçersiz kod",
+    "error": "Hata",
+    "confirmDisableApp": "Doğrulayıcı ile 2FA devre dışı bırakılsın mı?",
+    "confirmDisableEmail": "E-posta ile 2FA devre dışı bırakılsın mı?"
   }
 }
