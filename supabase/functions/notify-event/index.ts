@@ -342,7 +342,7 @@ Deno.serve(async (req) => {
       url = "/profile";
     } else if (event_type === "whatsapp_verified") {
       url = "/profile";
-    } else if (event_type === "welcome_back") {
+    } else if (event_type === "welcome_back" || event_type.startsWith("daily_")) {
       url = "/browse";
     }
 
@@ -363,7 +363,7 @@ Deno.serve(async (req) => {
           ? "rebali_alerts"
           : ["deal_reminder", "inactive_seller", "profile_incomplete"].includes(event_type)
           ? "rebali_reminders"
-          : ["listing_views_milestone", "welcome_back", "whatsapp_verified"].includes(event_type)
+          : ["listing_views_milestone", "welcome_back", "whatsapp_verified"].includes(event_type) || event_type.startsWith("daily_")
           ? "rebali_jingle"
           : "rebali_default",
       }),
