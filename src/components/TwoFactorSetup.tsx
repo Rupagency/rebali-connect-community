@@ -6,10 +6,12 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { ShieldCheck, ShieldOff, Loader2, Copy, CheckCircle, Mail, Smartphone } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type MfaMethod = 'none' | 'totp' | 'email';
 
 export default function TwoFactorSetup() {
+  const { t } = useLanguage();
   const [activeMethod, setActiveMethod] = useState<MfaMethod>('none');
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -32,7 +34,6 @@ export default function TwoFactorSetup() {
 
   const checkMfaStatus = async () => {
     try {
-      // Check TOTP
       const { data } = await supabase.auth.mfa.listFactors();
       const hasTotp = data?.totp?.some(f => f.status === 'verified') || false;
       if (hasTotp) {
@@ -41,7 +42,6 @@ export default function TwoFactorSetup() {
         return;
       }
 
-      // Check email MFA
       const { data: emailMfa } = await supabase
         .from('email_mfa')
         .select('enabled')
@@ -58,7 +58,6 @@ export default function TwoFactorSetup() {
     setLoading(false);
   };
 
-  // ---- TOTP handlers ----
   const handleEnrollTotp = async () => {
     setEnrolling(true);
     try {
@@ -77,7 +76,7 @@ export default function TwoFactorSetup() {
       setQrCode(data.totp.qr_code);
       setSecret(data.totp.secret);
     } catch (err: any) {
-      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+      toast({ title: t('twoFactor.error'), description: err.message, variant: 'destructive' });
     }
     setEnrolling(false);
   };
@@ -95,7 +94,7 @@ export default function TwoFactorSetup() {
       });
       if (verifyError) throw verifyError;
 
-      toast({ title: '2FA activée ✅', description: 'Authenticator activé sur votre compte.' });
+      toast({ title: t('twoFactor.activated'), description: t('twoFactor.activatedAppDesc') });
       setActiveMethod('totp');
       setQrCode(null);
       setSecret(null);
@@ -103,13 +102,13 @@ export default function TwoFactorSetup() {
       setOtpCode('');
       setChoosing(false);
     } catch (err: any) {
-      toast({ title: 'Code invalide', description: err.message, variant: 'destructive' });
+      toast({ title: t('twoFactor.invalidCode'), description: err.message, variant: 'destructive' });
     }
     setVerifying(false);
   };
 
   const handleDisableTotp = async () => {
-    if (!confirm('Désactiver la 2FA par authenticator ?')) return;
+    if (!confirm(t('twoFactor.confirmDisableApp'))) return;
     setDisabling(true);
     try {
       const { data: factors } = await supabase.auth.mfa.listFactors();
@@ -117,19 +116,17 @@ export default function TwoFactorSetup() {
       for (const f of verified) {
         await supabase.auth.mfa.unenroll({ factorId: f.id });
       }
-      toast({ title: '2FA désactivée' });
+      toast({ title: t('twoFactor.deactivated') });
       setActiveMethod('none');
     } catch (err: any) {
-      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+      toast({ title: t('twoFactor.error'), description: err.message, variant: 'destructive' });
     }
     setDisabling(false);
   };
 
-  // ---- Email MFA handlers ----
   const handleEnableEmail = async () => {
     setEnrolling(true);
     try {
-      // Upsert email_mfa
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
@@ -139,17 +136,17 @@ export default function TwoFactorSetup() {
 
       if (error) throw error;
 
-      toast({ title: '2FA par email activée ✅', description: 'Un code vous sera envoyé par email à chaque connexion.' });
+      toast({ title: t('twoFactor.activated'), description: t('twoFactor.activatedEmailDesc') });
       setActiveMethod('email');
       setChoosing(false);
     } catch (err: any) {
-      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+      toast({ title: t('twoFactor.error'), description: err.message, variant: 'destructive' });
     }
     setEnrolling(false);
   };
 
   const handleDisableEmail = async () => {
-    if (!confirm('Désactiver la 2FA par email ?')) return;
+    if (!confirm(t('twoFactor.confirmDisableEmail'))) return;
     setDisabling(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -160,10 +157,10 @@ export default function TwoFactorSetup() {
         .update({ enabled: false })
         .eq('user_id', user.id);
 
-      toast({ title: '2FA par email désactivée' });
+      toast({ title: t('twoFactor.deactivated') });
       setActiveMethod('none');
     } catch (err: any) {
-      toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
+      toast({ title: t('twoFactor.error'), description: err.message, variant: 'destructive' });
     }
     setDisabling(false);
   };
@@ -191,7 +188,7 @@ export default function TwoFactorSetup() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <ShieldCheck className="h-5 w-5" />
-          Double authentification (2FA)
+          {t('twoFactor.title')}
           {activeMethod !== 'none' && (
             <Badge variant="default" className="ml-auto text-xs">
               {activeMethod === 'totp' ? 'Authenticator' : 'Email'}
@@ -200,17 +197,16 @@ export default function TwoFactorSetup() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Active method display */}
         {activeMethod === 'totp' && !choosing && (
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Smartphone className="h-4 w-4 text-primary" />
-              <span>Protégé par application authenticator.</span>
+              <span>{t('twoFactor.protectedByApp')}</span>
             </div>
             <Button variant="outline" size="sm" onClick={handleDisableTotp} disabled={disabling}
               className="gap-1.5 text-destructive hover:text-destructive">
               {disabling ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShieldOff className="h-3.5 w-3.5" />}
-              Désactiver
+              {t('twoFactor.disable')}
             </Button>
           </div>
         )}
@@ -219,32 +215,31 @@ export default function TwoFactorSetup() {
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Mail className="h-4 w-4 text-primary" />
-              <span>Protégé par code email à chaque connexion.</span>
+              <span>{t('twoFactor.protectedByEmail')}</span>
             </div>
             <Button variant="outline" size="sm" onClick={handleDisableEmail} disabled={disabling}
               className="gap-1.5 text-destructive hover:text-destructive">
               {disabling ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShieldOff className="h-3.5 w-3.5" />}
-              Désactiver
+              {t('twoFactor.disable')}
             </Button>
           </div>
         )}
 
-        {/* Method chooser */}
         {activeMethod === 'none' && !choosing && !qrCode && (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              Ajoutez une couche de sécurité supplémentaire à votre compte.
+              {t('twoFactor.addSecurity')}
             </p>
             <Button onClick={() => setChoosing(true)} className="gap-1.5">
               <ShieldCheck className="h-4 w-4" />
-              Activer la 2FA
+              {t('twoFactor.enable2FA')}
             </Button>
           </div>
         )}
 
         {choosing && !qrCode && (
           <div className="space-y-3">
-            <p className="text-sm font-medium">Choisissez votre méthode :</p>
+            <p className="text-sm font-medium">{t('twoFactor.chooseMethod')}</p>
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={handleEnrollTotp}
@@ -252,8 +247,8 @@ export default function TwoFactorSetup() {
                 className="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-muted hover:border-primary transition-all text-center"
               >
                 <Smartphone className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Authenticator</span>
-                <span className="text-xs text-muted-foreground">Google Authenticator, Authy…</span>
+                <span className="text-sm font-medium">{t('twoFactor.authenticator')}</span>
+                <span className="text-xs text-muted-foreground">{t('twoFactor.authenticatorDesc')}</span>
               </button>
               <button
                 onClick={handleEnableEmail}
@@ -261,24 +256,23 @@ export default function TwoFactorSetup() {
                 className="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-muted hover:border-primary transition-all text-center"
               >
                 <Mail className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Email</span>
-                <span className="text-xs text-muted-foreground">Code envoyé par email</span>
+                <span className="text-sm font-medium">{t('twoFactor.email')}</span>
+                <span className="text-xs text-muted-foreground">{t('twoFactor.emailDesc')}</span>
               </button>
             </div>
             {enrolling && (
               <div className="flex justify-center"><Loader2 className="h-5 w-5 animate-spin" /></div>
             )}
             <Button variant="ghost" size="sm" className="w-full" onClick={() => setChoosing(false)}>
-              Annuler
+              {t('twoFactor.cancel')}
             </Button>
           </div>
         )}
 
-        {/* TOTP enrollment QR */}
         {qrCode && (
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Scannez ce QR code avec votre application d'authentification.
+              {t('twoFactor.scanQR')}
             </p>
             <div className="flex justify-center">
               <img src={qrCode} alt="QR Code 2FA" className="w-48 h-48 rounded-lg border" />
@@ -292,7 +286,7 @@ export default function TwoFactorSetup() {
               </div>
             )}
             <div className="space-y-2">
-              <p className="text-sm font-medium">Entrez le code à 6 chiffres :</p>
+              <p className="text-sm font-medium">{t('twoFactor.enterCode')}</p>
               <div className="flex justify-center">
                 <InputOTP maxLength={6} value={otpCode} onChange={setOtpCode}>
                   <InputOTPGroup>
@@ -307,11 +301,11 @@ export default function TwoFactorSetup() {
               </div>
               <Button onClick={handleVerifyTotp} disabled={verifying || otpCode.length !== 6} className="w-full">
                 {verifying ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Vérifier et activer
+                {t('twoFactor.verifyAndActivate')}
               </Button>
               <Button variant="ghost" size="sm" className="w-full"
                 onClick={() => { setQrCode(null); setSecret(null); setFactorId(null); setOtpCode(''); setChoosing(false); }}>
-                Annuler
+                {t('twoFactor.cancel')}
               </Button>
             </div>
           </div>
