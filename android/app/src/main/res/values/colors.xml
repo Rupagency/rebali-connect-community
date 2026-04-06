@@ -2,6 +2,6 @@
 <resources>
 <resources>
     <!-- Orange accent for notification icon tint -->
-    <color name="notification_color">#e8770a</color>
+    <color name="notification_color">#F26522</color>
 </resources>
 </resources>
