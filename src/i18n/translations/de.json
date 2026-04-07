@@ -967,7 +967,9 @@
     "edited": "bearbeitet",
     "editMessage": "Bearbeiten",
     "saveEdit": "Speichern",
-    "cancelEdit": "Abbrechen"
+    "cancelEdit": "Abbrechen",
+    "shareInfoUnlocked": "🎉 Super! Sie können jetzt Ihre Kontaktdaten über die Schaltfläche oben teilen.",
+    "shareInfoLocked": "Tauschen Sie zuerst ein paar Nachrichten aus, um das Teilen freizuschalten."
   },
   "extraFields": {
     "contractType": "Vertragsart",

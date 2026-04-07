@@ -481,6 +481,14 @@ export default function Messages() {
   const isSeller = activeConv?.seller_id === user.id;
   const hasRated = !!myReview;
 
+  // Check if both parties have exchanged at least 1 message each (non-system)
+  const bothHaveMessaged = (() => {
+    if (!convMessages || !activeConv) return false;
+    const buyerSent = convMessages.some((m: any) => m.sender_id === activeConv.buyer_id && m.from_role !== 'system');
+    const sellerSent = convMessages.some((m: any) => m.sender_id === activeConv.seller_id && m.from_role !== 'system');
+    return buyerSent && sellerSent;
+  })();
+
   // Input zone logic
   const canSendMessages = activeConv && !isClosed && (
     !isDealClosed || // normal conversation
@@ -581,50 +589,57 @@ export default function Messages() {
                        {activeConv.listings?.title_original}
                      </Link>
                    </div>
-                   <AlertDialog>
-                     <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="gap-1.5 text-xs flex-shrink-0">
-                          <Share2 className="h-3.5 w-3.5" />
-                          <span className="hidden sm:inline">{t('messages.shareInfo')}</span>
-                        </Button>
-                      </AlertDialogTrigger>
-                     <AlertDialogContent>
-                       <AlertDialogHeader>
-                         <AlertDialogTitle className="flex items-center gap-2">
-                           <AlertTriangle className="h-5 w-5 text-destructive" />
-                           {t('messages.shareInfoTitle')}
-                         </AlertDialogTitle>
-                         <AlertDialogDescription asChild>
-                           <div className="space-y-3">
-                             <p>{t('messages.shareInfoWarning')}</p>
-                             <ul className="list-disc pl-5 space-y-1.5 text-sm">
-                               <li>{t('messages.shareInfoBullet1')}</li>
-                               <li className="font-semibold text-destructive">{t('messages.shareInfoBullet2')}</li>
-                               <li>{t('messages.shareInfoBullet3')}</li>
-                             </ul>
-                           </div>
-                         </AlertDialogDescription>
-                       </AlertDialogHeader>
-                       <AlertDialogFooter>
-                         <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                         <AlertDialogAction
-                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                           onClick={async () => {
-                             if (!user || !activeConvId || !profile?.whatsapp) return;
-                             const shareMsg = `📞 ${profile.display_name || 'User'}\nWhatsApp: ${profile.whatsapp}`;
-                             await supabase.from('messages').insert({
-                               conversation_id: activeConvId, sender_id: user.id, content: shareMsg,
-                             });
-                             await supabase.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', activeConvId);
-                             queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
-                             toast({ title: t('messages.shareInfoSent') });
-                           }}
-                         >
-                           {t('messages.shareInfoConfirm')}
-                         </AlertDialogAction>
-                       </AlertDialogFooter>
-                     </AlertDialogContent>
-                   </AlertDialog>
+                   {bothHaveMessaged ? (
+                     <AlertDialog>
+                       <AlertDialogTrigger asChild>
+                          <Button variant="outline" size="sm" className="gap-1.5 text-xs flex-shrink-0">
+                            <Share2 className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">{t('messages.shareInfo')}</span>
+                          </Button>
+                        </AlertDialogTrigger>
+                       <AlertDialogContent>
+                         <AlertDialogHeader>
+                           <AlertDialogTitle className="flex items-center gap-2">
+                             <AlertTriangle className="h-5 w-5 text-destructive" />
+                             {t('messages.shareInfoTitle')}
+                           </AlertDialogTitle>
+                           <AlertDialogDescription asChild>
+                             <div className="space-y-3">
+                               <p>{t('messages.shareInfoWarning')}</p>
+                               <ul className="list-disc pl-5 space-y-1.5 text-sm">
+                                 <li>{t('messages.shareInfoBullet1')}</li>
+                                 <li className="font-semibold text-destructive">{t('messages.shareInfoBullet2')}</li>
+                                 <li>{t('messages.shareInfoBullet3')}</li>
+                               </ul>
+                             </div>
+                           </AlertDialogDescription>
+                         </AlertDialogHeader>
+                         <AlertDialogFooter>
+                           <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                           <AlertDialogAction
+                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                             onClick={async () => {
+                               if (!user || !activeConvId || !profile?.whatsapp) return;
+                               const shareMsg = `📞 ${profile.display_name || 'User'}\nWhatsApp: ${profile.whatsapp}`;
+                               await supabase.from('messages').insert({
+                                 conversation_id: activeConvId, sender_id: user.id, content: shareMsg,
+                               });
+                               await supabase.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', activeConvId);
+                               queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+                               toast({ title: t('messages.shareInfoSent') });
+                             }}
+                           >
+                             {t('messages.shareInfoConfirm')}
+                           </AlertDialogAction>
+                         </AlertDialogFooter>
+                       </AlertDialogContent>
+                     </AlertDialog>
+                   ) : (
+                     <Button variant="outline" size="sm" className="gap-1.5 text-xs flex-shrink-0 opacity-50 cursor-not-allowed" disabled title={t('messages.shareInfoLocked')}>
+                       <Share2 className="h-3.5 w-3.5" />
+                       <span className="hidden sm:inline">{t('messages.shareInfo')}</span>
+                     </Button>
+                   )}
                    {/* Deal Closed Button - only for seller when deal not yet closed */}
                    {isSeller && !isDealClosed && (
                      <AlertDialog open={dealClosedDialogOpen} onOpenChange={setDealClosedDialogOpen}>
@@ -825,6 +840,15 @@ export default function Messages() {
                       </div>
                     );
                   })}
+                  {/* Unlock notification when both parties have messaged */}
+                  {bothHaveMessaged && (
+                    <div className="flex justify-center">
+                      <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 text-xs text-primary text-center max-w-[85%]">
+                        <Share2 className="h-3.5 w-3.5 inline mr-1.5 -mt-0.5" />
+                        {t('messages.shareInfoUnlocked')}
+                      </div>
+                    </div>
+                  )}
                   <div ref={messagesEndRef} />
                 </div>
 

@@ -965,7 +965,9 @@
     "edited": "已编辑",
     "editMessage": "编辑",
     "saveEdit": "保存",
-    "cancelEdit": "取消"
+    "cancelEdit": "取消",
+    "shareInfoUnlocked": "🎉 太好了！您现在可以通过上方按钮分享联系方式。",
+    "shareInfoLocked": "先交换几条消息以解锁联系方式分享。"
   },
   "extraFields": {
     "contractType": "合同类型",

@@ -844,7 +844,9 @@
     "edited": "معدّلة",
     "editMessage": "تعديل",
     "saveEdit": "حفظ",
-    "cancelEdit": "إلغاء"
+    "cancelEdit": "إلغاء",
+    "shareInfoUnlocked": "🎉 رائع! يمكنك الآن مشاركة معلومات الاتصال باستخدام الزر أعلاه.",
+    "shareInfoLocked": "تبادل بعض الرسائل أولاً لفتح مشاركة جهات الاتصال."
   },
   "twoFactor": {
     "title": "المصادقة الثنائية (2FA)",

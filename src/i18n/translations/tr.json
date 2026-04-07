@@ -1006,7 +1006,9 @@
     "edited": "düzenlendi",
     "editMessage": "Düzenle",
     "saveEdit": "Kaydet",
-    "cancelEdit": "İptal"
+    "cancelEdit": "İptal",
+    "shareInfoUnlocked": "🎉 Harika! Artık yukarıdaki butonla iletişim bilgilerinizi paylaşabilirsiniz.",
+    "shareInfoLocked": "Paylaşımı açmak için önce birkaç mesaj gönderin."
   },
   "extraFields": {
     "contractType": "Sözleşme Türü",
