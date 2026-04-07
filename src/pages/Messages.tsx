@@ -482,12 +482,12 @@ export default function Messages() {
   const hasRated = !!myReview;
 
   // Check if both parties have exchanged at least 1 message each (non-system)
-  const bothHaveMessaged = useMemo(() => {
+  const bothHaveMessaged = (() => {
     if (!convMessages || !activeConv) return false;
     const buyerSent = convMessages.some((m: any) => m.sender_id === activeConv.buyer_id && m.from_role !== 'system');
     const sellerSent = convMessages.some((m: any) => m.sender_id === activeConv.seller_id && m.from_role !== 'system');
     return buyerSent && sellerSent;
-  }, [convMessages, activeConv]);
+  })();
 
   // Input zone logic
   const canSendMessages = activeConv && !isClosed && (
