@@ -228,7 +228,7 @@ export default function Messages() {
       }, () => {
         queryClient.invalidateQueries({ queryKey: ['last-messages'] });
         queryClient.invalidateQueries({ queryKey: ['unread-counts'] });
-        queryClient.invalidateQueries({ queryKey: ['conversations'] });
+        queryClient.invalidateQueries({ queryKey: ['conversations', user.id] });
       })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
