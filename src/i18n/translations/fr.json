@@ -1024,7 +1024,9 @@
     "edited": "modifié",
     "editMessage": "Modifier",
     "saveEdit": "Enregistrer",
-    "cancelEdit": "Annuler"
+    "cancelEdit": "Annuler",
+    "shareInfoUnlocked": "🎉 Super ! Vous pouvez maintenant partager vos coordonnées via le bouton ci-dessus.",
+    "shareInfoLocked": "Échangez d'abord quelques messages pour débloquer le partage."
   },
   "extraFields": {
     "contractType": "Type de contrat",

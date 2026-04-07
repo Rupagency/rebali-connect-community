@@ -1020,7 +1020,9 @@
     "edited": "edited",
     "editMessage": "Edit",
     "saveEdit": "Save",
-    "cancelEdit": "Cancel"
+    "cancelEdit": "Cancel",
+    "shareInfoUnlocked": "🎉 Great! You can now share your contact info using the button above.",
+    "shareInfoLocked": "Exchange a few messages first to unlock contact sharing."
   },
   "extraFields": {
     "contractType": "Contract Type",

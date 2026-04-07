@@ -965,7 +965,9 @@
     "edited": "diedit",
     "editMessage": "Edit",
     "saveEdit": "Simpan",
-    "cancelEdit": "Batal"
+    "cancelEdit": "Batal",
+    "shareInfoUnlocked": "🎉 Bagus! Anda sekarang dapat berbagi info kontak menggunakan tombol di atas.",
+    "shareInfoLocked": "Tukarkan beberapa pesan terlebih dahulu untuk membuka berbagi kontak."
   },
   "extraFields": {
     "contractType": "Jenis Kontrak",

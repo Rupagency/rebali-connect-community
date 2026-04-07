@@ -1006,7 +1006,9 @@
     "edited": "संपादित",
     "editMessage": "संपादित करें",
     "saveEdit": "सहेजें",
-    "cancelEdit": "रद्द करें"
+    "cancelEdit": "रद्द करें",
+    "shareInfoUnlocked": "🎉 बढ़िया! अब आप ऊपर दिए गए बटन से अपनी संपर्क जानकारी साझा कर सकते हैं।",
+    "shareInfoLocked": "शेयरिंग अनलॉक करने के लिए पहले कुछ संदेश भेजें।"
   },
   "extraFields": {
     "contractType": "अनुबंध प्रकार",

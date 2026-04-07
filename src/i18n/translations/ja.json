@@ -777,7 +777,9 @@
     "edited": "編集済み",
     "editMessage": "編集",
     "saveEdit": "保存",
-    "cancelEdit": "キャンセル"
+    "cancelEdit": "キャンセル",
+    "shareInfoUnlocked": "🎉 素晴らしい！上のボタンから連絡先を共有できるようになりました。",
+    "shareInfoLocked": "連絡先の共有を解除するには、まずメッセージを交換してください。"
   },
   "twoFactor": {
     "title": "二段階認証 (2FA)",

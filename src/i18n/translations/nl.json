@@ -1209,7 +1209,9 @@
     "edited": "bewerkt",
     "editMessage": "Bewerken",
     "saveEdit": "Opslaan",
-    "cancelEdit": "Annuleren"
+    "cancelEdit": "Annuleren",
+    "shareInfoUnlocked": "🎉 Top! Je kunt nu je contactgegevens delen via de knop hierboven.",
+    "shareInfoLocked": "Wissel eerst een paar berichten uit om delen te ontgrendelen."
   },
   "twoFactor": {
     "title": "Tweefactorauthenticatie (2FA)",

@@ -965,7 +965,9 @@
     "edited": "editado",
     "editMessage": "Editar",
     "saveEdit": "Guardar",
-    "cancelEdit": "Cancelar"
+    "cancelEdit": "Cancelar",
+    "shareInfoUnlocked": "🎉 ¡Genial! Ahora puedes compartir tu información de contacto con el botón de arriba.",
+    "shareInfoLocked": "Intercambia algunos mensajes primero para desbloquear el compartir."
   },
   "extraFields": {
     "contractType": "Tipo de contrato",
