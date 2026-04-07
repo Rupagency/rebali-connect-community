@@ -740,10 +740,19 @@ export default function Messages() {
                     const translated = !isMine && !isSystem && translations?.[msg.id];
 
                     if (isSystem) {
+                      // Translate known system messages to user's language
+                      let displayContent = msg.content;
+                      if (msg.content.includes('Deal closed') || msg.content.includes('Deal selesai') || msg.content.includes('🤝')) {
+                        displayContent = `🤝 ${t('messages.dealClosed')}`;
+                      } else if (msg.content.includes('Deal confirmed by buyer') || msg.content.includes('confirmed')) {
+                        displayContent = `✅ ${t('messages.buyerConfirmDeal')}`;
+                      } else if (msg.content.includes('has been sold') || msg.content.includes('sold')) {
+                        displayContent = t('messages.productSold');
+                      }
                       return (
                         <div key={msg.id} className="flex justify-center">
                           <div className="bg-muted/50 border border-border rounded-full px-4 py-1.5 text-xs text-muted-foreground">
-                            {msg.content}
+                            {displayContent}
                           </div>
                         </div>
                       );
