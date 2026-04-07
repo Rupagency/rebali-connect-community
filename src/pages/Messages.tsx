@@ -840,6 +840,15 @@ export default function Messages() {
                       </div>
                     );
                   })}
+                  {/* Unlock notification when both parties have messaged */}
+                  {bothHaveMessaged && (
+                    <div className="flex justify-center">
+                      <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-2 text-xs text-primary text-center max-w-[85%]">
+                        <Share2 className="h-3.5 w-3.5 inline mr-1.5 -mt-0.5" />
+                        {t('messages.shareInfoUnlocked')}
+                      </div>
+                    </div>
+                  )}
                   <div ref={messagesEndRef} />
                 </div>
 
