@@ -194,6 +194,27 @@ export default function Messages() {
     return () => { supabase.removeChannel(channel); };
   }, [activeConvId, queryClient]);
 
+  useEffect(() => {
+    if (!activeConvId || !user) return;
+
+    const channel = supabase
+      .channel(`conversation:${activeConvId}`)
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'conversations',
+        filter: `id=eq.${activeConvId}`,
+      }, () => {
+        queryClient.invalidateQueries({ queryKey: ['conversations', user.id] });
+        queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [activeConvId, user, queryClient]);
+
   // Realtime subscription for conversation list updates
   useEffect(() => {
     if (!user) return;
@@ -379,8 +400,28 @@ export default function Messages() {
       toast({ title: error.message, variant: 'destructive' });
       return;
     }
-    queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
+
+    queryClient.setQueryData(['conversations', user.id], (old: any[] | undefined) => {
+      if (!old) return old;
+
+      return old.map((conv: any) =>
+        conv.id === activeConvId
+          ? {
+              ...conv,
+              buyer_confirmed: true,
+              buyer_confirmed_at: new Date().toISOString(),
+            }
+          : conv,
+      );
+    });
+
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['conversations', user.id] }),
+      queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] }),
+      queryClient.invalidateQueries({ queryKey: ['my-review', activeConvId, user.id] }),
+      queryClient.invalidateQueries({ queryKey: ['other-review', activeConvId, user.id] }),
+    ]);
+
     toast({ title: t('messages.buyerConfirmDeal') });
     import('@/lib/analytics').then(({ trackEvent }) => trackEvent('deal_closed', { conversation_id: activeConvId, role: 'buyer_confirmed' })).catch(() => {});
     // Push notification to seller
@@ -707,7 +748,7 @@ export default function Messages() {
                 )}
 
                 {/* Buyer confirmation banner */}
-                {isDealClosed && !isBuyerConfirmed && isBuyer && !isClosed && (
+                {isDealClosed && !isBuyerConfirmed && isBuyer && (
                   <div className="flex items-center gap-2 px-4 py-2.5 bg-yellow-500/10 border-b border-yellow-500/20 text-yellow-800 text-sm flex-shrink-0">
                     <Handshake className="h-4 w-4 flex-shrink-0" />
                     <span className="flex-1">{t('messages.buyerConfirmBanner')}</span>
@@ -847,7 +888,7 @@ export default function Messages() {
                 </div>
 
                 {/* Inline rating form - when buyer confirmed and user hasn't rated yet */}
-                {isDealClosed && isBuyerConfirmed && !hasRated && !isClosed && (
+                {isDealClosed && isBuyerConfirmed && !hasRated && (
                   <div className="p-3 border-t border-border flex-shrink-0 bg-yellow-500/5">
                     <p className="text-sm font-medium mb-2">{t('messages.rateUser')}</p>
                     <div className="flex items-center gap-1 mb-2">
