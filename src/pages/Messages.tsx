@@ -93,8 +93,6 @@ export default function Messages() {
       return data || [];
     },
     enabled: !!activeConvId,
-    refetchInterval: activeConvId ? 3000 : false,
-    refetchIntervalInBackground: true,
   });
 
   // Translate received messages to user's preferred language
@@ -228,7 +226,7 @@ export default function Messages() {
       }, () => {
         queryClient.invalidateQueries({ queryKey: ['last-messages'] });
         queryClient.invalidateQueries({ queryKey: ['unread-counts'] });
-        queryClient.invalidateQueries({ queryKey: ['conversations'] });
+        queryClient.invalidateQueries({ queryKey: ['conversations', user.id] });
       })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
