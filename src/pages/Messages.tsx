@@ -19,6 +19,7 @@ import { useBlockedUsers } from '@/hooks/useBlockedUsers';
 import { ConversationListSkeleton } from '@/components/skeletons/MessagesSkeleton';
 
 const DATE_LOCALES: Record<string, any> = { fr, id: idLocale, es, zh: zhCN, de, nl, ru };
+const LEGACY_DEAL_SYSTEM_MESSAGES = new Set(['🤝 Deal selesai', '🤝 Deal gesloten', '🤝 Deal closed']);
 
 export default function Messages() {
   const { t, language } = useLanguage();
@@ -521,6 +522,10 @@ export default function Messages() {
   const isBuyer = activeConv?.buyer_id === user.id;
   const isSeller = activeConv?.seller_id === user.id;
   const hasRated = !!myReview;
+  const hasLegacyDealMessage = !!convMessages?.some(
+    (msg: any) => msg.from_role === 'system' && LEGACY_DEAL_SYSTEM_MESSAGES.has((msg.content || '').trim()),
+  );
+  const hasLegacyDealMismatch = hasLegacyDealMessage && !isDealClosed;
 
   // Check if both parties have exchanged at least 1 message each (non-system)
   const bothHaveMessaged = (() => {
@@ -747,6 +752,14 @@ export default function Messages() {
                   </div>
                 )}
 
+                {/* Legacy mismatch warning */}
+                {hasLegacyDealMismatch && isBuyer && (
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-yellow-500/10 border-b border-yellow-500/20 text-yellow-800 text-sm flex-shrink-0">
+                    <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                    <span className="flex-1">Le vendeur doit cliquer à nouveau sur « Deal conclu » pour activer votre confirmation d’achat.</span>
+                  </div>
+                )}
+
                 {/* Buyer confirmation banner */}
                 {isDealClosed && !isBuyerConfirmed && isBuyer && (
                   <div className="flex items-center gap-2 px-4 py-2.5 bg-yellow-500/10 border-b border-yellow-500/20 text-yellow-800 text-sm flex-shrink-0">
@@ -782,12 +795,13 @@ export default function Messages() {
 
                     if (isSystem) {
                       // Translate known system messages to user's language
+                      const rawContent = (msg.content || '').trim();
                       let displayContent = msg.content;
-                      if (msg.content.includes('Deal closed') || msg.content.includes('Deal selesai') || msg.content.includes('🤝')) {
+                      if (rawContent === '🤝 Deal closed' || (isDealClosed && LEGACY_DEAL_SYSTEM_MESSAGES.has(rawContent))) {
                         displayContent = `🤝 ${t('messages.dealClosed')}`;
-                      } else if (msg.content.includes('Deal confirmed by buyer') || msg.content.includes('confirmed')) {
+                      } else if (rawContent === '✅ Deal confirmed by buyer') {
                         displayContent = `✅ ${t('messages.buyerConfirmDeal')}`;
-                      } else if (msg.content.includes('has been sold') || msg.content.includes('sold')) {
+                      } else if (rawContent === 'This item has been sold') {
                         displayContent = t('messages.productSold');
                       }
                       return (
