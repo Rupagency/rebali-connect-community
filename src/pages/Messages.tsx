@@ -93,8 +93,6 @@ export default function Messages() {
       return data || [];
     },
     enabled: !!activeConvId,
-    refetchInterval: activeConvId ? 3000 : false,
-    refetchIntervalInBackground: true,
   });
 
   // Translate received messages to user's preferred language
