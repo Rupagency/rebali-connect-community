@@ -457,6 +457,8 @@ export default function Messages() {
         } else {
           toast({ title: t('seller.accountTooNew'), description: t('seller.noExchangeYet'), variant: 'destructive' });
         }
+      } else if (error.message?.includes('duplicate') || error.message?.includes('unique') || error.code === '23505') {
+        toast({ title: t('seller.alreadyReviewed'), variant: 'destructive' });
       } else {
         toast({ title: 'Error', description: error.message, variant: 'destructive' });
       }
