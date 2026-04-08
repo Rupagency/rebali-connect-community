@@ -9,7 +9,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import ListingCard from '@/components/ListingCard';
 import { User, Briefcase, Star, Calendar, Package, ShieldCheck, CheckCircle, Languages } from 'lucide-react';
-import { supabase as sb } from '@/integrations/supabase/client';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
@@ -115,7 +114,7 @@ export default function SellerProfile() {
 
     (async () => {
       try {
-        const { data: sessionData } = await sb.auth.getSession();
+        const { data: sessionData } = await supabase.auth.getSession();
         const token = sessionData?.session?.access_token;
         const res = await fetch(
           `https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/translate-text`,
