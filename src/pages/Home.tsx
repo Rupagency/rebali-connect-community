@@ -242,16 +242,16 @@ export default function Home() {
       </Suspense>
 
       {/* Hero */}
-      <section className="relative z-30 bg-gradient-to-br from-primary/10 via-background to-accent/10">
+      <section className="relative z-30 bg-gradient-to-br from-[hsl(20,90%,54%,0.1)] via-[hsl(45,25%,96%)] to-[hsl(12,80%,60%,0.1)]">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
+          <div className="absolute top-10 left-10 w-32 h-32 bg-[hsl(20,90%,54%,0.1)] rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[hsl(12,80%,60%,0.1)] rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 py-14 md:py-20 text-center relative z-10">
           <div className="mb-5">
             <AnimatedHeroText />
           </div>
-          <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-xl mx-auto font-medium">
+          <p className="text-base md:text-lg text-[hsl(220,10%,46%)] mb-8 max-w-xl mx-auto font-medium">
             {t('home.heroSub')}
           </p>
           <form onSubmit={handleSearch} className="max-w-lg mx-auto flex gap-2 relative z-20">
