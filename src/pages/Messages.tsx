@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Send, ArrowLeft, MessageCircle, User, Languages, Share2, AlertTriangle, Handshake, CheckCircle2, Star, Check, CheckCheck, Pencil, X } from 'lucide-react';
+import { Send, ArrowLeft, MessageCircle, User, Languages, Share2, AlertTriangle, Handshake, CheckCircle2, Star, Check, CheckCheck, Pencil, X, Trophy } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, id as idLocale, es, zhCN, de, nl, ru } from 'date-fns/locale';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -41,6 +41,7 @@ export default function Messages() {
   const blockedIds = useBlockedUsers();
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
+  const [convTab, setConvTab] = useState<'active' | 'deals'>('active');
 
   // Fetch conversations (without profiles join - use public_profiles separately)
   const { data: conversations, isLoading: convsLoading } = useQuery({
@@ -578,6 +579,19 @@ export default function Messages() {
   const showConvList = !isMobile || !activeConvId;
   const showChat = !isMobile || !!activeConvId;
 
+  // Split conversations into active vs completed deals
+  const activeConversations = useMemo(() => {
+    if (!conversations) return [];
+    return conversations.filter((c: any) => !(c.deal_closed && c.buyer_confirmed));
+  }, [conversations]);
+
+  const completedDeals = useMemo(() => {
+    if (!conversations) return [];
+    return conversations.filter((c: any) => c.deal_closed && c.buyer_confirmed);
+  }, [conversations]);
+
+  const displayedConversations = convTab === 'active' ? activeConversations : completedDeals;
+
   // Determine conversation state
   const isDealClosed = !!(activeConv as any)?.deal_closed;
   const isBuyerConfirmed = !!(activeConv as any)?.buyer_confirmed;
@@ -635,11 +649,46 @@ export default function Messages() {
         {/* Conversation List */}
         {showConvList && (
           <div className={`${isMobile ? 'w-full' : 'w-80 flex-shrink-0'} flex flex-col border border-border rounded-lg overflow-hidden`}>
+            {/* Tabs */}
+            <div className="flex border-b border-border flex-shrink-0">
+              <button
+                onClick={() => setConvTab('active')}
+                className={`flex-1 py-2.5 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 ${
+                  convTab === 'active'
+                    ? 'text-primary border-b-2 border-primary bg-primary/5'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <MessageCircle className="h-3.5 w-3.5" />
+                {t('messages.activeChats')}
+                {activeConversations.length > 0 && (
+                  <span className="bg-primary/10 text-primary text-[10px] font-bold rounded-full px-1.5">
+                    {activeConversations.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setConvTab('deals')}
+                className={`flex-1 py-2.5 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 ${
+                  convTab === 'deals'
+                    ? 'text-primary border-b-2 border-primary bg-primary/5'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Trophy className="h-3.5 w-3.5" />
+                {t('messages.completedDeals')}
+                {completedDeals.length > 0 && (
+                  <span className="bg-primary/10 text-primary text-[10px] font-bold rounded-full px-1.5">
+                    {completedDeals.length}
+                  </span>
+                )}
+              </button>
+            </div>
             <div className="flex-1 overflow-y-auto messages-scroll-area">
               {convsLoading ? (
                 <ConversationListSkeleton />
-              ) : conversations && conversations.length > 0 ? (
-                conversations.map((conv: any) => {
+              ) : displayedConversations && displayedConversations.length > 0 ? (
+                displayedConversations.map((conv: any) => {
                   const other = conv.buyer_id === user.id ? conv.seller : conv.buyer;
                   const last = lastMessages?.[conv.id];
                   const unread = unreadCounts?.[conv.id] || 0;
@@ -680,8 +729,17 @@ export default function Messages() {
                 })
               ) : (
                 <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-                  <MessageCircle className="h-12 w-12 mb-3 opacity-30" />
-                  <p className="text-sm">{t('messages.empty')}</p>
+                  {convTab === 'active' ? (
+                    <>
+                      <MessageCircle className="h-12 w-12 mb-3 opacity-30" />
+                      <p className="text-sm">{t('messages.empty')}</p>
+                    </>
+                  ) : (
+                    <>
+                      <Trophy className="h-12 w-12 mb-3 opacity-30" />
+                      <p className="text-sm">{t('messages.noCompletedDeals')}</p>
+                    </>
+                  )}
                 </div>
               )}
             </div>
