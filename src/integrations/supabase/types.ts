@@ -1452,6 +1452,14 @@ export type Database = {
       }
     }
     Functions: {
+      can_create_review: {
+        Args: {
+          _conversation_id: string
+          _reviewed_user_id: string
+          _reviewer_id: string
+        }
+        Returns: boolean
+      }
       check_duplicate_image: {
         Args: { _hash: string; _seller_id: string }
         Returns: {
