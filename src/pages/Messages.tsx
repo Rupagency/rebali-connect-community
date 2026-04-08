@@ -66,7 +66,7 @@ export default function Messages() {
       if (uniqueIds.length > 0) {
         const { data: profiles } = await supabase
           .from('public_profiles')
-          .select('id, display_name, avatar_url')
+          .select('id, display_name, avatar_url, created_at')
           .in('id', uniqueIds);
         (profiles || []).forEach((p: any) => { profilesMap[p.id] = p; });
       }
@@ -437,6 +437,14 @@ export default function Messages() {
 
   const handleSubmitRating = async () => {
     if (!activeConvId || !user || !activeConv) return;
+    if (!bothHaveMessaged) {
+      toast({ title: t('seller.noExchangeYet'), variant: 'destructive' });
+      return;
+    }
+    if (!bothAccountsOldEnough) {
+      toast({ title: t('seller.accountTooNew'), variant: 'destructive' });
+      return;
+    }
     const reviewedUserId = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
     const { error } = await supabase.from('reviews').insert({
       seller_id: reviewedUserId,
@@ -449,13 +457,12 @@ export default function Messages() {
     } as any);
     if (error) {
       if (error.message?.includes('row-level security')) {
-        // Try to determine specific reason
-        const reviewerProfile = profile;
-        const reviewerAge = reviewerProfile ? Math.floor((Date.now() - new Date(reviewerProfile.created_at).getTime()) / (1000 * 60 * 60 * 24)) : 0;
-        if (reviewerAge < 7) {
+        if (!bothAccountsOldEnough) {
           toast({ title: t('seller.accountTooNew'), variant: 'destructive' });
+        } else if (!bothHaveMessaged) {
+          toast({ title: t('seller.noExchangeYet'), variant: 'destructive' });
         } else {
-          toast({ title: t('seller.accountTooNew'), description: t('seller.noExchangeYet'), variant: 'destructive' });
+          toast({ title: 'Error', description: error.message, variant: 'destructive' });
         }
       } else if (error.message?.includes('duplicate') || error.message?.includes('unique') || error.code === '23505') {
         toast({ title: t('seller.alreadyReviewed'), variant: 'destructive' });
@@ -534,6 +541,22 @@ export default function Messages() {
     const sellerSent = convMessages.some((m: any) => m.sender_id === activeConv.seller_id && m.from_role !== 'system');
     return buyerSent && sellerSent;
   })();
+
+  const otherParticipant = activeConv
+    ? (activeConv.buyer_id === user.id ? activeConv.seller : activeConv.buyer)
+    : null;
+  const currentAccountAgeDays = profile?.created_at
+    ? Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24))
+    : 0;
+  const otherAccountAgeDays = otherParticipant?.created_at
+    ? Math.floor((Date.now() - new Date(otherParticipant.created_at).getTime()) / (1000 * 60 * 60 * 24))
+    : 0;
+  const bothAccountsOldEnough = currentAccountAgeDays >= 7 && otherAccountAgeDays >= 7;
+  const reviewEligibilityIssues = [
+    !bothAccountsOldEnough ? t('seller.accountTooNew') : null,
+    !bothHaveMessaged ? t('seller.noExchangeYet') : null,
+  ].filter(Boolean);
+  const canLeaveReview = isDealClosed && isBuyerConfirmed && !hasRated && reviewEligibilityIssues.length === 0;
 
   // Input zone logic
   const canSendMessages = activeConv && !isClosed && (
@@ -903,7 +926,7 @@ export default function Messages() {
                 </div>
 
                 {/* Inline rating form - when buyer confirmed and user hasn't rated yet */}
-                {isDealClosed && isBuyerConfirmed && !hasRated && (
+                {canLeaveReview && (
                   <div className="p-3 border-t border-border flex-shrink-0 bg-yellow-500/5">
                     <p className="text-sm font-medium mb-2">{t('messages.rateUser')}</p>
                     <div className="flex items-center gap-1 mb-2">
@@ -933,6 +956,16 @@ export default function Messages() {
                     <Button size="sm" onClick={handleSubmitRating} className="w-full">
                       {t('messages.submitRating')}
                     </Button>
+                  </div>
+                )}
+
+                {isDealClosed && isBuyerConfirmed && !hasRated && !canLeaveReview && (
+                  <div className="p-3 border-t border-border flex-shrink-0 bg-destructive/5">
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      {reviewEligibilityIssues.map((issue) => (
+                        <p key={issue}>• {issue}</p>
+                      ))}
+                    </div>
                   </div>
                 )}
 
