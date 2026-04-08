@@ -435,16 +435,78 @@ export default function Messages() {
     }
   };
 
+  const getFreshReviewEligibility = useCallback(async () => {
+    if (!activeConvId) {
+      return { eligible: false, issues: [t('seller.reviewRequiresDeal')] };
+    }
+
+    const { data: latestConversation, error: conversationError } = await supabase
+      .from('conversations')
+      .select('id, buyer_id, seller_id, buyer_confirmed, deal_closed')
+      .eq('id', activeConvId)
+      .maybeSingle();
+
+    if (conversationError) throw conversationError;
+    if (!latestConversation) {
+      return { eligible: false, issues: [t('seller.reviewRequiresDeal')] };
+    }
+
+    const [{ data: participantProfiles, error: profilesError }, { data: latestMessages, error: messagesError }] = await Promise.all([
+      supabase
+        .from('public_profiles')
+        .select('id, created_at')
+        .in('id', [latestConversation.buyer_id, latestConversation.seller_id]),
+      supabase
+        .from('messages')
+        .select('sender_id, from_role')
+        .eq('conversation_id', activeConvId),
+    ]);
+
+    if (profilesError) throw profilesError;
+    if (messagesError) throw messagesError;
+
+    const buyerProfile = participantProfiles?.find((participant: any) => participant.id === latestConversation.buyer_id);
+    const sellerProfile = participantProfiles?.find((participant: any) => participant.id === latestConversation.seller_id);
+    const buyerAgeDays = buyerProfile?.created_at
+      ? Math.floor((Date.now() - new Date(buyerProfile.created_at).getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
+    const sellerAgeDays = sellerProfile?.created_at
+      ? Math.floor((Date.now() - new Date(sellerProfile.created_at).getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
+    const buyerSent = latestMessages?.some((message: any) => message.sender_id === latestConversation.buyer_id && message.from_role !== 'system');
+    const sellerSent = latestMessages?.some((message: any) => message.sender_id === latestConversation.seller_id && message.from_role !== 'system');
+
+    const issues = [
+      !latestConversation.deal_closed || !latestConversation.buyer_confirmed ? t('seller.reviewRequiresDeal') : null,
+      buyerAgeDays < 7 || sellerAgeDays < 7 ? t('seller.accountTooNew') : null,
+      !buyerSent || !sellerSent ? t('seller.noExchangeYet') : null,
+    ].filter(Boolean) as string[];
+
+    return {
+      eligible: issues.length === 0,
+      issues,
+    };
+  }, [activeConvId, t]);
+
   const handleSubmitRating = async () => {
     if (!activeConvId || !user || !activeConv) return;
-    if (!bothHaveMessaged) {
-      toast({ title: t('seller.noExchangeYet'), variant: 'destructive' });
+    const eligibility = await getFreshReviewEligibility().catch((error) => {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      return null;
+    });
+
+    if (!eligibility) return;
+
+    if (!eligibility.eligible) {
+      const [firstIssue, ...otherIssues] = eligibility.issues;
+      toast({
+        title: firstIssue || t('seller.reviewRequiresDeal'),
+        description: otherIssues.length > 0 ? otherIssues.join(' ') : undefined,
+        variant: 'destructive',
+      });
       return;
     }
-    if (!bothAccountsOldEnough) {
-      toast({ title: t('seller.accountTooNew'), variant: 'destructive' });
-      return;
-    }
+
     const reviewedUserId = activeConv.buyer_id === user.id ? activeConv.seller_id : activeConv.buyer_id;
     const { error } = await supabase.from('reviews').insert({
       seller_id: reviewedUserId,
@@ -457,13 +519,7 @@ export default function Messages() {
     } as any);
     if (error) {
       if (error.message?.includes('row-level security')) {
-        if (!bothAccountsOldEnough) {
-          toast({ title: t('seller.accountTooNew'), variant: 'destructive' });
-        } else if (!bothHaveMessaged) {
-          toast({ title: t('seller.noExchangeYet'), variant: 'destructive' });
-        } else {
-          toast({ title: 'Error', description: error.message, variant: 'destructive' });
-        }
+        toast({ title: 'Error', description: error.message, variant: 'destructive' });
       } else if (error.message?.includes('duplicate') || error.message?.includes('unique') || error.code === '23505') {
         toast({ title: t('seller.alreadyReviewed'), variant: 'destructive' });
       } else {
@@ -552,11 +608,7 @@ export default function Messages() {
     ? Math.floor((Date.now() - new Date(otherParticipant.created_at).getTime()) / (1000 * 60 * 60 * 24))
     : 0;
   const bothAccountsOldEnough = currentAccountAgeDays >= 7 && otherAccountAgeDays >= 7;
-  const reviewEligibilityIssues = [
-    !bothAccountsOldEnough ? t('seller.accountTooNew') : null,
-    !bothHaveMessaged ? t('seller.noExchangeYet') : null,
-  ].filter(Boolean);
-  const canLeaveReview = isDealClosed && isBuyerConfirmed && !hasRated && reviewEligibilityIssues.length === 0;
+  const canLeaveReview = isDealClosed && isBuyerConfirmed && !hasRated;
 
   // Input zone logic
   const canSendMessages = activeConv && !isClosed && (
@@ -956,16 +1008,6 @@ export default function Messages() {
                     <Button size="sm" onClick={handleSubmitRating} className="w-full">
                       {t('messages.submitRating')}
                     </Button>
-                  </div>
-                )}
-
-                {isDealClosed && isBuyerConfirmed && !hasRated && !canLeaveReview && (
-                  <div className="p-3 border-t border-border flex-shrink-0 bg-destructive/5">
-                    <div className="space-y-1 text-sm text-muted-foreground">
-                      {reviewEligibilityIssues.map((issue) => (
-                        <p key={issue}>• {issue}</p>
-                      ))}
-                    </div>
                   </div>
                 )}
 
