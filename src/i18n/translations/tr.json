@@ -1009,7 +1009,10 @@
     "saveEdit": "Kaydet",
     "cancelEdit": "İptal",
     "shareInfoUnlocked": "🎉 Harika! Artık yukarıdaki butonla iletişim bilgilerinizi paylaşabilirsiniz.",
-    "shareInfoLocked": "Paylaşımı açmak için önce birkaç mesaj gönderin."
+    "shareInfoLocked": "Paylaşımı açmak için önce birkaç mesaj gönderin.",
+    "activeChats": "Aktif sohbetler",
+    "completedDeals": "Tamamlanan anlaşmalar",
+    "noCompletedDeals": "Henüz tamamlanmış anlaşma yok"
   },
   "extraFields": {
     "contractType": "Sözleşme Türü",

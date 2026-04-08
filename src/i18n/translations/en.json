@@ -1023,7 +1023,10 @@
     "saveEdit": "Save",
     "cancelEdit": "Cancel",
     "shareInfoUnlocked": "🎉 Great! You can now share your contact info using the button above.",
-    "shareInfoLocked": "Exchange a few messages first to unlock contact sharing."
+    "shareInfoLocked": "Exchange a few messages first to unlock contact sharing.",
+    "activeChats": "Active Chats",
+    "completedDeals": "Completed Deals",
+    "noCompletedDeals": "No completed deals yet"
   },
   "extraFields": {
     "contractType": "Contract Type",

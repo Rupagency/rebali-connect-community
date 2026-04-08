@@ -1212,7 +1212,10 @@
     "saveEdit": "Opslaan",
     "cancelEdit": "Annuleren",
     "shareInfoUnlocked": "🎉 Top! Je kunt nu je contactgegevens delen via de knop hierboven.",
-    "shareInfoLocked": "Wissel eerst een paar berichten uit om delen te ontgrendelen."
+    "shareInfoLocked": "Wissel eerst een paar berichten uit om delen te ontgrendelen.",
+    "activeChats": "Actieve chats",
+    "completedDeals": "Afgeronde deals",
+    "noCompletedDeals": "Nog geen afgeronde deals"
   },
   "twoFactor": {
     "title": "Tweefactorauthenticatie (2FA)",
