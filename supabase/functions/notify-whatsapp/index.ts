@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
         },
         body: JSON.stringify({
           user_id: recipientId,
-          title: `📩 ${senderName}`,
+          title: `📩 ${senderName} · ${listingTitle}`,
           body: translatedBody,
           url: `/messages?conv=${conversation_id}`,
           tag: `msg-${conversation_id}`,
