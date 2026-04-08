@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<resources>
     <!-- Orange accent for notification icon tint -->
     <color name="notification_color">#F26522</color>
-</resources>
 </resources>
