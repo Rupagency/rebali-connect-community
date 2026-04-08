@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import SellerProfileSkeleton from '@/components/skeletons/SellerProfileSkeleton';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,7 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import ListingCard from '@/components/ListingCard';
-import { User, Briefcase, Star, Calendar, Package, ShieldCheck, CheckCircle } from 'lucide-react';
+import { User, Briefcase, Star, Calendar, Package, ShieldCheck, CheckCircle, Languages } from 'lucide-react';
+import { supabase as sb } from '@/integrations/supabase/client';
 import UserBadges from '@/components/UserBadges';
 import TrustIndicator from '@/components/TrustIndicator';
 import ActiveSellerStatus from '@/components/ActiveSellerStatus';
@@ -96,6 +98,58 @@ export default function SellerProfile() {
     : 0;
 
   const isPro = seller?.user_type === 'business';
+
+  // Translate review comments into viewer's language
+  const [translatedComments, setTranslatedComments] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    if (!reviews || reviews.length === 0 || !language) return;
+    const commentsToTranslate = reviews
+      .filter((r: any) => r.comment && r.comment.trim().length > 0)
+      .map((r: any) => ({ id: r.id, comment: r.comment }));
+    if (commentsToTranslate.length === 0) return;
+
+    let cancelled = false;
+    setIsTranslating(true);
+
+    (async () => {
+      try {
+        const { data: sessionData } = await sb.auth.getSession();
+        const token = sessionData?.session?.access_token;
+        const res = await fetch(
+          `https://eddrshyqlrpxgvyxpjee.supabase.co/functions/v1/translate-text`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkZHJzaHlxbHJweGd2eXhwamVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODI0MjYsImV4cCI6MjA4NzA1ODQyNn0.On_i0UMaMbhYVV18NTrWZiUDz6mPqVY8Hrv5URj11tc'}`,
+            },
+            body: JSON.stringify({
+              texts: commentsToTranslate.map((c) => c.comment),
+              target_lang: language,
+            }),
+          }
+        );
+        if (!res.ok) throw new Error('translate failed');
+        const { translated } = await res.json();
+        if (cancelled) return;
+        const map: Record<string, string> = {};
+        commentsToTranslate.forEach((c, i) => {
+          if (translated[i] && translated[i] !== c.comment) {
+            map[c.id] = translated[i];
+          }
+        });
+        setTranslatedComments(map);
+      } catch {
+        // keep original comments
+      } finally {
+        if (!cancelled) setIsTranslating(false);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [reviews, language]);
 
   // Redirect agence sellers to their business page
   if (hasAgenceSub) {
@@ -209,7 +263,19 @@ export default function SellerProfile() {
                       ))}
                     </div>
                   </div>
-                  {review.comment && <p className="text-sm text-muted-foreground">{review.comment}</p>}
+                  {review.comment && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        {translatedComments[review.id] || review.comment}
+                      </p>
+                      {translatedComments[review.id] && (
+                        <p className="text-[10px] text-muted-foreground/50 flex items-center gap-1 mt-0.5">
+                          <Languages className="h-3 w-3" />
+                          {t('common.autoTranslated')}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <p className="text-xs text-muted-foreground mt-2">{new Date(review.created_at).toLocaleDateString()}</p>
                 </CardContent>
               </Card>

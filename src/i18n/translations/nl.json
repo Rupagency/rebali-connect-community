@@ -2,7 +2,8 @@
   "common": {
     "sponsored": "Gesponsord",
     "skip": "Overslaan",
-    "later": "Later"
+    "later": "Later",
+    "autoTranslated": "Automatisch vertaald"
   },
   "nav": {
     "home": "Home",

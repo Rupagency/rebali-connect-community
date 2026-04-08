@@ -2,7 +2,8 @@
   "common": {
     "sponsored": "スポンサー",
     "skip": "スキップ",
-    "later": "あとで"
+    "later": "あとで",
+    "autoTranslated": "自動翻訳"
   },
   "nav": {
     "home": "ホーム",
