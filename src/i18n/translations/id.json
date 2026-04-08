@@ -968,7 +968,10 @@
     "saveEdit": "Simpan",
     "cancelEdit": "Batal",
     "shareInfoUnlocked": "🎉 Bagus! Anda sekarang dapat berbagi info kontak menggunakan tombol di atas.",
-    "shareInfoLocked": "Tukarkan beberapa pesan terlebih dahulu untuk membuka berbagi kontak."
+    "shareInfoLocked": "Tukarkan beberapa pesan terlebih dahulu untuk membuka berbagi kontak.",
+    "activeChats": "Chat Aktif",
+    "completedDeals": "Deal Selesai",
+    "noCompletedDeals": "Belum ada deal selesai"
   },
   "extraFields": {
     "contractType": "Jenis Kontrak",

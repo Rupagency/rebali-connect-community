@@ -968,7 +968,10 @@
     "saveEdit": "Guardar",
     "cancelEdit": "Cancelar",
     "shareInfoUnlocked": "🎉 ¡Genial! Ahora puedes compartir tu información de contacto con el botón de arriba.",
-    "shareInfoLocked": "Intercambia algunos mensajes primero para desbloquear el compartir."
+    "shareInfoLocked": "Intercambia algunos mensajes primero para desbloquear el compartir.",
+    "activeChats": "Chats activos",
+    "completedDeals": "Tratos completados",
+    "noCompletedDeals": "Aún no hay tratos completados"
   },
   "extraFields": {
     "contractType": "Tipo de contrato",

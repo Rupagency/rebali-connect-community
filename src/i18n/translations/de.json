@@ -970,7 +970,10 @@
     "saveEdit": "Speichern",
     "cancelEdit": "Abbrechen",
     "shareInfoUnlocked": "🎉 Super! Sie können jetzt Ihre Kontaktdaten über die Schaltfläche oben teilen.",
-    "shareInfoLocked": "Tauschen Sie zuerst ein paar Nachrichten aus, um das Teilen freizuschalten."
+    "shareInfoLocked": "Tauschen Sie zuerst ein paar Nachrichten aus, um das Teilen freizuschalten.",
+    "activeChats": "Aktive Chats",
+    "completedDeals": "Abgeschlossene Deals",
+    "noCompletedDeals": "Noch keine abgeschlossenen Deals"
   },
   "extraFields": {
     "contractType": "Vertragsart",

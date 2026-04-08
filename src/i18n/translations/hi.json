@@ -1009,7 +1009,10 @@
     "saveEdit": "सहेजें",
     "cancelEdit": "रद्द करें",
     "shareInfoUnlocked": "🎉 बढ़िया! अब आप ऊपर दिए गए बटन से अपनी संपर्क जानकारी साझा कर सकते हैं।",
-    "shareInfoLocked": "शेयरिंग अनलॉक करने के लिए पहले कुछ संदेश भेजें।"
+    "shareInfoLocked": "शेयरिंग अनलॉक करने के लिए पहले कुछ संदेश भेजें।",
+    "activeChats": "सक्रिय चैट",
+    "completedDeals": "पूर्ण सौदे",
+    "noCompletedDeals": "अभी तक कोई पूर्ण सौदा नहीं"
   },
   "extraFields": {
     "contractType": "अनुबंध प्रकार",

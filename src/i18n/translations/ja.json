@@ -780,7 +780,10 @@
     "saveEdit": "保存",
     "cancelEdit": "キャンセル",
     "shareInfoUnlocked": "🎉 素晴らしい！上のボタンから連絡先を共有できるようになりました。",
-    "shareInfoLocked": "連絡先の共有を解除するには、まずメッセージを交換してください。"
+    "shareInfoLocked": "連絡先の共有を解除するには、まずメッセージを交換してください。",
+    "activeChats": "アクティブチャット",
+    "completedDeals": "完了した取引",
+    "noCompletedDeals": "完了した取引はまだありません"
   },
   "twoFactor": {
     "title": "二段階認証 (2FA)",
