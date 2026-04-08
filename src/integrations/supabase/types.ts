@@ -1508,6 +1508,7 @@ export type Database = {
           title: string
         }[]
       }
+      share_contact_info: { Args: { _conversation_id: string }; Returns: Json }
       validate_content: { Args: { content: string }; Returns: boolean }
     }
     Enums: {

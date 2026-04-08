@@ -663,12 +663,12 @@ export default function Messages() {
                            <AlertDialogAction
                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                              onClick={async () => {
-                               if (!user || !activeConvId || !profile?.whatsapp) return;
-                               const shareMsg = `📞 ${profile.display_name || 'User'}\nWhatsApp: ${profile.whatsapp}`;
-                               await supabase.from('messages').insert({
-                                 conversation_id: activeConvId, sender_id: user.id, content: shareMsg,
-                               });
-                               await supabase.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', activeConvId);
+                               if (!user || !activeConvId) return;
+                               const { error } = await supabase.rpc('share_contact_info' as any, { _conversation_id: activeConvId });
+                               if (error) {
+                                 toast({ title: error.message, variant: 'destructive' });
+                                 return;
+                               }
                                queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
                                toast({ title: t('messages.shareInfoSent') });
                              }}
@@ -717,6 +717,7 @@ export default function Messages() {
                                     return;
                                   }
                                   queryClient.invalidateQueries({ queryKey: ['conversations'] });
+                                  queryClient.invalidateQueries({ queryKey: ['conversations', user?.id] });
                                   queryClient.invalidateQueries({ queryKey: ['messages', activeConvId] });
                                   queryClient.invalidateQueries({ queryKey: ['last-messages'] });
                                   toast({ title: t('messages.dealClosedSuccess') });
