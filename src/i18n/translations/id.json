@@ -1803,5 +1803,10 @@
     "error": "Kesalahan",
     "confirmDisableApp": "Nonaktifkan 2FA via autentikator?",
     "confirmDisableEmail": "Nonaktifkan 2FA via email?"
+  },
+  "update": {
+    "title": "Pembaruan Diperlukan",
+    "description": "Versi baru Re-Bali tersedia. Silakan perbarui untuk terus menggunakan aplikasi.",
+    "button": "Perbarui Sekarang"
   }
 }
