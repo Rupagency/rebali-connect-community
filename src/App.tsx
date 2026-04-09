@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { lazy, Suspense, useEffect } from "react";
 import OfflineBanner from "./components/OfflineBanner";
+import AppUpdateChecker from "./components/AppUpdateChecker";
 
 // Lazy-loaded pages for code splitting (better Core Web Vitals)
 const Browse = lazy(() => import("./pages/Browse"));
@@ -96,6 +97,7 @@ const App = () => {
                 <Toaster />
                 <Sonner />
                 <OfflineBanner />
+                <AppUpdateChecker />
                 <BrowserRouter>
                   <ScrollToTop />
                   <ErrorBoundary>

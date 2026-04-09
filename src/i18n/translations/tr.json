@@ -1801,5 +1801,10 @@
     "error": "Hata",
     "confirmDisableApp": "Doğrulayıcı ile 2FA devre dışı bırakılsın mı?",
     "confirmDisableEmail": "E-posta ile 2FA devre dışı bırakılsın mı?"
+  },
+  "update": {
+    "title": "Güncelleme Gerekli",
+    "description": "Re-Bali'nin yeni bir sürümü mevcut. Uygulamayı kullanmaya devam etmek için lütfen güncelleyin.",
+    "button": "Şimdi Güncelle"
   }
 }

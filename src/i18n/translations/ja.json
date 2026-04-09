@@ -809,5 +809,10 @@
     "error": "エラー",
     "confirmDisableApp": "認証アプリの2FAを無効にしますか？",
     "confirmDisableEmail": "メールの2FAを無効にしますか？"
+  },
+  "update": {
+    "title": "アップデートが必要です",
+    "description": "Re-Baliの新しいバージョンが利用可能です。アプリを引き続きご利用いただくには、アップデートしてください。",
+    "button": "今すぐアップデート"
   }
 }

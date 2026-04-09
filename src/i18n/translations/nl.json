@@ -1241,5 +1241,10 @@
     "error": "Fout",
     "confirmDisableApp": "2FA via authenticator uitschakelen?",
     "confirmDisableEmail": "2FA via e-mail uitschakelen?"
+  },
+  "update": {
+    "title": "Update vereist",
+    "description": "Een nieuwe versie van Re-Bali is beschikbaar. Werk de app bij om deze te blijven gebruiken.",
+    "button": "Nu bijwerken"
   }
 }

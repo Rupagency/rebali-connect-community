@@ -1856,5 +1856,10 @@
     "error": "Error",
     "confirmDisableApp": "Disable 2FA via authenticator?",
     "confirmDisableEmail": "Disable 2FA via email?"
+  },
+  "update": {
+    "title": "Update Required",
+    "description": "A new version of Re-Bali is available. Please update to continue using the app.",
+    "button": "Update Now"
   }
 }

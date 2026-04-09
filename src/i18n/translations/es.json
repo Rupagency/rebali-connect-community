@@ -1762,5 +1762,10 @@
     "error": "Error",
     "confirmDisableApp": "¿Desactivar 2FA por autenticador?",
     "confirmDisableEmail": "¿Desactivar 2FA por email?"
+  },
+  "update": {
+    "title": "Actualización requerida",
+    "description": "Una nueva versión de Re-Bali está disponible. Por favor, actualiza para seguir usando la aplicación.",
+    "button": "Actualizar ahora"
   }
 }

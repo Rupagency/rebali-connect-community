@@ -1762,5 +1762,10 @@
     "error": "错误",
     "confirmDisableApp": "停用验证器 2FA？",
     "confirmDisableEmail": "停用邮件 2FA？"
+  },
+  "update": {
+    "title": "需要更新",
+    "description": "Re-Bali 有新版本可用。请更新以继续使用该应用。",
+    "button": "立即更新"
   }
 }
