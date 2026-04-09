@@ -63,9 +63,9 @@ export default function AppUpdateChecker() {
     check();
   }, []);
 
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     if (storeUrl) {
-      await CapApp.openUrl({ url: storeUrl });
+      window.open(storeUrl, '_system');
     }
   };
 
@@ -73,7 +73,7 @@ export default function AppUpdateChecker() {
 
   return (
     <AlertDialog open>
-      <AlertDialogContent className="max-w-sm" onInteractOutside={(e) => e.preventDefault()}>
+      <AlertDialogContent className="max-w-sm [&>button]:hidden">
         <AlertDialogHeader>
           <div className="flex justify-center mb-4">
             <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
