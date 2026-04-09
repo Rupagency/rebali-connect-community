@@ -242,10 +242,10 @@ export default function Home() {
       </Suspense>
 
       {/* Hero */}
-      <section className="relative z-30 bg-gradient-to-br from-[hsl(20,90%,54%,0.1)] via-[hsl(45,25%,96%)] to-[hsl(12,80%,60%,0.1)]">
+      <section className="relative z-30 bg-gradient-to-br from-[hsl(20,90%,54%,0.1)] via-[hsl(45,25%,96%)] to-[hsl(12,80%,60%,0.1)] dark:from-[hsl(220,20%,10%)] dark:via-[hsl(225,15%,12%)] dark:to-[hsl(200,15%,14%)]">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-[hsl(20,90%,54%,0.1)] rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[hsl(12,80%,60%,0.1)] rounded-full blur-3xl" />
+          <div className="absolute top-10 left-10 w-32 h-32 bg-[hsl(20,90%,54%,0.1)] dark:bg-[hsl(180,50%,40%,0.08)] rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[hsl(12,80%,60%,0.1)] dark:bg-[hsl(20,90%,54%,0.06)] rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 py-14 md:py-20 text-center relative z-10">
           <div className="mb-5">
