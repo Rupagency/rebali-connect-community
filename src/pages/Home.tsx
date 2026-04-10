@@ -251,8 +251,15 @@ export default function Home() {
           <div className="mb-5">
             <AnimatedHeroText />
           </div>
+          <h2 className="sr-only">Buy and sell second-hand items in Bali — furniture, vehicles, real estate and more</h2>
           <p className="text-base md:text-lg text-[hsl(220,10%,46%)] mb-8 max-w-xl mx-auto font-medium">
             {t('home.heroSub')}
+          </p>
+          <p className="sr-only">
+            Re-Bali is Bali's trusted marketplace to buy, sell and trade second-hand goods. 
+            Browse furniture, vehicles, electronics, real estate, clothing, sports equipment and services 
+            in Canggu, Seminyak, Ubud, Denpasar, Kuta, Sanur and across all Bali areas. 
+            Join thousands of expats, locals and businesses. Post listings for free.
           </p>
           <form onSubmit={handleSearch} className="max-w-lg mx-auto flex gap-2 relative z-20">
             <SearchAutocomplete
