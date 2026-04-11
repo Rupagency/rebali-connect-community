@@ -31,7 +31,9 @@
     "private": "Privat",
     "pro": "Pro",
     "sponsored": "Gesponsert",
-    "autoTranslated": "Automatisch übersetzt"
+    "autoTranslated": "Automatisch übersetzt",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "Startseite",
@@ -73,7 +75,8 @@
     "freePlatform": "100% Kostenlose Plattform",
     "freeDesc": "Keine Gebühren, keine Provisionen. Re-Bali ist für alle kostenlos.",
     "featured": "Empfohlene Anzeigen",
-    "recommended": "Für Sie empfohlen"
+    "recommended": "Für Sie empfohlen",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "Jobs",
@@ -212,7 +215,21 @@
     "perDay": "/Tag",
     "perMonth": "/Monat",
     "perYear": "/Jahr",
-    "rental": "Vermietung"
+    "rental": "Vermietung",
+    "favorites": "favorites",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "keyInfo": "Key Information",
+    "category": "Category",
+    "seePhotos": "See all photos",
+    "contactBtn": "Contact",
+    "sellerListings": "Listings from this seller",
+    "seeMoreListings": "See more listings",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "phoneVerified": "Phone verified",
+    "loginToContact": "Log in to contact the seller",
+    "yourMessage": "Your message",
+    "sendViaWhatsApp": "Send via WhatsApp"
   },
   "rentalPeriod": {
     "daily": "Pro Tag",
@@ -292,7 +309,8 @@
     "signupSuccess": "Konto erfolgreich erstellt! Willkommen bei Re-Bali.",
     "continueWithGoogle": "Weiter mit Google",
     "continueWithApple": "Weiter mit Apple",
-    "orContinueWith": "oder weiter mit"
+    "orContinueWith": "oder weiter mit",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "Profileinstellungen",
@@ -403,7 +421,27 @@
     "lastUpdated": "Zuletzt aktualisiert",
     "description": "Beschreibung",
     "listingSaved": "Anzeige aktualisiert",
-    "colSubcategory": "Unterkategorie"
+    "colSubcategory": "Unterkategorie",
+    "waRelay": "WhatsApp Relay",
+    "relayConversations": "Relay Conversations",
+    "riskEvents": "Risk Events",
+    "blockConversation": "Block",
+    "unblockConversation": "Unblock",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "noConversations": "No relay conversations",
+    "noRiskEvents": "No risk events",
+    "buyer": "Buyer",
+    "sellerLabel": "Seller",
+    "msgCount": "Messages",
+    "relayStatus": "Status",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "Über Re-Bali",
@@ -647,7 +685,8 @@
     "geoError": "Standort konnte nicht ermittelt werden",
     "geoNotSupported": "Geolokalisierung wird nicht unterstützt",
     "listingType": "Typ",
-    "allTypes": "Verkauf & Vermietung"
+    "allTypes": "Verkauf & Vermietung",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "Zu verkaufen",
@@ -672,7 +711,15 @@
     "unreadMessages": "Unread messages",
     "newMessages": "new messages",
     "deal": "Deal",
-    "dealCompleted": "Deal completed ✅"
+    "dealCompleted": "Deal completed ✅",
+    "newListing": "New listing!",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "Suchalarme",
@@ -849,7 +896,12 @@
     "reviewPlaceholder": "Teilen Sie Ihre Erfahrung...",
     "reviewSubmitted": "Bewertung gesendet!",
     "noReviews": "Noch keine Bewertungen",
-    "allListings": "Anzeigen"
+    "allListings": "Anzeigen",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "WhatsApp verifizieren",
@@ -920,7 +972,8 @@
     "npwpChooseFile": "Foto Ihres NPWP wählen",
     "npwpSubmit": "NPWP zur Verifizierung einreichen",
     "npwpRequiredToSell": "Sie müssen Ihr NPWP verifizieren, bevor Sie als Pro verkaufen können. Gehen Sie zu Ihrem Profil.",
-    "npwpGoVerify": "Mein NPWP verifizieren"
+    "npwpGoVerify": "Mein NPWP verifizieren",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "Meine Favoriten",
@@ -1028,7 +1081,18 @@
     "room": "Zimmer",
     "yes": "Ja",
     "no": "Nein",
-    "categorySpecificInfo": "Kategoriedetails"
+    "categorySpecificInfo": "Kategoriedetails",
+    "animalType": "Animal Type",
+    "breed": "Breed",
+    "age": "Age",
+    "chien": "Dog",
+    "chat": "Cat",
+    "oiseau": "Bird",
+    "poisson": "Fish",
+    "reptile": "Reptile",
+    "rongeur": "Rodent",
+    "cheval": "Horse",
+    "specifyOther": "Please specify..."
   },
   "legal": {
     "termsTitle": "Nutzungsbedingungen",
@@ -1303,7 +1367,9 @@
     "packPrice": "Rp {price}",
     "bestValue": "Bester Wert",
     "comingSoon": "Demnächst",
-    "paymentMethods": "Zahlung über Xendit / DOKU"
+    "paymentMethods": "Zahlung über Xendit / DOKU",
+    "buyNow": "Buy Now",
+    "redirectingPayment": "Redirecting to payment..."
   },
   "referral": {
     "title": "Freunde einladen",
@@ -1769,5 +1835,31 @@
     "title": "Update erforderlich",
     "description": "Eine neue Version von Re-Bali ist verfügbar. Bitte aktualisieren Sie die App, um sie weiter nutzen zu können.",
     "button": "Jetzt aktualisieren"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }

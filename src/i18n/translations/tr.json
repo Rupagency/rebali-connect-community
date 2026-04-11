@@ -31,7 +31,9 @@
     "private": "Bireysel",
     "pro": "Profesyonel",
     "sponsored": "Sponsorlu",
-    "autoTranslated": "Otomatik çeviri"
+    "autoTranslated": "Otomatik çeviri",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "Ana Sayfa",
@@ -73,7 +75,8 @@
     "freePlatform": "%100 Ücretsiz Platform",
     "freeDesc": "Ücret yok, komisyon yok. Re-Bali herkes için ücretsizdir.",
     "featured": "Öne Çıkan İlanlar",
-    "recommended": "Sizin İçin Önerilen"
+    "recommended": "Sizin İçin Önerilen",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "İş İlanları",
@@ -264,7 +267,9 @@
     "limitReached": "Maksimum 5 aktif ilan sınırına ulaştınız",
     "atLeastOnePhoto": "En az bir fotoğraf yükleyin",
     "whatsappRequired": "İlan vermeden önce WhatsApp numaranızı doğrulamanız gerekir.",
-    "verifyWhatsapp": "WhatsApp'ımı doğrula"
+    "verifyWhatsapp": "WhatsApp'ımı doğrula",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "Tekrar hoş geldiniz",
@@ -304,7 +309,8 @@
     "signupSuccess": "Hesap başarıyla oluşturuldu! Re-Bali'ye hoş geldiniz.",
     "continueWithGoogle": "Google ile devam et",
     "continueWithApple": "Apple ile devam et",
-    "orContinueWith": "veya şununla devam et"
+    "orContinueWith": "veya şununla devam et",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "Profil Ayarları",
@@ -428,7 +434,14 @@
     "buyer": "Alıcı",
     "sellerLabel": "Satıcı",
     "msgCount": "Mesajlar",
-    "relayStatus": "Durum"
+    "relayStatus": "Durum",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "Re-Bali Hakkında",
@@ -672,7 +685,8 @@
     "geoError": "Konumunuza erişilemiyor",
     "geoNotSupported": "Coğrafi konum desteklenmiyor",
     "listingType": "Tür",
-    "allTypes": "Satış & Kiralık"
+    "allTypes": "Satış & Kiralık",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "Satılık",
@@ -711,7 +725,14 @@
     "unreadMessages": "Unread messages",
     "newMessages": "new messages",
     "deal": "Deal",
-    "dealCompleted": "Deal completed ✅"
+    "dealCompleted": "Deal completed ✅",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "Arama Uyarıları",
@@ -888,7 +909,12 @@
     "reviewPlaceholder": "Bu satıcıyla deneyiminizi paylaşın...",
     "reviewSubmitted": "Değerlendirme gönderildi!",
     "noReviews": "Henüz değerlendirme yok",
-    "allListings": "İlanlar"
+    "allListings": "İlanlar",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "WhatsApp'ınızı doğrulayın",
@@ -959,7 +985,8 @@
     "npwpChooseFile": "NPWP fotoğrafı seçin",
     "npwpSubmit": "NPWP'yi doğrulamaya gönder",
     "npwpRequiredToSell": "Pro olarak satış yapmadan önce NPWP'nizi doğrulamalısınız. Profilinize gidin.",
-    "npwpGoVerify": "NPWP'mi doğrula"
+    "npwpGoVerify": "NPWP'mi doğrula",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "Favorilerim",
@@ -1353,7 +1380,9 @@
     "packPrice": "Rp {price}",
     "bestValue": "En İyi Değer",
     "comingSoon": "Yakında",
-    "paymentMethods": "Xendit / DOKU ile ödeme"
+    "paymentMethods": "Xendit / DOKU ile ödeme",
+    "buyNow": "Buy Now",
+    "redirectingPayment": "Redirecting to payment..."
   },
   "referral": {
     "title": "Arkadaşlarını Davet Et",
@@ -1806,5 +1835,31 @@
     "title": "Güncelleme Gerekli",
     "description": "Re-Bali'nin yeni bir sürümü mevcut. Uygulamayı kullanmaya devam etmek için lütfen güncelleyin.",
     "button": "Şimdi Güncelle"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }

@@ -31,7 +31,9 @@
     "private": "个人",
     "pro": "专业",
     "sponsored": "赞助",
-    "autoTranslated": "自动翻译"
+    "autoTranslated": "自动翻译",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "首页",
@@ -73,7 +75,8 @@
     "freePlatform": "100%免费平台",
     "freeDesc": "无费用、无佣金。Re-Bali对所有人免费。",
     "featured": "精选推荐",
-    "recommended": "为您推荐"
+    "recommended": "为您推荐",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "招聘",
@@ -212,7 +215,21 @@
     "perDay": "/天",
     "perMonth": "/月",
     "perYear": "/年",
-    "rental": "租赁"
+    "rental": "租赁",
+    "favorites": "favorites",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "keyInfo": "Key Information",
+    "category": "Category",
+    "seePhotos": "See all photos",
+    "contactBtn": "Contact",
+    "sellerListings": "Listings from this seller",
+    "seeMoreListings": "See more listings",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "phoneVerified": "Phone verified",
+    "loginToContact": "Log in to contact the seller",
+    "yourMessage": "Your message",
+    "sendViaWhatsApp": "Send via WhatsApp"
   },
   "rentalPeriod": {
     "daily": "按天",
@@ -250,7 +267,9 @@
     "limitReached": "您已达到5个活跃列表的上限",
     "atLeastOnePhoto": "至少上传一张照片",
     "whatsappRequired": "您必须在发布列表之前验证您的WhatsApp号码。",
-    "verifyWhatsapp": "验证我的WhatsApp"
+    "verifyWhatsapp": "验证我的WhatsApp",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "欢迎回来",
@@ -290,7 +309,8 @@
     "signupSuccess": "账户创建成功！欢迎来到Re-Bali。",
     "continueWithGoogle": "使用 Google 继续",
     "continueWithApple": "使用 Apple 继续",
-    "orContinueWith": "或继续使用"
+    "orContinueWith": "或继续使用",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "个人资料设置",
@@ -401,7 +421,27 @@
     "lastUpdated": "最后更新",
     "description": "描述",
     "listingSaved": "列表已更新",
-    "colSubcategory": "子分类"
+    "colSubcategory": "子分类",
+    "waRelay": "WhatsApp Relay",
+    "relayConversations": "Relay Conversations",
+    "riskEvents": "Risk Events",
+    "blockConversation": "Block",
+    "unblockConversation": "Unblock",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "noConversations": "No relay conversations",
+    "noRiskEvents": "No risk events",
+    "buyer": "Buyer",
+    "sellerLabel": "Seller",
+    "msgCount": "Messages",
+    "relayStatus": "Status",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "关于 Re-Bali",
@@ -645,7 +685,8 @@
     "geoError": "无法获取您的位置",
     "geoNotSupported": "不支持地理位置",
     "listingType": "类型",
-    "allTypes": "出售和出租"
+    "allTypes": "出售和出租",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "出售",
@@ -670,7 +711,15 @@
     "unreadMessages": "Unread messages",
     "newMessages": "new messages",
     "deal": "Deal",
-    "dealCompleted": "Deal completed ✅"
+    "dealCompleted": "Deal completed ✅",
+    "newListing": "New listing!",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "搜索提醒",
@@ -847,7 +896,12 @@
     "reviewPlaceholder": "分享您的体验...",
     "reviewSubmitted": "评价已提交！",
     "noReviews": "暂无评价",
-    "allListings": "列表"
+    "allListings": "列表",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "验证WhatsApp",
@@ -918,7 +972,8 @@
     "npwpChooseFile": "选择NPWP照片",
     "npwpSubmit": "提交NPWP进行验证",
     "npwpRequiredToSell": "您必须验证NPWP才能作为Pro销售。请前往个人资料上传。",
-    "npwpGoVerify": "验证我的NPWP"
+    "npwpGoVerify": "验证我的NPWP",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "我的收藏",
@@ -1026,7 +1081,18 @@
     "room": "房间",
     "yes": "是",
     "no": "否",
-    "categorySpecificInfo": "分类详情"
+    "categorySpecificInfo": "分类详情",
+    "animalType": "Animal Type",
+    "breed": "Breed",
+    "age": "Age",
+    "chien": "Dog",
+    "chat": "Cat",
+    "oiseau": "Bird",
+    "poisson": "Fish",
+    "reptile": "Reptile",
+    "rongeur": "Rodent",
+    "cheval": "Horse",
+    "specifyOther": "Please specify..."
   },
   "legal": {
     "termsTitle": "使用条款",
@@ -1301,7 +1367,9 @@
     "packPrice": "Rp {price}",
     "bestValue": "最佳价值",
     "comingSoon": "即将推出",
-    "paymentMethods": "通过 Xendit / DOKU 支付"
+    "paymentMethods": "通过 Xendit / DOKU 支付",
+    "buyNow": "Buy Now",
+    "redirectingPayment": "Redirecting to payment..."
   },
   "referral": {
     "title": "邀请好友",
@@ -1767,5 +1835,31 @@
     "title": "需要更新",
     "description": "Re-Bali 有新版本可用。请更新以继续使用该应用。",
     "button": "立即更新"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }

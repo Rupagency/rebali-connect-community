@@ -31,7 +31,9 @@
     "private": "Particular",
     "pro": "Pro",
     "sponsored": "Patrocinado",
-    "autoTranslated": "Traducido automáticamente"
+    "autoTranslated": "Traducido automáticamente",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "Inicio",
@@ -73,7 +75,8 @@
     "freePlatform": "Plataforma 100% Gratis",
     "freeDesc": "Sin comisiones. Re-Bali es gratis para todos.",
     "featured": "Anuncios destacados",
-    "recommended": "Recomendado para ti"
+    "recommended": "Recomendado para ti",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "Empleo",
@@ -212,7 +215,21 @@
     "perDay": "/día",
     "perMonth": "/mes",
     "perYear": "/año",
-    "rental": "Alquiler"
+    "rental": "Alquiler",
+    "favorites": "favorites",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "keyInfo": "Key Information",
+    "category": "Category",
+    "seePhotos": "See all photos",
+    "contactBtn": "Contact",
+    "sellerListings": "Listings from this seller",
+    "seeMoreListings": "See more listings",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "phoneVerified": "Phone verified",
+    "loginToContact": "Log in to contact the seller",
+    "yourMessage": "Your message",
+    "sendViaWhatsApp": "Send via WhatsApp"
   },
   "rentalPeriod": {
     "daily": "Por día",
@@ -250,7 +267,9 @@
     "limitReached": "Has alcanzado el límite de 5 anuncios activos",
     "atLeastOnePhoto": "Sube al menos una foto",
     "whatsappRequired": "Debes verificar tu número de WhatsApp antes de publicar un anuncio.",
-    "verifyWhatsapp": "Verificar mi WhatsApp"
+    "verifyWhatsapp": "Verificar mi WhatsApp",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "Bienvenido de nuevo",
@@ -290,7 +309,8 @@
     "signupSuccess": "¡Cuenta creada con éxito! Bienvenido a Re-Bali.",
     "continueWithGoogle": "Continuar con Google",
     "continueWithApple": "Continuar con Apple",
-    "orContinueWith": "o continuar con"
+    "orContinueWith": "o continuar con",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "Configuración de perfil",
@@ -401,7 +421,27 @@
     "lastUpdated": "Última actualización",
     "description": "Descripción",
     "listingSaved": "Anuncio actualizado",
-    "colSubcategory": "Subcategoría"
+    "colSubcategory": "Subcategoría",
+    "waRelay": "WhatsApp Relay",
+    "relayConversations": "Relay Conversations",
+    "riskEvents": "Risk Events",
+    "blockConversation": "Block",
+    "unblockConversation": "Unblock",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "noConversations": "No relay conversations",
+    "noRiskEvents": "No risk events",
+    "buyer": "Buyer",
+    "sellerLabel": "Seller",
+    "msgCount": "Messages",
+    "relayStatus": "Status",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "Acerca de Re-Bali",
@@ -645,7 +685,8 @@
     "geoError": "No se pudo acceder a su ubicación",
     "geoNotSupported": "La geolocalización no es compatible",
     "listingType": "Tipo",
-    "allTypes": "Venta y Alquiler"
+    "allTypes": "Venta y Alquiler",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "Venta",
@@ -670,7 +711,15 @@
     "unreadMessages": "Unread messages",
     "newMessages": "new messages",
     "deal": "Deal",
-    "dealCompleted": "Deal completed ✅"
+    "dealCompleted": "Deal completed ✅",
+    "newListing": "New listing!",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "Alertas de búsqueda",
@@ -847,7 +896,12 @@
     "reviewPlaceholder": "Comparte tu experiencia...",
     "reviewSubmitted": "¡Reseña enviada!",
     "noReviews": "Sin reseñas aún",
-    "allListings": "Anuncios"
+    "allListings": "Anuncios",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "Verificar WhatsApp",
@@ -918,7 +972,8 @@
     "npwpChooseFile": "Elegir una foto de tu NPWP",
     "npwpSubmit": "Enviar NPWP para verificación",
     "npwpRequiredToSell": "Debes verificar tu NPWP antes de poder vender como Pro. Ve a tu perfil para subirlo.",
-    "npwpGoVerify": "Verificar mi NPWP"
+    "npwpGoVerify": "Verificar mi NPWP",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "Mis Favoritos",
@@ -1026,7 +1081,18 @@
     "room": "Habitación",
     "yes": "Sí",
     "no": "No",
-    "categorySpecificInfo": "Detalles de categoría"
+    "categorySpecificInfo": "Detalles de categoría",
+    "animalType": "Animal Type",
+    "breed": "Breed",
+    "age": "Age",
+    "chien": "Dog",
+    "chat": "Cat",
+    "oiseau": "Bird",
+    "poisson": "Fish",
+    "reptile": "Reptile",
+    "rongeur": "Rodent",
+    "cheval": "Horse",
+    "specifyOther": "Please specify..."
   },
   "legal": {
     "termsTitle": "Condiciones de uso",
@@ -1301,7 +1367,9 @@
     "packPrice": "Rp {price}",
     "bestValue": "Mejor valor",
     "comingSoon": "Próximamente",
-    "paymentMethods": "Pago vía Xendit / DOKU"
+    "paymentMethods": "Pago vía Xendit / DOKU",
+    "buyNow": "Buy Now",
+    "redirectingPayment": "Redirecting to payment..."
   },
   "referral": {
     "title": "Invitar amigos",
@@ -1767,5 +1835,31 @@
     "title": "Actualización requerida",
     "description": "Una nueva versión de Re-Bali está disponible. Por favor, actualiza para seguir usando la aplicación.",
     "button": "Actualizar ahora"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }
