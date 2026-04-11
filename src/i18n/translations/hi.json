@@ -31,7 +31,9 @@
     "private": "व्यक्तिगत",
     "pro": "पेशेवर",
     "sponsored": "प्रायोजित",
-    "autoTranslated": "स्वचालित अनुवाद"
+    "autoTranslated": "स्वचालित अनुवाद",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "होम",
@@ -73,7 +75,8 @@
     "freePlatform": "100% मुफ़्त प्लेटफ़ॉर्म",
     "freeDesc": "कोई शुल्क नहीं, कोई कमीशन नहीं। Re-Bali सभी के लिए मुफ़्त है।",
     "featured": "विशेष रुप से प्रदर्शित",
-    "recommended": "आपके लिए अनुशंसित"
+    "recommended": "आपके लिए अनुशंसित",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "नौकरियां",
@@ -264,7 +267,9 @@
     "limitReached": "आप अधिकतम 5 सक्रिय विज्ञापनों की सीमा तक पहुंच गए हैं",
     "atLeastOnePhoto": "कम से कम एक फ़ोटो अपलोड करें",
     "whatsappRequired": "विज्ञापन पोस्ट करने से पहले आपको अपना WhatsApp नंबर सत्यापित करना होगा।",
-    "verifyWhatsapp": "मेरा WhatsApp सत्यापित करें"
+    "verifyWhatsapp": "मेरा WhatsApp सत्यापित करें",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "वापस स्वागत है",
@@ -304,7 +309,8 @@
     "signupSuccess": "खाता सफलतापूर्वक बनाया गया! Re-Bali में आपका स्वागत है।",
     "continueWithGoogle": "Google से जारी रखें",
     "continueWithApple": "Apple से जारी रखें",
-    "orContinueWith": "या इससे जारी रखें"
+    "orContinueWith": "या इससे जारी रखें",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "प्रोफ़ाइल सेटिंग्स",
@@ -428,7 +434,14 @@
     "buyer": "खरीदार",
     "sellerLabel": "विक्रेता",
     "msgCount": "संदेश",
-    "relayStatus": "स्थिति"
+    "relayStatus": "स्थिति",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "Re-Bali के बारे में",
@@ -672,7 +685,8 @@
     "geoError": "आपके स्थान तक पहुंच नहीं हो सकी",
     "geoNotSupported": "जियोलोकेशन समर्थित नहीं है",
     "listingType": "प्रकार",
-    "allTypes": "बिक्री और किराया"
+    "allTypes": "बिक्री और किराया",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "बिक्री",
@@ -711,7 +725,14 @@
     "unreadMessages": "Unread messages",
     "newMessages": "new messages",
     "deal": "Deal",
-    "dealCompleted": "Deal completed ✅"
+    "dealCompleted": "Deal completed ✅",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "खोज अलर्ट",
@@ -888,7 +909,12 @@
     "reviewPlaceholder": "इस विक्रेता के साथ अपना अनुभव साझा करें...",
     "reviewSubmitted": "समीक्षा भेजी गई!",
     "noReviews": "अभी तक कोई समीक्षा नहीं",
-    "allListings": "विज्ञापन"
+    "allListings": "विज्ञापन",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "अपना WhatsApp सत्यापित करें",
@@ -959,7 +985,8 @@
     "npwpChooseFile": "NPWP की फोटो चुनें",
     "npwpSubmit": "NPWP सत्यापन के लिए भेजें",
     "npwpRequiredToSell": "Pro के रूप में बेचने से पहले आपको NPWP सत्यापित करना होगा। अपनी प्रोफ़ाइल पर जाएं।",
-    "npwpGoVerify": "मेरा NPWP सत्यापित करें"
+    "npwpGoVerify": "मेरा NPWP सत्यापित करें",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "मेरे पसंदीदा",
@@ -1353,7 +1380,9 @@
     "packPrice": "Rp {price}",
     "bestValue": "सर्वोत्तम मूल्य",
     "comingSoon": "जल्द आ रहा है",
-    "paymentMethods": "Xendit / DOKU से भुगतान"
+    "paymentMethods": "Xendit / DOKU से भुगतान",
+    "buyNow": "Buy Now",
+    "redirectingPayment": "Redirecting to payment..."
   },
   "referral": {
     "title": "दोस्तों को आमंत्रित करें",
@@ -1806,5 +1835,31 @@
     "title": "अपडेट आवश्यक",
     "description": "Re-Bali का नया संस्करण उपलब्ध है। ऐप का उपयोग जारी रखने के लिए कृपया अपडेट करें।",
     "button": "अभी अपडेट करें"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }

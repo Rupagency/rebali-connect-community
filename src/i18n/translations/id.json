@@ -31,7 +31,9 @@
     "private": "Pribadi",
     "pro": "Pro",
     "sponsored": "Disponsori",
-    "autoTranslated": "Terjemahan otomatis"
+    "autoTranslated": "Terjemahan otomatis",
+    "skip": "Skip",
+    "later": "Later"
   },
   "nav": {
     "home": "Beranda",
@@ -73,7 +75,8 @@
     "freePlatform": "Platform 100% Gratis",
     "freeDesc": "Tanpa biaya, tanpa komisi. Re-Bali gratis untuk semua orang.",
     "featured": "Iklan Unggulan",
-    "recommended": "Rekomendasi untuk Anda"
+    "recommended": "Rekomendasi untuk Anda",
+    "highlightedListings": "Highlighted Listings"
   },
   "categories": {
     "emploi": "Pekerjaan",
@@ -212,7 +215,21 @@
     "perDay": "/hari",
     "perMonth": "/bulan",
     "perYear": "/tahun",
-    "rental": "Sewa"
+    "rental": "Sewa",
+    "favorites": "favorites",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "keyInfo": "Key Information",
+    "category": "Category",
+    "seePhotos": "See all photos",
+    "contactBtn": "Contact",
+    "sellerListings": "Listings from this seller",
+    "seeMoreListings": "See more listings",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "phoneVerified": "Phone verified",
+    "loginToContact": "Log in to contact the seller",
+    "yourMessage": "Your message",
+    "sendViaWhatsApp": "Send via WhatsApp"
   },
   "rentalPeriod": {
     "daily": "Per hari",
@@ -250,7 +267,9 @@
     "limitReached": "Anda telah mencapai batas maksimal 5 iklan aktif",
     "atLeastOnePhoto": "Unggah minimal satu foto",
     "whatsappRequired": "Anda harus memverifikasi nomor WhatsApp sebelum memasang iklan.",
-    "verifyWhatsapp": "Verifikasi WhatsApp saya"
+    "verifyWhatsapp": "Verifikasi WhatsApp saya",
+    "listingTypeLabel": "Listing type",
+    "rentPriceLabel": "Monthly rent"
   },
   "auth": {
     "loginTitle": "Selamat datang kembali",
@@ -290,7 +309,8 @@
     "signupSuccess": "Akun berhasil dibuat! Selamat datang di Re-Bali.",
     "continueWithGoogle": "Lanjutkan dengan Google",
     "continueWithApple": "Lanjutkan dengan Apple",
-    "orContinueWith": "atau lanjutkan dengan"
+    "orContinueWith": "atau lanjutkan dengan",
+    "proDescFull": "Professional account — Free Pro tier included"
   },
   "profile": {
     "title": "Pengaturan Profil",
@@ -401,7 +421,27 @@
     "lastUpdated": "Terakhir Diperbarui",
     "description": "Deskripsi",
     "listingSaved": "Iklan diperbarui",
-    "colSubcategory": "Subkategori"
+    "colSubcategory": "Subkategori",
+    "waRelay": "WhatsApp Relay",
+    "relayConversations": "Relay Conversations",
+    "riskEvents": "Risk Events",
+    "blockConversation": "Block",
+    "unblockConversation": "Unblock",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "noConversations": "No relay conversations",
+    "noRiskEvents": "No risk events",
+    "buyer": "Buyer",
+    "sellerLabel": "Seller",
+    "msgCount": "Messages",
+    "relayStatus": "Status",
+    "noVerificationRequest": "No verification request submitted",
+    "viewDocuments": "View Documents",
+    "maxListings": "Max Listings",
+    "listingLimitDefault": "Leave empty for default rules",
+    "listingLimitPlaceholder": "Auto (leave empty)",
+    "shopPoints": "Points Shop",
+    "totalListingsLabel": "Total"
   },
   "about": {
     "title": "Tentang Re-Bali",
@@ -645,7 +685,8 @@
     "geoError": "Tidak dapat mengakses lokasi Anda",
     "geoNotSupported": "Geolokasi tidak didukung",
     "listingType": "Tipe",
-    "allTypes": "Jual & Sewa"
+    "allTypes": "Jual & Sewa",
+    "sortRecommended": "Recommended for you"
   },
   "listingType": {
     "sale": "Dijual",
@@ -670,7 +711,15 @@
     "unreadMessages": "Pesan belum dibaca",
     "newMessages": "pesan baru",
     "deal": "Transaksi",
-    "dealCompleted": "Transaksi selesai ✅"
+    "dealCompleted": "Transaksi selesai ✅",
+    "newListing": "New listing!",
+    "enablePush": "Enable notifications",
+    "pushOn": "Notifications on",
+    "pushEnabled": "Push notifications enabled!",
+    "pushDisabled": "Push notifications disabled",
+    "pushBlocked": "Notifications blocked",
+    "pushNewMessage": "New message",
+    "pushSearchAlert": "Search alert"
   },
   "savedSearches": {
     "title": "Peringatan Pencarian",
@@ -847,7 +896,12 @@
     "reviewPlaceholder": "Bagikan pengalaman Anda...",
     "reviewSubmitted": "Ulasan terkirim!",
     "noReviews": "Belum ada ulasan",
-    "allListings": "Iklan"
+    "allListings": "Iklan",
+    "verifiedPurchase": "Verified Buyer",
+    "reviewRequiresDeal": "The seller must confirm the deal before you can leave a review.",
+    "accountTooNew": "Your account or the seller's account must be at least 7 days old to leave a review.",
+    "noExchangeYet": "A real conversation with messages from both sides is needed before leaving a review.",
+    "alreadyReviewed": "You have already reviewed this transaction."
   },
   "security": {
     "verifyWhatsapp": "Verifikasi WhatsApp",
@@ -918,7 +972,8 @@
     "npwpChooseFile": "Pilih foto NPWP Anda",
     "npwpSubmit": "Kirim NPWP untuk verifikasi",
     "npwpRequiredToSell": "Anda harus memverifikasi NPWP sebelum dapat berjualan sebagai Pro. Buka profil untuk mengunggahnya.",
-    "npwpGoVerify": "Verifikasi NPWP saya"
+    "npwpGoVerify": "Verifikasi NPWP saya",
+    "noPhoneOrLinks": "Phone numbers, links and messaging app references are not allowed"
   },
   "favorites": {
     "title": "Favorit Saya",
@@ -1026,7 +1081,18 @@
     "room": "Kamar",
     "yes": "Ya",
     "no": "Tidak",
-    "categorySpecificInfo": "Detail Kategori"
+    "categorySpecificInfo": "Detail Kategori",
+    "animalType": "Animal Type",
+    "breed": "Breed",
+    "age": "Age",
+    "chien": "Dog",
+    "chat": "Cat",
+    "oiseau": "Bird",
+    "poisson": "Fish",
+    "reptile": "Reptile",
+    "rongeur": "Rodent",
+    "cheval": "Horse",
+    "specifyOther": "Please specify..."
   },
   "badges": {
     "newMember": "Anggota Baru",
@@ -1808,5 +1874,31 @@
     "title": "Pembaruan Diperlukan",
     "description": "Versi baru Re-Bali tersedia. Silakan perbarui untuk terus menggunakan aplikasi.",
     "button": "Perbarui Sekarang"
+  },
+  "share": {
+    "copyLink": "Copy link",
+    "facebook": "Post on Facebook",
+    "whatsapp": "Share on WhatsApp"
+  },
+  "contact": {
+    "title": "Contact Support",
+    "subtitle": "Need help? Fill out the form below and we'll get back to you as soon as possible.",
+    "category": "What is this about?",
+    "cat_bug": "Technical bug",
+    "cat_payment": "Payment issue",
+    "cat_blocked": "Blocked account",
+    "cat_report": "Report a user",
+    "cat_suggestion": "Suggestion",
+    "cat_partnership": "Partnership",
+    "cat_other": "Other",
+    "email": "Your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Briefly describe your issue",
+    "message": "Message",
+    "messagePlaceholder": "Describe your issue in detail...",
+    "send": "Send message",
+    "sent": "Your message has been sent! We'll reply shortly.",
+    "error": "Failed to send. Please try again.",
+    "fillAll": "Please fill in all fields."
   }
 }
