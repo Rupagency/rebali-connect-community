@@ -32,8 +32,8 @@
     "pro": "Profesyonel",
     "sponsored": "Sponsorlu",
     "autoTranslated": "Otomatik çeviri",
-    "skip": "Skip",
-    "later": "Later"
+    "skip": "Atla",
+    "later": "Sonra"
   },
   "nav": {
     "home": "Ana Sayfa",
@@ -76,7 +76,7 @@
     "freeDesc": "Ücret yok, komisyon yok. Re-Bali herkes için ücretsizdir.",
     "featured": "Öne Çıkan İlanlar",
     "recommended": "Sizin İçin Önerilen",
-    "highlightedListings": "Highlighted Listings"
+    "highlightedListings": "Öne Çıkan İlanlar"
   },
   "categories": {
     "emploi": "İş İlanları",
@@ -268,8 +268,8 @@
     "atLeastOnePhoto": "En az bir fotoğraf yükleyin",
     "whatsappRequired": "İlan vermeden önce WhatsApp numaranızı doğrulamanız gerekir.",
     "verifyWhatsapp": "WhatsApp'ımı doğrula",
-    "listingTypeLabel": "Listing type",
-    "rentPriceLabel": "Monthly rent"
+    "listingTypeLabel": "İlan türü",
+    "rentPriceLabel": "Kira fiyatı"
   },
   "auth": {
     "loginTitle": "Tekrar hoş geldiniz",
@@ -310,7 +310,7 @@
     "continueWithGoogle": "Google ile devam et",
     "continueWithApple": "Apple ile devam et",
     "orContinueWith": "veya şununla devam et",
-    "proDescFull": "Professional account — Free Pro tier included"
+    "proDescFull": "İşletmeler ve profesyonel satıcılar için"
   },
   "profile": {
     "title": "Profil Ayarları",
@@ -435,13 +435,13 @@
     "sellerLabel": "Satıcı",
     "msgCount": "Mesajlar",
     "relayStatus": "Durum",
-    "noVerificationRequest": "No verification request submitted",
-    "viewDocuments": "View Documents",
-    "maxListings": "Max Listings",
-    "listingLimitDefault": "Leave empty for default rules",
-    "listingLimitPlaceholder": "Auto (leave empty)",
-    "shopPoints": "Points Shop",
-    "totalListingsLabel": "Total"
+    "noVerificationRequest": "Doğrulama talebi yok",
+    "viewDocuments": "Belgeleri görüntüle",
+    "maxListings": "Maks ilan",
+    "listingLimitDefault": "Varsayılan limit",
+    "listingLimitPlaceholder": "Özel limit",
+    "shopPoints": "Mağaza puanları",
+    "totalListingsLabel": "Toplam ilan"
   },
   "about": {
     "title": "Re-Bali Hakkında",

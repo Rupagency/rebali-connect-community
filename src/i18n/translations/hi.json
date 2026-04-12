@@ -32,8 +32,8 @@
     "pro": "पेशेवर",
     "sponsored": "प्रायोजित",
     "autoTranslated": "स्वचालित अनुवाद",
-    "skip": "Skip",
-    "later": "Later"
+    "skip": "छोड़ें",
+    "later": "बाद में"
   },
   "nav": {
     "home": "होम",
@@ -76,7 +76,7 @@
     "freeDesc": "कोई शुल्क नहीं, कोई कमीशन नहीं। Re-Bali सभी के लिए मुफ़्त है।",
     "featured": "विशेष रुप से प्रदर्शित",
     "recommended": "आपके लिए अनुशंसित",
-    "highlightedListings": "Highlighted Listings"
+    "highlightedListings": "विशेष लिस्टिंग"
   },
   "categories": {
     "emploi": "नौकरियां",
@@ -268,8 +268,8 @@
     "atLeastOnePhoto": "कम से कम एक फ़ोटो अपलोड करें",
     "whatsappRequired": "विज्ञापन पोस्ट करने से पहले आपको अपना WhatsApp नंबर सत्यापित करना होगा।",
     "verifyWhatsapp": "मेरा WhatsApp सत्यापित करें",
-    "listingTypeLabel": "Listing type",
-    "rentPriceLabel": "Monthly rent"
+    "listingTypeLabel": "लिस्टिंग प्रकार",
+    "rentPriceLabel": "किराया"
   },
   "auth": {
     "loginTitle": "वापस स्वागत है",
@@ -310,7 +310,7 @@
     "continueWithGoogle": "Google से जारी रखें",
     "continueWithApple": "Apple से जारी रखें",
     "orContinueWith": "या इससे जारी रखें",
-    "proDescFull": "Professional account — Free Pro tier included"
+    "proDescFull": "व्यवसायों और पेशेवर विक्रेताओं के लिए"
   },
   "profile": {
     "title": "प्रोफ़ाइल सेटिंग्स",
@@ -435,13 +435,13 @@
     "sellerLabel": "विक्रेता",
     "msgCount": "संदेश",
     "relayStatus": "स्थिति",
-    "noVerificationRequest": "No verification request submitted",
-    "viewDocuments": "View Documents",
-    "maxListings": "Max Listings",
-    "listingLimitDefault": "Leave empty for default rules",
-    "listingLimitPlaceholder": "Auto (leave empty)",
-    "shopPoints": "Points Shop",
-    "totalListingsLabel": "Total"
+    "noVerificationRequest": "कोई सत्यापन अनुरोध नहीं",
+    "viewDocuments": "दस्तावेज़ देखें",
+    "maxListings": "अधिकतम लिस्टिंग",
+    "listingLimitDefault": "डिफ़ॉल्ट सीमा",
+    "listingLimitPlaceholder": "कस्टम सीमा",
+    "shopPoints": "शॉप पॉइंट्स",
+    "totalListingsLabel": "कुल लिस्टिंग"
   },
   "about": {
     "title": "Re-Bali के बारे में",
@@ -584,7 +584,7 @@
     "banyuwangi": "बन्युवांगी",
     "probolinggo": "प्रोबोलिंगो",
     "other": "अन्य",
-    "pererenan": "Pererenan",
+    "pererenan": "पेरेरेनान",
     "berawa": "Berawa",
     "umalas": "Umalas",
     "buduk": "Buduk",

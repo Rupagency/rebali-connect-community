@@ -32,8 +32,8 @@
     "pro": "专业",
     "sponsored": "赞助",
     "autoTranslated": "自动翻译",
-    "skip": "Skip",
-    "later": "Later"
+    "skip": "跳过",
+    "later": "稍后"
   },
   "nav": {
     "home": "首页",
@@ -76,7 +76,7 @@
     "freeDesc": "无费用、无佣金。Re-Bali对所有人免费。",
     "featured": "精选推荐",
     "recommended": "为您推荐",
-    "highlightedListings": "Highlighted Listings"
+    "highlightedListings": "精选广告"
   },
   "categories": {
     "emploi": "招聘",
@@ -192,7 +192,7 @@
     "contactSeller": "联系卖家",
     "whatsapp": "WhatsApp",
     "call": "电话",
-    "reportListing": "举报此列表",
+    "reportListing": "举报",
     "markSold": "标记已售",
     "archive": "归档",
     "reactivate": "重新激活",
@@ -216,17 +216,17 @@
     "perMonth": "/月",
     "perYear": "/年",
     "rental": "租赁",
-    "favorites": "favorites",
-    "addToFavorites": "Add to favorites",
-    "removeFromFavorites": "Remove from favorites",
-    "keyInfo": "Key Information",
-    "category": "Category",
-    "seePhotos": "See all photos",
-    "contactBtn": "Contact",
-    "sellerListings": "Listings from this seller",
-    "seeMoreListings": "See more listings",
-    "contactWhatsApp": "Contact on WhatsApp",
-    "phoneVerified": "Phone verified",
+    "favorites": "收藏",
+    "addToFavorites": "添加到收藏",
+    "removeFromFavorites": "从收藏中移除",
+    "keyInfo": "关键信息",
+    "category": "分类",
+    "seePhotos": "查看照片",
+    "contactBtn": "联系",
+    "sellerListings": "卖家的其他商品",
+    "seeMoreListings": "查看更多",
+    "contactWhatsApp": "通过WhatsApp联系",
+    "phoneVerified": "手机已验证",
     "loginToContact": "Log in to contact the seller",
     "yourMessage": "Your message",
     "sendViaWhatsApp": "Send via WhatsApp"
@@ -268,8 +268,8 @@
     "atLeastOnePhoto": "至少上传一张照片",
     "whatsappRequired": "您必须在发布列表之前验证您的WhatsApp号码。",
     "verifyWhatsapp": "验证我的WhatsApp",
-    "listingTypeLabel": "Listing type",
-    "rentPriceLabel": "Monthly rent"
+    "listingTypeLabel": "类型",
+    "rentPriceLabel": "租金"
   },
   "auth": {
     "loginTitle": "欢迎回来",
@@ -310,7 +310,7 @@
     "continueWithGoogle": "使用 Google 继续",
     "continueWithApple": "使用 Apple 继续",
     "orContinueWith": "或继续使用",
-    "proDescFull": "Professional account — Free Pro tier included"
+    "proDescFull": "适用于企业和专业卖家"
   },
   "profile": {
     "title": "个人资料设置",
@@ -435,13 +435,13 @@
     "sellerLabel": "Seller",
     "msgCount": "Messages",
     "relayStatus": "Status",
-    "noVerificationRequest": "No verification request submitted",
-    "viewDocuments": "View Documents",
-    "maxListings": "Max Listings",
+    "noVerificationRequest": "无验证请求",
+    "viewDocuments": "查看文件",
+    "maxListings": "最大数量",
     "listingLimitDefault": "Leave empty for default rules",
     "listingLimitPlaceholder": "Auto (leave empty)",
-    "shopPoints": "Points Shop",
-    "totalListingsLabel": "Total"
+    "shopPoints": "商店积分",
+    "totalListingsLabel": "总数"
   },
   "about": {
     "title": "关于 Re-Bali",
