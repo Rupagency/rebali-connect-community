@@ -2054,14 +2054,23 @@
     "unblock": "ブロック解除"
   },
   "bulkCreate": {
-    "title": "一括作成",
-    "subtitle": "連続で複数のリスティングを作成するために最適化",
+    "title": "一括リスティング作成",
+    "subtitle": "複数のリスティングをキューに追加し、一括で公開",
     "button": "一括作成",
     "published": "公開済み",
-    "created": "リスティングを公開しました！",
-    "publishAndNext": "公開して次へ",
-    "done": "完了",
-    "keepGoing": "フォームがリセットされました — 続けましょう！カテゴリと場所は保持されています。",
-    "addPhoto": "写真を追加"
+    "publishedSuccess": "件のリスティングが公開されました！",
+    "addToQueue": "キューに追加しました！",
+    "addItem": "リスティングを追加",
+    "editItem": "リスティングを編集",
+    "itemUpdated": "キュー内のリスティングを更新",
+    "updateInQueue": "更新",
+    "queue": "公開キュー",
+    "queueEmpty": "キューは空です",
+    "queueEmptyHint": "上のフォームに入力して「+」をクリック",
+    "queueFull": "キューが満杯です（最大50）",
+    "publishAll": "すべて公開",
+    "publishingItem": "公開中",
+    "inQueue": "キュー内",
+    "done": "完了"
   }
 }

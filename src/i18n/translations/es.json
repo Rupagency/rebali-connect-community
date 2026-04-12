@@ -1864,13 +1864,22 @@
   },
   "bulkCreate": {
     "title": "Creación en serie",
-    "subtitle": "Optimizado para crear varios anuncios seguidos",
-    "button": "Crear en serie",
-    "published": "publicado(s)",
-    "created": "¡Anuncio publicado!",
-    "publishAndNext": "Publicar y siguiente",
-    "done": "Listo",
-    "keepGoing": "Formulario reiniciado — ¡sigue! Categoría y ubicación conservadas.",
-    "addPhoto": "Añadir foto"
+    "subtitle": "Agrega varios anuncios a la cola y publícalos todos a la vez",
+    "button": "Creación en serie",
+    "published": "publicados",
+    "publishedSuccess": "anuncios publicados con éxito!",
+    "addToQueue": "¡Agregado a la cola!",
+    "addItem": "Agregar anuncio",
+    "editItem": "Editar anuncio",
+    "itemUpdated": "Anuncio actualizado en la cola",
+    "updateInQueue": "Actualizar",
+    "queue": "Cola de publicación",
+    "queueEmpty": "Tu cola está vacía",
+    "queueEmptyHint": "Completa el formulario y haz clic en \"+\" para agregar",
+    "queueFull": "Cola llena (máx 50)",
+    "publishAll": "Publicar todo",
+    "publishingItem": "Publicando",
+    "inQueue": "en cola",
+    "done": "Listo"
   }
 }

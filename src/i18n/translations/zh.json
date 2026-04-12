@@ -1863,14 +1863,23 @@
     "fillAll": "Please fill in all fields."
   },
   "bulkCreate": {
-    "title": "批量创建",
-    "subtitle": "优化连续创建多个列表",
+    "title": "批量创建列表",
+    "subtitle": "将多个列表添加到队列中，然后一次性发布",
     "button": "批量创建",
     "published": "已发布",
-    "created": "列表已发布！",
-    "publishAndNext": "发布并继续",
-    "done": "完成",
-    "keepGoing": "表单已重置 — 继续吧！类别和位置已保留。",
-    "addPhoto": "添加照片"
+    "publishedSuccess": "个列表发布成功！",
+    "addToQueue": "已添加到队列！",
+    "addItem": "添加列表",
+    "editItem": "编辑列表",
+    "itemUpdated": "队列中的列表已更新",
+    "updateInQueue": "更新",
+    "queue": "发布队列",
+    "queueEmpty": "您的队列为空",
+    "queueEmptyHint": "填写上方表单并点击+添加",
+    "queueFull": "队列已满（最多50个）",
+    "publishAll": "全部发布",
+    "publishingItem": "正在发布",
+    "inQueue": "在队列中",
+    "done": "完成"
   }
 }

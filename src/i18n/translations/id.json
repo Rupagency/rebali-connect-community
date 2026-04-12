@@ -1903,13 +1903,22 @@
   },
   "bulkCreate": {
     "title": "Buat Iklan Massal",
-    "subtitle": "Dioptimalkan untuk membuat beberapa iklan secara berurutan",
+    "subtitle": "Tambahkan beberapa iklan ke antrean, lalu publikasikan sekaligus",
     "button": "Buat Massal",
     "published": "dipublikasikan",
-    "created": "Iklan dipublikasikan!",
-    "publishAndNext": "Publikasi & Berikutnya",
-    "done": "Selesai",
-    "keepGoing": "Formulir direset — lanjutkan! Kategori & lokasi dipertahankan.",
-    "addPhoto": "Tambah foto"
+    "publishedSuccess": "iklan berhasil dipublikasikan!",
+    "addToQueue": "Ditambahkan ke antrean!",
+    "addItem": "Tambah iklan",
+    "editItem": "Edit iklan",
+    "itemUpdated": "Iklan diperbarui dalam antrean",
+    "updateInQueue": "Perbarui",
+    "queue": "Antrean publikasi",
+    "queueEmpty": "Antrean Anda kosong",
+    "queueEmptyHint": "Isi formulir di atas dan klik \"+\" untuk menambahkan",
+    "queueFull": "Antrean penuh (maks 50)",
+    "publishAll": "Publikasikan semua",
+    "publishingItem": "Mempublikasikan",
+    "inQueue": "dalam antrean",
+    "done": "Selesai"
   }
 }

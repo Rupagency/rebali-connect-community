@@ -1906,13 +1906,22 @@
   },
   "bulkCreate": {
     "title": "Création en série",
-    "subtitle": "Optimisé pour la création de plusieurs annonces à la suite",
+    "subtitle": "Ajoutez plusieurs annonces à la file, puis publiez tout d'un coup",
     "button": "Création en série",
-    "published": "publiée(s)",
-    "created": "Annonce publiée !",
-    "publishAndNext": "Publier & Suivante",
-    "done": "Terminé",
-    "keepGoing": "Formulaire réinitialisé — continuez ! Catégorie & localisation conservées.",
-    "addPhoto": "Ajouter photo"
+    "published": "publiées",
+    "publishedSuccess": "annonces publiées avec succès !",
+    "addToQueue": "Ajouté à la file !",
+    "addItem": "Ajouter une annonce",
+    "editItem": "Modifier l'annonce",
+    "itemUpdated": "Annonce mise à jour dans la file",
+    "updateInQueue": "Mettre à jour",
+    "queue": "File de publication",
+    "queueEmpty": "Votre file est vide",
+    "queueEmptyHint": "Remplissez le formulaire ci-dessus et cliquez \"+\" pour ajouter",
+    "queueFull": "File pleine (max 50)",
+    "publishAll": "Tout publier",
+    "publishingItem": "Publication",
+    "inQueue": "en file",
+    "done": "Terminé"
   }
 }
