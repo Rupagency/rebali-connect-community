@@ -1,40 +1,56 @@
 
 
-## Bulk Listing Creator for Agency Pro Accounts
+## Bulk Create: Multi-Listing Queue Interface
 
-### Overview
-Create a dedicated "Bulk Create" page exclusively for `agence` tier pro accounts that allows creating multiple listings in series on the same page, with an optimized inline form that resets after each submission.
+### Current state
+The current `/create-bulk` page creates one listing at a time -- fill form, publish, form resets. The user wants to prepare **multiple listings on the same screen** and publish them all at once.
 
-### How it works for the user
-1. Agency user navigates to `/create-bulk` (accessible from MyListings page via a special button)
-2. They see a streamlined single-page form with all fields visible (no multi-step wizard)
-3. After submitting one listing, a success toast appears, the form resets (keeping category and location pre-filled), and they can immediately create the next one
-4. A sidebar/counter shows how many listings were created in the current session
-5. Each listing is published individually (with photos, translation trigger, etc.)
+### New design: Multi-listing queue on one page
 
-### Technical Plan
+The page will have two sections:
 
-**1. New page: `src/pages/BulkCreateListing.tsx`**
-- Single-page flat form (no stepper) with: category, subcategory, title, description, price, currency, location, condition, listing_type, extra fields, photos
-- Category/subcategory selectors reuse existing `CATEGORY_TREE` and `CATEGORY_FIELDS` logic from constants
-- Photo upload with drag-and-drop, reusing existing watermark and upload logic from CreateListing
-- On submit: insert listing, upload photos, trigger translation -- same logic as CreateListing but extracted
-- After success: increment session counter, clear title/description/price/photos but keep category/location/condition pre-selected
-- Guard: only accessible if `tier === 'agence'`, otherwise redirect
+```text
+┌─────────────────────────────────────────────────┐
+│  FORM (top)                                     │
+│  Category | Subcategory | Title | Description   │
+│  Price | Location | Condition | Photos          │
+│  Extra fields (dynamic)                         │
+│  [+ Add to queue]                               │
+├─────────────────────────────────────────────────┤
+│  QUEUE (bottom) - Card list of pending listings │
+│  ┌──────────────────────────────────────────┐   │
+│  │ #1 iPhone 14 | Electronics | 3 photos ✕  │   │
+│  ├──────────────────────────────────────────┤   │
+│  │ #2 Sofa cuir | Maison | 2 photos     ✕  │   │
+│  └──────────────────────────────────────────┘   │
+│                                                 │
+│  [Publish all (2 listings)]                     │
+└─────────────────────────────────────────────────┘
+```
 
-**2. Route registration in `src/App.tsx`**
-- Add lazy-loaded route `/create-bulk` pointing to BulkCreateListing
+### How it works
+1. User fills the form with all fields (category, subcategory, title, description, price, location, condition, photos, extra fields) -- everything on one screen with dropdowns and inputs
+2. Clicks **"+ Add to queue"** -- the listing data + photos are stored in local state, form resets (keeping category/location pre-filled)
+3. Repeat for as many listings as needed
+4. The queue shows compact cards with title, category, photo count, and a remove button
+5. Click **"Publish all"** -- all listings are created sequentially with a progress bar showing "Publishing 2/5..."
+6. Each listing goes through the same pipeline: insert → upload photos with watermark → trigger translation
 
-**3. Entry point in `src/pages/MyListings.tsx`**
-- For agence users, add a "Bulk Create" button next to the existing "Create Listing" button
+### Technical changes
 
-**4. Translations**
-- Add keys for bulk creation UI (`bulkCreate.title`, `bulkCreate.counter`, `bulkCreate.keepGoing`, etc.) in all 12 language files
+**File: `src/pages/BulkCreateListing.tsx`** -- Full rewrite
+- Add a `queue` state: array of `{ form, extraFields, photos, previews }` objects
+- "Add to queue" button validates the current form, pushes to queue, resets form
+- "Publish all" button iterates through queue, publishing each one sequentially
+- Progress bar shows overall progress (listing X of Y) and per-listing progress
+- Queue section renders compact cards with edit/remove actions
+- Clicking a queued item loads it back into the form for editing
 
-### Key design decisions
-- Flat single-page form (not multi-step) for speed -- the whole point is rapid-fire creation
-- Category and location persist between submissions to optimize series of similar listings
-- Session counter shows progress ("5 listings created this session")
-- Reuses all existing submission logic (watermarking, moderation check, translation trigger, image hash)
-- No changes to database schema needed -- uses existing tables
+**File: Translations** -- Add new keys
+- `bulkCreate.addToQueue`, `bulkCreate.publishAll`, `bulkCreate.queueEmpty`, `bulkCreate.publishingProgress` in all 12 languages
 
+### Key decisions
+- Queue is held in React state (not persisted) -- simple and sufficient for a session
+- Sequential publishing (not parallel) to avoid rate limits and ensure watermarking works
+- Form keeps category + location after adding to queue for fast series entry
+- Max queue size: 50 listings (agence limit is effectively unlimited but we cap the batch)
