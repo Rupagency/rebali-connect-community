@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPrice, CATEGORY_ICONS } from '@/lib/constants';
 import { useProStatus } from '@/hooks/useProStatus';
 import { useEffectiveListingLimit } from '@/hooks/useEffectiveListingLimit';
-import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2, Clock, Zap } from 'lucide-react';
+import { Plus, Eye, ArchiveRestore, Pencil, Rocket, Star, Trash2, Clock, Zap, Layers } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useNavigate } from 'react-router-dom';
@@ -58,6 +58,7 @@ export default function MyListings() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const effectiveLimit = useEffectiveListingLimit();
+  const { tier } = useProStatus();
   const qc = useQueryClient();
   const [boostDialogOpen, setBoostDialogOpen] = useState(false);
   const [boostListingId, setBoostListingId] = useState<string | null>(null);
@@ -288,9 +289,16 @@ export default function MyListings() {
     <div className="container mx-auto px-4 py-6 max-w-2xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">{t('myListings.title')}</h1>
-        <Button onClick={() => navigate('/create')} className="gap-1">
-          <Plus className="h-4 w-4" /> {t('nav.sell')}
-        </Button>
+        <div className="flex gap-2">
+          {tier === 'agence' && (
+            <Button variant="outline" onClick={() => navigate('/create-bulk')} className="gap-1">
+              <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
+            </Button>
+          )}
+          <Button onClick={() => navigate('/create')} className="gap-1">
+            <Plus className="h-4 w-4" /> {t('nav.sell')}
+          </Button>
+        </div>
       </div>
 
       <p className="text-sm text-muted-foreground mb-4">

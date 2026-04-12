@@ -55,6 +55,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const PDPL = lazy(() => import("./pages/PDPL"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NativeAuthCallback = lazy(() => import("./pages/NativeAuthCallback"));
+const BulkCreateListing = lazy(() => import("./pages/BulkCreateListing"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -112,6 +113,7 @@ const App = () => {
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/reset-password" element={<ResetPassword />} />
                           <Route path="/create" element={<CreateListing />} />
+                          <Route path="/create-bulk" element={<BulkCreateListing />} />
                           <Route path="/my-listings" element={<MyListings />} />
                           <Route path="/profile" element={<Profile />} />
                           <Route path="/admin" element={<AdminLayout />}>
