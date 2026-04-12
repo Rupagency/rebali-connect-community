@@ -1861,5 +1861,16 @@
     "sent": "Your message has been sent! We'll reply shortly.",
     "error": "Failed to send. Please try again.",
     "fillAll": "Please fill in all fields."
+  },
+  "bulkCreate": {
+    "title": "批量创建",
+    "subtitle": "优化连续创建多个列表",
+    "button": "批量创建",
+    "published": "已发布",
+    "created": "列表已发布！",
+    "publishAndNext": "发布并继续",
+    "done": "完成",
+    "keepGoing": "表单已重置 — 继续吧！类别和位置已保留。",
+    "addPhoto": "添加照片"
   }
 }

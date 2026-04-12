@@ -1861,5 +1861,16 @@
     "title": "Update Required",
     "description": "A new version of Re-Bali is available. Please update to continue using the app.",
     "button": "Update Now"
+  },
+  "bulkCreate": {
+    "title": "Bulk Create Listings",
+    "subtitle": "Optimized for creating multiple listings in series",
+    "button": "Bulk Create",
+    "published": "published",
+    "created": "Listing published!",
+    "publishAndNext": "Publish & Next",
+    "done": "Done",
+    "keepGoing": "Form reset — keep going! Category & location preserved.",
+    "addPhoto": "Add photo"
   }
 }

@@ -1903,5 +1903,16 @@
     "title": "Mise à jour requise",
     "description": "Une nouvelle version de Re-Bali est disponible. Veuillez mettre à jour pour continuer à utiliser l'application.",
     "button": "Mettre à jour"
+  },
+  "bulkCreate": {
+    "title": "Création en série",
+    "subtitle": "Optimisé pour la création de plusieurs annonces à la suite",
+    "button": "Création en série",
+    "published": "publiée(s)",
+    "created": "Annonce publiée !",
+    "publishAndNext": "Publier & Suivante",
+    "done": "Terminé",
+    "keepGoing": "Formulaire réinitialisé — continuez ! Catégorie & localisation conservées.",
+    "addPhoto": "Ajouter photo"
   }
 }

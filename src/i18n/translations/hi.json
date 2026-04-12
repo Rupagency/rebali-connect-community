@@ -1861,5 +1861,16 @@
     "sent": "Your message has been sent! We'll reply shortly.",
     "error": "Failed to send. Please try again.",
     "fillAll": "Please fill in all fields."
+  },
+  "bulkCreate": {
+    "title": "बल्क लिस्टिंग बनाएं",
+    "subtitle": "कई लिस्टिंग लगातार बनाने के लिए अनुकूलित",
+    "button": "बल्क बनाएं",
+    "published": "प्रकाशित",
+    "created": "लिस्टिंग प्रकाशित!",
+    "publishAndNext": "प्रकाशित करें और अगला",
+    "done": "पूरा",
+    "keepGoing": "फॉर्म रीसेट — जारी रखें! श्रेणी और स्थान संरक्षित।",
+    "addPhoto": "फोटो जोड़ें"
   }
 }
