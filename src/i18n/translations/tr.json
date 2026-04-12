@@ -1861,5 +1861,16 @@
     "sent": "Your message has been sent! We'll reply shortly.",
     "error": "Failed to send. Please try again.",
     "fillAll": "Please fill in all fields."
+  },
+  "bulkCreate": {
+    "title": "Toplu İlan Oluştur",
+    "subtitle": "Art arda birden fazla ilan oluşturmak için optimize edilmiş",
+    "button": "Toplu Oluştur",
+    "published": "yayınlandı",
+    "created": "İlan yayınlandı!",
+    "publishAndNext": "Yayınla ve Sonraki",
+    "done": "Bitti",
+    "keepGoing": "Form sıfırlandı — devam edin! Kategori ve konum korundu.",
+    "addPhoto": "Fotoğraf ekle"
   }
 }

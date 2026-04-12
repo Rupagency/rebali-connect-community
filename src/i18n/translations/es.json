@@ -1861,5 +1861,16 @@
     "sent": "Your message has been sent! We'll reply shortly.",
     "error": "Failed to send. Please try again.",
     "fillAll": "Please fill in all fields."
+  },
+  "bulkCreate": {
+    "title": "Creación en serie",
+    "subtitle": "Optimizado para crear varios anuncios seguidos",
+    "button": "Crear en serie",
+    "published": "publicado(s)",
+    "created": "¡Anuncio publicado!",
+    "publishAndNext": "Publicar y siguiente",
+    "done": "Listo",
+    "keepGoing": "Formulario reiniciado — ¡sigue! Categoría y ubicación conservadas.",
+    "addPhoto": "Añadir foto"
   }
 }

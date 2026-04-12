@@ -2522,5 +2522,16 @@
     "title": "Geblokkeerde Gebruikers",
     "empty": "Geen geblokkeerde gebruikers",
     "unblock": "Deblokkeren"
+  },
+  "bulkCreate": {
+    "title": "Bulk advertenties maken",
+    "subtitle": "Geoptimaliseerd voor het aanmaken van meerdere advertenties achter elkaar",
+    "button": "Bulk aanmaken",
+    "published": "gepubliceerd",
+    "created": "Advertentie gepubliceerd!",
+    "publishAndNext": "Publiceren & Volgende",
+    "done": "Klaar",
+    "keepGoing": "Formulier gereset — ga verder! Categorie & locatie behouden.",
+    "addPhoto": "Foto toevoegen"
   }
 }

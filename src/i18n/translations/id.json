@@ -1900,5 +1900,16 @@
     "sent": "Your message has been sent! We'll reply shortly.",
     "error": "Failed to send. Please try again.",
     "fillAll": "Please fill in all fields."
+  },
+  "bulkCreate": {
+    "title": "Buat Iklan Massal",
+    "subtitle": "Dioptimalkan untuk membuat beberapa iklan secara berurutan",
+    "button": "Buat Massal",
+    "published": "dipublikasikan",
+    "created": "Iklan dipublikasikan!",
+    "publishAndNext": "Publikasi & Berikutnya",
+    "done": "Selesai",
+    "keepGoing": "Formulir direset — lanjutkan! Kategori & lokasi dipertahankan.",
+    "addPhoto": "Tambah foto"
   }
 }
