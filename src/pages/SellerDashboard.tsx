@@ -17,7 +17,7 @@ import ProBadge from '@/components/ProBadge';
 import { toast } from '@/hooks/use-toast';
 import {
   Eye, Heart, MessageCircle, TrendingUp, BarChart3, Crown, Lock,
-  Rocket, Package, ShieldCheck, Building2, Zap, CreditCard, ArrowUpRight
+  Rocket, Package, ShieldCheck, Building2, Zap, CreditCard, ArrowUpRight, Layers
 } from 'lucide-react';
 
 // --- Sub-components ---
@@ -386,6 +386,16 @@ export default function SellerDashboard() {
         <Button onClick={() => navigate('/create')} className="gap-2">
           <Package className="h-4 w-4" /> {t('nav.sell')}
         </Button>
+        {tier === 'agence' ? (
+          <Button onClick={() => navigate('/create-bulk')} variant="outline" className="gap-2">
+            <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
+          </Button>
+        ) : (
+          <Button variant="outline" className="gap-2 opacity-50 cursor-not-allowed" disabled>
+            <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
+            <Badge variant="secondary" className="text-[9px] ml-1">{t('bulkCreate.agenceOnly')}</Badge>
+          </Button>
+        )}
       </div>
 
       {/* Subscription Info */}
