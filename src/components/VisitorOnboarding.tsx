@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -8,7 +8,6 @@ import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiEffect from '@/components/ConfettiEffect';
-import { capacitorStorage } from '@/lib/capacitorStorage';
 
 const VISITOR_ONBOARDING_KEY = 'rebali-visitor-onboarding-done';
 
@@ -32,17 +31,30 @@ export default function VisitorOnboarding() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const isLast = step === steps.length - 1;
+  const hasChecked = useRef(false);
 
   useEffect(() => {
-    const done = capacitorStorage.getItem(VISITOR_ONBOARDING_KEY);
-    if (!done) {
-      const timer = setTimeout(() => setOpen(true), 1200);
-      return () => clearTimeout(timer);
+    // Prevent re-triggering on HMR or remount
+    if (hasChecked.current) return;
+    hasChecked.current = true;
+
+    try {
+      const done = localStorage.getItem(VISITOR_ONBOARDING_KEY);
+      if (!done) {
+        const timer = setTimeout(() => setOpen(true), 1200);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      // localStorage unavailable
     }
   }, []);
 
   const handleClose = () => {
-    capacitorStorage.setItem(VISITOR_ONBOARDING_KEY, 'true');
+    try {
+      localStorage.setItem(VISITOR_ONBOARDING_KEY, 'true');
+    } catch {
+      // ignore
+    }
     setOpen(false);
     setStep(0);
   };
