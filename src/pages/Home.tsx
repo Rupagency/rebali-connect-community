@@ -242,17 +242,17 @@ export default function Home() {
       </Suspense>
 
       {/* Hero */}
-      <section className="relative z-30 bg-gradient-to-br from-[hsl(20,90%,54%,0.1)] via-[hsl(45,25%,96%)] to-[hsl(12,80%,60%,0.1)] dark:from-[hsl(220,20%,10%)] dark:via-[hsl(225,15%,12%)] dark:to-[hsl(200,15%,14%)]">
+      <section className="relative z-30 bg-gradient-to-br from-[hsl(158,30%,52%,0.15)] via-[hsl(150,20%,96%)] to-[hsl(14,78%,53%,0.1)] dark:from-[hsl(220,20%,10%)] dark:via-[hsl(225,15%,12%)] dark:to-[hsl(200,15%,14%)]">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-[hsl(20,90%,54%,0.1)] dark:bg-[hsl(180,50%,40%,0.08)] rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[hsl(12,80%,60%,0.1)] dark:bg-[hsl(20,90%,54%,0.06)] rounded-full blur-3xl" />
+          <div className="absolute top-10 left-10 w-32 h-32 bg-[hsl(158,30%,52%,0.15)] dark:bg-[hsl(180,50%,40%,0.08)] rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-[hsl(14,78%,53%,0.1)] dark:bg-[hsl(20,90%,54%,0.06)] rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 py-14 md:py-20 text-center relative z-10">
           <div className="mb-5">
             <AnimatedHeroText />
           </div>
           <h2 className="sr-only">Buy and sell second-hand items in Bali — furniture, vehicles, real estate and more</h2>
-          <p className="text-base md:text-lg text-[hsl(220,10%,46%)] mb-8 max-w-xl mx-auto font-medium">
+          <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-xl mx-auto font-medium">
             {t('home.heroSub')}
           </p>
           <p className="sr-only">
@@ -459,7 +459,7 @@ export default function Home() {
 
       <ErrorBoundary>
       {(featuredLoading || hasFeatured) && (
-        <section className="bg-gradient-to-b from-amber-50/50 to-background dark:from-amber-950/10 border-y border-amber-200/30 py-10">
+        <section className="bg-gradient-to-b from-[hsl(158,30%,52%,0.08)] to-background dark:from-amber-950/10 border-y border-[hsl(158,30%,52%,0.2)] py-10">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
