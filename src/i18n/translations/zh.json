@@ -1447,7 +1447,8 @@
       "boosts": "包含的加速",
       "badge": "认证徽章",
       "analytics": "分析",
-      "searchAlerts": "搜索提醒"
+      "searchAlerts": "搜索提醒",
+      "bulkCreate": "批量创建"
     }
   },
   "browse": {
@@ -1880,6 +1881,7 @@
     "publishAll": "全部发布",
     "publishingItem": "正在发布",
     "inQueue": "在队列中",
-    "done": "完成"
+    "done": "完成",
+    "agenceOnly": "仅限代理"
   }
 }

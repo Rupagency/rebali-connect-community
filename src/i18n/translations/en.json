@@ -1452,7 +1452,8 @@
       "boosts": "Boosts included",
       "badge": "Verified badge",
       "analytics": "Analytics",
-      "searchAlerts": "Search alerts"
+      "searchAlerts": "Search alerts",
+      "bulkCreate": "Bulk create"
     }
   },
   "browse": {
@@ -1880,6 +1881,7 @@
     "publishAll": "Publish all",
     "publishingItem": "Publishing",
     "inQueue": "in queue",
-    "done": "Done"
+    "done": "Done",
+    "agenceOnly": "Agency only"
   }
 }

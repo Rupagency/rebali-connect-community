@@ -255,7 +255,8 @@
       "boosts": "تعزيزات مضمنة",
       "badge": "شارة موثقة",
       "analytics": "تحليلات",
-      "searchAlerts": "تنبيهات البحث"
+      "searchAlerts": "تنبيهات البحث",
+      "bulkCreate": "إنشاء جماعي"
     },
     "goProCTA": "كن Pro"
   },
@@ -2150,6 +2151,7 @@
     "publishAll": "نشر الكل",
     "publishingItem": "جارٍ النشر",
     "inQueue": "في القائمة",
-    "done": "تم"
+    "done": "تم",
+    "agenceOnly": "للوكالات فقط"
   }
 }

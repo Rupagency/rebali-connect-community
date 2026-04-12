@@ -669,7 +669,8 @@
       "boosts": "Boosts inbegrepen",
       "badge": "Geverifieerd badge",
       "analytics": "Analyses",
-      "searchAlerts": "Zoekwaarschuwingen"
+      "searchAlerts": "Zoekwaarschuwingen",
+      "bulkCreate": "Bulk aanmaken"
     },
     "title": "Pro Abonnement",
     "benefits": "Voordelen",
@@ -2541,6 +2542,7 @@
     "publishAll": "Alles publiceren",
     "publishingItem": "Publiceren",
     "inQueue": "in wachtrij",
-    "done": "Klaar"
+    "done": "Klaar",
+    "agenceOnly": "Alleen agentschap"
   }
 }
