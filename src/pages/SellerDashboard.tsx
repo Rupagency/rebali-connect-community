@@ -386,14 +386,14 @@ export default function SellerDashboard() {
         <Button onClick={() => navigate('/create')} className="gap-2">
           <Package className="h-4 w-4" /> {t('nav.sell')}
         </Button>
-        {tier === 'agence' ? (
+        {(tier === 'agence' || tier === 'vendeur_pro') ? (
           <Button onClick={() => navigate('/create-bulk')} variant="outline" className="gap-2">
             <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
           </Button>
         ) : (
           <Button variant="outline" className="gap-2 opacity-50 cursor-not-allowed" disabled>
             <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
-            <Badge variant="secondary" className="text-[9px] ml-1">{t('bulkCreate.agenceOnly')}</Badge>
+            <Badge variant="secondary" className="text-[9px] ml-1">{t('bulkCreate.proOnly')}</Badge>
           </Button>
         )}
       </div>

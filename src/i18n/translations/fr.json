@@ -1924,6 +1924,7 @@
     "publishingItem": "Publication",
     "inQueue": "en file",
     "done": "Terminé",
-    "agenceOnly": "Agence uniquement"
+    "agenceOnly": "Agence uniquement",
+    "proOnly": "Pro uniquement"
   }
 }

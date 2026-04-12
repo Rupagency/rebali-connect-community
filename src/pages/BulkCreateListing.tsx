@@ -55,7 +55,7 @@ export default function BulkCreateListing() {
 
   useEffect(() => {
     if (!user) { navigate('/auth', { replace: true }); return; }
-    if (tier !== 'agence') { navigate('/create', { replace: true }); }
+    if (tier !== 'agence' && tier !== 'vendeur_pro') { navigate('/create', { replace: true }); }
   }, [user, tier, navigate]);
 
   const [queue, setQueue] = useState<QueueItem[]>([]);
@@ -338,7 +338,7 @@ export default function BulkCreateListing() {
     }
   };
 
-  if (!user || tier !== 'agence') return null;
+  if (!user || (tier !== 'agence' && tier !== 'vendeur_pro')) return null;
 
   if (profile?.user_type === 'business' && !profile?.is_verified_seller) {
     return (

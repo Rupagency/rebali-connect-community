@@ -2152,6 +2152,7 @@
     "publishingItem": "جارٍ النشر",
     "inQueue": "في القائمة",
     "done": "تم",
-    "agenceOnly": "للوكالات فقط"
+    "agenceOnly": "للوكالات فقط",
+    "proOnly": "Pro فقط"
   }
 }

@@ -1882,6 +1882,7 @@
     "publishingItem": "प्रकाशित हो रहा है",
     "inQueue": "कतार में",
     "done": "हो गया",
-    "agenceOnly": "केवल एजेंसी"
+    "agenceOnly": "केवल एजेंसी",
+    "proOnly": "केवल Pro"
   }
 }

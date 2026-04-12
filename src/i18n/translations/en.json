@@ -1882,6 +1882,7 @@
     "publishingItem": "Publishing",
     "inQueue": "in queue",
     "done": "Done",
-    "agenceOnly": "Agency only"
+    "agenceOnly": "Agency only",
+    "proOnly": "Pro only"
   }
 }

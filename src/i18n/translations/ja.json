@@ -2073,6 +2073,7 @@
     "publishingItem": "公開中",
     "inQueue": "キュー内",
     "done": "完了",
-    "agenceOnly": "エージェンシーのみ"
+    "agenceOnly": "エージェンシーのみ",
+    "proOnly": "Proのみ"
   }
 }

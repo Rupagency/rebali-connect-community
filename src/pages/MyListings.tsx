@@ -290,14 +290,14 @@ export default function MyListings() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">{t('myListings.title')}</h1>
         <div className="flex gap-2">
-          {tier === 'agence' ? (
+          {(tier === 'agence' || tier === 'vendeur_pro') ? (
             <Button variant="outline" onClick={() => navigate('/create-bulk')} className="gap-1">
               <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
             </Button>
           ) : isPro ? (
             <Button variant="outline" className="gap-1 opacity-50 cursor-not-allowed" disabled>
               <Layers className="h-4 w-4" /> {t('bulkCreate.button')}
-              <Badge variant="secondary" className="text-[9px] ml-1">{t('bulkCreate.agenceOnly')}</Badge>
+              <Badge variant="secondary" className="text-[9px] ml-1">{t('bulkCreate.proOnly')}</Badge>
             </Button>
           ) : null}
           <Button onClick={() => navigate('/create')} className="gap-1">

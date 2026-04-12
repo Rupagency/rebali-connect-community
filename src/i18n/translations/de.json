@@ -1882,6 +1882,7 @@
     "publishingItem": "Veröffentliche",
     "inQueue": "in Warteschlange",
     "done": "Fertig",
-    "agenceOnly": "Nur Agentur"
+    "agenceOnly": "Nur Agentur",
+    "proOnly": "Nur Pro"
   }
 }
