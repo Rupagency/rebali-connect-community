@@ -1863,14 +1863,23 @@
     "fillAll": "Please fill in all fields."
   },
   "bulkCreate": {
-    "title": "Massenerstellung",
-    "subtitle": "Optimiert für das Erstellen mehrerer Anzeigen nacheinander",
+    "title": "Massenanzeigen erstellen",
+    "subtitle": "Fügen Sie mehrere Anzeigen zur Warteschlange hinzu und veröffentlichen Sie alle auf einmal",
     "button": "Massenerstellung",
     "published": "veröffentlicht",
-    "created": "Anzeige veröffentlicht!",
-    "publishAndNext": "Veröffentlichen & Weiter",
-    "done": "Fertig",
-    "keepGoing": "Formular zurückgesetzt — weiter geht es! Kategorie & Ort beibehalten.",
-    "addPhoto": "Foto hinzufügen"
+    "publishedSuccess": "Anzeigen erfolgreich veröffentlicht!",
+    "addToQueue": "Zur Warteschlange hinzugefügt!",
+    "addItem": "Anzeige hinzufügen",
+    "editItem": "Anzeige bearbeiten",
+    "itemUpdated": "Anzeige in Warteschlange aktualisiert",
+    "updateInQueue": "Aktualisieren",
+    "queue": "Veröffentlichungs-Warteschlange",
+    "queueEmpty": "Ihre Warteschlange ist leer",
+    "queueEmptyHint": "Füllen Sie das Formular aus und klicken Sie auf \"+\"",
+    "queueFull": "Warteschlange voll (max 50)",
+    "publishAll": "Alle veröffentlichen",
+    "publishingItem": "Veröffentliche",
+    "inQueue": "in Warteschlange",
+    "done": "Fertig"
   }
 }

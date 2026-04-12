@@ -1864,13 +1864,22 @@
   },
   "bulkCreate": {
     "title": "Bulk Create Listings",
-    "subtitle": "Optimized for creating multiple listings in series",
+    "subtitle": "Add multiple listings to the queue, then publish all at once",
     "button": "Bulk Create",
     "published": "published",
-    "created": "Listing published!",
-    "publishAndNext": "Publish & Next",
-    "done": "Done",
-    "keepGoing": "Form reset — keep going! Category & location preserved.",
-    "addPhoto": "Add photo"
+    "publishedSuccess": "listings published successfully!",
+    "addToQueue": "Added to queue!",
+    "addItem": "Add a listing",
+    "editItem": "Edit listing",
+    "itemUpdated": "Listing updated in queue",
+    "updateInQueue": "Update in queue",
+    "queue": "Publication queue",
+    "queueEmpty": "Your queue is empty",
+    "queueEmptyHint": "Fill the form above and click \"+\" to add listings",
+    "queueFull": "Queue is full (max 50)",
+    "publishAll": "Publish all",
+    "publishingItem": "Publishing",
+    "inQueue": "in queue",
+    "done": "Done"
   }
 }

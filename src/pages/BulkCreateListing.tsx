@@ -10,19 +10,42 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Card, CardContent } from '@/components/ui/card';
 import {
-  CATEGORIES, CATEGORY_TREE, LOCATIONS, LOCATION_GROUPS, CONDITIONS,
+  CATEGORIES, CATEGORY_TREE, LOCATION_GROUPS, CONDITIONS,
   CATEGORY_ICONS, CATEGORY_FIELDS, SUBCATEGORY_FIELDS,
   CATEGORIES_WITHOUT_CONDITION, CATEGORIES_WITH_RENTAL,
   SUBCATEGORIES_FORCE_RENT, SUBCATEGORIES_FORCE_SALE,
   LOCATION_COORDS, getDistanceKm,
 } from '@/lib/constants';
 import { toast } from '@/hooks/use-toast';
-import { Upload, X, MapPin, Loader2, ShieldCheck, Layers, CheckCircle2 } from 'lucide-react';
+import { Upload, X, MapPin, Loader2, ShieldCheck, Layers, CheckCircle2, Plus, Trash2, Image, Pencil, Rocket } from 'lucide-react';
 import { useProStatus } from '@/hooks/useProStatus';
 import { isNativePlatform } from '@/capacitor';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { trackEvent } from '@/lib/analytics';
+
+type FormData = {
+  category: string;
+  subcategory: string;
+  title: string;
+  description: string;
+  price: string;
+  currency: string;
+  location: string;
+  condition: string;
+  listing_type: string;
+};
+
+type QueueItem = {
+  id: string;
+  form: FormData;
+  extraFields: Record<string, string>;
+  photos: File[];
+  previews: string[];
+};
+
+const MAX_QUEUE = 50;
 
 export default function BulkCreateListing() {
   const { t, language } = useLanguage();
@@ -35,12 +58,15 @@ export default function BulkCreateListing() {
     if (tier !== 'agence') { navigate('/create', { replace: true }); }
   }, [user, tier, navigate]);
 
-  const [loading, setLoading] = useState(false);
-  const [publishProgress, setPublishProgress] = useState(0);
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [publishCurrent, setPublishCurrent] = useState(0);
+  const [publishTotal, setPublishTotal] = useState(0);
   const [publishStep, setPublishStep] = useState('');
-  const [sessionCount, setSessionCount] = useState(0);
+  const [publishedCount, setPublishedCount] = useState(0);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     category: '',
     subcategory: '',
     title: '',
@@ -65,7 +91,7 @@ export default function BulkCreateListing() {
 
   const addWatermark = async (file: File | Blob): Promise<Blob> => {
     return new Promise((resolve) => {
-      const img = new Image();
+      const img = new window.Image();
       img.crossOrigin = 'anonymous';
       img.onload = () => {
         const canvas = document.createElement('canvas');
@@ -170,100 +196,146 @@ export default function BulkCreateListing() {
     setPreviews(prev => prev.filter((_, idx) => idx !== i));
   };
 
-  const canSubmit = () => {
+  const canAddToQueue = () => {
     const isNegotiable = form.category === 'emploi' && extraFields.salary_negotiable === 'true';
     return !!form.category && !!form.subcategory && !!form.title && !!form.description
       && (isNegotiable || form.price !== '') && !!form.location
-      && photos.length > 0 && !titleBad && !descBad && !loading;
+      && photos.length > 0 && !titleBad && !descBad && !publishing;
   };
 
-  const handleSubmit = async () => {
-    if (!user || !canSubmit()) return;
-    setLoading(true);
-    setPublishProgress(10);
-    setPublishStep(t('publish.progress.creating'));
-
-    try {
-      const { data: listing, error } = await supabase.from('listings').insert({
-        seller_id: user.id,
-        category: form.category as any,
-        subcategory: form.subcategory,
-        title_original: form.title,
-        description_original: form.description,
-        lang_original: language,
-        price: parseFloat(form.price) || 0,
-        currency: form.currency,
-        location_area: form.location,
-        condition: form.condition as any,
-        status: 'active',
-        extra_fields: extraFields,
-        listing_type: form.listing_type,
-      } as any).select().single();
-
-      if (error) throw error;
-
-      setPublishStep(t('publish.progress.uploading'));
-      for (let i = 0; i < photos.length; i++) {
-        setPublishProgress(15 + Math.round((i / Math.max(photos.length, 1)) * 55));
-        const imageHash = await computeImageHash(photos[i]);
-        const watermarked = await addWatermark(photos[i]);
-        const originalBlob = await new Promise<Blob>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const img2 = new Image();
-            img2.onload = () => {
-              const canvas = document.createElement('canvas');
-              canvas.width = img2.width; canvas.height = img2.height;
-              const ctx = canvas.getContext('2d')!;
-              ctx.drawImage(img2, 0, 0);
-              canvas.toBlob((blob) => resolve(blob || new Blob()), 'image/jpeg', 0.9);
-            };
-            img2.src = reader.result as string;
-          };
-          reader.readAsDataURL(photos[i]);
-        });
-        const path = `${user.id}/${listing.id}/${i}.jpg`;
-        const wmPath = `${user.id}/${listing.id}/${i}_wm.jpg`;
-        await supabase.storage.from('listings').upload(path, originalBlob);
-        await supabase.storage.from('listings').upload(wmPath, watermarked);
-        await supabase.from('listing_images').insert({
-          listing_id: listing.id,
-          storage_path: path,
-          sort_order: i,
-          image_hash: imageHash,
-        } as any);
-      }
-
-      setPublishStep(t('publish.progress.translating'));
-      setPublishProgress(80);
-      triggerTranslation(listing.id).catch(() => {});
-
-      setPublishProgress(100);
-      setPublishStep(t('publish.progress.done'));
-
-      const newCount = sessionCount + 1;
-      setSessionCount(newCount);
-      trackEvent('bulk_listing_created', { listing_id: listing.id, session_count: newCount, category: form.category });
-
-      toast({ title: `✅ ${t('bulkCreate.created')} (#${newCount})` });
-
-      setForm(f => ({ ...f, title: '', description: '', price: '' }));
-      setExtraFields(prev => {
-        const kept: Record<string, string> = {};
-        if (prev.rental_period) kept.rental_period = prev.rental_period;
-        return kept;
-      });
-      setPhotos([]);
-      setPreviews([]);
-
-      setTimeout(() => titleRef.current?.focus(), 300);
-    } catch (err: any) {
-      toast({ title: t('common.error'), description: err.message, variant: 'destructive' });
+  const handleAddToQueue = () => {
+    if (!canAddToQueue()) return;
+    if (queue.length >= MAX_QUEUE) {
+      toast({ title: t('bulkCreate.queueFull'), variant: 'destructive' });
+      return;
     }
 
-    setLoading(false);
-    setPublishProgress(0);
+    const item: QueueItem = {
+      id: crypto.randomUUID(),
+      form: { ...form },
+      extraFields: { ...extraFields },
+      photos: [...photos],
+      previews: [...previews],
+    };
+
+    if (editingIndex !== null) {
+      setQueue(prev => prev.map((q, i) => i === editingIndex ? item : q));
+      setEditingIndex(null);
+      toast({ title: `✅ ${t('bulkCreate.itemUpdated')}` });
+    } else {
+      setQueue(prev => [...prev, item]);
+      toast({ title: `✅ ${t('bulkCreate.addedToQueue')} (#${queue.length + 1})` });
+    }
+
+    setForm(f => ({ ...f, title: '', description: '', price: '' }));
+    setExtraFields(prev => {
+      const kept: Record<string, string> = {};
+      if (prev.rental_period) kept.rental_period = prev.rental_period;
+      return kept;
+    });
+    setPhotos([]);
+    setPreviews([]);
+    setTimeout(() => titleRef.current?.focus(), 200);
+  };
+
+  const removeFromQueue = (index: number) => {
+    setQueue(prev => prev.filter((_, i) => i !== index));
+    if (editingIndex === index) {
+      setEditingIndex(null);
+    }
+  };
+
+  const editQueueItem = (index: number) => {
+    const item = queue[index];
+    setForm({ ...item.form });
+    setExtraFields({ ...item.extraFields });
+    setPhotos([...item.photos]);
+    setPreviews([...item.previews]);
+    setEditingIndex(index);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePublishAll = async () => {
+    if (!user || queue.length === 0 || publishing) return;
+    setPublishing(true);
+    setPublishTotal(queue.length);
+    setPublishCurrent(0);
+
+    let successCount = 0;
+
+    for (let qi = 0; qi < queue.length; qi++) {
+      const item = queue[qi];
+      setPublishCurrent(qi + 1);
+      setPublishStep(`${t('bulkCreate.publishingItem')} ${qi + 1}/${queue.length}: ${item.form.title.slice(0, 30)}...`);
+
+      try {
+        const { data: listing, error } = await supabase.from('listings').insert({
+          seller_id: user.id,
+          category: item.form.category as any,
+          subcategory: item.form.subcategory,
+          title_original: item.form.title,
+          description_original: item.form.description,
+          lang_original: language,
+          price: parseFloat(item.form.price) || 0,
+          currency: item.form.currency,
+          location_area: item.form.location,
+          condition: item.form.condition as any,
+          status: 'active',
+          extra_fields: item.extraFields,
+          listing_type: item.form.listing_type,
+        } as any).select().single();
+
+        if (error) throw error;
+
+        for (let i = 0; i < item.photos.length; i++) {
+          const imageHash = await computeImageHash(item.photos[i]);
+          const watermarked = await addWatermark(item.photos[i]);
+          const originalBlob = await new Promise<Blob>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const img2 = new window.Image();
+              img2.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img2.width; canvas.height = img2.height;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img2, 0, 0);
+                canvas.toBlob((blob) => resolve(blob || new Blob()), 'image/jpeg', 0.9);
+              };
+              img2.src = reader.result as string;
+            };
+            reader.readAsDataURL(item.photos[i]);
+          });
+          const path = `${user.id}/${listing.id}/${i}.jpg`;
+          const wmPath = `${user.id}/${listing.id}/${i}_wm.jpg`;
+          await supabase.storage.from('listings').upload(path, originalBlob);
+          await supabase.storage.from('listings').upload(wmPath, watermarked);
+          await supabase.from('listing_images').insert({
+            listing_id: listing.id,
+            storage_path: path,
+            sort_order: i,
+            image_hash: imageHash,
+          } as any);
+        }
+
+        triggerTranslation(listing.id).catch(() => {});
+        trackEvent('bulk_listing_created', { listing_id: listing.id, session_count: successCount + 1, category: item.form.category });
+        successCount++;
+      } catch (err: any) {
+        console.error(`Failed to publish listing ${qi + 1}:`, err);
+        toast({ title: `❌ ${item.form.title.slice(0, 30)}: ${err.message}`, variant: 'destructive' });
+      }
+    }
+
+    setPublishedCount(prev => prev + successCount);
+    setQueue([]);
+    setPublishing(false);
     setPublishStep('');
+    setPublishCurrent(0);
+    setPublishTotal(0);
+
+    if (successCount > 0) {
+      toast({ title: `🎉 ${successCount} ${t('bulkCreate.publishedSuccess')}` });
+    }
   };
 
   if (!user || tier !== 'agence') return null;
@@ -288,9 +360,10 @@ export default function BulkCreateListing() {
   }
 
   const currentExtraFields = SUBCATEGORY_FIELDS[form.subcategory] || CATEGORY_FIELDS[form.category];
+  const progressPercent = publishTotal > 0 ? Math.round((publishCurrent / publishTotal) * 100) : 0;
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-3xl">
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -299,284 +372,372 @@ export default function BulkCreateListing() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">{t('bulkCreate.subtitle')}</p>
         </div>
-        {sessionCount > 0 && (
-          <Badge variant="secondary" className="text-base px-3 py-1.5 gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-green-500" />
-            {sessionCount} {t('bulkCreate.published')}
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {publishedCount > 0 && (
+            <Badge variant="secondary" className="text-base px-3 py-1.5 gap-1.5">
+              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              {publishedCount} {t('bulkCreate.published')}
+            </Badge>
+          )}
+          {queue.length > 0 && (
+            <Badge variant="outline" className="text-base px-3 py-1.5">
+              {queue.length} {t('bulkCreate.inQueue')}
+            </Badge>
+          )}
+        </div>
       </div>
 
-      {loading && (
-        <div className="mb-6">
-          <div className="flex justify-between text-sm mb-1">
-            <span>{publishStep}</span>
-            <span>{publishProgress}%</span>
+      {publishing && (
+        <div className="mb-6 p-4 rounded-lg border border-primary/20 bg-primary/5">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="font-medium">{publishStep}</span>
+            <span>{publishCurrent}/{publishTotal}</span>
           </div>
-          <Progress value={publishProgress} className="h-2" />
+          <Progress value={progressPercent} className="h-3" />
         </div>
       )}
 
-      <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label>{t('createListing.stepCategory')} *</Label>
-            <Select value={form.category} onValueChange={v => {
-              setForm(f => ({ ...f, category: v, subcategory: '', listing_type: 'sale' }));
-              setExtraFields({});
-            }}>
-              <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
-              <SelectContent>
-                {CATEGORIES.map(cat => (
-                  <SelectItem key={cat} value={cat}>
-                    {CATEGORY_ICONS[cat]} {t(`categories.${cat}`)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <Card className="mb-6">
+        <CardContent className="pt-6 space-y-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Plus className="h-5 w-5 text-primary" />
+            <h2 className="font-semibold text-lg">
+              {editingIndex !== null ? t('bulkCreate.editItem') : t('bulkCreate.addItem')}
+            </h2>
           </div>
-          <div>
-            <Label>{t('createListing.selectSubcategory')} *</Label>
-            <Select value={form.subcategory} onValueChange={v => {
-              const autoType = (SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(v) ? 'rent'
-                : (SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(v) ? 'sale'
-                : form.listing_type;
-              setForm(f => ({ ...f, subcategory: v, listing_type: autoType }));
-            }} disabled={!form.category}>
-              <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
-              <SelectContent>
-                {form.category && CATEGORY_TREE[form.category]?.map(sub => (
-                  <SelectItem key={sub} value={sub}>{t(`subcategories.${sub}`)}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
 
-        <div>
-          <Label>{t('createListing.titleLabel')} *</Label>
-          <Input
-            ref={titleRef}
-            placeholder={t('createListing.titlePlaceholder')}
-            value={form.title}
-            onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            className={titleBad ? 'border-destructive' : ''}
-          />
-          {titleBad && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
-        </div>
-        <div>
-          <Label>{t('createListing.descriptionLabel')} *</Label>
-          <Textarea
-            placeholder={t('createListing.descriptionPlaceholder')}
-            value={form.description}
-            onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-            rows={4}
-            className={descBad ? 'border-destructive' : ''}
-          />
-          {descBad && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {!(form.category === 'emploi' && extraFields.salary_negotiable === 'true') && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label>
-                {form.category === 'emploi' ? t('createListing.salaryLabel')
-                  : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
-                  : t('createListing.priceLabel')} *
-              </Label>
-              <Input
-                type="number" min="0"
-                placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')}
-                value={form.price}
-                onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
-              />
-            </div>
-          )}
-
-          <div>
-            <Label>{t('createListing.locationLabel')} *</Label>
-            <div className="flex gap-1">
-              <Select value={form.location} onValueChange={v => setForm(f => ({ ...f, location: v }))}>
-                <SelectTrigger className="flex-1"><SelectValue placeholder={t('createListing.selectLocation')} /></SelectTrigger>
+              <Label>{t('createListing.stepCategory')} *</Label>
+              <Select value={form.category} onValueChange={v => {
+                setForm(f => ({ ...f, category: v, subcategory: '', listing_type: 'sale' }));
+                setExtraFields({});
+              }}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
                 <SelectContent>
-                  {Object.entries(LOCATION_GROUPS).map(([island, locs]) => (
-                    <SelectGroup key={island}>
-                      <SelectLabel className="font-bold text-primary">{t(`islands.${island}`)}</SelectLabel>
-                      {locs.map(l => (
-                        <SelectItem key={l} value={l}>{t(`locations.${l}`)}</SelectItem>
-                      ))}
-                    </SelectGroup>
+                  {CATEGORIES.map(cat => (
+                    <SelectItem key={cat} value={cat}>
+                      {CATEGORY_ICONS[cat]} {t(`categories.${cat}`)}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <Button type="button" variant="outline" size="icon" disabled={locating} onClick={async () => {
-                setLocating(true);
-                try {
-                  const { getCurrentPosition } = await import('@/lib/geolocation');
-                  const { latitude, longitude } = await getCurrentPosition();
-                  let closest = 'other'; let minDist = Infinity;
-                  for (const [loc, coords] of Object.entries(LOCATION_COORDS)) {
-                    if (loc === 'other') continue;
-                    const d = getDistanceKm(latitude, longitude, coords.lat, coords.lng);
-                    if (d < minDist) { minDist = d; closest = loc; }
-                  }
-                  setForm(f => ({ ...f, location: closest }));
-                  toast({ title: t(`locations.${closest}`) });
-                } catch { toast({ title: t('common.error'), variant: 'destructive' }); }
-                setLocating(false);
-              }}>
-                {locating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
-              </Button>
+            </div>
+            <div>
+              <Label>{t('createListing.selectSubcategory')} *</Label>
+              <Select value={form.subcategory} onValueChange={v => {
+                const autoType = (SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(v) ? 'rent'
+                  : (SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(v) ? 'sale'
+                  : form.listing_type;
+                setForm(f => ({ ...f, subcategory: v, listing_type: autoType }));
+              }} disabled={!form.category}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+                <SelectContent>
+                  {form.category && CATEGORY_TREE[form.category]?.map(sub => (
+                    <SelectItem key={sub} value={sub}>{t(`subcategories.${sub}`)}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          {!CATEGORIES_WITHOUT_CONDITION.includes(form.category as any) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label>{t('createListing.conditionLabel')}</Label>
-              <Select value={form.condition} onValueChange={v => setForm(f => ({ ...f, condition: v }))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {CONDITIONS.map(c => <SelectItem key={c} value={c}>{t(`conditions.${c}`)}</SelectItem>)}
-                </SelectContent>
-              </Select>
+              <Label>{t('createListing.titleLabel')} *</Label>
+              <Input
+                ref={titleRef}
+                placeholder={t('createListing.titlePlaceholder')}
+                value={form.title}
+                onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+                className={titleBad ? 'border-destructive' : ''}
+              />
+              {titleBad && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
             </div>
-          )}
-        </div>
+            <div>
+              <Label>{t('createListing.descriptionLabel')} *</Label>
+              <Textarea
+                placeholder={t('createListing.descriptionPlaceholder')}
+                value={form.description}
+                onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                rows={3}
+                className={descBad ? 'border-destructive' : ''}
+              />
+              {descBad && <p className="text-xs text-destructive mt-1">{t('security.noPhoneOrLinks')}</p>}
+            </div>
+          </div>
 
-        {(CATEGORIES_WITH_RENTAL as readonly string[]).includes(form.category) &&
-         !(SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(form.subcategory) &&
-         !(SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(form.subcategory) && (
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label>{t('createListing.listingTypeLabel')}</Label>
-              <Select value={form.listing_type} onValueChange={v => setForm(f => ({ ...f, listing_type: v }))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
-                  <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {form.listing_type === 'rent' && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {!(form.category === 'emploi' && extraFields.salary_negotiable === 'true') && (
               <div>
-                <Label>{t('createListing.rentalPeriodLabel')}</Label>
-                <Select value={extraFields.rental_period || 'monthly'} onValueChange={v => setExtraFields(prev => ({ ...prev, rental_period: v }))}>
+                <Label>
+                  {form.category === 'emploi' ? t('createListing.salaryLabel')
+                    : form.listing_type === 'rent' ? t('createListing.rentPriceLabel')
+                    : t('createListing.priceLabel')} *
+                </Label>
+                <Input
+                  type="number" min="0"
+                  placeholder={form.category === 'emploi' ? t('createListing.salaryPlaceholder') : t('createListing.pricePlaceholder')}
+                  value={form.price}
+                  onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
+                />
+              </div>
+            )}
+            <div>
+              <Label>{t('createListing.locationLabel')} *</Label>
+              <div className="flex gap-1">
+                <Select value={form.location} onValueChange={v => setForm(f => ({ ...f, location: v }))}>
+                  <SelectTrigger className="flex-1"><SelectValue placeholder={t('createListing.selectLocation')} /></SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(LOCATION_GROUPS).map(([island, locs]) => (
+                      <SelectGroup key={island}>
+                        <SelectLabel className="font-bold text-primary">{t(`islands.${island}`)}</SelectLabel>
+                        {locs.map(l => (
+                          <SelectItem key={l} value={l}>{t(`locations.${l}`)}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button type="button" variant="outline" size="icon" disabled={locating} onClick={async () => {
+                  setLocating(true);
+                  try {
+                    const { getCurrentPosition } = await import('@/lib/geolocation');
+                    const { latitude, longitude } = await getCurrentPosition();
+                    let closest = 'other'; let minDist = Infinity;
+                    for (const [loc, coords] of Object.entries(LOCATION_COORDS)) {
+                      if (loc === 'other') continue;
+                      const d = getDistanceKm(latitude, longitude, coords.lat, coords.lng);
+                      if (d < minDist) { minDist = d; closest = loc; }
+                    }
+                    setForm(f => ({ ...f, location: closest }));
+                    toast({ title: t(`locations.${closest}`) });
+                  } catch { toast({ title: t('common.error'), variant: 'destructive' }); }
+                  setLocating(false);
+                }}>
+                  {locating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+            {!CATEGORIES_WITHOUT_CONDITION.includes(form.category as any) && (
+              <div>
+                <Label>{t('createListing.conditionLabel')}</Label>
+                <Select value={form.condition} onValueChange={v => setForm(f => ({ ...f, condition: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="daily">{t('rentalPeriod.daily')}</SelectItem>
-                    <SelectItem value="monthly">{t('rentalPeriod.monthly')}</SelectItem>
-                    <SelectItem value="yearly">{t('rentalPeriod.yearly')}</SelectItem>
+                    {CONDITIONS.map(c => <SelectItem key={c} value={c}>{t(`conditions.${c}`)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
             )}
           </div>
-        )}
 
-        {form.category === 'emploi' && (
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="salary_negotiable"
-              checked={extraFields.salary_negotiable === 'true'}
-              onChange={e => {
-                setExtraFields(prev => ({ ...prev, salary_negotiable: e.target.checked ? 'true' : 'false' }));
-                if (e.target.checked) setForm(f => ({ ...f, price: '0' }));
-              }}
-              className="h-4 w-4 rounded border-border"
-            />
-            <Label htmlFor="salary_negotiable" className="cursor-pointer">{t('createListing.salaryNegotiable')}</Label>
-          </div>
-        )}
+          {(CATEGORIES_WITH_RENTAL as readonly string[]).includes(form.category) &&
+           !(SUBCATEGORIES_FORCE_RENT as readonly string[]).includes(form.subcategory) &&
+           !(SUBCATEGORIES_FORCE_SALE as readonly string[]).includes(form.subcategory) && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>{t('createListing.listingTypeLabel')}</Label>
+                <Select value={form.listing_type} onValueChange={v => setForm(f => ({ ...f, listing_type: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sale">{t('listingType.sale')}</SelectItem>
+                    <SelectItem value="rent">{t('listingType.rent')}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {form.listing_type === 'rent' && (
+                <div>
+                  <Label>{t('createListing.rentalPeriodLabel')}</Label>
+                  <Select value={extraFields.rental_period || 'monthly'} onValueChange={v => setExtraFields(prev => ({ ...prev, rental_period: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">{t('rentalPeriod.daily')}</SelectItem>
+                      <SelectItem value="monthly">{t('rentalPeriod.monthly')}</SelectItem>
+                      <SelectItem value="yearly">{t('rentalPeriod.yearly')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+          )}
 
-        {currentExtraFields && (
-          <div className="border-t border-border pt-4">
-            <h3 className="text-sm font-semibold text-muted-foreground mb-3">{t('extraFields.categorySpecificInfo')}</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {currentExtraFields.map(field => (
-                <div key={field.key} className={field.type === 'text' && !field.suffix ? 'col-span-2 sm:col-span-1' : ''}>
-                  <Label>{t(field.labelKey)} {field.required ? '*' : ''}</Label>
-                  {field.type === 'select' && field.options ? (
-                    <>
-                      <Select value={extraFields[field.key] || ''} onValueChange={v => {
-                        setExtraFields(prev => ({ ...prev, [field.key]: v }));
-                        if (v !== 'autre') setExtraFields(prev => { const c = { ...prev }; delete c[field.key + '_custom']; return c; });
-                      }}>
-                        <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
-                        <SelectContent>
-                          {field.options.map(opt => (
-                            <SelectItem key={opt} value={opt}>
-                              {field.rawOptions ? (opt === 'autre' ? t('extraFields.autre') : opt) : t(`extraFields.${opt}`)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {extraFields[field.key] === 'autre' && (
-                        <Input className="mt-2" placeholder={t('extraFields.specifyOther')}
-                          value={extraFields[field.key + '_custom'] || ''}
-                          onChange={e => setExtraFields(prev => ({ ...prev, [field.key + '_custom']: e.target.value }))}
+          {form.category === 'emploi' && (
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="salary_negotiable"
+                checked={extraFields.salary_negotiable === 'true'}
+                onChange={e => {
+                  setExtraFields(prev => ({ ...prev, salary_negotiable: e.target.checked ? 'true' : 'false' }));
+                  if (e.target.checked) setForm(f => ({ ...f, price: '0' }));
+                }}
+                className="h-4 w-4 rounded border-border"
+              />
+              <Label htmlFor="salary_negotiable" className="cursor-pointer">{t('createListing.salaryNegotiable')}</Label>
+            </div>
+          )}
+
+          {currentExtraFields && (
+            <div className="border-t border-border pt-4">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3">{t('extraFields.categorySpecificInfo')}</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {currentExtraFields.map(field => (
+                  <div key={field.key} className={field.type === 'text' && !field.suffix ? 'col-span-2 sm:col-span-1' : ''}>
+                    <Label>{t(field.labelKey)} {field.required ? '*' : ''}</Label>
+                    {field.type === 'select' && field.options ? (
+                      <>
+                        <Select value={extraFields[field.key] || ''} onValueChange={v => {
+                          setExtraFields(prev => ({ ...prev, [field.key]: v }));
+                          if (v !== 'autre') setExtraFields(prev => { const c = { ...prev }; delete c[field.key + '_custom']; return c; });
+                        }}>
+                          <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+                          <SelectContent>
+                            {field.options.map(opt => (
+                              <SelectItem key={opt} value={opt}>
+                                {field.rawOptions ? (opt === 'autre' ? t('extraFields.autre') : opt) : t(`extraFields.${opt}`)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {extraFields[field.key] === 'autre' && (
+                          <Input className="mt-2" placeholder={t('extraFields.specifyOther')}
+                            value={extraFields[field.key + '_custom'] || ''}
+                            onChange={e => setExtraFields(prev => ({ ...prev, [field.key + '_custom']: e.target.value }))}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <div className="relative">
+                        <Input
+                          type={field.type === 'number' ? 'number' : 'text'}
+                          placeholder={field.placeholder || ''}
+                          value={extraFields[field.key] || ''}
+                          onChange={e => setExtraFields(prev => ({ ...prev, [field.key]: e.target.value }))}
                         />
-                      )}
-                    </>
-                  ) : (
-                    <div className="relative">
-                      <Input
-                        type={field.type === 'number' ? 'number' : 'text'}
-                        placeholder={field.placeholder || ''}
-                        value={extraFields[field.key] || ''}
-                        onChange={e => setExtraFields(prev => ({ ...prev, [field.key]: e.target.value }))}
-                      />
-                      {field.suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{field.suffix}</span>}
-                    </div>
-                  )}
+                        {field.suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{field.suffix}</span>}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <Label>{t('createListing.stepPhotos')} * ({photos.length}/{proMaxPhotos})</Label>
+            <div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mt-2">
+              {previews.map((src, i) => (
+                <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-muted">
+                  <img src={src} alt="" className="w-full h-full object-cover" />
+                  <button onClick={() => removePhoto(i)} className="absolute top-1 right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
+                    <X className="h-3 w-3" />
+                  </button>
                 </div>
               ))}
+              {photos.length < proMaxPhotos && (
+                isNativePlatform ? (
+                  <button type="button" onClick={handleNativePhoto}
+                    className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
+                    <Upload className="h-5 w-5 text-muted-foreground mb-1" />
+                    <span className="text-[10px] text-muted-foreground">{t('createListing.addPhoto')}</span>
+                  </button>
+                ) : (
+                  <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
+                    <Upload className="h-5 w-5 text-muted-foreground mb-1" />
+                    <span className="text-[10px] text-muted-foreground">{t('createListing.addPhoto')}</span>
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
+                  </label>
+                )
+              )}
             </div>
           </div>
-        )}
 
-        <div>
-          <Label>{t('createListing.stepPhotos')} * ({photos.length}/{proMaxPhotos})</Label>
-          <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 mt-2">
-            {previews.map((src, i) => (
-              <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-muted">
-                <img src={src} alt="" className="w-full h-full object-cover" />
-                <button onClick={() => removePhoto(i)} className="absolute top-1 right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            {photos.length < proMaxPhotos && (
-              isNativePlatform ? (
-                <button type="button" onClick={handleNativePhoto}
-                  className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                  <Upload className="h-5 w-5 text-muted-foreground mb-1" />
-                  <span className="text-[10px] text-muted-foreground">{t('createListing.addPhoto')}</span>
-                </button>
-              ) : (
-                <label className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                  <Upload className="h-5 w-5 text-muted-foreground mb-1" />
-                  <span className="text-[10px] text-muted-foreground">{t('createListing.addPhoto')}</span>
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
-                </label>
-              )
+          <div className="flex gap-3 pt-2">
+            <Button onClick={handleAddToQueue} disabled={!canAddToQueue()} className="flex-1 h-11 gap-2" size="lg">
+              <Plus className="h-5 w-5" />
+              {editingIndex !== null ? t('bulkCreate.updateInQueue') : t('bulkCreate.addToQueue')}
+            </Button>
+            {editingIndex !== null && (
+              <Button variant="outline" onClick={() => {
+                setEditingIndex(null);
+                setForm(f => ({ ...f, title: '', description: '', price: '' }));
+                setPhotos([]);
+                setPreviews([]);
+              }}>
+                {t('common.cancel')}
+              </Button>
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-lg flex items-center gap-2">
+            <Rocket className="h-5 w-5 text-primary" />
+            {t('bulkCreate.queue')} ({queue.length})
+          </h2>
+          {queue.length > 0 && (
+            <Button onClick={handlePublishAll} disabled={publishing} className="gap-2" size="lg">
+              {publishing ? <Loader2 className="h-5 w-5 animate-spin" /> : <CheckCircle2 className="h-5 w-5" />}
+              {t('bulkCreate.publishAll')} ({queue.length})
+            </Button>
+          )}
         </div>
 
-        <div className="flex items-center gap-3 pt-2">
-          <Button onClick={handleSubmit} disabled={!canSubmit()} className="flex-1 h-12 text-base gap-2" size="lg">
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <CheckCircle2 className="h-5 w-5" />}
-            {t('bulkCreate.publishAndNext')}
-          </Button>
-          <Button variant="outline" onClick={() => navigate('/my-listings')}>
-            {t('bulkCreate.done')}
-          </Button>
-        </div>
+        {queue.length === 0 ? (
+          <div className="border-2 border-dashed border-muted-foreground/20 rounded-lg p-8 text-center">
+            <Layers className="h-10 w-10 text-muted-foreground/30 mx-auto mb-2" />
+            <p className="text-muted-foreground">{t('bulkCreate.queueEmpty')}</p>
+            <p className="text-sm text-muted-foreground/60 mt-1">{t('bulkCreate.queueEmptyHint')}</p>
+          </div>
+        ) : (
+          <div className="grid gap-2">
+            {queue.map((item, index) => (
+              <Card key={item.id} className="overflow-hidden">
+                <CardContent className="p-3 flex items-center gap-3">
+                  {item.previews[0] ? (
+                    <img src={item.previews[0]} alt="" className="w-14 h-14 rounded-md object-cover flex-shrink-0" />
+                  ) : (
+                    <div className="w-14 h-14 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
+                      <Image className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  )}
 
-        {sessionCount > 0 && (
-          <p className="text-center text-sm text-muted-foreground">
-            {t('bulkCreate.keepGoing')}
-          </p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{item.form.title}</p>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                      <span>{CATEGORY_ICONS[item.form.category]} {t(`categories.${item.form.category}`)}</span>
+                      <span>•</span>
+                      <span>{t(`locations.${item.form.location}`)}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-0.5">
+                        <Image className="h-3 w-3" /> {item.photos.length}
+                      </span>
+                    </div>
+                  </div>
+
+                  <span className="text-sm font-semibold flex-shrink-0">
+                    {parseFloat(item.form.price) ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: item.form.currency, maximumFractionDigits: 0 }).format(parseFloat(item.form.price)) : t('common.free')}
+                  </span>
+
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => editQueueItem(index)} disabled={publishing}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => removeFromQueue(index)} disabled={publishing}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         )}
+      </div>
+
+      <div className="flex justify-end mt-6">
+        <Button variant="outline" onClick={() => navigate('/my-listings')}>
+          {t('bulkCreate.done')}
+        </Button>
       </div>
     </div>
   );

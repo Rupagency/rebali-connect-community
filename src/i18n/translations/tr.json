@@ -1864,13 +1864,22 @@
   },
   "bulkCreate": {
     "title": "Toplu İlan Oluştur",
-    "subtitle": "Art arda birden fazla ilan oluşturmak için optimize edilmiş",
+    "subtitle": "Birden fazla ilan sıraya ekleyin ve hepsini bir kerede yayınlayın",
     "button": "Toplu Oluştur",
     "published": "yayınlandı",
-    "created": "İlan yayınlandı!",
-    "publishAndNext": "Yayınla ve Sonraki",
-    "done": "Bitti",
-    "keepGoing": "Form sıfırlandı — devam edin! Kategori ve konum korundu.",
-    "addPhoto": "Fotoğraf ekle"
+    "publishedSuccess": "ilan başarıyla yayınlandı!",
+    "addToQueue": "Sıraya eklendi!",
+    "addItem": "İlan ekle",
+    "editItem": "İlanı düzenle",
+    "itemUpdated": "İlan sırada güncellendi",
+    "updateInQueue": "Güncelle",
+    "queue": "Yayın sırası",
+    "queueEmpty": "Sıranız boş",
+    "queueEmptyHint": "Yukarıdaki formu doldurun ve \"+\" ile ekleyin",
+    "queueFull": "Sıra dolu (maks 50)",
+    "publishAll": "Tümünü yayınla",
+    "publishingItem": "Yayınlanıyor",
+    "inQueue": "sırada",
+    "done": "Bitti"
   }
 }

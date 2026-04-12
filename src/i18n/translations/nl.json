@@ -2524,14 +2524,23 @@
     "unblock": "Deblokkeren"
   },
   "bulkCreate": {
-    "title": "Bulk advertenties maken",
-    "subtitle": "Geoptimaliseerd voor het aanmaken van meerdere advertenties achter elkaar",
+    "title": "Advertenties in bulk aanmaken",
+    "subtitle": "Voeg meerdere advertenties toe aan de wachtrij en publiceer alles tegelijk",
     "button": "Bulk aanmaken",
     "published": "gepubliceerd",
-    "created": "Advertentie gepubliceerd!",
-    "publishAndNext": "Publiceren & Volgende",
-    "done": "Klaar",
-    "keepGoing": "Formulier gereset — ga verder! Categorie & locatie behouden.",
-    "addPhoto": "Foto toevoegen"
+    "publishedSuccess": "advertenties succesvol gepubliceerd!",
+    "addToQueue": "Toegevoegd aan wachtrij!",
+    "addItem": "Advertentie toevoegen",
+    "editItem": "Advertentie bewerken",
+    "itemUpdated": "Advertentie bijgewerkt in wachtrij",
+    "updateInQueue": "Bijwerken",
+    "queue": "Publicatiewachtrij",
+    "queueEmpty": "Uw wachtrij is leeg",
+    "queueEmptyHint": "Vul het formulier in en klik op \"+\" om toe te voegen",
+    "queueFull": "Wachtrij vol (max 50)",
+    "publishAll": "Alles publiceren",
+    "publishingItem": "Publiceren",
+    "inQueue": "in wachtrij",
+    "done": "Klaar"
   }
 }
