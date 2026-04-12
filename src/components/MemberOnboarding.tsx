@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -9,7 +9,6 @@ import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfettiEffect from '@/components/ConfettiEffect';
-import { capacitorStorage } from '@/lib/capacitorStorage';
 
 const MEMBER_ONBOARDING_PREFIX = 'rebali-member-onboarding-done-';
 
@@ -34,20 +33,33 @@ export default function MemberOnboarding() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isLast = step === steps.length - 1;
+  const hasChecked = useRef(false);
 
   useEffect(() => {
     if (!user) return;
-    const key = MEMBER_ONBOARDING_PREFIX + user.id;
-    const done = capacitorStorage.getItem(key);
-    if (!done) {
-      const timer = setTimeout(() => setOpen(true), 800);
-      return () => clearTimeout(timer);
+    // Prevent re-triggering on HMR or remount
+    if (hasChecked.current) return;
+    hasChecked.current = true;
+
+    try {
+      const key = MEMBER_ONBOARDING_PREFIX + user.id;
+      const done = localStorage.getItem(key);
+      if (!done) {
+        const timer = setTimeout(() => setOpen(true), 800);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      // localStorage unavailable
     }
   }, [user]);
 
   const handleClose = () => {
     if (user) {
-      capacitorStorage.setItem(MEMBER_ONBOARDING_PREFIX + user.id, 'true');
+      try {
+        localStorage.setItem(MEMBER_ONBOARDING_PREFIX + user.id, 'true');
+      } catch {
+        // ignore
+      }
     }
     setOpen(false);
     setStep(0);

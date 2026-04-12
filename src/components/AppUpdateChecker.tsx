@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { App as CapApp } from '@capacitor/app';
 import { supabase } from '@/integrations/supabase/client';
-import { useLanguage } from '@/contexts/LanguageContext';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -25,7 +24,6 @@ function compareVersions(current: string, required: string): number {
 }
 
 export default function AppUpdateChecker() {
-  const { t } = useLanguage();
   const [needsUpdate, setNeedsUpdate] = useState(false);
   const [storeUrl, setStoreUrl] = useState('');
 
@@ -35,8 +33,8 @@ export default function AppUpdateChecker() {
     const check = async () => {
       try {
         const info = await CapApp.getInfo();
-        const currentVersion = info.version; // e.g. "1.0.0"
-        const platform = Capacitor.getPlatform(); // "ios" | "android"
+        const currentVersion = info.version;
+        const platform = Capacitor.getPlatform();
 
         const versionKey = platform === 'ios' ? 'min_version_ios' : 'min_version_android';
         const urlKey = platform === 'ios' ? 'store_url_ios' : 'store_url_android';
@@ -81,15 +79,15 @@ export default function AppUpdateChecker() {
             </div>
           </div>
           <AlertDialogTitle className="text-center">
-            {t('update.title')}
+            Update Required
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center">
-            {t('update.description')}
+            A new version is available. Please update to continue.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="sm:justify-center">
           <Button onClick={handleUpdate} className="w-full font-bold">
-            {t('update.button')}
+            Update Now
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
