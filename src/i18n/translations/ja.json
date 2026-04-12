@@ -110,7 +110,8 @@
       "boosts": "含まれるブースト",
       "badge": "認証バッジ",
       "analytics": "分析",
-      "searchAlerts": "検索アラート"
+      "searchAlerts": "検索アラート",
+      "bulkCreate": "一括作成"
     },
     "goProCTA": "Proになる"
   },
@@ -2071,6 +2072,7 @@
     "publishAll": "すべて公開",
     "publishingItem": "公開中",
     "inQueue": "キュー内",
-    "done": "完了"
+    "done": "完了",
+    "agenceOnly": "エージェンシーのみ"
   }
 }

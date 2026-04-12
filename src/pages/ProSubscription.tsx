@@ -23,6 +23,7 @@ const TIERS = [
       { key: 'badge', value: false },
       { key: 'analytics', value: false },
       { key: 'searchAlerts', value: '0' },
+      { key: 'bulkCreate', value: false },
     ],
   },
   {
@@ -35,6 +36,7 @@ const TIERS = [
       { key: 'badge', value: 'Pro Vérifié' },
       { key: 'analytics', value: 'basic' },
       { key: 'searchAlerts', value: '3' },
+      { key: 'bulkCreate', value: false },
     ],
   },
   {
@@ -47,6 +49,7 @@ const TIERS = [
       { key: 'badge', value: 'Business Certifié' },
       { key: 'analytics', value: 'advanced' },
       { key: 'searchAlerts', value: '∞' },
+      { key: 'bulkCreate', value: true },
     ],
   },
 ];
@@ -107,6 +110,7 @@ export default function ProSubscription() {
       case 'badge': return ShieldCheck;
       case 'analytics': return BarChart3;
       case 'searchAlerts': return Bell;
+      case 'bulkCreate': return Package;
       default: return Check;
     }
   };

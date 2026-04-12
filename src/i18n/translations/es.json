@@ -1447,7 +1447,8 @@
       "boosts": "Boosts incluidos",
       "badge": "Badge verificado",
       "analytics": "Analíticas",
-      "searchAlerts": "Alertas de búsqueda"
+      "searchAlerts": "Alertas de búsqueda",
+      "bulkCreate": "Creación en serie"
     }
   },
   "browse": {
@@ -1880,6 +1881,7 @@
     "publishAll": "Publicar todo",
     "publishingItem": "Publicando",
     "inQueue": "en cola",
-    "done": "Listo"
+    "done": "Listo",
+    "agenceOnly": "Solo agencia"
   }
 }

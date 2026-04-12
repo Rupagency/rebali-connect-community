@@ -1460,7 +1460,8 @@
       "boosts": "Dahil boost",
       "badge": "Doğrulanmış rozet",
       "analytics": "Analizler",
-      "searchAlerts": "Arama uyarıları"
+      "searchAlerts": "Arama uyarıları",
+      "bulkCreate": "Toplu oluştur"
     }
   },
   "browse": {
@@ -1880,6 +1881,7 @@
     "publishAll": "Tümünü yayınla",
     "publishingItem": "Yayınlanıyor",
     "inQueue": "sırada",
-    "done": "Bitti"
+    "done": "Bitti",
+    "agenceOnly": "Sadece ajans"
   }
 }

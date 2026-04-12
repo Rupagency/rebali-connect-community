@@ -1468,7 +1468,8 @@
       "boosts": "Boost termasuk",
       "searchAlerts": "Peringatan pencarian",
       "badge": "Badge terverifikasi",
-      "analytics": "Analitik"
+      "analytics": "Analitik",
+      "bulkCreate": "Buat massal"
     },
     "feature": {
       "listings5": "Hingga 5 iklan aktif",
@@ -1919,6 +1920,7 @@
     "publishAll": "Publikasikan semua",
     "publishingItem": "Mempublikasikan",
     "inQueue": "dalam antrean",
-    "done": "Selesai"
+    "done": "Selesai",
+    "agenceOnly": "Khusus agensi"
   }
 }

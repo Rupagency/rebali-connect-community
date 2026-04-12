@@ -1460,7 +1460,8 @@
       "boosts": "शामिल बूस्ट",
       "badge": "सत्यापित बैज",
       "analytics": "विश्लेषण",
-      "searchAlerts": "खोज अलर्ट"
+      "searchAlerts": "खोज अलर्ट",
+      "bulkCreate": "बल्क बनाएं"
     }
   },
   "browse": {
@@ -1880,6 +1881,7 @@
     "publishAll": "सब प्रकाशित करें",
     "publishingItem": "प्रकाशित हो रहा है",
     "inQueue": "कतार में",
-    "done": "हो गया"
+    "done": "हो गया",
+    "agenceOnly": "केवल एजेंसी"
   }
 }
