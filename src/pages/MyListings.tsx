@@ -58,7 +58,7 @@ export default function MyListings() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const effectiveLimit = useEffectiveListingLimit();
-  const { tier } = useProStatus();
+  const { tier, isPro } = useProStatus();
   const qc = useQueryClient();
   const [boostDialogOpen, setBoostDialogOpen] = useState(false);
   const [boostListingId, setBoostListingId] = useState<string | null>(null);
