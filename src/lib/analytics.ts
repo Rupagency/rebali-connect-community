@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 
-type EventType = 'signup' | 'listing_created' | 'deal_closed' | 'message_sent' | 'search' | 'page_view' | 'npwp_verify_click';
+type EventType = 'signup' | 'listing_created' | 'bulk_listing_created' | 'deal_closed' | 'message_sent' | 'search' | 'page_view' | 'npwp_verify_click';
 
 export async function trackEvent(eventType: EventType, metadata: Record<string, any> = {}) {
   try {
