@@ -34,7 +34,7 @@ export default function AnimatedHeroText() {
   }, [words.length]);
 
   return (
-    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-[hsl(220,20%,10%)]">
+    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
       <span>Re</span>
       <span
         className={`inline-block text-primary transition-all duration-300 ${
