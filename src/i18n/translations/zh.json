@@ -1882,6 +1882,7 @@
     "publishingItem": "正在发布",
     "inQueue": "在队列中",
     "done": "完成",
-    "agenceOnly": "仅限代理"
+    "agenceOnly": "仅限代理",
+    "proOnly": "仅限Pro"
   }
 }

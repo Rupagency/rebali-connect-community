@@ -2127,6 +2127,7 @@
     "publishingItem": "Публикация",
     "inQueue": "в очереди",
     "done": "Готово",
-    "agenceOnly": "Только агентство"
+    "agenceOnly": "Только агентство",
+    "proOnly": "Только Pro"
   }
 }

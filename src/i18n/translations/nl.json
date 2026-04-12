@@ -2543,6 +2543,7 @@
     "publishingItem": "Publiceren",
     "inQueue": "in wachtrij",
     "done": "Klaar",
-    "agenceOnly": "Alleen agentschap"
+    "agenceOnly": "Alleen agentschap",
+    "proOnly": "Alleen Pro"
   }
 }

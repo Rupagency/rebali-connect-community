@@ -1921,6 +1921,7 @@
     "publishingItem": "Mempublikasikan",
     "inQueue": "dalam antrean",
     "done": "Selesai",
-    "agenceOnly": "Khusus agensi"
+    "agenceOnly": "Khusus agensi",
+    "proOnly": "Khusus Pro"
   }
 }

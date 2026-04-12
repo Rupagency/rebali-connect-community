@@ -1882,6 +1882,7 @@
     "publishingItem": "Yayınlanıyor",
     "inQueue": "sırada",
     "done": "Bitti",
-    "agenceOnly": "Sadece ajans"
+    "agenceOnly": "Sadece ajans",
+    "proOnly": "Sadece Pro"
   }
 }
