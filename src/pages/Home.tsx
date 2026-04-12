@@ -391,7 +391,7 @@ export default function Home() {
 
       {/* CTA Banner */}
       <section className="relative z-10 container mx-auto px-4">
-        <div className="relative overflow-hidden rounded-2xl bg-primary px-8 py-10 md:py-12">
+        <div className="relative overflow-hidden rounded-2xl bg-accent px-8 py-10 md:py-12">
           <div className="absolute -right-10 -top-10 w-40 h-40 bg-primary-foreground/10 rounded-full blur-2xl" />
           <div className="absolute -left-6 -bottom-8 w-32 h-32 bg-primary-foreground/10 rounded-full blur-2xl" />
           <div className="relative z-10 text-center">
