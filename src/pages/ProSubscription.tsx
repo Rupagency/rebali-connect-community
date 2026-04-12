@@ -36,7 +36,7 @@ const TIERS = [
       { key: 'badge', value: 'Pro Vérifié' },
       { key: 'analytics', value: 'basic' },
       { key: 'searchAlerts', value: '3' },
-      { key: 'bulkCreate', value: false },
+      { key: 'bulkCreate', value: true },
     ],
   },
   {
