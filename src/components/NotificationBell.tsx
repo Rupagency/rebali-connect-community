@@ -24,7 +24,7 @@ interface UnifiedNotification {
 }
 
 export default function NotificationBell({ compact = false }: NotificationBellProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -76,12 +76,39 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
     refetchInterval: 60000,
   });
 
+  // Fetch translated titles for all listing IDs in notifications
+  const listingIds = [
+    ...searchNotifs.map((n: any) => n.listing_id),
+    ...recentDeals.map((d: any) => d.listing_id),
+  ].filter(Boolean);
+
+  const { data: translatedTitles = {} } = useQuery({
+    queryKey: ['notification-titles', language, listingIds.join(',')],
+    queryFn: async () => {
+      if (listingIds.length === 0) return {};
+      const { data } = await supabase
+        .from('listing_translations')
+        .select('listing_id, title')
+        .eq('lang', language)
+        .in('listing_id', listingIds);
+      const map: Record<string, string> = {};
+      data?.forEach((t: any) => { if (t.title) map[t.listing_id] = t.title; });
+      return map;
+    },
+    enabled: listingIds.length > 0 && language !== 'en',
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const getTitle = (listingId: string, originalTitle: string) => {
+    return (language !== 'en' && translatedTitles[listingId]) || originalTitle;
+  };
+
   // Build unified list
   const notifications: UnifiedNotification[] = [
     ...searchNotifs.map((n: any) => ({
       id: `search-${n.id}`,
       type: 'search' as const,
-      title: (n.listings as any)?.title_original || t('notifications.listing'),
+      title: getTitle(n.listing_id, (n.listings as any)?.title_original || t('notifications.listing')),
       subtitle: `${t('notifications.alertLabel')} : « ${(n.saved_searches as any)?.keyword} »`,
       read: n.read,
       created_at: n.created_at,
@@ -99,7 +126,7 @@ export default function NotificationBell({ compact = false }: NotificationBellPr
     ...recentDeals.map((d: any) => ({
       id: `deal-${d.id}`,
       type: 'deal' as const,
-      title: (d.listings as any)?.title_original || t('notifications.deal'),
+      title: getTitle(d.listing_id, (d.listings as any)?.title_original || t('notifications.deal')),
       subtitle: t('notifications.dealCompleted'),
       read: true,
       created_at: d.deal_closed_at || d.created_at,
